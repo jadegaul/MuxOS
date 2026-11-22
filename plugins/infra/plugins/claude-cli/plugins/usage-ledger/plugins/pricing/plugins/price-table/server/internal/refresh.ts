@@ -3,6 +3,7 @@ import { db } from "@plugins/database/server";
 import { defineJob } from "@plugins/infra/plugins/jobs/server";
 import { defineWarmup } from "@plugins/infra/plugins/warmup/server";
 import { Log } from "@plugins/primitives/plugins/log-channels/server";
+import { endpointAccountModels } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import { recordPriceVersion } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/server";
 import { costUsageDir } from "../../data-dirs";
 import { loadFallbackPriceTable } from "./litellm-fallback";
@@ -45,7 +46,9 @@ async function refreshPriceTable(): Promise<{ models: number }> {
   ]);
   const next = mergePriceTable(held, fetched);
   await savePriceTable(PRICE_TABLE_PATH, next);
-  await recordPriceVersion(db, next, "litellm");
+  // The local endpoint models ride along at their $0 rate (the caller's read
+  // of the accounts file: this plugin's own table never learns them).
+  await recordPriceVersion(db, next, "litellm", await endpointAccountModels());
   return { models: Object.keys(next.models).length };
 }
 
@@ -91,6 +94,6 @@ export const priceVersionWarmup = defineWarmup({
   scope: "host",
   run: async () => {
     const { table, source } = await heldPriceTable();
-    await recordPriceVersion(db, table, source);
+    await recordPriceVersion(db, table, source, await endpointAccountModels());
   },
 });

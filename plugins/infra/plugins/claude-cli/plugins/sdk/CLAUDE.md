@@ -12,10 +12,14 @@ file for the callers that must name it; every other session omits `bin` and
 the SDK runs the same build.
 
 - `claudeSessionEnv(account, base?)` — the environment: `base` (default the host
-  facts, `pickHostEnv`) plus an added account's API key (`claudeCredentialEnv`). The
-  system account adds nothing (the computer's own login). Branded
-  `ClaudeSessionEnv`, so a session that skipped the account choice does not
-  type-check.
+  facts, `pickHostEnv`) plus the account's credential (`claudeAccountCredential` →
+  `claudeAccountEnv`, in accounts): an API key as `ANTHROPIC_API_KEY`; an endpoint
+  account's base URL (`ANTHROPIC_BASE_URL` — its own for `anthropic`, equin's
+  translator proxy for `openai`, `claude-cli/llm-proxy`), its bearer token when
+  it has one, and its mapped `haiku` as the small fast model; the system account
+  adds nothing (the computer's own login). Every other credential variable is
+  removed either way. Branded `ClaudeSessionEnv`, so a session that skipped the
+  account choice does not type-check.
 - `claudeQuery({ env, bin?, prompt, options })` — the only `query()` call
   (agents, the usage probe, everything below). `bin` only for the sdk runtime's
   agent (`bundledClaudeBin()` or its per-conversation clone). A `bin` is always
@@ -67,6 +71,7 @@ in, which has no SDK form, is the sign-in plugin's sanctioned exemption).
     - `conversations/runtime-sdk`
     - `infra/claude-cli`
     - `infra/claude-cli/availability`
+    - `infra/claude-cli/llm-proxy`
     - `infra/claude-cli/sign-in`
 - Exemptions:
   - Exempts itself from:

@@ -4,8 +4,8 @@ import { withStandInNames } from "./display-names";
 
 const two: ClaudeAccounts = {
   accounts: [
-    { id: "acct-1", name: "real-a", addedAt: 1 },
-    { id: "acct-2", name: "real-b", addedAt: 2 },
+    { id: "acct-1", name: "real-a", addedAt: 1, kind: "api-key" },
+    { id: "acct-2", name: "real-b", addedAt: 2, kind: "api-key" },
   ],
   active: "acct-2",
 };

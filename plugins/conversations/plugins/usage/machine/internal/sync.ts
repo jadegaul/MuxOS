@@ -17,6 +17,7 @@ import {
   type SeenEntry,
 } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/core";
 import { ensureModelRates } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/server";
+import { endpointAccountModels } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import { ensureMainWorktreeRoot } from "@plugins/infra/plugins/worktree/server";
 import { _conversations } from "@plugins/tasks/plugins/tasks-core/server";
 import {
@@ -327,7 +328,11 @@ async function syncConversationUsage(
   }
 
   if (source !== null) sourced.add(conversationId);
-  await ensureModelRates(db, new Set(usage.map((row) => row.model)));
+  await ensureModelRates(
+    db,
+    new Set(usage.map((row) => row.model)),
+    await endpointAccountModels(),
+  );
 
   // What the DB now holds (only once the write landed: a failed one leaves the
   // held state as it was, and the next pass recomputes the same rows).

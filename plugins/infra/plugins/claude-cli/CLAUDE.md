@@ -7,8 +7,11 @@ conversation would be overkill.
 
 It runs on the **active Claude account** (`activeClaudeAccountId`,
 `plugins/accounts`) — the one new agents launch on — under the host facts alone
-(`claudeSessionEnv`). Nothing here spawns `claude` by hand: the `claude-sdk`
-lint rules reject a direct SDK `query()` and a spawn of the executable.
+(`claudeSessionEnv`), so an endpoint account's generations run on its own model
+server (the mapped name for the tier — `modelFlagForEndpoint` — through the
+translator proxy when the endpoint speaks OpenAI). Nothing here spawns `claude`
+by hand: the `claude-sdk` lint rules reject a direct SDK `query()` and a spawn
+of the executable.
 
 The executable is the Claude Code build the Agent SDK ships (`plugins/sdk`);
 whether the computer is signed in to it comes from the `availability`
@@ -148,16 +151,16 @@ block keep taking a plain `ClaudeCliCall`.
     - `resource.declare` "claude-cli.calls-for"
     - `fork-data-exclusion` "claude_cli_call_horizon"
     - `fork-data-exclusion` "claude_cli_calls"
-  - Uses: 24 symbols — full list in [REFERENCE.md](./REFERENCE.md)
+  - Uses: 26 symbols — full list in [REFERENCE.md](./REFERENCE.md)
     - `infra/claude-cli/sdk` ×6
     - `database` ×4
+    - `infra/claude-cli/accounts` ×3
     - `infra/entities` ×3
     - `database/sql-projection` ×2
     - `infra/claude-cli/usage-ledger` ×2
     - `network/live` ×2
     - `conversations/model-provider/catalog.getModelCatalog`
     - `database/admin.ExcludeFromFork`
-    - `infra/claude-cli/accounts.activeClaudeAccountId`
     - `infra/claude-cli/availability.noteClaudeCodeFailure`
     - `infra/claude-cli/usage-ledger/pricing.ensureModelRates`
   - DB schema: `plugins/infra/plugins/claude-cli/server/internal/tables.ts`
@@ -280,8 +283,9 @@ block keep taking a plain `ClaudeCliCall`.
     - `ids:pk-declared` — `server/internal/tables.ts` (debt)
     - `investigate:failures-registered` — `core/resources.ts` (sanctioned)
 - Sub-plugins:
-  - **`accounts`** — The Claude accounts' credentials, every host's half: each added account's API key in the secrets store — saved, deleted, and read by the agent at its start (claudeAccountCredential: null for the…
+  - **`accounts`** — The Claude accounts' credentials, every host's half: each added account's credential in the secrets store — an API key for a key account, the bearer token for an endpoint account that has one…
   - **`availability`** [exempt] — Claude Code availability, shown: the pieces of the health report's Claude Code row (useClaudeCodeHealth — critical while the computer is signed out — ClaudeCodeDetail with Claude Code's own note…
+  - **`llm-proxy`** [exempt] — The local LLM translator proxy, desktop half: one bun process per machine (bin/proxy.ts, the claude-cli.llm-proxy daemon, host-singleton, started detached and followed by its pid file) answering…
   - **`sdk`** [exempt] — The one way a backend opens a Claude Code session: through the Agent SDK, on an account its caller chose. claudeSessionEnv(account) is the environment (the host facts plus an added account's…
   - **`sign-in`** [exempt] — Signing in to Claude from the app, shown: the Claude Code row's pieces (ClaudeCodeSignInRemedy — the Sign in split button: Claude subscription / Anthropic Console / Single sign-on…
   - **`usage-ledger`** [test helpers] [exempt] [2 sub-plugins] — The Claude usage ledger: claude_usage_hours (account, UTC hour, source — conv:<conversationId> | cli:<sourceName> | session:<claudeSessionId> — model, speed: tokens per kind split at the 200k tier…

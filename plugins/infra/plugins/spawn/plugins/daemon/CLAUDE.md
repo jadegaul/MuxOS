@@ -206,6 +206,7 @@ declaration (tsc): nothing here can respawn what it is not the parent of.
     - `debug/paging-probe`
     - `debug/sentinel`
     - `debug/sentinel/machine-usage`
+    - `infra/claude-cli/llm-proxy`
     - `infra/launcher`
     - `infra/mcp/browser`
     - `infra/paths/root-migration`

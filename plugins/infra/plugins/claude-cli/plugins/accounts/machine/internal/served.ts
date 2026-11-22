@@ -1,7 +1,11 @@
 import { serveValue } from "@plugins/network/plugins/live/machine";
 import { getConfig, watchConfig } from "@plugins/config_v2/server";
 import { profileNameConfig } from "@plugins/infra/plugins/host-account/core";
-import { claudeAccounts, withStandInNames } from "../../core";
+import {
+  claudeAccounts,
+  TEST_ACCOUNT_ID_PREFIX,
+  withStandInNames,
+} from "../../core";
 import { readClaudeAccounts } from "./store";
 import { watchClaudeAccounts } from "./watch";
 
@@ -22,11 +26,20 @@ export const claudeAccountsServed = serveValue(claudeAccounts, {
   source: "external",
   changes: "notified",
   throttleMs: 100,
-  loader: async () =>
-    withStandInNames(
-      await readClaudeAccounts(),
+  loader: async () => {
+    const state = await readClaudeAccounts();
+    return withStandInNames(
+      {
+        ...state,
+        // A temporary test row (`test-…`) lives in the file only while an
+        // endpoint test runs its one turn — it is not an account to show.
+        accounts: state.accounts.filter(
+          (a) => !a.id.startsWith(TEST_ACCOUNT_ID_PREFIX),
+        ),
+      },
       getConfig(profileNameConfig).showName ? "" : GENERIC_ACCOUNT_NAME,
-    ),
+    );
+  },
   whileSubscribed: async (_params, notify) => {
     const release = await watchClaudeAccounts(() => notify());
     // A write between the first read and the watch opening produced no event.

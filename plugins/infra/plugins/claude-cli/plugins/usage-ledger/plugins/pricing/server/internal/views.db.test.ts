@@ -137,6 +137,7 @@ describe("recordPriceVersion and the priced view", () => {
       t.db,
       table({ "m-a": flat(1e-6) }),
       "fallback",
+      [],
       new Date("2026-11-12T00:00:00Z"),
     );
     expect(first.kind).toBe("recorded");
@@ -152,6 +153,7 @@ describe("recordPriceVersion and the priced view", () => {
       t.db,
       table({ "m-a": flat(1e-6) }),
       "litellm",
+      [],
       new Date("2026-11-13T00:00:00Z"),
     );
     expect(again.kind).toBe("unchanged");
@@ -175,6 +177,7 @@ describe("recordPriceVersion and the priced view", () => {
       t.db,
       table({ "m-a": flat(3e-6) }),
       "litellm",
+      [],
       new Date("2026-11-15T10:00:00Z"),
     );
     expect(changed.kind).toBe("recorded");
@@ -202,6 +205,7 @@ describe("recordPriceVersion and the priced view", () => {
       t.db,
       table({ "m-a": flat(3e-6), "m-unknown": flat(1e-6, 2e-6) }),
       "litellm",
+      [],
       new Date("2026-11-15T11:30:00Z"),
     );
     const [priced] = await costs("conv:unk");
@@ -262,6 +266,7 @@ describe("recordPriceVersion and the priced view", () => {
         "m-tier": tiered,
       }),
       "litellm",
+      [],
       new Date("2026-11-16T00:00:00Z"),
     );
     await use(

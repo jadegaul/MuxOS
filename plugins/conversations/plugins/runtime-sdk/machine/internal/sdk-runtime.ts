@@ -443,8 +443,10 @@ async function launchAgent(
     if (cli.kind === "exited" && !(await initializedAfterAll(id))) {
       // Its Claude Code died or found itself signed out (the agent's own
       // sign-in check): what the app last knew about Claude Code is older
-      // than this evidence, so the status is re-asked — off this launch.
-      noteClaudeCodeFailure();
+      // than this evidence, so the status is re-asked — off this launch, for
+      // the account it ran on (an added account's failure says nothing about
+      // the computer's login, which is all the probe reads).
+      noteClaudeCodeFailure(started.account);
       throw new AgentStartError(id, cli.reason, await started.output());
     }
   });

@@ -65,7 +65,10 @@ function WeekGlance({
   usage: ClaudeUsageRead;
   now: number;
 }) {
-  if (account.metered)
+  // An added account has no plan limits: its glance is what equin's agents
+  // spent on it (an endpoint's own models price at $0, so a live one reads
+  // $0 — the ledger counted its tokens at zero, not "no data").
+  if (account.kind !== "login")
     return <AccountSpendGlance accountId={account.id} now={now} />;
   const reading = usage.byAccount[account.id];
   const reached = limitReached(reading, now);

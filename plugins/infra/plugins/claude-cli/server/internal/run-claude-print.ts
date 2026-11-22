@@ -1,6 +1,9 @@
 import { reportServerError } from "@plugins/framework/plugins/server-core/core";
 import { crashFieldsOf } from "@plugins/packages/plugins/error-subject/core";
-import { activeClaudeAccountId } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
+import {
+  activeClaudeAccountId,
+  claudeAccountModelMap,
+} from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import { noteClaudeCodeFailure } from "@plugins/infra/plugins/claude-cli/plugins/availability/server";
 import {
   ClaudeTurnError,
@@ -11,7 +14,7 @@ import {
   type ClaudeTurnResult,
 } from "@plugins/infra/plugins/claude-cli/plugins/sdk/server";
 import {
-  cliFlagFor,
+  modelFlagForEndpoint,
   requireModel,
   type ModelTier,
 } from "@plugins/conversations/plugins/model-provider/core";
@@ -132,6 +135,13 @@ export async function invokeClaude<T>({
   let accountId: string | null = null;
   try {
     accountId = await activeClaudeAccountId();
+    // The tier runs as the account's name for it: an endpoint account's model
+    // map serves it under the name that server knows (`modelFlagForEndpoint`);
+    // a system or key account has no map, so the Claude flag as before.
+    const modelFlag = modelFlagForEndpoint(
+      resolvedModel,
+      await claudeAccountModelMap(accountId),
+    );
     let turn: ClaudeTurn;
     try {
       turn = await runClaudeTurn({
@@ -143,7 +153,7 @@ export async function invokeClaude<T>({
           // caller may narrow it).
           settingSources: ["user"],
           ...options,
-          model: cliFlagFor(resolvedModel),
+          model: modelFlag,
           persistSession: false,
         },
         timeoutMs,
@@ -153,13 +163,15 @@ export async function invokeClaude<T>({
         // A timeout is a different fact from a refusal ("the model took too
         // long" vs "the CLI refused") and only one is worth retrying with the
         // same prompt; a CLI that died may be Claude Code itself.
-        if (!err.timedOut) noteClaudeCodeFailure();
+        if (!err.timedOut) noteClaudeCodeFailure(accountId ?? undefined);
         throw new ClaudeCliError(err.message);
       }
       // The SDK's own failures — "Claude Code process exited with code N" —
       // may be Claude Code itself (signed out since the last check), so the
-      // status the app shows is re-checked against this evidence.
-      noteClaudeCodeFailure();
+      // status the app shows is re-checked against this evidence — for the
+      // account the call ran on (an endpoint's refusal is not evidence about
+      // the computer's login, which is all the probe reads).
+      noteClaudeCodeFailure(accountId ?? undefined);
       throw new ClaudeCliError(
         err instanceof Error ? err.message : String(err),
       );

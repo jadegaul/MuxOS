@@ -10,10 +10,7 @@ import {
 } from "@plugins/conversations/plugins/agent-launch/server";
 import type { CompactionHookEntry } from "@plugins/conversations/plugins/compaction-context/core";
 import type { StopGateHookEntry } from "@plugins/conversations/plugins/stop-gate/core";
-import {
-  cliFlagFor,
-  type ConversationModel,
-} from "@plugins/conversations/plugins/model-provider/core";
+import type { ConversationModel } from "@plugins/conversations/plugins/model-provider/core";
 import {
   resolveEffortFlag,
   resolveEffortSettings,
@@ -75,7 +72,10 @@ export function sdkLaunchOptions(input: SdkLaunchInput): AgentLaunchIntent {
     // checkout itself either way.
     guardsRoot:
       launch.guards.from === "checkout" ? input.cwd : launch.guards.root,
-    model: input.model ? cliFlagFor(input.model) : null,
+    // The launch's MODEL ID, not its CLI flag: the agent process resolves it
+    // at its own start against the account it runs on — an endpoint account's
+    // model map serves it under the name that server knows (`modelFlagForEndpoint`).
+    model: input.model ?? null,
     effort: (input.effort && resolveEffortFlag(input.effort)) ?? null,
     settings: mergeLaunchSettings(
       input.effort ? resolveEffortSettings(input.effort) : undefined,

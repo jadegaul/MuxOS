@@ -272,9 +272,27 @@ agents without tmux, per-namespace paths, the Claude Code health row:
   process start (`nextLaunchAccount`: always the active one — nothing moves
   an agent to another account because a limit was reached; see
   `infra/claude-cli/accounts`) and passes
-  `--account <id>`; `bin/agent.ts` fetches that account's token from the
-  secrets store itself and gives it to Claude Code only, as
-  `CLAUDE_CODE_OAUTH_TOKEN` in the SDK's `env`. A running agent keeps its
+  `--account <id>`; `bin/agent.ts` reads that account's credential itself —
+  the agent process boots no plugin graph, so it provides the read's two host
+  services unbooted (`provideHostServicesUnbooted`: `ClaudeAccountsFile`, a
+  direct read of `claudeAccountsDir.file(ACCOUNTS_FILE_NAME)`, ENOENT as
+  `NO_CLAUDE_ACCOUNTS`, beside `SecretStore` as `centralSecretStore`) — or
+  the credential fetch throws and every launch dies (2026-11-21: the
+  accounts-file split moved the read behind a service only `accounts#machine`
+  provides, and the graph-less agent crashed at boot until the stub landed) —
+  and gives it to Claude Code only, in the SDK's `env`
+  (`claudeAccountEnv` — an api-key account as `CLAUDE_CODE_OAUTH_TOKEN`; an
+  endpoint account as `ANTHROPIC_BASE_URL` at the endpoint's own server (an
+  `anthropic` API) or at `claude-cli/llm-proxy` (an `openai` API) plus
+  `ANTHROPIC_AUTH_TOKEN` when the endpoint has a token — otherwise the
+  `equin-local` placeholder: with no auth variable at all Claude Code declines
+  the turn on its own login check before the base URL is ever reached (the
+  `openai` proxy ignores the header; an `anthropic` endpoint wanting a token
+  answers with its own 401) — nothing else is
+  handed over). The launch's **model id** passes through unchanged
+  (`AgentLaunchOptions.model`); `bin/agent.ts` resolves it once against the
+  account's `modelMap` (`modelFlagForEndpoint`) and hands that name to Claude
+  Code as `--model`, for the launch and every later `setModel`. A running agent keeps its
   account until its process restarts — so a turn to an idle agent (no turn,
   no background task in flight) running on another account than a launch
   picks now restarts it on its session's end first (`moveToLaunchAccount`):
@@ -297,10 +315,13 @@ agents without tmux, per-namespace paths, the Claude Code health row:
   the same file (`writeClaudeUsageFile`, beside the reader).
   Triggered by `POST /api/claude-usage/refresh` (the account picker, after
   adding or picking an account) and by every fresh Claude Code probe (Check
-  again, a launch's re-check) for the active account — signing in as someone
-  else changes the system account's limits and announces nothing
-  else. A reply without plan limits (an API key, a token without the profile
-  scope) is `unavailable`, shown as such, never written. The SDK method is
+  again, a launch's re-check) — the probe rides the probes the app already
+  makes, but **only re-reads the system account**: it is the only one with
+  plan limits (an added account has none to keep current, and an endpoint's
+  server would answer no `get_usage` at all — the read would fail on every
+  probe), so a switched active account is skipped there. A reply without plan
+  limits (an API key, a token without the profile scope, an endpoint) is
+  `unavailable`, shown as such, never written. The SDK method is
   experimental (`usage_EXPERIMENTAL_…`): an SDK bump that renames it fails
   tsc. Design: [`research/2026-10-22-conversations-claude-usage-on-demand.md`](../../../../research/2026-10-22-conversations-claude-usage-on-demand.md).
 
@@ -376,8 +397,8 @@ Gotchas the spike hit:
     - `HealthReport.Row` "Claude Code" → `ClaudeCodeRowDetail`
     - `Shell.Sidebar` "Claude account" → `ClaudeAccountFoot`
     - `ConfigV2.WebRegister` "runtime-sdk-auto-resume"
-  - Uses: 57 symbols — full list in [REFERENCE.md](./REFERENCE.md)
-    - `primitives/css/ui-kit` ×7
+  - Uses: 62 symbols — full list in [REFERENCE.md](./REFERENCE.md)
+    - `primitives/css/ui-kit` ×12
     - `infra/claude-cli/availability` ×4
     - `infra/endpoints` ×4
     - `primitives/setup-steps` ×4

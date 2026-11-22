@@ -2,16 +2,17 @@ import { defineDataDir } from "@plugins/infra/plugins/paths/core";
 
 /**
  * The Claude accounts agents can run on: `accounts.json` — each added
- * account's name and id, and the active one. Their
- * tokens are in the secrets store, never here. Machine-wide: every
- * worktree's agents launch on the active account.
+ * account's name and id (an endpoint account's settings beside them), and
+ * the active one. Their credentials — a key, or an endpoint token — are in
+ * the secrets store, never here. Machine-wide: every worktree's agents
+ * launch on the active account.
  */
 export const claudeAccountsDir = defineDataDir({
   kind: "state",
   name: "claude-accounts",
   owner: "infra/claude-cli/accounts",
   description:
-    "The Claude accounts agents can run on (names, the active one); their tokens live in the secrets store",
+    "The Claude accounts agents can run on (names, an endpoint's settings, the active one); their credentials live in the secrets store",
   reclaim: {
     kind: "never",
     reason:

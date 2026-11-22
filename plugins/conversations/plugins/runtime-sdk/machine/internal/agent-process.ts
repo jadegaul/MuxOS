@@ -88,6 +88,8 @@ function shellWord(value: string): string {
 
 /** One launch of an agent process, as `startAgentProcess` hands it back. */
 export interface StartedAgent {
+  /** The Claude account this launch runs on — resolved at the start, so a failure names the account its evidence is about. */
+  readonly account: string;
   /**
    * Settles, with the reason, once this launch's process is gone — it exited
    * (a crash on start included) or its record was dropped. Never rejects.
@@ -281,6 +283,7 @@ export async function startAgentProcess(
     log.close();
   }
   return {
+    account,
     exited,
     output: async () => {
       const text = (await readFile(logPath))

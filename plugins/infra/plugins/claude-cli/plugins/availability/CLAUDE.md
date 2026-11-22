@@ -69,15 +69,19 @@ the launch endpoint's own availability). It is re-asked:
   the login can change outside the app);
 - when an in-app sign-in finishes (`claude-cli/sign-in` calls
   `recheckClaudeCodeNow()`);
-- after evidence: a one-shot generation failing (`noteClaudeCodeFailure`).
+- after evidence: a one-shot generation failing on the
+  **system account** (`noteClaudeCodeFailure(account)` — a failure on an added
+  account, an API key's or a local endpoint's, says nothing about the
+  computer's login, so it is noted without a re-probe).
 
 A `ready` answer is never re-probed for its age. The probe reads one
 `initialize` answer, and every agent's own Claude Code answers the same
 `initialize` seconds later, on the launch's path (the launch waits for it):
 the agent checks it (`statusOfInitialize`, core) and, signed out, ends before
-`ready` — the launch fails with `claudeCodeBlockMessage`, and the start
-failure re-probes (`noteClaudeCodeFailure`) so the next launch is refused up
-front. A TTL re-probe here started a second Claude Code (1–4 s) on every
+`ready` — the launch fails with `claudeCodeBlockMessage`, and a start failure
+on the system account re-probes (`noteClaudeCodeFailure`) so the next launch is
+refused up front (a start failure on an added account does not — the computer's
+login is not what failed). A TTL re-probe here started a second Claude Code (1–4 s) on every
 launch and resume after five quiet minutes, to ask what the agent was about to
 answer anyway.
 
@@ -91,7 +95,8 @@ the gate every launch path asks — `checkLaunchReadiness()` — is about that
 account, not about the computer:
 
 - the **system account** (the computer's own login): the probe's status above;
-- an **added account** (an API key): `ready`, with no probe. It
+- an **added account** (an API key, or a local endpoint — see
+  `claude-cli/llm-proxy`): `ready`, with no probe. It
   brings its own credential, handed to Claude Code in the agent's environment
   with every other one removed, so the computer being signed out plays no
   part. A probe could not vouch for it anyway: `initialize` only says a

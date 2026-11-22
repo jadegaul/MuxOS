@@ -29,7 +29,13 @@ ledger's tokens into dollars. Design:
   substring) runs once, in TS, when a version is recorded (every model the
   ledger holds) or a model is first seen (`ensureModelRates`, called by the
   ledger's writers after their write; `recordPriceVersion` sweeps what a lost
-  call missed). Rates are materialized: an untiered `_above` is its base, a
+  call missed). A local endpoint's own model — a server's name out of an
+  endpoint account's `modelMap`, which the table can never resolve — prices at
+  $0 in every version instead of reading unpriced: the caller passes those
+  names (an optional `endpointModels` on `priceModels`, `ensureModelRates` and
+  `recordPriceVersion`; the writers read them from the accounts file — the
+  machine half's — so this plugin stays a portable leaf over the database).
+  Rates are materialized: an untiered `_above` is its base, a
   `fast` row carries the multiplier.
 - **`claude_spend_hours_v`** (`claudeSpendHoursView`, a derived view) — every
   `claude_usage_hours` row with `price_version_id` and `cost_usd`, priced with

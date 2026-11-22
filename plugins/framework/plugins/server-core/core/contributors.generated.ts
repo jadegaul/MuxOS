@@ -45,6 +45,7 @@ export const serverContributors: Readonly<Record<string, readonly string[]>> = {
   "github-events.watch": ["database/plugins/client-tools/plugins/publish-watch","database/plugins/pgbouncer/plugins/publish-watch","installer/plugins/release-assets"],
   "host-service:attachments.blobs": ["infra/plugins/attachments#machine","infra/plugins/attachments/plugins/memory-blobs"],
   "host-service:claude-accounts.active": ["infra/plugins/claude-cli/plugins/accounts#machine"],
+  "host-service:claude-accounts.file": ["infra/plugins/claude-cli/plugins/accounts#machine"],
   "host-service:config-v2.git-layer": ["config_v2#machine","config_v2/plugins/bundled-layer"],
   "host-service:config-v2.store": ["config_v2#machine","config_v2/plugins/browser-store"],
   "host-service:conversations.transcript-source": ["conversations/plugins/transcript-source/plugins/memory","conversations/plugins/transcript-watcher#machine"],

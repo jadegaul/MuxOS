@@ -34,7 +34,10 @@ version in force at its hour. Design:
   `infra/claude-cli`'s recorder), `session:<claudeSessionId>` (a session equin
   did not launch).
 - Writers call `pricing`'s `ensureModelRates` after their write, so a model
-  first seen is priced at once.
+  first seen is priced at once — passing the local endpoint's model names too
+  (`endpointAccountModels`, the accounts' machine half reads them from the
+  accounts file): an endpoint's own model is not in the price table, and it
+  prices at $0 rather than filing `cost-unpriced-model`.
 
 **The one system.** Every Claude cost surface reads this ledger through the
 priced view — the Cost column and per-conversation cost, account spend and

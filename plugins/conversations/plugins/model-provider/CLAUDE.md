@@ -4,6 +4,7 @@ Single source of truth for the models an agent can run, and for what the user as
 
 - **Two types.** `ConversationModel` is a concrete version (`opus-5-5`): what a conversation RAN (`conversations.model`, `claude_cli_calls.model`, the spawn job, `--model`). `ModelChoice` is what the user ASKED for: a family (`opus`, `sonnet`, `fable`: whatever version is current at spawn) or a pinned version. Every saved preference is a choice: the auto-start marker, an agent, a launch prompt, the `defaultModel` config, and every launch endpoint's input.
 - **An id is a checked format, not a closed list.** `ConversationModelSchema` is `<family>-<major>[-<minor>]` (built from `MODEL_TIERS`), branded — so a family name or an arbitrary string cannot stand where a version is needed, but a version released after this code was written is still a valid id. Everything about a model derives from its id alone: `modelMeta(id)` (cliFlag `claude-<id>`, family, version "5.5", label "Opus 5.5", icon size), `cliFlagFor(id)`. `parseModelId(raw)` and `modelIdFromCliName("claude-haiku-4-5-20251001")` (→ `haiku-4-5`) return results, never null. Families (`FAMILY_META`: label, icon size, print-only) stay a compile-time set; a family's name is also its Claude CLI alias.
+- **A launch on a local endpoint keeps the family; the account translates it.** An endpoint account (`infra/claude-cli/accounts`) carries an optional `ModelMap` (tier → the endpoint's own model name; a value starting `claude-` is rejected — a map names the server's model, never a Claude flag). `modelFlagForEndpoint(model, modelMap?)` is the one resolution: the mapped name for the model's family, or — a family the map leaves out — the Claude flag itself, so a local server that does not serve it rejects the launch loudly instead of the app guessing a substitute. The picker never changes: it offers the Claude families, and the account's map decides what each tier RUNS as.
 - **The catalog is data** (`core/catalog.ts`): which versions exist (`versions`, each with `firstSeenAt` / `source` / optional `retiredAt`), each family's `current` version, and the `cliVersion` whose model menu discovery last read. `BASELINE_MODELS` is the floor for a machine that never probed — never edited for a release. The catalog lives on disk and is discovered at runtime by the [`catalog`](plugins/catalog/CLAUDE.md) sub-plugin; the `modelCatalog` live value (`boot-and-keep`) is declared here so this plugin's pickers read it without depending on the sub-plugin.
 - **`resolveModel(choice, catalog)` is the only way from a choice to a version**, and every reader takes the catalog explicitly (server: `getModelCatalog()` from `catalog/server`; browser: `useModelCatalog()`). A family resolves to `catalog.current[family]`; a pinned version resolves to itself only while the catalog knows it and it is not retired — otherwise `{ok:false, reason:"retired"|"unknown"}`. Never a silent substitute. Two throwing wrappers, one `ModelUnavailableError` (an `HttpError` naming the label and the current alternatives):
   - `assertChoiceLaunchable(choice, catalog)` — **400**, at the endpoint boundary. Request schemas (`ModelChoiceSchema`) check only the id grammar; every handler that accepts a choice calls this before writing anything: conversations create, tasks create + set-auto-start, agents create / update / launch, the auto-start launch option's `validate` (run by `resolveLaunchOptions`, before the task exists), and `add_task`'s `model` (whose MCP schema is the grammar — an enum of families plus the id pattern — because an MCP schema is fixed at registration).
@@ -66,6 +67,7 @@ Single source of truth for the models an agent can run, and for what the user as
     - `ModelCatalog`
     - `ModelChoice`
     - `ModelIdParse`
+    - `ModelMap`
     - `ModelMeta`
     - `ModelResolution`
     - `ModelTier`
@@ -94,7 +96,9 @@ Single source of truth for the models an agent can run, and for what the user as
     - `ModelCatalogSchema`
     - `ModelChoiceSchema`
     - `modelDisplayLabel`
+    - `modelFlagForEndpoint`
     - `modelIdFromCliName`
+    - `ModelMapSchema`
     - `modelMeta`
     - `ModelUnavailableError`
     - `ModelVersionSchema`
@@ -118,13 +122,13 @@ Single source of truth for the models an agent can run, and for what the user as
     - `ui/tokens/categorical --categorical-5`
     - `ui/tokens/color-palette --muted-foreground`
     - `ui/tokens/shape --spacing`
-  - Imported by: 33 plugins — full list in [REFERENCE.md](./REFERENCE.md)
+  - Imported by: 34 plugins — full list in [REFERENCE.md](./REFERENCE.md)
     - `conversations` ×15
     - `tasks` ×9
     - `apps` ×3
     - `debug` ×2
+    - `infra` ×2
     - `hints/ask`
-    - `infra/claude-cli`
     - `primitives/launch`
     - `stats/cost`
 - Exemptions:

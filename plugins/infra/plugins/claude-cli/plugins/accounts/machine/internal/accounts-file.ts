@@ -1,62 +1,35 @@
-import { wholeList } from "@plugins/packages/plugins/list-bound/core";
-import { z } from "zod";
+import type { AppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core";
+import { readFile } from "@plugins/packages/plugins/timed-fs/core";
 import {
-  ClaudeAccountSchema,
-  ClaudeAccountsSchema,
-  SYSTEM_ACCOUNT_ID,
-  type ClaudeAccounts,
+  ACCOUNTS_FILE_NAME,
+  NO_CLAUDE_ACCOUNTS,
+  parseAccountsFile,
+  type AccountsFile,
 } from "../../core";
+import { claudeAccountsDir } from "../../data-dirs";
 
-/**
- * The accounts file. Each account's `kind` is `api-key` — the only kind
- * written since added plan accounts were removed (2026-11), and still written
- * ({@link accountsFileOf}): an older file holds `token` accounts (a plan
- * sign-in) too, and one from before API keys existed holds tokens only, with
- * no `kind` — so an account without one is a plan account.
- */
-const AccountsFileSchema = ClaudeAccountsSchema.extend({
-  accounts: wholeList(
-    ClaudeAccountSchema.extend({
-      kind: z.enum(["token", "api-key"]).optional(),
-    }),
-    { reason: "the Claude accounts the user added by hand — a handful" },
-  ),
-});
+// The machine-wide accounts file's read (the writes are `store.ts`, which
+// rewrites it whole through a rename). The server half reads the same file
+// through its host service, whose provider is this machine's read
+// (`machine/index.ts`).
 
-/**
- * The accounts file read: the accounts agents may run on (`state`), and the
- * ids of the plan accounts an older file still holds (`planAccounts`) — never
- * run on, the active choice falling back to the computer's own login when it
- * named one.
- */
-export interface AccountsFile {
-  state: ClaudeAccounts;
-  planAccounts: string[];
+/** The accounts file, machine-wide. */
+export function claudeAccountsPath(): AppPath {
+  return claudeAccountsDir.file(ACCOUNTS_FILE_NAME);
 }
 
-export function parseAccountsFile(json: unknown): AccountsFile {
-  const file = AccountsFileSchema.parse(json);
-  const isPlan = (a: { kind?: "token" | "api-key" }) =>
-    (a.kind ?? "token") === "token";
-  const planAccounts = file.accounts.filter(isPlan).map((a) => a.id);
-  const accounts = file.accounts
-    .filter((a) => !isPlan(a))
-    .map(({ id, name, addedAt }) => ({ id, name, addedAt }));
-  return {
-    state: {
-      accounts,
-      active: planAccounts.includes(file.active)
-        ? SYSTEM_ACCOUNT_ID
-        : file.active,
-    },
-    planAccounts,
-  };
-}
-
-/** What the file holds for `state`: every account marked an API key. */
-export function accountsFileOf(state: ClaudeAccounts): unknown {
-  return {
-    ...state,
-    accounts: state.accounts.map((a) => ({ ...a, kind: "api-key" })),
-  };
+/**
+ * The accounts file at its machine-wide path: the parsed file, or — a file
+ * that does not exist — none added yet (the system account alone).
+ */
+export async function readAccountsFile(): Promise<AccountsFile> {
+  let text: string;
+  try {
+    text = await readFile(claudeAccountsPath(), "utf8");
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT")
+      return { state: NO_CLAUDE_ACCOUNTS, planAccounts: [] };
+    throw err;
+  }
+  return parseAccountsFile(JSON.parse(text));
 }

@@ -19,6 +19,7 @@ import {
   usageLedgerRowsOf,
 } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/server";
 import { ensureModelRates } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/server";
+import { endpointAccountModels } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import { SYSTEM_ACCOUNT_ID } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
 import {
   readSystemLogin,
@@ -334,6 +335,7 @@ export async function syncSessionUsage(
   await ensureModelRates(
     exec,
     new Set(counted.flatMap((part) => part.buckets.map((b) => b.model))),
+    await endpointAccountModels(),
   );
   for (const scan of scans) state.files.set(scan.path, scan);
   if (cause === "live" || held.has(sessionId)) hold(sessionId, state);

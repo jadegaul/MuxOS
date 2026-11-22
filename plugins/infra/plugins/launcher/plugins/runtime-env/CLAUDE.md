@@ -36,6 +36,7 @@ python tool — Sonata's audio analysis among them.
   - Imported by:
     - `conversations/agent-launch`
     - `framework/cli/bootstrap`
+    - `infra/claude-cli/llm-proxy`
     - `infra/claude-cli/sdk`
     - `infra/deps/python`
     - `infra/deps/rust`

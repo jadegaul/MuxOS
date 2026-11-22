@@ -8,12 +8,22 @@ import {
 } from "@plugins/infra/plugins/endpoints/web";
 import {
   addClaudeAccount,
+  addClaudeEndpoint,
   removeClaudeAccount,
   selectClaudeAccount,
+  testClaudeEndpoint,
   SYSTEM_ACCOUNT_ID,
   API_KEY_PREFIXES,
+  ENDPOINT_APIS,
   type ClaudeAccounts,
+  type EndpointApi,
 } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
+import {
+  MODEL_TIERS,
+  modelDisplayLabel,
+  type ModelMap,
+  type ModelTier,
+} from "@plugins/conversations/plugins/model-provider/core";
 import type { ClaudeCodeStatus } from "@plugins/infra/plugins/claude-cli/plugins/availability/core";
 import { useConfigResult, useSetConfig } from "@plugins/config_v2/web";
 import { Avatar } from "@plugins/primitives/plugins/avatar/web";
@@ -29,6 +39,11 @@ import {
   cn,
   ControlSizeProvider,
   Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@plugins/primitives/plugins/css/plugins/ui-kit/web";
 import { IconButton } from "@plugins/primitives/plugins/icon-button/web";
 import {
@@ -61,13 +76,16 @@ import { ErrorStoppedBanner } from "./error-stopped";
 
 // The Claude account menu's accounts (the agent manager's sidebar foot): which
 // Claude account new agents launch on: the computer's own Claude Code login —
-// the only plan account — or an API key the user added.
+// the only plan account — an API key the user added, or a local model endpoint
+// (the user's own model server: OpenAI-compatible through equin's translator
+// proxy, or Anthropic-shaped direct).
 // The computer's login shows its weekly room only — the 5-hour session resets
 // too often to read at a glance. Picking one switches; agents already running
 // keep theirs until their process restarts. Picking the computer's login reads
-// its limits at once (no agent turn needed). An API key has no plan limits: it
-// is billed to its Console org (e.g. the plan's monthly API credit). Nothing
-// switches accounts on its own.
+// its limits at once (no agent turn needed). An added account has no plan
+// limits: an API key is billed to its Console org (e.g. the plan's monthly API
+// credit), a local endpoint runs on the user's own hardware (its tokens cost
+// $0). Nothing switches accounts on its own.
 
 const addIcon = symbol("add");
 const removeIcon = symbol("close");
@@ -95,7 +113,7 @@ function WeekRoomGlance({
   read: UsageRead;
   now: number;
 }) {
-  if (account.metered)
+  if (account.kind === "api-key")
     return (
       <Text
         variant="caption"
@@ -103,6 +121,16 @@ function WeekRoomGlance({
         title="An API key has no plan limits: each request is billed to its Console organization — its monthly API credit first"
       >
         Billed to API credit
+      </Text>
+    );
+  if (account.kind === "endpoint")
+    return (
+      <Text
+        variant="caption"
+        tone="muted"
+        title="Runs on a model server you run: no Claude billing, and its tokens cost $0"
+      >
+        Local model
       </Text>
     );
   const reading = usage.byAccount[account.id];
@@ -197,11 +225,13 @@ function LimitBanner({
             <Fill />
             <Button onClick={() => onSwitch(next.id)}>
               Continue on {next.name}
-              {next.metered
+              {next.kind === "api-key"
                 ? " · API credit"
-                : room?.kind === "known"
-                  ? ` · ${percent(room.left)} left`
-                  : ""}
+                : next.kind === "endpoint"
+                  ? " · local model"
+                  : room?.kind === "known"
+                    ? ` · ${percent(room.left)} left`
+                    : ""}
             </Button>
           </Line>
         </ForAudience>
@@ -319,6 +349,242 @@ function AddApiKeyForm({
   );
 }
 
+/** The API shapes an endpoint speaks, in picker wording. */
+const ENDPOINT_API_ITEMS: Record<EndpointApi, string> = {
+  openai: "OpenAI-compatible",
+  anthropic: "Anthropic messages API",
+};
+
+/** The model mapping of the form's rows: only the filled-in tiers. */
+function modelMapOf(maps: Record<ModelTier, string>): ModelMap | undefined {
+  const map: ModelMap = {};
+  for (const tier of MODEL_TIERS) {
+    const name = maps[tier].trim();
+    if (name !== "") map[tier] = name;
+  }
+  return Object.keys(map).length > 0 ? map : undefined;
+}
+
+/**
+ * Add a local model endpoint: a model server the user runs (Ninfer, LM Studio,
+ * Ollama, …) serves equin's agents and one-shot generations. `Test` runs one
+ * turn on it without saving anything (a temporary account, deleted after);
+ * `Add` runs the same test first and stores the account only when it passes —
+ * its token, when it has one, going to the secrets store. The model mapping is
+ * optional: an unmapped family runs as its own Claude flag, which a local
+ * server that does not serve it rejects loudly.
+ */
+function AddEndpointForm({
+  onAdded,
+  onCancel,
+}: {
+  onAdded: (id: string) => void;
+  onCancel: () => void;
+}) {
+  const [name, setName] = useState("");
+  const [baseUrl, setBaseUrl] = useState("");
+  const [api, setApi] = useState<EndpointApi>("openai");
+  const [token, setToken] = useState("");
+  const [showMap, setShowMap] = useState(false);
+  const [maps, setMaps] = useState<Record<ModelTier, string>>({
+    haiku: "",
+    sonnet: "",
+    opus: "",
+    fable: "",
+  });
+  const [busy, setBusy] = useState<null | "test" | "add">(null);
+  const [error, setError] = useState<string | null>(null);
+  const [testResult, setTestResult] = useState<{
+    reply: string;
+    models?: string[];
+  } | null>(null);
+  const fetchEndpoint = useFetchEndpoint();
+
+  const url = baseUrl.trim();
+  // The server's own checks, mirrored for the button state and the note.
+  const badUrl = url !== "" && !/^https?:\/\/\S+$/.test(url);
+  const badMapping = MODEL_TIERS.some((tier) =>
+    maps[tier].trim().startsWith("claude-"),
+  );
+  const invalid = name.trim() === "" || url === "" || badUrl || badMapping;
+  const settings = { api, baseUrl: url, modelMap: modelMapOf(maps) };
+
+  const test = async () => {
+    setBusy("test");
+    setError(null);
+    setTestResult(null);
+    try {
+      const result = await fetchEndpoint(
+        testClaudeEndpoint,
+        {},
+        {
+          body: { endpoint: settings, token: token.trim() || undefined },
+        },
+      );
+      if (result.kind !== "ok") throw new Error(result.message);
+      setTestResult({
+        reply: result.value.reply,
+        models: result.value.models,
+      });
+    } catch (err) {
+      // A refused connection, a model the server rejects: the endpoint's own
+      // words, shown under the form.
+      if (!(err instanceof EndpointError)) throw err;
+      setError(getEndpointErrorMessage(err));
+    } finally {
+      setBusy(null);
+    }
+  };
+  const add = async () => {
+    setBusy("add");
+    setError(null);
+    try {
+      const result = await fetchEndpoint(
+        addClaudeEndpoint,
+        {},
+        {
+          body: {
+            name: name.trim(),
+            endpoint: settings,
+            token: token.trim() || undefined,
+          },
+        },
+      );
+      if (result.kind !== "ok") throw new Error(result.message);
+      onAdded(result.value.id);
+    } catch (err) {
+      if (!(err instanceof EndpointError)) throw err;
+      setError(getEndpointErrorMessage(err));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  return (
+    <Stack gap="sm" className="rounded-md border p-sm">
+      <Stack gap="xs">
+        <Input
+          autoFocus
+          placeholder="Name — e.g. Ninfer"
+          keep={transient(
+            "a short label entered with the endpoint beside it, which is never kept",
+          )}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          placeholder="http://host:port/v1"
+          keep={transient(
+            "an endpoint URL entered with the form, which is never kept",
+          )}
+          value={baseUrl}
+          onChange={(e) => setBaseUrl(e.target.value)}
+          className="font-mono"
+        />
+        <Line className="gap-xs">
+          <Select
+            items={ENDPOINT_API_ITEMS}
+            value={api}
+            onValueChange={(v) => {
+              if (v === null) return;
+              if (ENDPOINT_APIS.includes(v as EndpointApi))
+                setApi(v as EndpointApi);
+            }}
+          >
+            <SelectTrigger aria-label="API kind" className="w-48">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {ENDPOINT_APIS.map((a) => (
+                <SelectItem key={a} value={a}>
+                  {ENDPOINT_API_ITEMS[a]}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Fill />
+          <Input
+            type="password"
+            autoComplete="off"
+            placeholder="Token — leave empty if no auth"
+            keep={transient("secret: never written to browser storage")}
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+            className="font-mono"
+          />
+        </Line>
+      </Stack>
+      <Button
+        variant="ghost"
+        disabled={busy !== null}
+        onClick={() => setShowMap(!showMap)}
+      >
+        {showMap ? "Hide the model mapping" : "Map the models (optional)"}
+      </Button>
+      {showMap ? (
+        <Stack gap="xs">
+          {MODEL_TIERS.map((tier) => (
+            <Line key={tier} className="gap-xs">
+              <Text variant="caption" tone="muted" className="w-14">
+                {modelDisplayLabel(tier)}
+              </Text>
+              <Fill>
+                <Input
+                  placeholder="the server's model name"
+                  keep={transient(
+                    "a model name entered with the endpoint form, which is never kept",
+                  )}
+                  value={maps[tier]}
+                  onChange={(e) => setMaps({ ...maps, [tier]: e.target.value })}
+                  className="font-mono"
+                />
+              </Fill>
+            </Line>
+          ))}
+          <Text variant="caption" tone="faint">
+            Each family runs as its mapped model; an empty row runs as its
+            Claude flag, which a server that does not serve it rejects.
+          </Text>
+        </Stack>
+      ) : null}
+      {testResult ? (
+        <Stack gap="xsm" className="rounded-md border p-xsm">
+          <Text variant="caption">Test reply: “{testResult.reply}”</Text>
+          {testResult.models && testResult.models.length > 0 ? (
+            <Text variant="caption" tone="muted" className="truncate">
+              Models it offers: {testResult.models.join(", ")}
+            </Text>
+          ) : null}
+        </Stack>
+      ) : null}
+      {error || badUrl || badMapping ? (
+        <Text variant="caption" tone="destructive">
+          {error ??
+            (badUrl
+              ? "The base URL must be an http:// or https:// URL"
+              : "A mapped model is the server's own name — not a claude-… flag")}
+        </Text>
+      ) : null}
+      <Line className="gap-xs">
+        <Fill />
+        <Button
+          variant="outline"
+          disabled={invalid || busy !== null}
+          onClick={test}
+        >
+          {busy === "test" ? "Testing…" : "Test"}
+        </Button>
+        <Button variant="ghost" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button disabled={invalid || busy !== null} onClick={add}>
+          {busy === "add" ? "Adding…" : "Add endpoint"}
+        </Button>
+      </Line>
+    </Stack>
+  );
+}
+
 /**
  * The account menu's body (the agent manager's sidebar foot): the active
  * account with its session and week meters (and the limit banner, the
@@ -342,6 +608,7 @@ export function ClaudeAccountMenu({
   now: number;
 }) {
   const [adding, setAdding] = useState(false);
+  const [addingEndpoint, setAddingEndpoint] = useState(false);
   // The account this tab switched to: running agents stay where they were.
   const [switchedTo, setSwitchedTo] = useState<string | null>(null);
   // The switch shows at once; what depends on it landing (the usage read of
@@ -398,8 +665,9 @@ export function ClaudeAccountMenu({
       {
         onSuccess: () => {
           setSwitchedTo(id);
-          // An API key has no plan limits to read.
-          if (!views.find((v) => v.id === id)?.metered) readUsage(id);
+          // Only the computer's login has plan limits to read: an API key is
+          // billed per use, a local endpoint runs on the user's own hardware.
+          if (views.find((v) => v.id === id)?.kind === "login") readUsage(id);
         },
       },
     );
@@ -479,6 +747,20 @@ export function ClaudeAccountMenu({
           <AddApiKeyForm
             onAdded={() => setAdding(false)}
             onCancel={() => setAdding(false)}
+          />
+        ) : null}
+        <ControlPanel.Row
+          muted
+          icon={<Avatar symbol={addIcon} colorless />}
+          detail="Your own model server — OpenAI-compatible or Anthropic"
+          onSelect={() => setAddingEndpoint(!addingEndpoint)}
+        >
+          Add a local endpoint
+        </ControlPanel.Row>
+        {addingEndpoint ? (
+          <AddEndpointForm
+            onAdded={() => setAddingEndpoint(false)}
+            onCancel={() => setAddingEndpoint(false)}
           />
         ) : null}
         {switchedTo === active.id ? (

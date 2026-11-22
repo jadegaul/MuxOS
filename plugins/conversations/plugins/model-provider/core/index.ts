@@ -12,7 +12,9 @@ export {
   choiceLabel,
   isModelFamily,
   isPrintOnlyFamily,
+  ModelMapSchema,
   modelDisplayLabel,
+  modelFlagForEndpoint,
   modelIdFromCliName,
   modelMeta,
   parseModelId,
@@ -21,6 +23,7 @@ export type {
   ConversationModel,
   ModelChoice,
   ModelIdParse,
+  ModelMap,
   ModelMeta,
   ModelTier,
 } from "./registry";

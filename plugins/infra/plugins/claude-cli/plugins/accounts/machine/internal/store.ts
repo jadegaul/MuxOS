@@ -1,55 +1,23 @@
-import {
-  type AppPath,
-  asAppPath,
-} from "@plugins/infra/plugins/host-fs/plugins/user-path/core";
 import { rename, writeFile } from "node:fs/promises";
-import { readFile } from "@plugins/packages/plugins/timed-fs/core";
+import { asAppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core";
 import { createKeyedMutex } from "@plugins/packages/plugins/keyed-mutex/core";
 import {
-  NO_CLAUDE_ACCOUNTS,
+  accountsFileOf,
   SYSTEM_ACCOUNT_ID,
   type ClaudeAccount,
   type ClaudeAccounts,
 } from "../../core";
 import { claudeAccountsDir } from "../../data-dirs";
 import {
-  accountsFileOf,
-  parseAccountsFile,
-  type AccountsFile,
-} from "./accounts-file";
-import {
   deleteClaudeAccountCredential,
   saveClaudeAccountCredential,
   type ActiveClaudeAccountImpl,
 } from "../../server";
+import { claudeAccountsPath, readAccountsFile } from "./accounts-file";
 
-// The accounts file (the credentials are the server half's, in the secrets store). Every write
-// replaces the file whole through a rename, so a reader (another worktree's
-// launch, the live value's watch) never sees half of it.
-
-const ACCOUNTS_FILE = "accounts.json";
-
-function claudeAccountsPath(): AppPath {
-  return claudeAccountsDir.file(ACCOUNTS_FILE);
-}
-
-/**
- * The accounts file read: the accounts agents may run on (`state`), and the
- * ids of the plan accounts an older file still holds (`planAccounts`) — never
- * run on, the active choice falling back to the computer's own login when it
- * named one.
- */
-async function readAccountsFile(): Promise<AccountsFile> {
-  let text: string;
-  try {
-    text = await readFile(claudeAccountsPath(), "utf8");
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT")
-      return { state: NO_CLAUDE_ACCOUNTS, planAccounts: [] };
-    throw err;
-  }
-  return parseAccountsFile(JSON.parse(text));
-}
+// The accounts file (the credentials are the server half's, in the secrets
+// store). Every write replaces the file whole through a rename, so a reader
+// (another worktree's launch, the live value's watch) never sees half of it.
 
 /** The accounts as saved; none added yet → the system account alone. */
 export async function readClaudeAccounts(): Promise<ClaudeAccounts> {
@@ -69,11 +37,26 @@ async function writeClaudeAccounts(state: ClaudeAccounts): Promise<void> {
 // one another's change.
 const accountsMutex = createKeyedMutex();
 const changeAccounts = <T>(fn: () => Promise<T>): Promise<T> =>
-  accountsMutex.run(ACCOUNTS_FILE, fn);
+  accountsMutex.run("accounts.json", fn);
 
 function assertKnown(state: ClaudeAccounts, id: string): void {
   if (id !== SYSTEM_ACCOUNT_ID && !state.accounts.some((a) => a.id === id))
     throw new Error(`No Claude account "${id}"`);
+}
+
+/**
+ * A read-modify-write of the accounts file under the change mutex: `fn` sees
+ * the file's current accounts and returns what the file then holds. The LLM
+ * proxy's endpoint test mints and removes its temporary row this way, beside
+ * this half's own changes.
+ */
+export function changeClaudeAccounts(
+  fn: (state: ClaudeAccounts) => ClaudeAccounts | Promise<ClaudeAccounts>,
+): Promise<void> {
+  return changeAccounts(async () => {
+    const state = await readClaudeAccounts();
+    await writeClaudeAccounts(await fn(state));
+  });
 }
 
 export async function addClaudeAccountWithCredential(
@@ -84,30 +67,27 @@ export async function addClaudeAccountWithCredential(
     id: `acct-${crypto.randomUUID().slice(0, 8)}`,
     name,
     addedAt: Date.now(),
+    kind: "api-key",
   };
   // The credential first: an account in the list always has one.
   await saveClaudeAccountCredential(account.id, credential);
-  await changeAccounts(async () => {
-    const state = await readClaudeAccounts();
-    await writeClaudeAccounts({
-      ...state,
-      accounts: [...state.accounts, account],
-    });
-  });
+  await changeClaudeAccounts((state) => ({
+    ...state,
+    accounts: [...state.accounts, account],
+  }));
   return account;
 }
 
 export async function removeClaudeAccountById(id: string): Promise<void> {
   if (id === SYSTEM_ACCOUNT_ID)
     throw new Error("The computer's own Claude Code account can't be removed");
-  await changeAccounts(async () => {
-    const state = await readClaudeAccounts();
+  await changeClaudeAccounts(async (state) => {
     assertKnown(state, id);
-    await writeClaudeAccounts({
+    return {
       ...state,
       accounts: state.accounts.filter((a) => a.id !== id),
       active: state.active === id ? SYSTEM_ACCOUNT_ID : state.active,
-    });
+    };
   });
   await deleteClaudeAccountCredential(id);
 }

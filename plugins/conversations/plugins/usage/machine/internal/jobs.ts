@@ -11,6 +11,7 @@ import { defineJob } from "@plugins/infra/plugins/jobs/server";
 import { defineWarmup } from "@plugins/infra/plugins/warmup/server";
 import { _conversations } from "@plugins/tasks/plugins/tasks-core/server";
 import { ensureModelRates } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/server";
+import { endpointAccountModels } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import { ensureMainWorktreeRoot } from "@plugins/infra/plugins/worktree/server";
 import { sessionSpendSource } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/core";
 import { requestUsageSync } from "./sync";
@@ -232,7 +233,8 @@ export const usageHistoryImportJob = defineJob({
       onDisk: (keys) => transcriptsOnDisk(CLAUDE_PROJECTS_DIR, keys),
       repoBasename: basename(await ensureMainWorktreeRoot()),
     });
-    if (result.kind === "imported") await ensureModelRates(db, result.models);
+    if (result.kind === "imported")
+      await ensureModelRates(db, result.models, await endpointAccountModels());
   },
 });
 

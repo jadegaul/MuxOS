@@ -5,7 +5,7 @@ import {
   type SDKUserMessage,
 } from "@anthropic-ai/claude-agent-sdk";
 import { claudeAccountCredential } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
-import { claudeCredentialEnv } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
+import { claudeAccountEnv } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
 import { pickHostEnv } from "@plugins/infra/plugins/launcher/plugins/runtime-env/core";
 import { nativeSpawn } from "./native-spawn";
 
@@ -30,18 +30,22 @@ export type ClaudeSessionEnv = Readonly<Record<string, string | undefined>> & {
 /**
  * The environment for a session on `account`: `base` (default: the host facts
  * alone, `pickHostEnv` — never this process's own environment, whose inherited
- * Claude session variables once broke Haiku calls) plus, for an added account,
- * its API key (`claudeCredentialEnv`: `ANTHROPIC_API_KEY`, every other
- * credential variable removed). The system account adds nothing: Claude Code signs in with the
- * computer's own login. An added account whose secret is gone throws — a
- * session never falls back to another account.
+ * Claude session variables once broke Haiku calls) plus the account's
+ * credential (`claudeAccountEnv`, accounts core): an API key account's
+ * `ANTHROPIC_API_KEY`, an endpoint account's base URL — its own for an
+ * `anthropic` endpoint, the local translator proxy (`claude-cli/llm-proxy`)
+ * for an `openai` one — with its bearer token when it has one, or nothing for
+ * the system account, whose Claude Code signs in with the computer's own
+ * login. Every other credential variable is removed either way. An added
+ * account whose secret is gone throws — a session never falls back to another
+ * account.
  */
 export async function claudeSessionEnv(
   account: string,
   base: Readonly<Record<string, string | undefined>> = pickHostEnv(process.env),
 ): Promise<ClaudeSessionEnv> {
-  const apiKey = await claudeAccountCredential(account);
-  const env = apiKey ? claudeCredentialEnv(base, apiKey) : { ...base };
+  const credential = await claudeAccountCredential(account);
+  const env = claudeAccountEnv(base, credential);
   // The build is the one bun.lock pins (the SDK's bundled Claude Code): it
   // changes only when an SDK upgrade lands through build, never on its own.
   env.DISABLE_AUTOUPDATER = "1";

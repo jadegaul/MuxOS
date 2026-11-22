@@ -5,6 +5,7 @@ import {
 } from "@plugins/infra/plugins/claude-cli/plugins/sdk/server";
 import { onClaudeCodeProbed } from "@plugins/infra/plugins/claude-cli/plugins/availability/server";
 import { activeClaudeAccountId } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
+import { SYSTEM_ACCOUNT_ID } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
 import { implementMachine } from "@plugins/infra/plugins/endpoints/machine";
 import { createInflight } from "@plugins/packages/plugins/inflight/core";
 import { runTracked } from "@plugins/infra/plugins/runtime-profiler/core";
@@ -94,9 +95,14 @@ export const handleRefreshClaudeUsage = implementMachine(
 
 /**
  * Every fresh Claude Code probe — Check again, a launch's re-check, a sign-in
- * noticed — also re-reads the active account's limits: signing in as someone
- * else changes whose limits the computer's own account has, and
- * announces nothing else. Push-based: it rides the probes the app already makes.
+ * noticed — also re-reads the COMPUTER'S OWN account limits: signing in as
+ * someone else changes whose plan limits the computer's login has, and
+ * announces nothing else. Only the system account has plan limits at all —
+ * an added account (an API key's, a local endpoint's) has none to keep
+ * current (and an endpoint's server would answer no `get_usage` at all — the
+ * read would file a failure on every probe), so a switched active account is
+ * skipped here; its file still updates on the explicit refresh the account
+ * picker sends. Push-based: it rides the probes the app already makes.
  */
 let unsubscribe: (() => void) | null = null;
 
@@ -107,6 +113,7 @@ export function startUsageOnProbe(): void {
       "runtime-sdk.usage-on-probe",
       async () => {
         const accountId = await activeClaudeAccountId();
+        if (accountId !== SYSTEM_ACCOUNT_ID) return;
         try {
           await refreshClaudeUsageNow(accountId);
         } catch (err) {

@@ -51,6 +51,7 @@ export const dataDirsEntries: CollectedEntry[] = [
   { pluginPath: "infra/plugins/attachments", id: "infra.attachments", loader: () => import("@plugins/infra/plugins/attachments/data-dirs"), dependsOn: [] },
   { pluginPath: "infra/plugins/audio-analysis", id: "infra.audio-analysis", loader: () => import("@plugins/infra/plugins/audio-analysis/data-dirs"), dependsOn: [] },
   { pluginPath: "infra/plugins/claude-cli/plugins/accounts", id: "infra.claude-cli.accounts", loader: () => import("@plugins/infra/plugins/claude-cli/plugins/accounts/data-dirs"), dependsOn: [] },
+  { pluginPath: "infra/plugins/claude-cli/plugins/llm-proxy", id: "infra.claude-cli.llm-proxy", loader: () => import("@plugins/infra/plugins/claude-cli/plugins/llm-proxy/data-dirs"), dependsOn: [] },
   { pluginPath: "infra/plugins/claude-cli/plugins/sign-in", id: "infra.claude-cli.sign-in", loader: () => import("@plugins/infra/plugins/claude-cli/plugins/sign-in/data-dirs"), dependsOn: [] },
   { pluginPath: "infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/plugins/price-table", id: "infra.claude-cli.usage-ledger.pricing.price-table", loader: () => import("@plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/plugins/price-table/data-dirs"), dependsOn: [] },
   { pluginPath: "infra/plugins/codesign", id: "infra.codesign", loader: () => import("@plugins/infra/plugins/codesign/data-dirs"), dependsOn: [] },

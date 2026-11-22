@@ -7,11 +7,20 @@ import type { ClaudeCodeStatus } from "@plugins/infra/plugins/claude-cli/plugins
 // The Claude accounts as every surface lists them: the computer's own login
 // first, then the added ones — each with a name and one line of detail.
 
+/**
+ * What an account is: the computer's own Claude Code login — the one PLAN
+ * account, whose limits are the ones to read — or an added account, which has
+ * no plan limits: an API key (billed per use to its Console org) or a local
+ * model endpoint (self-hosted; its tokens run at $0).
+ */
+export type AccountKind = "login" | "api-key" | "endpoint";
+
 export interface AccountView {
   id: string;
   name: string;
   detail: string;
-  /** Billed per use (an API key): no plan limits to read or show. */
+  kind: AccountKind;
+  /** No plan limits to read or show — every added account (key and endpoint). */
   metered: boolean;
 }
 
@@ -29,13 +38,15 @@ export function accountViews(
       id: SYSTEM_ACCOUNT_ID,
       name: "This computer",
       detail: login,
+      kind: "login",
       metered: false,
     },
-    // Every added account is an API key (`infra/claude-cli/accounts`).
+    // Added accounts: API keys and local model endpoints (`infra/claude-cli/accounts`).
     ...accounts.accounts.map((a) => ({
       id: a.id,
       name: a.name,
-      detail: "API key",
+      detail: a.kind === "endpoint" ? "Local endpoint" : "API key",
+      kind: a.kind,
       metered: true,
     })),
   ];

@@ -109,6 +109,43 @@ export function cliFlagFor(id: ConversationModel): string {
 }
 
 /**
+ * A local endpoint account's model map: the name of the endpoint's own model
+ * that serves each family's role (`{ sonnet: "qwen3.8-27b" }`). Built from
+ * MODEL_TIERS, so a new family gets a slot with no second edit.
+ */
+export type ModelMap = Partial<Record<ModelTier, string>>;
+
+const ModelNameSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .refine(
+    (s) => !s.startsWith("claude-"),
+    "a mapped model is the endpoint's own model name, not a Claude flag",
+  );
+
+export const ModelMapSchema = z
+  .object(
+    Object.fromEntries(
+      MODEL_TIERS.map((tier) => [tier, ModelNameSchema.optional()]),
+    ),
+  )
+  .strict();
+
+/**
+ * The model flag a launch on an endpoint account runs with: the map's name for
+ * the model's family — or, an unmapped family, the Claude flag itself, so a
+ * local server that does not serve it rejects it loudly instead of the app
+ * guessing a substitute.
+ */
+export function modelFlagForEndpoint(
+  model: ConversationModel,
+  modelMap?: ModelMap,
+): string {
+  return modelMap?.[modelMeta(model).family] ?? cliFlagFor(model);
+}
+
+/**
  * Newest first: `opus-5-5` before `opus-5` before `opus-4-8`. Families compare
  * in display order, so sorting a mixed list groups it the way pickers show it.
  */

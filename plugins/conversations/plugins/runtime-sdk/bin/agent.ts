@@ -31,7 +31,10 @@ import type {
 } from "@anthropic-ai/claude-agent-sdk";
 import { spawn, spawnSync, type ChildProcessByStdio } from "node:child_process";
 import { mkdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
-import { readFileSync } from "@plugins/packages/plugins/timed-fs/core";
+import {
+  readFile,
+  readFileSync,
+} from "@plugins/packages/plugins/timed-fs/core";
 import { createServer, type Socket } from "node:net";
 import type { Readable, Writable } from "node:stream";
 import { defineFileSink } from "@plugins/infra/plugins/file-sink/core";
@@ -48,6 +51,20 @@ import { promptContent } from "./prompt-content";
 import { startExitWatchdog, type ExitWatchdog } from "./exit-watchdog";
 import { parseArgs } from "node:util";
 import { ZodError, z } from "zod";
+import {
+  ConversationModelSchema,
+  modelFlagForEndpoint,
+} from "@plugins/conversations/plugins/model-provider/core";
+import {
+  ACCOUNTS_FILE_NAME,
+  NO_CLAUDE_ACCOUNTS,
+  parseAccountsFile,
+} from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
+import { claudeAccountsDir } from "@plugins/infra/plugins/claude-cli/plugins/accounts/data-dirs";
+import {
+  ClaudeAccountsFile,
+  claudeAccountModelMap,
+} from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import {
   claudeQuery,
   claudeSessionEnv,
@@ -142,10 +159,40 @@ const shellPrefix = sandboxed ? null : options.backgroundShell;
 // store, so it never sits in an argv, the options file or the login shell's
 // environment. Only Claude Code's own process gets it (the session below); the
 // system account adds nothing — Claude Code's own login.
-// This process boots no graph, so it names the one host service it reads
-// itself: the secrets store, central's (an added account's token).
-provideHostServicesUnbooted([SecretStore.provide(centralSecretStore)]);
+/**
+ * The machine-wide accounts file, read directly from its data-root path. The
+ * `ClaudeAccountsFile` service's provider is the accounts' machine half — a
+ * plugin booted in every backend, none here; but the file sits on this same
+ * machine, under the data root declared first, so a direct read of it is the
+ * provider's own read (a missing file: none added yet).
+ */
+async function accountsFileRead() {
+  let text: string;
+  try {
+    text = await readFile(claudeAccountsDir.file(ACCOUNTS_FILE_NAME), "utf8");
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT")
+      return { state: NO_CLAUDE_ACCOUNTS, planAccounts: [] };
+    throw err;
+  }
+  return parseAccountsFile(JSON.parse(text));
+}
+
+// This process boots no graph, so it names the host services it reads itself:
+// the secrets store, central's (an added account's token), and the accounts
+// file (the credential's kind and an endpoint's settings — both reads are its
+// own, above).
+provideHostServicesUnbooted([
+  SecretStore.provide(centralSecretStore),
+  ClaudeAccountsFile.provide({ read: accountsFileRead }),
+]);
 const sessionEnv = await claudeSessionEnv(args.account, process.env);
+// The launch's model id runs as the account's name for it: an endpoint
+// account's model map serves a Claude family under the name that server knows
+// (`modelFlagForEndpoint`), a Claude family otherwise as its own flag. Read
+// once at start — the account is fixed for this process (a switch restarts
+// it), and a `setModel` mid-life resolves against the same map.
+const modelMap = await claudeAccountModelMap(args.account);
 
 // ── events.jsonl ──────────────────────────────────────────────────────────
 // Resumes numbering from the file (or, right after a rotation, its newest
@@ -496,7 +543,14 @@ const session = claudeQuery({
     // message); they are folded here and never written to events.jsonl.
     includePartialMessages: true,
     enableFileCheckpointing: true,
-    ...(options.model ? { model: options.model } : {}),
+    ...(options.model
+      ? {
+          model: modelFlagForEndpoint(
+            ConversationModelSchema.parse(options.model),
+            modelMap,
+          ),
+        }
+      : {}),
     // Thinking text is requested explicitly: under the SDK the CLI ignores
     // the `showThinkingSummaries` setting (the interactive CLI honours it), so
     // without the flag the API omits it and every thinking block arrives
@@ -656,7 +710,14 @@ async function run(cmd: AgentCommand): Promise<unknown> {
       return { dismissed: resolve !== undefined };
     }
     case "setModel":
-      return session.setModel(cmd.model);
+      return session.setModel(
+        cmd.model
+          ? modelFlagForEndpoint(
+              ConversationModelSchema.parse(cmd.model),
+              modelMap,
+            )
+          : undefined,
+      );
     case "rewindFiles":
       return session.rewindFiles(cmd.userMessageId);
     case "reconnectMcp":

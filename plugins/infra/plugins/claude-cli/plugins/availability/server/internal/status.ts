@@ -181,9 +181,15 @@ export function noteClaudeCodeSignInRefused(): void {
 
 /**
  * Something that needed Claude Code just failed: what we last knew is older
- * than that evidence. Re-probe in the background so the health row catches up.
+ * than that evidence — for the account that ran it. The probe reads the
+ * COMPUTER'S login, so a failure on one (or `undefined`, the caller that knows
+ * no account) re-probes it in the background and the health row catches up. A
+ * failure on an added account — an API key's, a local endpoint's — says
+ * nothing about the computer's login (the endpoint's server may simply be
+ * down), so it is noted, not probed: the health row keeps its answer.
  */
-export function noteClaudeCodeFailure(): void {
+export function noteClaudeCodeFailure(account?: string): void {
+  if (account !== undefined && account !== SYSTEM_ACCOUNT_ID) return;
   // eslint-disable-next-line detached-work-safety/no-untracked-detached-work -- a re-probe the failing caller must not wait on; its result is pushed through the resource
   void probe();
 }

@@ -351,7 +351,12 @@ export const AgentLaunchOptionsSchema = z.preprocess(
      * Defaulted for an options file written before it existed.
      */
     seqFloor: z.number().int().nonnegative().default(0),
-    /** The CLI's `--model` value. */
+    /**
+     * The launch's model id — the agent process resolves it at its own start
+     * against the account it runs on (an endpoint account's model map serves
+     * it under the name that server knows; a Claude family as its CLI flag),
+     * so the value here is never a CLI flag.
+     */
     model: z.string().nullable(),
     /** The CLI's `--effort` value. */
     effort: z.string().nullable(),

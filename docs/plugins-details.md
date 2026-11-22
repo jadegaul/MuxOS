@@ -23478,6 +23478,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `ModelCatalog`
           - `ModelChoice`
           - `ModelIdParse`
+          - `ModelMap`
           - `ModelMeta`
           - `ModelResolution`
           - `ModelTier`
@@ -23506,7 +23507,9 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `ModelCatalogSchema`
           - `ModelChoiceSchema`
           - `modelDisplayLabel`
+          - `modelFlagForEndpoint`
           - `modelIdFromCliName`
+          - `ModelMapSchema`
           - `modelMeta`
           - `ModelUnavailableError`
           - `ModelVersionSchema`
@@ -23530,13 +23533,13 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `ui/tokens/categorical --categorical-5`
           - `ui/tokens/color-palette --muted-foreground`
           - `ui/tokens/shape --spacing`
-        - Imported by: 33 plugins — full list in [`plugins/conversations/plugins/model-provider/REFERENCE.md`](../plugins/conversations/plugins/model-provider/REFERENCE.md)
+        - Imported by: 34 plugins — full list in [`plugins/conversations/plugins/model-provider/REFERENCE.md`](../plugins/conversations/plugins/model-provider/REFERENCE.md)
           - `conversations` ×15
           - `tasks` ×9
           - `apps` ×3
           - `debug` ×2
+          - `infra` ×2
           - `hints/ask`
-          - `infra/claude-cli`
           - `primitives/launch`
           - `stats/cost`
       - Exemptions:
@@ -23841,8 +23844,8 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `HealthReport.Row` "Claude Code" → `ClaudeCodeRowDetail`
           - `Shell.Sidebar` "Claude account" → `ClaudeAccountFoot`
           - `ConfigV2.WebRegister` "runtime-sdk-auto-resume"
-        - Uses: 57 symbols — full list in [`plugins/conversations/plugins/runtime-sdk/REFERENCE.md`](../plugins/conversations/plugins/runtime-sdk/REFERENCE.md)
-          - `primitives/css/ui-kit` ×7
+        - Uses: 62 symbols — full list in [`plugins/conversations/plugins/runtime-sdk/REFERENCE.md`](../plugins/conversations/plugins/runtime-sdk/REFERENCE.md)
+          - `primitives/css/ui-kit` ×12
           - `infra/claude-cli/availability` ×4
           - `infra/endpoints` ×4
           - `primitives/setup-steps` ×4
@@ -34065,7 +34068,9 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
             - **`no-raw-sse`**
               - Exemptions:
                 - Exempts itself from: `no-raw-sse` — `check/index.ts` (sanctioned)
-                - Exempted by: `framework/tooling/checks/no-raw-sse` (0 debt)
+                - Exempted by:
+                  - `framework/tooling/checks/no-raw-sse` (0 debt)
+                  - `infra/claude-cli/llm-proxy` (0 debt)
             - **`no-raw-websocket`**
               - Exemptions:
                 - Exempted by:
@@ -36394,16 +36399,16 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `resource.declare` "claude-cli.calls-for"
           - `fork-data-exclusion` "claude_cli_call_horizon"
           - `fork-data-exclusion` "claude_cli_calls"
-        - Uses: 24 symbols — full list in [`plugins/infra/plugins/claude-cli/REFERENCE.md`](../plugins/infra/plugins/claude-cli/REFERENCE.md)
+        - Uses: 26 symbols — full list in [`plugins/infra/plugins/claude-cli/REFERENCE.md`](../plugins/infra/plugins/claude-cli/REFERENCE.md)
           - `infra/claude-cli/sdk` ×6
           - `database` ×4
+          - `infra/claude-cli/accounts` ×3
           - `infra/entities` ×3
           - `database/sql-projection` ×2
           - `infra/claude-cli/usage-ledger` ×2
           - `network/live` ×2
           - `conversations/model-provider/catalog.getModelCatalog`
           - `database/admin.ExcludeFromFork`
-          - `infra/claude-cli/accounts.activeClaudeAccountId`
           - `infra/claude-cli/availability.noteClaudeCodeFailure`
           - `infra/claude-cli/usage-ledger/pricing.ensureModelRates`
         - DB schema: `plugins/infra/plugins/claude-cli/server/internal/tables.ts`
@@ -36526,21 +36531,29 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `ids:pk-declared` — `server/internal/tables.ts` (debt)
           - `investigate:failures-registered` — `core/resources.ts` (sanctioned)
       - Plugins:
-        - **`accounts`** — The Claude accounts' credentials, every host's half: each added account's API key in the secrets store — saved, deleted, and read by the agent at its start (claudeAccountCredential: null for the computer's own Claude Code login, a loud error when an added account's secret is gone).
+        - **`accounts`** — The Claude accounts' credentials, every host's half: each added account's credential in the secrets store — an API key for a key account, the bearer token for an endpoint account that has one (saved, deleted, and read by the agent at its start: claudeAccountCredential, null for the computer's own Claude Code login, a loud error when an added account is gone) — and the machine-wide accounts file read through the ClaudeAccountsFile host service (the machine half provides it: the file's schema and parse live in core) — what reads it here: claudeAccountModelMap (an endpoint's family → model name map) and endpointAccountModels (every mapped model name, the zero-rate price rows' set).
           - Server:
             - Contributes:
               - `resource.declare` "claude-accounts"
               - `host-service:claude-accounts.active` "claude-accounts.active"
+              - `host-service:claude-accounts.file` "claude-accounts.file"
             - Uses:
               - `infra/secrets.deleteSecret`
               - `infra/secrets.getSecret`
               - `infra/secrets.setSecret`
-            - Exports (types): `ActiveClaudeAccountImpl`
+            - Exports (types):
+              - `ActiveClaudeAccountImpl`
+              - `ClaudeAccountsFileImpl`
             - Exports (values):
               - `ActiveClaudeAccount`
               - `activeClaudeAccountId`
               - `claudeAccountCredential`
+              - `claudeAccountModelMap`
+              - `ClaudeAccountsFile`
+              - `claudeEndpointToken`
               - `deleteClaudeAccountCredential`
+              - `endpointAccountModels`
+              - `readAccountsFile`
               - `saveClaudeAccountCredential`
             - Resources: `claude-accounts` (push, notified, whole: the Claude accounts the user added by hand — a handful)
           - Machine:
@@ -36550,6 +36563,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
             - Exports (types): `SystemLogin`
             - Exports (values):
               - `addClaudeAccountWithCredential`
+              - `changeClaudeAccounts`
               - `readClaudeAccounts`
               - `readSystemLogin`
               - `selectClaudeAccountById`
@@ -36560,26 +36574,49 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `POST /api/claude-accounts/select`
           - Core:
             - Uses:
+              - `conversations/model-provider.ModelMap`
+              - `conversations/model-provider.ModelMapSchema`
               - `infra/endpoints.defineEndpoint`
               - `network/live.liveValue`
               - `packages/list-bound.wholeList`
             - Exports (types):
+              - `AccountsFile`
               - `ClaudeAccount`
+              - `ClaudeAccountCredential`
               - `ClaudeAccounts`
+              - `ClaudeApiKeyAccount`
+              - `ClaudeEndpointAccount`
+              - `ClaudeEndpointSettings`
+              - `EndpointApi`
             - Exports (values):
+              - `ACCOUNTS_FILE_NAME`
+              - `accountsFileOf`
               - `addClaudeAccount`
+              - `addClaudeEndpoint`
               - `API_KEY_PREFIXES`
               - `CLAUDE_CREDENTIAL_ENVS`
+              - `claudeAccountEnv`
               - `claudeAccountIds`
               - `claudeAccounts`
               - `ClaudeAccountSchema`
               - `ClaudeAccountsSchema`
+              - `ClaudeApiKeyAccountSchema`
               - `claudeCredentialEnv`
               - `ClaudeCredentialSchema`
+              - `ClaudeEndpointAccountSchema`
+              - `claudeEndpointEnv`
+              - `ClaudeEndpointSettingsSchema`
+              - `ENDPOINT_APIS`
+              - `LLM_PROXY_PORT`
+              - `llmProxyUrl`
+              - `mintTestAccountId`
               - `NO_CLAUDE_ACCOUNTS`
+              - `parseAccountsFile`
               - `removeClaudeAccount`
               - `selectClaudeAccount`
               - `SYSTEM_ACCOUNT_ID`
+              - `TEST_ACCOUNT_ID_PREFIX`
+              - `testClaudeEndpoint`
               - `withStandInNames`
           - Cross-plugin:
             - Imported by:
@@ -36588,9 +36625,12 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `conversations/usage`
               - `infra/claude-cli`
               - `infra/claude-cli/availability`
+              - `infra/claude-cli/llm-proxy`
               - `infra/claude-cli/sdk`
               - `infra/claude-cli/sign-in`
+              - `infra/claude-cli/usage-ledger/pricing/price-table`
               - `tasks/supervisor-roles/spend`
+            - Endpoint callers: `llm-proxy`
         - **`availability`** — Claude Code availability, shown: the pieces of the health report's Claude Code row (useClaudeCodeHealth — critical while the computer is signed out — ClaudeCodeDetail with Claude Code's own note, ClaudeCodeActions' Check again; the row itself is the sdk runtime's, which adds the in-app sign-in, the Agent SDK and the running agents), useClaudeCodeLaunchBlock() for launch controls to disable themselves with where to sign in, and a re-check when the user returns to the window while it is blocked. Claude Code availability: probes whether the computer is signed in to Claude Code (the build the Agent SDK ships — one session on the computer's own login reading its initialize answer: version and account, no turn; the machine half serves the answer as the claude-code-status push value and POST /api/claude-code/recheck) and gives every launch path checkLaunchReadiness() / assertClaudeCodeReady() — asked about the account the launch runs on (the computer's login is checked only for the system account; an added API key brings its own credential) — so an agent that cannot run is refused up front, pointing at the in-app sign-in. onClaudeCodeProbed hands every fresh answer to work keyed off the Claude Code version (which moves only with an SDK upgrade).
           - Web:
             - Contributes: `Core.Root` → `RecheckOnReturn`
@@ -36665,6 +36705,28 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `tasks/task-triage`
           - Exemptions:
             - Exempts itself from: `page-hosts-on-demand` — `web/index.ts` (sanctioned)
+        - **`llm-proxy`** — The local LLM translator proxy, desktop half: one bun process per machine (bin/proxy.ts, the claude-cli.llm-proxy daemon, host-singleton, started detached and followed by its pid file) answering Claude Code's Anthropic messages calls at http://127.0.0.1:8800/p/<account> (Claude Code appends its own /v1/… paths — the base must not carry /v1) — an `openai` endpoint account's requests translated to its chat/completions (shared/translate, stream included), an `anthropic` endpoint's passed through at itself, the account's settings read per request from the machine-wide accounts file and its bearer token from the secrets store. The host singleton reconciles it against that file at boot and on every rewrite of it (main's watcher sees every worktree's write): it runs while any endpoint account speaks openai (a test's temporary row counts) and is stopped when none does; the other backends never start it — their endpoint test waits, bounded, for the singleton the test's own write woke. The endpoints an account is tested and added through (accounts core's declarations, implemented here because the test runs a real Claude Code turn — the SDK session, the proxy): POST /api/claude-accounts/test (one initialize and one turn on a temporary `test-…` row, deleted with its token after) and POST /api/claude-accounts/add-endpoint (the same test first — a broken endpoint is never stored).
+          - Machine:
+            - Uses:
+              - `infra/claude-cli/accounts.changeClaudeAccounts`
+              - `infra/claude-cli/accounts.readClaudeAccounts`
+              - `infra/claude-cli/accounts.watchClaudeAccounts`
+              - `infra/endpoints.implementMachine`
+            - Register: `defineDaemon('claude-cli.llm-proxy')`
+          - Exemptions:
+            - Exempts itself from: `no-raw-sse` — `bin/proxy.ts` (sanctioned)
+          - Shared:
+            - Exports (types):
+              - `AnthropicRequest`
+              - `OpenAIMessage`
+              - `OpenAIRequest`
+              - `OpenAIToolCall`
+            - Exports (values):
+              - `finishReasonToStopReason`
+              - `mapResponse`
+              - `StreamMapper`
+              - `translateRequest`
+              - `usageOf`
         - **`sdk`** — The one way a backend opens a Claude Code session: through the Agent SDK, on an account its caller chose. claudeSessionEnv(account) is the environment (the host facts plus an added account's credential, through claudeCredentialEnv; branded, so no session skips the choice), claudeQuery opens the session, runClaudeTurn runs one prompt to its result under a real deadline, readClaudeInitialize reads the version, the signed-in account and the model menu without a turn. Its lint rules reject a direct query() and a spawn of the resolved claude binary anywhere else.
           - Server:
             - Uses: `infra/claude-cli/accounts.claudeAccountCredential`
@@ -36687,6 +36749,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `conversations/runtime-sdk`
               - `infra/claude-cli`
               - `infra/claude-cli/availability`
+              - `infra/claude-cli/llm-proxy`
               - `infra/claude-cli/sign-in`
           - Exemptions:
             - Exempts itself from:
@@ -36890,6 +36953,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
                     - Contributes: `report-kind` "cost-unpriced-model"
                     - Uses:
                       - `database.db`
+                      - `infra/claude-cli/accounts.endpointAccountModels`
                       - `infra/claude-cli/usage-ledger/pricing.claudeSpendHoursView`
                       - `infra/claude-cli/usage-ledger/pricing.recordPriceVersion`
                       - `infra/jobs.defineJob`
@@ -37676,10 +37740,10 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `unmatchedApiResponse`
           - `unsupportedEndpointResponse`
       - Cross-plugin:
-        - Imported by: 281 plugins — full list in [`plugins/infra/plugins/endpoints/REFERENCE.md`](../plugins/infra/plugins/endpoints/REFERENCE.md)
+        - Imported by: 282 plugins — full list in [`plugins/infra/plugins/endpoints/REFERENCE.md`](../plugins/infra/plugins/endpoints/REFERENCE.md)
           - `apps` ×86
           - `conversations` ×37
-          - `infra` ×23
+          - `infra` ×24
           - `debug` ×21
           - `tasks` ×21
           - `page` ×19
@@ -38188,8 +38252,8 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
         - Register: `file-sink-exit-flush`
     - **`file-watcher`** — defineFileWatcher: the one declared in-process file watcher — a named, described declaration (static policy: extensions, ignore, debounce, ceiling, writesWhileOpen, depth, mainOnly) whose start({dirs, label, onChange, onLost}) — start({files, …}) for a writesWhileOpen one, which follows writes to the named files only (kqueue on darwin, one descriptor per file; every follow of a directory shares one subscription) — opens instances over one @parcel/watcher engine (debounce + ceiling flush; no timer — a dropped event is reported to onLost, the one backstop). Records per declaration its open instances, last change batch and a ring of handler runs for the Background activity catalog (onWatcherActivity / listFileWatchers / fileWatcherRecentRuns). The cli barrel's watchForCommand is the same engine for a foreground command, with no registry. acquireDirWatch({dir, scope, onChange}) is the shared directory-watch hub: refcounted native watches, a dir under a watched root riding its watch (a watcher never moved off a live root: a root opening above leaves it where it is), with subtree or children (depth-1 listing) scope — a children request with no root above it opening only a single-directory watch (depth children), never a recursive one. On macOS a children watch is kqueue's (a descriptor on the dir and each entry, budgeted — a dir past the budget rides FSEvents), so watching / or ~ puts nothing on fseventsd; every other FSEvents watch with no ignore rides the process's stream pool — one stream per watched root, a dir under an open recursive stream riding it, whatever declaration asks (fsEventsStreams reads it).
       - Cross-plugin:
-        - Imported by: 46 plugins — full list in [`plugins/infra/plugins/file-watcher/REFERENCE.md`](../plugins/infra/plugins/file-watcher/REFERENCE.md)
-          - `infra` ×16
+        - Imported by: 47 plugins — full list in [`plugins/infra/plugins/file-watcher/REFERENCE.md`](../plugins/infra/plugins/file-watcher/REFERENCE.md)
+          - `infra` ×17
           - `debug` ×10
           - `build` ×5
           - `apps` ×4
@@ -39368,8 +39432,8 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
             - Exempts itself from: `boundaries/no-platform-api` — `server/internal/sweep.ts` (debt)
         - **`user-path`** — Which host paths a synchronous fs call may touch: AppPath (a path the app owns — its data dirs, its checkout; the only kind a sync fs call in runtime code may take) and UserPath (one the user or their config chose), with the type-aware lint that refuses a sync fs call on any path not proven app-owned — so a macOS Files & Folders prompt can never freeze a backend's JS thread, whether or not anyone marked the user's path.
           - Cross-plugin:
-            - Imported by: 117 plugins — full list in [`plugins/infra/plugins/host-fs/plugins/user-path/REFERENCE.md`](../plugins/infra/plugins/host-fs/plugins/user-path/REFERENCE.md)
-              - `infra` ×45
+            - Imported by: 118 plugins — full list in [`plugins/infra/plugins/host-fs/plugins/user-path/REFERENCE.md`](../plugins/infra/plugins/host-fs/plugins/user-path/REFERENCE.md)
+              - `infra` ×46
               - `framework` ×20
               - `apps` ×8
               - `debug` ×7
@@ -40348,6 +40412,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
             - Imported by:
               - `conversations/agent-launch`
               - `framework/cli/bootstrap`
+              - `infra/claude-cli/llm-proxy`
               - `infra/claude-cli/sdk`
               - `infra/deps/python`
               - `infra/deps/rust`
@@ -40570,10 +40635,10 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `namespaceUrl`
           - `resolveNamespaceAlias`
       - Cross-plugin:
-        - Imported by: 89 plugins — full list in [`plugins/infra/plugins/namespace/REFERENCE.md`](../plugins/infra/plugins/namespace/REFERENCE.md)
+        - Imported by: 90 plugins — full list in [`plugins/infra/plugins/namespace/REFERENCE.md`](../plugins/infra/plugins/namespace/REFERENCE.md)
           - `apps` ×16
           - `framework` ×15
-          - `infra` ×12
+          - `infra` ×13
           - `debug` ×11
           - `conversations` ×7
           - `build` ×6
@@ -40719,8 +40784,8 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `worktreeDataDir`
           - `worktreesDir`
       - Cross-plugin:
-        - Imported by: 149 plugins — full list in [`plugins/infra/plugins/paths/REFERENCE.md`](../plugins/infra/plugins/paths/REFERENCE.md)
-          - `infra` ×39
+        - Imported by: 150 plugins — full list in [`plugins/infra/plugins/paths/REFERENCE.md`](../plugins/infra/plugins/paths/REFERENCE.md)
+          - `infra` ×40
           - `framework` ×25
           - `apps` ×18
           - `debug` ×15
@@ -41671,8 +41736,8 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `spawnToFile`
           - `watchChildKills`
       - Cross-plugin:
-        - Imported by: 112 plugins — full list in [`plugins/infra/plugins/spawn/REFERENCE.md`](../plugins/infra/plugins/spawn/REFERENCE.md)
-          - `infra` ×33
+        - Imported by: 113 plugins — full list in [`plugins/infra/plugins/spawn/REFERENCE.md`](../plugins/infra/plugins/spawn/REFERENCE.md)
+          - `infra` ×34
           - `framework` ×32
           - `apps` ×10
           - `database` ×5
@@ -41762,6 +41827,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `debug/paging-probe`
               - `debug/sentinel`
               - `debug/sentinel/machine-usage`
+              - `infra/claude-cli/llm-proxy`
               - `infra/launcher`
               - `infra/mcp/browser`
               - `infra/paths/root-migration`
@@ -45275,8 +45341,8 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `yieldMacrotask`
     - **`owned-fd`** — Owned file descriptors: openOwnedFd / adoptFd return an OwnedFd whose close() closes its descriptor exactly once — a second close throws FdAlreadyClosedError naming where the first happened, instead of closing whatever reused the number. Imports node:fs and the AppPath type only; enforced by the owned-fd/no-raw-fd-close lint (no fs.closeSync / fs.close outside it) and owned-fd/no-raw-spawn-stdio-fd (a spawn's stdio descriptor is an OwnedFd's .fd).
       - Cross-plugin:
-        - Imported by: 34 plugins — full list in [`plugins/packages/plugins/owned-fd/REFERENCE.md`](../plugins/packages/plugins/owned-fd/REFERENCE.md)
-          - `infra` ×15
+        - Imported by: 35 plugins — full list in [`plugins/packages/plugins/owned-fd/REFERENCE.md`](../plugins/packages/plugins/owned-fd/REFERENCE.md)
+          - `infra` ×16
           - `framework` ×7
           - `packages` ×4
           - `database` ×2

@@ -17,6 +17,7 @@ import {
   spendHourOf,
 } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/core";
 import { ensureModelRates } from "@plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/server";
+import { endpointAccountModels } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import type { CallModelTokens } from "./call-tokens";
 import { _claudeCliCallHorizon, _claudeCliCalls } from "./tables";
 import { CLAUDE_CLI_RING_ID, RECENT_CALLS_LIMIT } from "../../core/resources";
@@ -69,7 +70,8 @@ export async function recordClaudeCliCall(
  * (`claude_usage_hours`, priced by `claude_spend_hours_v`) with the source's
  * row. They land exactly when the call is recorded, written explicitly, never
  * rolled up from the log: the trim deletes log rows, and must not take their
- * usage. Then any model first seen is priced (`ensureModelRates`).
+ * usage. Then any model first seen is priced (`ensureModelRates`) — the local
+ * endpoint's models among them, at their $0 rate.
  */
 export async function writeClaudeCliCall(
   exec: DbExecutor,
@@ -125,6 +127,7 @@ export async function writeClaudeCliCall(
   await ensureModelRates(
     exec,
     usage.map((row) => row.model),
+    await endpointAccountModels(),
   );
 }
 

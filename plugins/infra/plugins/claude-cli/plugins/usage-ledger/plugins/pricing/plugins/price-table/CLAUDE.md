@@ -16,7 +16,9 @@ system.
 - **The daily refresh** (`claude-cli.pricing.refresh`, `server/internal/
   refresh.ts`): main only (a fleet-wide cron, catch-up on a missed tick) —
   fetch, merge into the held table, save, `recordPriceVersion` (a new version
-  effective now only when a rate moved), then `cost-unpriced-model` for every
+  effective now only when a rate moved — with the local endpoint's models,
+  read by the caller, recorded at their $0 rate), then
+  `cost-unpriced-model` for every
   model the priced view leaves unpriced (`server/internal/unpriced.ts`, one
   report row per model; a zero-token `<synthetic>` is skipped). The boot
   warm-up (`claude-cli.pricing.record`, host scope) records the held table —
@@ -39,6 +41,7 @@ system.
   - Contributes: `report-kind` "cost-unpriced-model"
   - Uses:
     - `database.db`
+    - `infra/claude-cli/accounts.endpointAccountModels`
     - `infra/claude-cli/usage-ledger/pricing.claudeSpendHoursView`
     - `infra/claude-cli/usage-ledger/pricing.recordPriceVersion`
     - `infra/jobs.defineJob`
