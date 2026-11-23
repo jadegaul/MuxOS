@@ -4,6 +4,6 @@
   "version": "0.0.1",
   "description": "Tab memory: every page samples itself (JS heap, DOM nodes, canvases, images, its open in-app tabs and route) every 5 minutes into its server's tab-memory log, and Debug → Tab memory draws each page beside each Chrome renderer's footprint so a climbing renderer can be tied to a tab, app and route. Plus the measurement scripts: clean-soak (native memory per allocator with nothing attached) and listener-probe (who adds a tab's event listeners).",
   "dependencies": {
-    "recharts": "^3.10.1"
+    "recharts": "^3.11.0"
   }
 }
