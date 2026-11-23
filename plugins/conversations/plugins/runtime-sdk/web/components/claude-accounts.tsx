@@ -12,10 +12,12 @@ import {
   removeClaudeAccount,
   selectClaudeAccount,
   testClaudeEndpoint,
+  updateClaudeEndpoint,
   SYSTEM_ACCOUNT_ID,
   API_KEY_PREFIXES,
   ENDPOINT_APIS,
   type ClaudeAccounts,
+  type ClaudeEndpointAccount,
   type EndpointApi,
 } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
 import {
@@ -89,6 +91,7 @@ import { ErrorStoppedBanner } from "./error-stopped";
 
 const addIcon = symbol("add");
 const removeIcon = symbol("close");
+const editIcon = symbol("edit");
 
 const percent = (fraction: number) => `${Math.round(fraction * 100)}%`;
 
@@ -366,33 +369,52 @@ function modelMapOf(maps: Record<ModelTier, string>): ModelMap | undefined {
 }
 
 /**
- * Add a local model endpoint: a model server the user runs (Ninfer, LM Studio,
- * Ollama, …) serves equin's agents and one-shot generations. `Test` runs one
- * turn on it without saving anything (a temporary account, deleted after);
- * `Add` runs the same test first and stores the account only when it passes —
- * its token, when it has one, going to the secrets store. The model mapping is
- * optional: an unmapped family runs as its own Claude flag, which a local
- * server that does not serve it rejects loudly.
+ * Add or edit a local model endpoint: a model server the user runs (Ninfer,
+ * LM Studio, Ollama, …) serves equin's agents and one-shot generations.
+ * `Test` runs one turn on it without saving anything (a temporary account,
+ * deleted after); `Add` / `Save` run the same test first and store the
+ * account only when it passes — its token, when it has one, going to the
+ * secrets store (on an edit, an empty field keeps the stored token). The
+ * model mapping is optional: an unmapped family runs as its own Claude flag,
+ * which a local server that does not serve it rejects loudly. The context
+ * window is the model's real one — Claude Code believes a model it does not
+ * know has a million tokens, so without it, auto-compact never fires before
+ * a smaller server refuses the turn.
  */
-function AddEndpointForm({
-  onAdded,
+function EndpointForm({
+  initial,
+  onSaved,
   onCancel,
 }: {
-  onAdded: (id: string) => void;
+  /** The endpoint account being edited; `undefined` adds a new one. */
+  initial?: ClaudeEndpointAccount;
+  onSaved: (id: string) => void;
   onCancel: () => void;
 }) {
-  const [name, setName] = useState("");
-  const [baseUrl, setBaseUrl] = useState("");
-  const [api, setApi] = useState<EndpointApi>("openai");
+  const [name, setName] = useState(initial?.name ?? "");
+  const [baseUrl, setBaseUrl] = useState(initial?.endpoint.baseUrl ?? "");
+  const [api, setApi] = useState<EndpointApi>(
+    initial?.endpoint.api ?? "openai",
+  );
   const [token, setToken] = useState("");
   const [showMap, setShowMap] = useState(false);
-  const [maps, setMaps] = useState<Record<ModelTier, string>>({
-    haiku: "",
-    sonnet: "",
-    opus: "",
-    fable: "",
+  const [maps, setMaps] = useState<Record<ModelTier, string>>(() => {
+    const init: Record<ModelTier, string> = {
+      haiku: "",
+      sonnet: "",
+      opus: "",
+      fable: "",
+    };
+    for (const tier of MODEL_TIERS)
+      init[tier] = initial?.endpoint.modelMap?.[tier] ?? "";
+    return init;
   });
-  const [busy, setBusy] = useState<null | "test" | "add">(null);
+  const [contextWindow, setContextWindow] = useState(
+    initial?.endpoint.contextWindow !== undefined
+      ? String(initial.endpoint.contextWindow)
+      : "",
+  );
+  const [busy, setBusy] = useState<null | "test" | "save">(null);
   const [error, setError] = useState<string | null>(null);
   const [testResult, setTestResult] = useState<{
     reply: string;
@@ -406,8 +428,16 @@ function AddEndpointForm({
   const badMapping = MODEL_TIERS.some((tier) =>
     maps[tier].trim().startsWith("claude-"),
   );
-  const invalid = name.trim() === "" || url === "" || badUrl || badMapping;
-  const settings = { api, baseUrl: url, modelMap: modelMapOf(maps) };
+  const context = contextWindow.trim();
+  const badContext = context !== "" && !/^\d+$/.test(context);
+  const invalid =
+    name.trim() === "" || url === "" || badUrl || badMapping || badContext;
+  const settings = {
+    api,
+    baseUrl: url,
+    modelMap: modelMapOf(maps),
+    ...(context !== "" ? { contextWindow: Number(context) } : {}),
+  };
 
   const test = async () => {
     setBusy("test");
@@ -435,23 +465,38 @@ function AddEndpointForm({
       setBusy(null);
     }
   };
-  const add = async () => {
-    setBusy("add");
+  const save = async () => {
+    setBusy("save");
     setError(null);
     try {
-      const result = await fetchEndpoint(
-        addClaudeEndpoint,
-        {},
-        {
-          body: {
-            name: name.trim(),
-            endpoint: settings,
-            token: token.trim() || undefined,
-          },
-        },
-      );
+      // On an edit, an empty token keeps the stored one (the server omits it
+      // entirely); on an add it means "no auth".
+      const result = initial
+        ? await fetchEndpoint(
+            updateClaudeEndpoint,
+            {},
+            {
+              body: {
+                id: initial.id,
+                name: name.trim(),
+                endpoint: settings,
+                token: token.trim() || undefined,
+              },
+            },
+          )
+        : await fetchEndpoint(
+            addClaudeEndpoint,
+            {},
+            {
+              body: {
+                name: name.trim(),
+                endpoint: settings,
+                token: token.trim() || undefined,
+              },
+            },
+          );
       if (result.kind !== "ok") throw new Error(result.message);
-      onAdded(result.value.id);
+      onSaved(result.value.id);
     } catch (err) {
       if (!(err instanceof EndpointError)) throw err;
       setError(getEndpointErrorMessage(err));
@@ -506,13 +551,32 @@ function AddEndpointForm({
           <Input
             type="password"
             autoComplete="off"
-            placeholder="Token — leave empty if no auth"
+            placeholder={
+              initial
+                ? "Token — leave empty to keep the stored one"
+                : "Token — leave empty if no auth"
+            }
             keep={transient("secret: never written to browser storage")}
             value={token}
             onChange={(e) => setToken(e.target.value)}
             className="font-mono"
           />
         </Line>
+        <Input
+          placeholder="Context window — tokens, e.g. 262144"
+          keep={transient(
+            "a number entered with the endpoint form, which is never kept",
+          )}
+          value={contextWindow}
+          onChange={(e) => setContextWindow(e.target.value)}
+          className="font-mono"
+        />
+        <Text variant="caption" tone="faint">
+          The model's real context window. Claude Code believes a model it does
+          not know has a million tokens, so without it auto-compact never fires
+          before a smaller server refuses the turn — and a conversation past the
+          limit cannot even compact itself. Leave empty for auto.
+        </Text>
       </Stack>
       <Button
         variant="ghost"
@@ -557,12 +621,14 @@ function AddEndpointForm({
           ) : null}
         </Stack>
       ) : null}
-      {error || badUrl || badMapping ? (
+      {error || badUrl || badMapping || badContext ? (
         <Text variant="caption" tone="destructive">
           {error ??
             (badUrl
               ? "The base URL must be an http:// or https:// URL"
-              : "A mapped model is the server's own name — not a claude-… flag")}
+              : badMapping
+                ? "A mapped model is the server's own name — not a claude-… flag"
+                : "The context window is a number of tokens")}
         </Text>
       ) : null}
       <Line className="gap-xs">
@@ -577,8 +643,14 @@ function AddEndpointForm({
         <Button variant="ghost" onClick={onCancel}>
           Cancel
         </Button>
-        <Button disabled={invalid || busy !== null} onClick={add}>
-          {busy === "add" ? "Adding…" : "Add endpoint"}
+        <Button disabled={invalid || busy !== null} onClick={save}>
+          {busy === "save"
+            ? initial
+              ? "Saving…"
+              : "Adding…"
+            : initial
+              ? "Save changes"
+              : "Add endpoint"}
         </Button>
       </Line>
     </Stack>
@@ -609,6 +681,8 @@ export function ClaudeAccountMenu({
 }) {
   const [adding, setAdding] = useState(false);
   const [addingEndpoint, setAddingEndpoint] = useState(false);
+  // The endpoint account the edit form is open on, if any.
+  const [editing, setEditing] = useState<string | null>(null);
   // The account this tab switched to: running agents stay where they were.
   const [switchedTo, setSwitchedTo] = useState<string | null>(null);
   // The switch shows at once; what depends on it landing (the usage read of
@@ -620,6 +694,15 @@ export function ClaudeAccountMenu({
   const [unreadable, setUnreadable] = useState<Record<string, string>>({});
   const views = accountViews(accounts, claude);
   const active = activeAccountView(accounts, views);
+  // The endpoint account the edit form is open on, if any: a removed or
+  // switched account simply closes the form (no row to render it under).
+  const editingAccount =
+    editing === null
+      ? undefined
+      : accounts.accounts.find(
+          (a): a is ClaudeEndpointAccount =>
+            a.id === editing && a.kind === "endpoint",
+        );
   // One computer behind all three: the row's inputs, read off it, are
   // already ready, so this is the transport's own verdict.
   if (selectAccount.kind === "unavailable") {
@@ -715,7 +798,9 @@ export function ClaudeAccountMenu({
             }
             // Every row carries the remove action, so every row's reading
             // ends at one edge: the computer's own sign-in shows it disabled,
-            // saying why.
+            // saying why. Endpoint accounts also carry the edit action —
+            // adjusting their context window (or anything else) must not
+            // require a destroy/recreate.
             actions={
               v.id === SYSTEM_ACCOUNT_ID ? (
                 <IconButton
@@ -723,6 +808,19 @@ export function ClaudeAccountMenu({
                   label="This computer's own sign-in can't be removed"
                   disabled
                 />
+              ) : v.kind === "endpoint" ? (
+                <Line className="gap-xs">
+                  <IconButton
+                    icon={editIcon}
+                    label={`Edit ${v.name}`}
+                    onClick={() => setEditing(v.id)}
+                  />
+                  <IconButton
+                    icon={removeIcon}
+                    label={`Remove ${v.name}`}
+                    onClick={() => removeAccount.mutate({ body: { id: v.id } })}
+                  />
+                </Line>
               ) : (
                 <IconButton
                   icon={removeIcon}
@@ -758,9 +856,16 @@ export function ClaudeAccountMenu({
           Add a local endpoint
         </ControlPanel.Row>
         {addingEndpoint ? (
-          <AddEndpointForm
-            onAdded={() => setAddingEndpoint(false)}
+          <EndpointForm
+            onSaved={() => setAddingEndpoint(false)}
             onCancel={() => setAddingEndpoint(false)}
+          />
+        ) : null}
+        {editingAccount ? (
+          <EndpointForm
+            initial={editingAccount}
+            onSaved={() => setEditing(null)}
+            onCancel={() => setEditing(null)}
           />
         ) : null}
         {switchedTo === active.id ? (

@@ -137,6 +137,18 @@ export const ClaudeEndpointSettingsSchema = z.object({
    * as the Claude flag.
    */
   modelMap: ModelMapSchema.optional(),
+  /**
+   * The endpoint's model's real context window, in tokens. Claude Code
+   * believes a model it does not know has a 1M-token window, so it never
+   * auto-compacts before a local server with a smaller window (observed:
+   * Ninfer's 262,144) refuses the request — and a conversation past that
+   * limit cannot even compact itself. When set, it reaches Claude Code as
+   * `CLAUDE_CODE_MAX_CONTEXT_TOKENS` (the knob its own unknown-model notice
+   * names), and auto-compact fires before the server's hard limit. Absent:
+   * the proxy still shapes the refusal so Claude Code's own prompt-too-long
+   * rescue can recover.
+   */
+  contextWindow: z.number().int().positive().optional(),
 });
 export type ClaudeEndpointSettings = z.infer<
   typeof ClaudeEndpointSettingsSchema
@@ -184,6 +196,7 @@ export type ClaudeAccountCredential =
       baseUrl: string;
       token: string | null;
       modelMap?: ModelMap;
+      contextWindow?: number;
     };
 
 /**
@@ -194,7 +207,8 @@ export type ClaudeAccountCredential =
  * endpoint's own refusal, if it has one, is the test's to surface). A mapped
  * `haiku` also becomes the small fast model, so Claude Code's background
  * calls (titles, summaries) do not send a Claude model name the endpoint
- * cannot serve.
+ * cannot serve. The declared context window, when the account has one, rides
+ * as `CLAUDE_CODE_MAX_CONTEXT_TOKENS` (see the setting's own doc).
  */
 export function claudeEndpointEnv(
   base: Readonly<Record<string, string | undefined>>,
@@ -229,6 +243,17 @@ export function claudeEndpointEnv(
   env.CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS = "300000"; // first byte: 5 min
   env.CLAUDE_STREAM_IDLE_TIMEOUT_MS = "120000"; // gap between bytes: 2 min
   env.API_TIMEOUT_MS = "600000"; // whole request: 10 min
+  // The model's real context window, when the account declares one. Claude
+  // Code believes a model it does not know has a 1M-token window, so it never
+  // auto-compacts before a local server with a smaller window refuses the
+  // request — the conversation then cannot even compact itself. Telling it
+  // the true window makes auto-compact fire before the hard limit. This is
+  // the exact variable Claude Code's own unknown-model notice points at; an
+  // inherited value is stripped first, so an endpoint that does not declare
+  // one is never capped by a stray variable.
+  delete env.CLAUDE_CODE_MAX_CONTEXT_TOKENS;
+  if (credential.contextWindow !== undefined)
+    env.CLAUDE_CODE_MAX_CONTEXT_TOKENS = String(credential.contextWindow);
   return env;
 }
 
@@ -321,6 +346,28 @@ export const testClaudeEndpoint = defineEndpoint({
 export const removeClaudeAccount = defineEndpoint({
   route: "POST /api/claude-accounts/remove",
   body: z.object({ id: z.string().min(1) }),
+  needsMachine: { feature: "Switching Claude accounts" },
+});
+
+/**
+ * Update an existing endpoint account in place (no destroy/recreate): the
+ * whole settings plus the new name. The token, when given, replaces the
+ * stored one — an endpoint that takes no auth omits it, and the stored
+ * token (if any) is kept. The machine half runs the same live test `add-endpoint`
+ * runs when the connection identity (API shape, base URL, model map, token)
+ * changes — a broken edit must not brick the account — and persists a
+ * name / context-window-only change directly.
+ */
+export const updateClaudeEndpoint = defineEndpoint({
+  route: "POST /api/claude-accounts/update-endpoint",
+  body: z.object({
+    id: z.string().min(1),
+    name: z.string().trim().min(1).optional(),
+    endpoint: ClaudeEndpointSettingsSchema,
+    /** The new bearer token; absent keeps the stored one. */
+    token: z.string().trim().min(1).optional(),
+  }),
+  response: ClaudeAccountSchema,
   needsMachine: { feature: "Switching Claude accounts" },
 });
 

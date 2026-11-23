@@ -288,7 +288,10 @@ agents without tmux, per-namespace paths, the Claude Code health row:
   `equin-local` placeholder: with no auth variable at all Claude Code declines
   the turn on its own login check before the base URL is ever reached (the
   `openai` proxy ignores the header; an `anthropic` endpoint wanting a token
-  answers with its own 401) — nothing else is
+  answers with its own 401) — and `CLAUDE_CODE_MAX_CONTEXT_TOKENS` when the
+  account declares a context window (Claude Code believes a model it does not
+  know has a million tokens, so this makes auto-compact fire before the
+  server's hard limit — see `infra/claude-cli/accounts`) — nothing else is
   handed over). The launch's **model id** passes through unchanged
   (`AgentLaunchOptions.model`); `bin/agent.ts` resolves it once against the
   account's `modelMap` (`modelFlagForEndpoint`) and hands that name to Claude

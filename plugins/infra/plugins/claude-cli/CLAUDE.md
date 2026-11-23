@@ -34,6 +34,21 @@ const title = await runClaudePrint({
 Throws `ClaudeCliError` on an error result (in Claude Code's own words), a CLI
 that died, or a timeout — each filed as a crash report.
 
+### On a local endpoint, the bound widens to `ENDPOINT_ONE_SHOT_TIMEOUT_MS`
+
+`invokeClaude` reads the call's account (`activeClaudeAccountId`, resolved
+once per call — the same account the cost is filed under): when it is a LOCAL
+ENDPOINT, the turn's `timeoutMs` runs at
+`max(requested, ENDPOINT_ONE_SHOT_TIMEOUT_MS)` (`oneShotTimeoutMs`, pure and
+tested); key and system accounts run at their own bound, unchanged. A caller's
+bound is sized for Anthropic's API (seconds), but a local model server takes
+tens of seconds on the same prompt — observed on a 27B model: task titles at
+15–30 s straddling the 30 s bound, half dying right at the edge and each death
+filed as a crash (`task-title.short`). Widening is a *bound* around an external
+peer, not a fix of equin's code: a genuinely wedged server still trips it, and
+nothing on a key account changes. The SDK's timeout message then names the
+WIDENED bound (it is what was passed to `runClaudeTurn`).
+
 ### A usage limit is a state, not a fault: `ClaudeUsageLimitError`
 
 When the account is at a plan usage limit, Claude Code names the turn's failure
@@ -151,10 +166,10 @@ block keep taking a plain `ClaudeCliCall`.
     - `resource.declare` "claude-cli.calls-for"
     - `fork-data-exclusion` "claude_cli_call_horizon"
     - `fork-data-exclusion` "claude_cli_calls"
-  - Uses: 26 symbols — full list in [REFERENCE.md](./REFERENCE.md)
+  - Uses: 27 symbols — full list in [REFERENCE.md](./REFERENCE.md)
     - `infra/claude-cli/sdk` ×6
     - `database` ×4
-    - `infra/claude-cli/accounts` ×3
+    - `infra/claude-cli/accounts` ×4
     - `infra/entities` ×3
     - `database/sql-projection` ×2
     - `infra/claude-cli/usage-ledger` ×2

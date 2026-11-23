@@ -23533,12 +23533,12 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `ui/tokens/categorical --categorical-5`
           - `ui/tokens/color-palette --muted-foreground`
           - `ui/tokens/shape --spacing`
-        - Imported by: 34 plugins — full list in [`plugins/conversations/plugins/model-provider/REFERENCE.md`](../plugins/conversations/plugins/model-provider/REFERENCE.md)
+        - Imported by: 35 plugins — full list in [`plugins/conversations/plugins/model-provider/REFERENCE.md`](../plugins/conversations/plugins/model-provider/REFERENCE.md)
           - `conversations` ×15
           - `tasks` ×9
           - `apps` ×3
+          - `infra` ×3
           - `debug` ×2
-          - `infra` ×2
           - `hints/ask`
           - `primitives/launch`
           - `stats/cost`
@@ -36399,10 +36399,10 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `resource.declare` "claude-cli.calls-for"
           - `fork-data-exclusion` "claude_cli_call_horizon"
           - `fork-data-exclusion` "claude_cli_calls"
-        - Uses: 26 symbols — full list in [`plugins/infra/plugins/claude-cli/REFERENCE.md`](../plugins/infra/plugins/claude-cli/REFERENCE.md)
+        - Uses: 27 symbols — full list in [`plugins/infra/plugins/claude-cli/REFERENCE.md`](../plugins/infra/plugins/claude-cli/REFERENCE.md)
           - `infra/claude-cli/sdk` ×6
           - `database` ×4
-          - `infra/claude-cli/accounts` ×3
+          - `infra/claude-cli/accounts` ×4
           - `infra/entities` ×3
           - `database/sql-projection` ×2
           - `infra/claude-cli/usage-ledger` ×2
@@ -36531,7 +36531,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
           - `ids:pk-declared` — `server/internal/tables.ts` (debt)
           - `investigate:failures-registered` — `core/resources.ts` (sanctioned)
       - Plugins:
-        - **`accounts`** — The Claude accounts' credentials, every host's half: each added account's credential in the secrets store — an API key for a key account, the bearer token for an endpoint account that has one (saved, deleted, and read by the agent at its start: claudeAccountCredential, null for the computer's own Claude Code login, a loud error when an added account is gone) — and the machine-wide accounts file read through the ClaudeAccountsFile host service (the machine half provides it: the file's schema and parse live in core) — what reads it here: claudeAccountModelMap (an endpoint's family → model name map) and endpointAccountModels (every mapped model name, the zero-rate price rows' set).
+        - **`accounts`** — The Claude accounts' credentials, every host's half: each added account's credential in the secrets store — an API key for a key account, the bearer token for an endpoint account that has one (saved, deleted, and read by the agent at its start: claudeAccountCredential, null for the computer's own Claude Code login, a loud error when an added account is gone) — and the machine-wide accounts file read through the ClaudeAccountsFile host service (the machine half provides it: the file's schema and parse live in core) — what reads it here: claudeAccountModelMap (an endpoint's family → model name map), claudeAccountIsEndpoint (whether the account serves a local model server — the one-shot generation widens its bound for it) and endpointAccountModels (every mapped model name, the zero-rate price rows' set).
           - Server:
             - Contributes:
               - `resource.declare` "claude-accounts"
@@ -36548,6 +36548,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `ActiveClaudeAccount`
               - `activeClaudeAccountId`
               - `claudeAccountCredential`
+              - `claudeAccountIsEndpoint`
               - `claudeAccountModelMap`
               - `ClaudeAccountsFile`
               - `claudeEndpointToken`
@@ -36617,6 +36618,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `SYSTEM_ACCOUNT_ID`
               - `TEST_ACCOUNT_ID_PREFIX`
               - `testClaudeEndpoint`
+              - `updateClaudeEndpoint`
               - `withStandInNames`
           - Cross-plugin:
             - Imported by:
@@ -36721,9 +36723,11 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
               - `OpenAIMessage`
               - `OpenAIRequest`
               - `OpenAIToolCall`
+              - `UpstreamErrorShape`
             - Exports (values):
               - `finishReasonToStopReason`
               - `mapResponse`
+              - `shapeUpstreamError`
               - `StreamMapper`
               - `translateRequest`
               - `usageOf`

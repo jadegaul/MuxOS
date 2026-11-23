@@ -1,6 +1,7 @@
 export {
   finishReasonToStopReason,
   mapResponse,
+  shapeUpstreamError,
   StreamMapper,
   translateRequest,
   usageOf,
@@ -8,4 +9,5 @@ export {
   type OpenAIMessage,
   type OpenAIRequest,
   type OpenAIToolCall,
+  type UpstreamErrorShape,
 } from "./translate";

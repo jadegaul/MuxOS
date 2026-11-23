@@ -2,6 +2,7 @@ import { reportServerError } from "@plugins/framework/plugins/server-core/core";
 import { crashFieldsOf } from "@plugins/packages/plugins/error-subject/core";
 import {
   activeClaudeAccountId,
+  claudeAccountIsEndpoint,
   claudeAccountModelMap,
 } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
 import { noteClaudeCodeFailure } from "@plugins/infra/plugins/claude-cli/plugins/availability/server";
@@ -77,6 +78,32 @@ export class ClaudeUsageLimitError extends ClaudeCliError {
   }
 }
 
+/**
+ * The bound a one-shot generation gets on a LOCAL endpoint account. Its model
+ * server runs on the user's own hardware and a short generation there takes
+ * tens of seconds (observed on a 27B model: task titles 15–30 s), while a
+ * caller's bound is sized for Anthropic's API — so a 30 s title on a local
+ * model straddles its bound and dies right at the edge, every death filed as
+ * a crash. A key or system account never gets widened: its failures are
+ * faults to be filed, not latency to absorb.
+ */
+export const ENDPOINT_ONE_SHOT_TIMEOUT_MS = 120_000;
+
+/**
+ * The effective bound of a one-shot call: the caller's `requested`, widened to
+ * {@link ENDPOINT_ONE_SHOT_TIMEOUT_MS} when its account serves a local model
+ * server — never narrowed, so a caller that asked for more keeps it. Pure, so
+ * the decision is testable without a live account.
+ */
+export function oneShotTimeoutMs(
+  requested: number,
+  accountIsEndpoint: boolean,
+): number {
+  return accountIsEndpoint
+    ? Math.max(requested, ENDPOINT_ONE_SHOT_TIMEOUT_MS)
+    : requested;
+}
+
 export async function runClaudePrint(
   input: RunClaudePrintInput,
 ): Promise<string> {
@@ -142,6 +169,13 @@ export async function invokeClaude<T>({
       resolvedModel,
       await claudeAccountModelMap(accountId),
     );
+    // A local endpoint answers in tens of seconds, not the seconds the
+    // caller's bound assumes — widen it for an endpoint account (key/system
+    // accounts run at their own bound, unchanged).
+    const bound = oneShotTimeoutMs(
+      timeoutMs,
+      await claudeAccountIsEndpoint(accountId),
+    );
     let turn: ClaudeTurn;
     try {
       turn = await runClaudeTurn({
@@ -156,7 +190,7 @@ export async function invokeClaude<T>({
           model: modelFlag,
           persistSession: false,
         },
-        timeoutMs,
+        timeoutMs: bound,
       });
     } catch (err) {
       if (err instanceof ClaudeTurnError) {

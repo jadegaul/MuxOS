@@ -22,6 +22,7 @@ export {
   SYSTEM_ACCOUNT_ID,
   TEST_ACCOUNT_ID_PREFIX,
   testClaudeEndpoint,
+  updateClaudeEndpoint,
 } from "./internal/accounts";
 export type {
   ClaudeAccount,

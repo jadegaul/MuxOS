@@ -3,11 +3,13 @@ import { watchClaudeAccounts } from "@plugins/infra/plugins/claude-cli/plugins/a
 import {
   addClaudeEndpoint,
   testClaudeEndpoint,
+  updateClaudeEndpoint,
 } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
 import { llmProxyDaemon, reconcileProxy } from "./internal/proxy-daemon";
 import {
   handleAddClaudeEndpoint,
   handleTestClaudeEndpoint,
+  handleUpdateClaudeEndpoint,
 } from "./internal/routes";
 
 export default {
@@ -16,6 +18,7 @@ export default {
   httpRoutes: {
     [testClaudeEndpoint.route]: handleTestClaudeEndpoint,
     [addClaudeEndpoint.route]: handleAddClaudeEndpoint,
+    [updateClaudeEndpoint.route]: handleUpdateClaudeEndpoint,
   },
   register: [llmProxyDaemon],
   onReady: () => {

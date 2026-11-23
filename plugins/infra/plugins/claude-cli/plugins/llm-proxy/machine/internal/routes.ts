@@ -5,11 +5,16 @@ import {
   addClaudeEndpoint,
   mintTestAccountId,
   testClaudeEndpoint,
+  updateClaudeEndpoint,
   type ClaudeAccount,
   type ClaudeEndpointSettings,
 } from "@plugins/infra/plugins/claude-cli/plugins/accounts/core";
-import { changeClaudeAccounts } from "@plugins/infra/plugins/claude-cli/plugins/accounts/machine";
 import {
+  changeClaudeAccounts,
+  readClaudeAccounts,
+} from "@plugins/infra/plugins/claude-cli/plugins/accounts/machine";
+import {
+  claudeEndpointToken,
   deleteClaudeAccountCredential,
   saveClaudeAccountCredential,
 } from "@plugins/infra/plugins/claude-cli/plugins/accounts/server";
@@ -21,6 +26,7 @@ import {
   runClaudeTurn,
   type ClaudeTurnResult,
 } from "@plugins/infra/plugins/claude-cli/plugins/sdk/server";
+import { type ModelMap } from "@plugins/conversations/plugins/model-provider/core";
 import { ensureProxyUp } from "./proxy-daemon";
 
 // The endpoint's two routes, both implemented here (not in accounts/machine):
@@ -190,6 +196,91 @@ export const handleAddClaudeEndpoint = implementMachine(
     await changeClaudeAccounts((state) => ({
       ...state,
       accounts: [...state.accounts, account],
+    }));
+    return account;
+  },
+);
+
+/** Whether the two models maps agree, key order aside. */
+function sameModelMap(
+  a: ModelMap | undefined,
+  b: ModelMap | undefined,
+): boolean {
+  const entries = (m: ModelMap | undefined): Array<[string, string]> =>
+    Object.entries(m ?? {}).sort(([x], [y]) => (x < y ? -1 : x > y ? 1 : 0));
+  const ea = entries(a);
+  const eb = entries(b);
+  if (ea.length !== eb.length) return false;
+  return ea.every(([key, value], i) => {
+    const other = eb[i];
+    return other !== undefined && other[0] === key && other[1] === value;
+  });
+}
+
+/**
+ * Whether an edit changes how the endpoint is REACHED — its API shape, base
+ * URL, model map, or effective token. Only those changes run the live test:
+ * a name or context-window nudge proves nothing new, and a 60-second turn
+ * the user did not ask for is wasted.
+ */
+export function connectionIdentityChanged(
+  prev: ClaudeEndpointSettings,
+  next: ClaudeEndpointSettings,
+  prevToken: string | null,
+  nextToken: string | null,
+): boolean {
+  if (prev.api !== next.api) return true;
+  if (prev.baseUrl !== next.baseUrl) return true;
+  if (prevToken !== nextToken) return true;
+  return !sameModelMap(prev.modelMap, next.modelMap);
+}
+
+/**
+ * Update an endpoint account in place (the UI's edit form; no
+ * destroy/recreate): the whole settings plus the new name. The token, when
+ * given, replaces the stored one — an endpoint that takes no auth omits it,
+ * and the stored one is kept. A change to the connection runs the same live
+ * test `add-endpoint` runs (a broken edit must not brick the account —
+ * especially the active one); a name / context-window-only change persists
+ * directly.
+ */
+export const handleUpdateClaudeEndpoint = implementMachine(
+  updateClaudeEndpoint,
+  async ({ body }) => {
+    const state = await readClaudeAccounts();
+    const current = state.accounts.find((a) => a.id === body.id);
+    if (!current)
+      throw new HttpError(404, `No Claude account "${body.id}" to update`);
+    if (current.kind !== "endpoint")
+      throw new HttpError(
+        400,
+        `Claude account "${body.id}" is not a local endpoint — only endpoint accounts can be updated`,
+      );
+    // The effective token after the edit: the new one when given, else the
+    // stored one the edit keeps — the live test, when it runs, tests on it.
+    const storedToken = await claudeEndpointToken(body.id);
+    const nextToken = body.token ?? storedToken;
+    if (
+      connectionIdentityChanged(
+        current.endpoint,
+        body.endpoint,
+        storedToken,
+        nextToken,
+      )
+    )
+      await testEndpoint(body.endpoint, nextToken ?? undefined);
+    const account: ClaudeAccount = {
+      id: current.id,
+      name: body.name ?? current.name,
+      addedAt: current.addedAt,
+      kind: "endpoint",
+      endpoint: body.endpoint,
+    };
+    if (body.token !== undefined)
+      await saveClaudeAccountCredential(current.id, body.token);
+    await changeClaudeAccounts((state) => ({
+      ...state,
+      accounts: state.accounts.map((a) => (a.id === account.id ? account : a)),
     }));
     return account;
   },

@@ -3,6 +3,7 @@ import {
   StreamMapper,
   finishReasonToStopReason,
   mapResponse,
+  shapeUpstreamError,
   translateRequest,
   usageOf,
 } from "./translate";
@@ -484,6 +485,84 @@ describe("StreamMapper", () => {
       input_tokens: 3,
       output_tokens: 1,
       cache_read_input_tokens: 0,
+    });
+  });
+});
+
+describe("shapeUpstreamError", () => {
+  const what = "the endpoint http://100.99.219.116:8080/v1";
+
+  test("a context-length 400 becomes the canonical prompt-too-long shape", () => {
+    expect(
+      shapeUpstreamError(
+        400,
+        "prepared prompt exceeds Engine max_context 262144",
+        undefined,
+        what,
+      ),
+    ).toEqual({
+      status: 400,
+      errorType: "invalid_request_error",
+      message:
+        "prompt is too long: prepared prompt exceeds Engine max_context 262144",
+    });
+  });
+
+  test("the OpenAI context_length_exceeded code classifies even with terse words", () => {
+    expect(
+      shapeUpstreamError(400, "bad request", "context_length_exceeded", what),
+    ).toEqual({
+      status: 400,
+      errorType: "invalid_request_error",
+      message: "prompt is too long: bad request",
+    });
+  });
+
+  test("the OpenAI maximum-context-length sentence classifies", () => {
+    expect(
+      shapeUpstreamError(
+        400,
+        "This model's maximum context length is 32768 tokens. However, your messages resulted in 33,000 tokens.",
+        undefined,
+        what,
+      ),
+    ).toMatchObject({
+      status: 400,
+      errorType: "invalid_request_error",
+      message: expect.stringMatching(/^prompt is too long: /),
+    });
+  });
+
+  test("a non-context 400 stays a plain api_error — no false PTL on a typo'd model", () => {
+    expect(
+      shapeUpstreamError(400, "model 'qwen3.8-27x' not found", undefined, what),
+    ).toEqual({
+      status: 400,
+      errorType: "api_error",
+      message: `${what} refused (400): model 'qwen3.8-27x' not found`,
+    });
+  });
+
+  test("auth and server failures keep their mapping", () => {
+    expect(shapeUpstreamError(401, "invalid api key", undefined, what)).toEqual(
+      {
+        status: 401,
+        errorType: "api_error",
+        message: `${what} refused (401): invalid api key`,
+      },
+    );
+    expect(shapeUpstreamError(500, "internal error", undefined, what)).toEqual({
+      status: 502,
+      errorType: "api_error",
+      message: `${what} refused (500): internal error`,
+    });
+  });
+
+  test("an empty body keeps the words of the status alone", () => {
+    expect(shapeUpstreamError(429, "", undefined, what)).toEqual({
+      status: 429,
+      errorType: "api_error",
+      message: `${what} refused (429)`,
     });
   });
 });

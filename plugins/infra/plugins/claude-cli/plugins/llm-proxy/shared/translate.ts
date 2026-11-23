@@ -273,6 +273,58 @@ export function translateRequest(body: AnthropicRequest): OpenAIRequest {
   };
 }
 
+// ── Upstream errors: the Anthropic shape Claude Code must read ─────────────
+
+/** What an upstream failure becomes on its way back to Claude Code. */
+export interface UpstreamErrorShape {
+  status: number;
+  errorType: "api_error" | "invalid_request_error";
+  message: string;
+}
+
+/**
+ * The words local servers use to refuse a prompt that overflows their context
+ * window (Ninfer's `max_context`, OpenAI's `context_length_exceeded`, …). A
+ * MISS costs nothing (the refusal reads as a plain error, Claude Code retries
+ * the turn); a FALSE HIT burns a compaction on every typo'd model name, so
+ * the list stays narrow.
+ */
+const CONTEXT_LENGTH_RE =
+  /(maximum context length|context length exceeded|context window exceeded|context_length_exceeded|exceeds.{0,48}max(imum)?[_ ]context|prompt is too long|too many tokens)/i;
+
+/**
+ * An upstream failure's shape as Claude Code must read it. A context-length
+ * refusal — status 400, with the server's own words naming its window (or its
+ * `context_length_exceeded` code) — becomes the canonical Anthropic
+ * `invalid_request_error` “prompt is too long…”: only in that shape does
+ * Claude Code's built-in prompt-too-long rescue engage (drop the oldest
+ * messages and retry; compact after a refused turn). Everything else keeps
+ * the plain mapping — auth refusals stay 401, server failures read 502, the
+ * rest pass through — all as `api_error`.
+ */
+export function shapeUpstreamError(
+  status: number,
+  detail: string,
+  code: string | undefined,
+  what: string,
+): UpstreamErrorShape {
+  if (
+    status === 400 &&
+    (code === "context_length_exceeded" || CONTEXT_LENGTH_RE.test(detail))
+  )
+    return {
+      status: 400,
+      errorType: "invalid_request_error",
+      message: `prompt is too long: ${detail}`,
+    };
+  return {
+    status:
+      status === 401 || status === 403 ? 401 : status >= 500 ? 502 : status,
+    errorType: "api_error",
+    message: `${what} refused (${status})${detail === "" ? "" : `: ${detail}`}`,
+  };
+}
+
 // ── Response: OpenAI → Anthropic (non-streaming) ───────────────────────────
 
 export function finishReasonToStopReason(

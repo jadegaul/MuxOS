@@ -18,7 +18,12 @@ import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { readFile } from "@plugins/packages/plugins/timed-fs/core";
 import { dirname } from "node:path";
 import { parseArgs } from "node:util";
-import { mapResponse, StreamMapper, translateRequest } from "../shared";
+import {
+  mapResponse,
+  shapeUpstreamError,
+  StreamMapper,
+  translateRequest,
+} from "../shared";
 
 // The local translator proxy: ONE process per machine (the host singleton's
 // daemon starts it detached), answering on 127.0.0.1 — the address Claude Code
@@ -106,9 +111,14 @@ async function openaiHeaders(id: string): Promise<Record<string, string>> {
   return token === null ? {} : { authorization: `Bearer ${token}` };
 }
 
-/** An upstream's error body, read and worded in the Anthropic shape. */
+/**
+ * An upstream's error body, read and worded in the Anthropic shape — a
+ * context-length refusal as the canonical "prompt is too long" (shared/
+ * shapeUpstreamError), everything else a plain `api_error`.
+ */
 async function upstreamError(res: Response, what: string): Promise<Response> {
   let detail = "";
+  let code: string | undefined;
   let text = "";
   try {
     text = await res.text();
@@ -121,6 +131,14 @@ async function upstreamError(res: Response, what: string): Promise<Response> {
           : typeof json.message === "string"
             ? json.message
             : text.slice(0, 500);
+      // OpenAI names a context overflow by this code even when its words do
+      // not match — the classification reads it beside them.
+      code =
+        typeof error?.code === "string"
+          ? error.code
+          : typeof json.code === "string"
+            ? json.code
+            : undefined;
     } catch (err) {
       if (!(err instanceof SyntaxError)) throw err;
       // A body the endpoint did not answer in JSON: its own words, verbatim.
@@ -130,22 +148,16 @@ async function upstreamError(res: Response, what: string): Promise<Response> {
     // A read that died mid-stream is a real failure — it propagates.
     throw err;
   }
+  const shaped = shapeUpstreamError(res.status, detail, code, what);
   return Response.json(
     {
       type: "error",
       error: {
-        type: "api_error",
-        message: `${what} refused (${res.status})${detail === "" ? "" : `: ${detail}`}`,
+        type: shaped.errorType,
+        message: shaped.message,
       },
     },
-    {
-      status:
-        res.status === 401 || res.status === 403
-          ? 401
-          : res.status >= 500
-            ? 502
-            : res.status,
-    },
+    { status: shaped.status },
   );
 }
 

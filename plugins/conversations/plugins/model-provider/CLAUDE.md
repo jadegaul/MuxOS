@@ -122,12 +122,12 @@ Single source of truth for the models an agent can run, and for what the user as
     - `ui/tokens/categorical --categorical-5`
     - `ui/tokens/color-palette --muted-foreground`
     - `ui/tokens/shape --spacing`
-  - Imported by: 34 plugins — full list in [REFERENCE.md](./REFERENCE.md)
+  - Imported by: 35 plugins — full list in [REFERENCE.md](./REFERENCE.md)
     - `conversations` ×15
     - `tasks` ×9
     - `apps` ×3
+    - `infra` ×3
     - `debug` ×2
-    - `infra` ×2
     - `hints/ask`
     - `primitives/launch`
     - `stats/cost`

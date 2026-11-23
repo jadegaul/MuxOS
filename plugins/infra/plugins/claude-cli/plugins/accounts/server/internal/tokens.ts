@@ -72,6 +72,9 @@ export async function claudeAccountCredential(
     ...(account.endpoint.modelMap
       ? { modelMap: account.endpoint.modelMap }
       : {}),
+    ...(account.endpoint.contextWindow !== undefined
+      ? { contextWindow: account.endpoint.contextWindow }
+      : {}),
   };
 }
 
@@ -99,6 +102,18 @@ export async function claudeAccountModelMap(
   const { state } = await readAccountsFile();
   const account = state.accounts.find((a) => a.id === id);
   return account?.kind === "endpoint" ? account.endpoint.modelMap : undefined;
+}
+
+/**
+ * Whether account `id` is a local endpoint — it serves the user's own model
+ * server, whose latency is minutes, not seconds (the one-shot generation
+ * widens its bound for it, `claude-cli`'s `runClaudePrint`). `false` for the
+ * system account and an API-key account, and for an id no longer in the file.
+ */
+export async function claudeAccountIsEndpoint(id: string): Promise<boolean> {
+  if (id === SYSTEM_ACCOUNT_ID) return false;
+  const { state } = await readAccountsFile();
+  return state.accounts.find((a) => a.id === id)?.kind === "endpoint";
 }
 
 /**

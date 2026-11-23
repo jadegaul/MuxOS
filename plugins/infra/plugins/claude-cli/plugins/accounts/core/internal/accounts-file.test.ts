@@ -81,4 +81,16 @@ describe("parseAccountsFile", () => {
     };
     expect(() => parseAccountsFile(file)).toThrow();
   });
+
+  test("an endpoint row carrying its context window reads back as written", () => {
+    const row = {
+      ...endpoint,
+      endpoint: { ...endpoint.endpoint, contextWindow: 262144 },
+    };
+    const file = { accounts: [row], active: "acct-local" };
+    expect(parseAccountsFile(file)).toEqual({
+      state: { accounts: [row], active: "acct-local" },
+      planAccounts: [],
+    });
+  });
 });
