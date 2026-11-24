@@ -1,0 +1,2 @@
+# `go build ./...` writes the main package's binary next to its sources.
+gateway
