@@ -14071,7 +14071,7 @@ A list longer than 20 values (importers, uses, contributions) is summarized here
                 - Imported by: `apps/website/promo-film`
               - Structure:
                 - Non-standard folders: `data/`
-        - **`readme`** — The repo README's images: the animated hero (the logo drawing itself in, beside a living plugin network), the link pills (Watch the film, Try the demo, Install, Discord), the app shelf and the Try the demo card, rendered as SVG (the pills and the shelf once per GitHub theme) from the logo, the apps catalog and the website's tile colours, and held in sync by a check.
+        - **`readme`** — The repo README's images: the animated hero (the logo drawing itself in, beside a living plugin network), the link pills (Watch the film, Install), and the app shelf, rendered as SVG (the pills and the shelf once per GitHub theme) from the logo, the apps catalog and the website's tile colours, and held in sync by a check.
           - Core:
             - Uses:
               - `apps/website/app-tiles.oklchCss`

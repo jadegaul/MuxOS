@@ -1,4 +1,3 @@
-import { demoSvg } from "./demo";
 import { heroSvg } from "./hero";
 import { PILLS, pillSvg } from "./pills";
 import { shelfSvg, type GlyphBody } from "./shelf";
@@ -38,5 +37,4 @@ export const README_FILES: readonly {
       render: (glyphs: ReadmeGlyphs) => pillSvg(pill, theme, glyphs),
     })),
   ),
-  { path: `${README_ASSET_DIR}/demo.svg`, render: () => demoSvg() },
 ];

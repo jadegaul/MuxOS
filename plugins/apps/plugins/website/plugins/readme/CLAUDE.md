@@ -9,20 +9,17 @@ repo root) is written prose; the pictures it shows are SVG files in
   a living plugin network beside it (it builds itself, then drifts, sprouts and
   withers leaves, and carries a faint signal).
 - `pill-<id>.svg` — the link pills under the banner (`PILLS`): Watch the film
-  (the primary call to action, in the brand gradient), Try the demo, Install,
-  and a round Discord icon (its Simple Icons mark).
+  (the primary call to action, in the brand gradient) and Install.
 - `apps.svg` — the app shelf: the website apps catalog
   (`website/pages/apps` core, apps not built yet left out), each app its
   website tile (`website/app-tiles` colours, its Material Symbols glyph),
   ending in an outlined All apps tile.
-- `demo.svg` — the Try it card, linking to the live demo.
 
 They are shown through GitHub's `<img>`, so each is self-contained: no script,
 no web font, CSS animations only (all stop under `prefers-reduced-motion`,
-except the network's slow SMIL drift). The hero and demo are their own dark
-card on both GitHub themes. The shelf and the pills sit on the page, so each has
-a `-light` twin, and README.md picks one with `<picture>` +
-`prefers-color-scheme`.
+except the network's slow SMIL drift). The hero is its own dark card on both
+GitHub themes. The shelf and the pills sit on the page, so each has a `-light`
+twin, and README.md picks one with `<picture>` + `prefers-color-scheme`.
 
 A pill's width comes from a per-character estimate of its label (an
 `<img>`-shown SVG cannot measure its own text), so in an unusual fallback font
@@ -41,7 +38,7 @@ a label can sit a few pixels off-centre.
 
 ## Plugin reference
 
-- Description: The repo README's images: the animated hero (the logo drawing itself in, beside a living plugin network), the link pills (Watch the film, Try the demo, Install, Discord), the app shelf and the Try the demo card, rendered as SVG (the pills and the shelf once per GitHub theme) from the logo, the apps catalog and the website's tile colours, and held in sync by a check.
+- Description: The repo README's images: the animated hero (the logo drawing itself in, beside a living plugin network), the link pills (Watch the film, Install), and the app shelf, rendered as SVG (the pills and the shelf once per GitHub theme) from the logo, the apps catalog and the website's tile colours, and held in sync by a check.
 - Core:
   - Uses:
     - `apps/website/app-tiles.oklchCss`

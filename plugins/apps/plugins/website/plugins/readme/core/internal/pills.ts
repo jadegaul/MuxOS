@@ -29,21 +29,10 @@ export const PILLS: readonly Pill[] = [
     primary: true,
   },
   {
-    id: "demo",
-    label: "Try the demo",
-    glyph: { set: "symbol", name: "web-asset" },
-    tint: () => LOGO.gradient.from,
-  },
-  {
     id: "install",
     label: "Install",
     glyph: { set: "symbol", name: "terminal" },
     tint: (theme) => INKS[theme].green,
-  },
-  {
-    id: "discord",
-    glyph: { set: "brand", name: "discord" },
-    tint: () => "#5865F2",
   },
 ];
 
