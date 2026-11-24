@@ -39,7 +39,7 @@ export function fleetMemoryUnmeasuredFingerprint(
 
 /**
  * The one-line summary — the report row's `message` and the acquire's own log
- * line. A person installing equin reads that line in the install's log while
+ * line. A person installing muxos reads that line in the install's log while
  * the install waits (no app runs yet to measure anything), so it says what
  * happens in plain words first, as the safe pace it is rather than a limit
  * that reads like a fault, then the mechanism.
@@ -52,7 +52,7 @@ export function fleetMemoryUnmeasuredMessage(
       ? "nothing has measured it yet"
       : `its last measurement is ${Math.round((d.ageMs ?? 0) / 1000)} s old (awake time)`;
   return (
-    `${d.slots === 1 ? "one heavy task" : `up to ${d.slots} heavy tasks`} at a time for now, the safe pace until equin has measured this computer's free memory: ${why} ` +
-    `(equin's memory sampler, part of the running app, is not running) — cpu grant admission on the ${d.slots}-slot floor`
+    `${d.slots === 1 ? "one heavy task" : `up to ${d.slots} heavy tasks`} at a time for now, the safe pace until muxos has measured this computer's free memory: ${why} ` +
+    `(muxos's memory sampler, part of the running app, is not running) — cpu grant admission on the ${d.slots}-slot floor`
   );
 }

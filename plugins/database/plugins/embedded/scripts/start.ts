@@ -111,7 +111,7 @@ interface BinDir {
  *
  * - A packaged release names its vendored tree (`PG_BIN_DIR`).
  * - Otherwise the install pinned to this machine (`postgres-binaries`, see
- *   `pinned-binaries.ts`), moved only by `./equin deps pin`.
+ *   `pinned-binaries.ts`), moved only by `./muxos deps pin`.
  */
 async function resolveBinDir(): Promise<BinDir> {
   const override = readEnv("PG_BIN_DIR");
@@ -161,7 +161,7 @@ function assertSameMajor(binDir: string): void {
     throw new Error(
       `pg: the server binaries at ${binDir} are PostgreSQL ${major}, but this cluster is PostgreSQL ${PG_MAJOR} (${PG_DATA_DIR}). ` +
         `A major-version change needs its data migrated (pg_upgrade), which nothing does on its own — not starting. ` +
-        `Pin binaries of PostgreSQL ${PG_MAJOR} (\`./equin deps pin postgres-binaries\` from a checkout that declares them), or run the upgrade.`,
+        `Pin binaries of PostgreSQL ${PG_MAJOR} (\`./muxos deps pin postgres-binaries\` from a checkout that declares them), or run the upgrade.`,
     );
   }
   if (dataDirValid()) {
@@ -359,7 +359,7 @@ function dataDirPartial(): boolean {
  * extra fd pg_ctl must inherit for that path to name the relay pipe.
  *
  * `absent` is a gateway older than the relay running this script (its binary is
- * only rebuilt by `./equin start`): the old unrotated file, said out loud —
+ * only rebuilt by `./muxos start`): the old unrotated file, said out loud —
  * refusing would leave the cluster down until someone restarts the gateway.
  */
 function postmasterLog(target: ServiceLogTarget): {
@@ -392,7 +392,7 @@ function postmasterLog(target: ServiceLogTarget): {
     };
   }
   console.log(
-    `pg: this gateway predates the service log relay; logging to the unrotated ${PG_LEGACY_LOG_FILE} — restart the gateway (./equin start --force) and then the cluster`,
+    `pg: this gateway predates the service log relay; logging to the unrotated ${PG_LEGACY_LOG_FILE} — restart the gateway (./muxos start --force) and then the cluster`,
   );
   return {
     path: PG_LEGACY_LOG_FILE,

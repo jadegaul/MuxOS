@@ -62,7 +62,7 @@ export const FILM_MUSIC: FilmMusic = {
 
 /**
  * Other tracks to audition the SAME recordings with, by slug — `film.ts
- * --music <slug>` renders `equin-v<N>-music-<slug>.mp4` with one of them,
+ * --music <slug>` renders `muxos-v<N>-music-<slug>.mp4` with one of them,
  * FILM_MUSIC untouched. Each file is
  * `~/Downloads/showcase/music-candidates/<slug>/<slug>.mp3` (Loyalty Freak
  * Music, CC0). The beat grids were measured 2026-11-09 on these files the way

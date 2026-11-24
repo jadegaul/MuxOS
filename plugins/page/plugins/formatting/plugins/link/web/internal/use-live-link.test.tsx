@@ -34,15 +34,15 @@ describe("useLiveLink under a server render", () => {
     let key: NodeKey | null = null;
     editor.update(
       () => {
-        const link = $createLinkNode("https://equin.dev");
-        link.append($createTextNode("equin"));
+        const link = $createLinkNode("https://muxos.dev");
+        link.append($createTextNode("muxos"));
         $getRoot().append($createParagraphNode().append(link));
         key = link.getKey();
       },
       { discrete: true },
     );
     expect(renderToStaticMarkup(<Probe editor={editor} linkKey={key} />)).toBe(
-      "<i>https://equin.dev equin</i>",
+      "<i>https://muxos.dev muxos</i>",
     );
   });
 

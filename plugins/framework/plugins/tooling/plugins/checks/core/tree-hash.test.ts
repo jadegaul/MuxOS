@@ -169,8 +169,8 @@ describe("computeTreeHash", () => {
   });
 
   test("sweeps the scratch indexes of dead runs, never a live one's", async () => {
-    const dead = `${index}.equin-tree-hash-99999999-deadbeef`;
-    const live = `${index}.equin-refreshed-${process.pid}-cafe0001`;
+    const dead = `${index}.muxos-tree-hash-99999999-deadbeef`;
+    const live = `${index}.muxos-refreshed-${process.pid}-cafe0001`;
     writeFileSync(dead, "debris");
     writeFileSync(live, "in use");
     expect(await computeTreeHash(root)).toBe(await referenceHash());

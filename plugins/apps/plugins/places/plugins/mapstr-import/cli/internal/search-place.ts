@@ -19,7 +19,7 @@ export function parseNear(near: string): { lat: number; lng: number } {
 }
 
 /**
- * `./equin places search-place "<query>"` — Google's top hits for a
+ * `./muxos places search-place "<query>"` — Google's top hits for a
  * query, for a human or a research agent deciding a Mapstr row by hand
  * (`--overrides`). Read-only: one Text Search, no DB write.
  */

@@ -4,6 +4,6 @@ import { appsPage } from "../core";
 
 export default {
   description:
-    "The apps gallery of the equin website on the server: its sitemap entry (WebsitePages.Page).",
+    "The apps gallery of the muxos website on the server: its sitemap entry (WebsitePages.Page).",
   contributions: [WebsitePages.Page(appsPage)],
 } satisfies ServerPluginDefinition;

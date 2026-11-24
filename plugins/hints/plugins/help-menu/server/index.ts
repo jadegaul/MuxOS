@@ -4,7 +4,7 @@ import { HELP_CATEGORY_ID } from "../core";
 
 export default {
   description:
-    'The Help task category: the category questions asked from the ? menu ("Ask equin how to…") are grouped under.',
+    'The Help task category: the category questions asked from the ? menu ("Ask muxos how to…") are grouped under.',
   contributions: [
     TaskCategory({ id: HELP_CATEGORY_ID, label: "Help", order: 19 }),
   ],

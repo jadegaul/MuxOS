@@ -10,7 +10,7 @@ const Tail = z.array(Line).max(RESTART_FAILED_TAIL_LINES);
 
 /**
  * The jsonb payload of a `gateway-restart-failed` report: main's follow-main
- * step (`./equin build --allow-main --converge`, `gateway-drift/cli`) swapped
+ * step (`./muxos build --allow-main --converge`, `gateway-drift/cli`) swapped
  * the machine's gateway for main's and the new one did not come up — or it
  * would not try, because it could not have gone back. Filed by that run through
  * the report outbox; nothing retries the same launch (the next push that

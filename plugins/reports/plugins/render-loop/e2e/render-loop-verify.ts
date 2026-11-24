@@ -9,7 +9,7 @@
 //      files nothing.
 //
 // Usage:
-//   ./equin run plugins/reports/plugins/render-loop/e2e/render-loop-verify.ts [--vision]
+//   ./muxos run plugins/reports/plugins/render-loop/e2e/render-loop-verify.ts [--vision]
 //
 // Manual only — nothing runs this automatically.
 

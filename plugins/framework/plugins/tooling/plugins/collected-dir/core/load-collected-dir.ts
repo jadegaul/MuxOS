@@ -39,8 +39,8 @@ export interface LoadCollectedDirOptions<T> {
    *
    * It is WRONG wherever a missing item is indistinguishable from an item that
    * does not exist — a check that failed to load reads as a check that passed.
-   * `./equin`'s command registry is the case that motivated the option: a `cli/index.ts` that throws at load would otherwise
-   * make its verb quietly absent, and `./equin build` would report
+   * `./muxos`'s command registry is the case that motivated the option: a `cli/index.ts` that throws at load would otherwise
+   * make its verb quietly absent, and `./muxos build` would report
    * "unknown command" — a broken deploy pipeline reading as a typo. `lint/` and
    * `provision/` each hand-rolled a fail-loud loader to escape this default;
    * this option exists so the CLI does not become a third copy of that, and so
@@ -56,8 +56,8 @@ export interface LoadCollectedDirOptions<T> {
    *
    * `strict` answers "present but broken"; this answers "listed but deleted".
    * They must stay apart wherever the registry's own regenerator runs through
-   * this loader: `./equin`'s command registry is regenerated only by the
-   * CLI, so failing strict on a deleted command meant no `./equin`
+   * this loader: `./muxos`'s command registry is regenerated only by the
+   * CLI, so failing strict on a deleted command meant no `./muxos`
    * command could start to regenerate it — `build` and `push` included.
    *
    * Injected rather than checked here so this leaf keeps no `node:*` import.
@@ -119,7 +119,7 @@ export async function loadCollectedDirEntries<T>(
   if (stale.length > 0) {
     console.warn(
       `[${label}] registry lists ${stale.length} removed contribution(s), skipped: ` +
-        `${stale.join(", ")} — \`./equin build\` regenerates the registry.`,
+        `${stale.join(", ")} — \`./muxos build\` regenerates the registry.`,
     );
   }
   const ordered = opts.ordered ? topoSort(present) : present;

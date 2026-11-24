@@ -1,4 +1,4 @@
-// The scratch profile an Ask equin run is launched under (the agent's
+// The scratch profile an Ask muxos run is launched under (the agent's
 // CLAUDE.md, its tools) — the thread's kind, which `useThreadRuns` reads back.
 export const HELP_ASK_PROFILE = "help.ask";
 

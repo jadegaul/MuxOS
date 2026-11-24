@@ -38,16 +38,16 @@ export function unreadableReason(status: UnreadableFolder): string {
   switch (status.state) {
     case "denied":
       return status.code === "EPERM"
-        ? "macOS hasn't given equin access to this folder, so the MIDI files in it aren't being imported."
+        ? "macOS hasn't given muxos access to this folder, so the MIDI files in it aren't being imported."
         : "Your user account isn't allowed to read this folder (its permissions keep it out), so the MIDI files in it aren't being imported.";
     case "missing":
       return "Nothing is at this path — the folder was moved or renamed, or it's on a drive that isn't connected.";
     case "not-a-folder":
       return "This path is a file, not a folder, so there is nothing to import from it.";
     case "unreadable":
-      return `equin can't read this folder (${status.code}: ${status.message}), so the MIDI files in it aren't being imported.`;
+      return `muxos can't read this folder (${status.code}: ${status.message}), so the MIDI files in it aren't being imported.`;
     case "checking":
-      return "macOS is asking whether equin may open this folder — answer its dialog (it may be behind other windows). The MIDI files in it are imported once you allow it.";
+      return "macOS is asking whether muxos may open this folder — answer its dialog (it may be behind other windows). The MIDI files in it are imported once you allow it.";
   }
 }
 
@@ -69,7 +69,7 @@ export function shortStatus(status: UnreadableFolder): string {
 
 /**
  * Whether macOS's privacy settings are where access is given back: EPERM is
- * TCC refusing equin (Files & Folders); EACCES is the folder's own Unix
+ * TCC refusing muxos (Files & Folders); EACCES is the folder's own Unix
  * permissions, which no System Settings switch changes.
  */
 export function deniedByMacOs(status: UnreadableFolder): boolean {

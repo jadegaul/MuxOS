@@ -2,7 +2,7 @@ import { readEnv } from "@plugins/infra/plugins/launcher/plugins/env-names/core"
 
 /**
  * Whether a spawn from THIS process should be disclaimed: on macOS, unless
- * `EQUIN_NO_SPAWN_DISCLAIM=1` (the operator escape hatch: `1` turns the
+ * `MUXOS_NO_SPAWN_DISCLAIM=1` (the operator escape hatch: `1` turns the
  * disclaim off everywhere). The caller that resolves the helper asks
  * this first, so a disabled or non-macOS host never builds or waits for it.
  */

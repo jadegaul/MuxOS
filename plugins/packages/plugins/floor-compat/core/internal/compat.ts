@@ -1,7 +1,7 @@
 /**
  * Whether `new URL(raw, base)` parses — `URL.canParse`, spelled with the
  * constructor so it runs on every browser of the floor (`URL.canParse` is
- * Safari 17 / Chrome 120 / Firefox 115; equin.ai's home page crashed on it on
+ * Safari 17 / Chrome 120 / Firefox 115; MuxOS.app's home page crashed on it on
  * 2026-11-19). The constructor throws a `TypeError` on an invalid URL, and
  * only then.
  */

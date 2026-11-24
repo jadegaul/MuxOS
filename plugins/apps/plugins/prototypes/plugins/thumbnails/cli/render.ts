@@ -16,7 +16,7 @@ import {
 import { renderThumbnail } from "../machine/internal/render";
 
 /**
- * `./equin prototype thumbnails <tree> --out <dir>` — render the gallery
+ * `./muxos prototype thumbnails <tree> --out <dir>` — render the gallery
  * picture of every prototype folder under `<tree>` with the gallery's own
  * renderer (the same Chromium, viewport and density as the render job), each
  * written to `<dir>/<fingerprint>.png`: the name the thumbnail cache looks it

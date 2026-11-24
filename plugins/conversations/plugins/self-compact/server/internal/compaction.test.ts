@@ -6,10 +6,10 @@
  * it waits it is a pending turn (other automatic senders hold), and not once
  * it went out.
  *
- * Needs this worktree's DB as `./equin build` leaves it (the
+ * Needs this worktree's DB as `./muxos build` leaves it (the
  * conversation_compactions migration applied).
  *
- * Run: `./equin test plugins/conversations/plugins/self-compact`.
+ * Run: `./muxos test plugins/conversations/plugins/self-compact`.
  */
 import { describe, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";

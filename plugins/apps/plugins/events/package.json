@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-events",
-  "description": "Events — track events from pluggable sources in one database.",
+  "name": "@muxos/plugin-apps-events",
+  "description": "Events \u2014 track events from pluggable sources in one database.",
   "private": true,
   "version": "0.0.1"
 }

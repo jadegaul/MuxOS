@@ -15,7 +15,7 @@ import type { LeftBehindProcess } from "./types";
  * — one that left the group with `setsid`, or one that just died, leaving it to
  * launchd — has not reaped it yet. They are already dead, so they are neither
  * killed nor returned; a group of ONLY zombies answers the probe with EPERM
- * (`none-signallable`), which is how `./equin test` once exited 1 after every
+ * (`none-signallable`), which is how `./muxos test` once exited 1 after every
  * test passed. A member that is alive yet cannot be signalled is a leak this
  * call cannot end, and it throws naming it.
  *

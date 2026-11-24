@@ -5,7 +5,7 @@ import { Text } from "@plugins/primitives/plugins/css/plugins/text/web";
 import { Theme } from "@plugins/primitives/plugins/css/plugins/theme-boundary/web";
 import { cn } from "@plugins/primitives/plugins/css/plugins/ui-kit/web";
 import { subThemeScope } from "@plugins/primitives/plugins/css/plugins/ui-kit/core";
-import { equinPageHeroTheme } from "../internal/theme";
+import { muxosPageHeroTheme } from "../internal/theme";
 import { WebsiteBand } from "./website-band";
 import "./website-hero.css";
 
@@ -67,10 +67,10 @@ export function WebsiteHero({
 }: WebsiteHeroProps) {
   const home = kind === "home";
   return (
-    // An inner page's heading wears its own sizes (`equinPageHeroTheme`); the
+    // An inner page's heading wears its own sizes (`muxosPageHeroTheme`); the
     // title page keeps the document's. Transparent, so the wash shows through.
     <Theme
-      name={home ? undefined : subThemeScope(equinPageHeroTheme)}
+      name={home ? undefined : subThemeScope(muxosPageHeroTheme)}
       surface="none"
       className="relative"
     >

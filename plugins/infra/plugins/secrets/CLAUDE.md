@@ -4,11 +4,11 @@ Encrypted-at-rest key-value primitive. Consumers: `auth` (OAuth tokens / API key
 
 ## Topology
 
-- **Storage lives on the central runtime.** `~/.equin/state/secrets/secrets.json.enc` (AES-256-GCM) is read and written by the singleton `central` backend (gateway-supervised, headless). Worktree backends never touch the file.
-- **OS keychain for the master key, file fallback; the file on Linux.** macOS / Windows: `@napi-rs/keyring` (Keychain / Credential Manager), falling back to `~/.equin/state/secrets/.key` (mode 0600) when the native module is missing or fails at runtime. Linux: that file only, by design — the keyring's Linux backends are the Secret Service (absent or locked on a headless server) and the kernel keyring (gone at reboot), so the key would differ between boots. Either way the key is cached in-memory after first read.
+- **Storage lives on the central runtime.** `~/.muxos/state/secrets/secrets.json.enc` (AES-256-GCM) is read and written by the singleton `central` backend (gateway-supervised, headless). Worktree backends never touch the file.
+- **OS keychain for the master key, file fallback; the file on Linux.** macOS / Windows: `@napi-rs/keyring` (Keychain / Credential Manager), falling back to `~/.muxos/state/secrets/.key` (mode 0600) when the native module is missing or fails at runtime. Linux: that file only, by design — the keyring's Linux backends are the Secret Service (absent or locked on a headless server) and the kernel keyring (gone at reboot), so the key would differ between boots. Either way the key is cached in-memory after first read.
 - **The key source is sticky.** A keychain with no entry defers to a `.key` an earlier fallback wrote, and no path mints a new key while `secrets.json.enc` exists — it throws `SecretsKeychainLockedError` instead, since a fresh key could never read that blob and the next write would replace every secret.
-- **Worktrees call central over HTTP via the gateway.** `getSecret`/`setSecret`/`deleteSecret`/`hasSecret`/`getSecretMetadata`/`listKeysInNamespace` (`server/`) go through the `SecretStore` host service (`secrets.store`); its one provider is the `machine/` half (`centralSecretStore`), which POSTs JSON to `http://localhost:<port>/api/secrets/*`. No browser host provides it, so — portability rule 3 (`boundaries/core`) — `infra/secrets/server` and every server barrel loading it are not portable and never boot in a browser host (where `localhost:<port>` would be the visitor's own machine). A process that runs this code without booting a graph (the agent process, `./equin deploy`) names the provider itself: `provideHostServicesUnbooted([SecretStore.provide(centralSecretStore)])`, `centralSecretStore` from `infra/secrets/cli` (a `bin/` cannot import `machine/`). The gateway routes those prefixes to `central` regardless of host (see `~/.equin/state/gateway/central-routes.json`). The previous unix-socket RPC and `~/.equin/secrets.sock` are gone.
-- **Boot is in central's `onReady`.** Central's plugin definition (`plugins/infra/plugins/secrets/central/index.ts`) loads the keychain, hydrates the encrypted blob, and runs the legacy `~/.equin/state/auth/tokens.json.enc` migration before the HTTP handlers are reachable. The server-side `ready` promise resolves immediately — there's nothing to wait for in-process.
+- **Worktrees call central over HTTP via the gateway.** `getSecret`/`setSecret`/`deleteSecret`/`hasSecret`/`getSecretMetadata`/`listKeysInNamespace` (`server/`) go through the `SecretStore` host service (`secrets.store`); its one provider is the `machine/` half (`centralSecretStore`), which POSTs JSON to `http://localhost:<port>/api/secrets/*`. No browser host provides it, so — portability rule 3 (`boundaries/core`) — `infra/secrets/server` and every server barrel loading it are not portable and never boot in a browser host (where `localhost:<port>` would be the visitor's own machine). A process that runs this code without booting a graph (the agent process, `./muxos deploy`) names the provider itself: `provideHostServicesUnbooted([SecretStore.provide(centralSecretStore)])`, `centralSecretStore` from `infra/secrets/cli` (a `bin/` cannot import `machine/`). The gateway routes those prefixes to `central` regardless of host (see `~/.muxos/state/gateway/central-routes.json`). The previous unix-socket RPC and `~/.muxos/secrets.sock` are gone.
+- **Boot is in central's `onReady`.** Central's plugin definition (`plugins/infra/plugins/secrets/central/index.ts`) loads the keychain, hydrates the encrypted blob, and runs the legacy `~/.muxos/state/auth/tokens.json.enc` migration before the HTTP handlers are reachable. The server-side `ready` promise resolves immediately — there's nothing to wait for in-process.
 
 ## Namespaces and scopes
 
@@ -20,7 +20,7 @@ Secrets are addressed by `{ namespace, key }`, where `namespace` is a declared `
   - any other namespace reads its overlay, falling through to the base, and writes / deletes only its overlay (a delete is a tombstone, so main's value does not reappear). A seed or a worktree testing Set value gets its own copy and never touches main's;
   - a caller that names no namespace reads the base, and its write is refused — 403 over HTTP (`InstanceWriteRefusedError` in central).
 
-The scope travels on every request body, read off the ref's `SecretNamespace`. The caller's namespace rides in `SECRETS_CALLER_HEADER` (`core/`): `centralSecretStore` stamps `runtimeNamespace()` per call (none when the process declared none — the agent process, a test preload without one); a CLI that acts for a checkout uses `centralSecretStoreFor(ns)` (`./equin deploy` reads its checkout's `deploy-ssh` key). The header is the caller's own claim — an accident guard against our own code, not authentication (single-instance ADR).
+The scope travels on every request body, read off the ref's `SecretNamespace`. The caller's namespace rides in `SECRETS_CALLER_HEADER` (`core/`): `centralSecretStore` stamps `runtimeNamespace()` per call (none when the process declared none — the agent process, a test preload without one); a CLI that acts for a checkout uses `centralSecretStoreFor(ns)` (`./muxos deploy` reads its checkout's `deploy-ssh` key). The header is the caller's own claim — an accident guard against our own code, not authentication (single-instance ADR).
 
 Central's in-process API (`central/`: auth, `fields/secret/config`'s central half) takes machine namespaces only and throws on an instance one: central serves every namespace and runs as none.
 
@@ -40,7 +40,7 @@ The secrets plugin has no frontend. Plaintext secret values must never flow to a
 
 ## Migration from pre-secrets auth
 
-On central's first boot after upgrade, `migrateLegacyAuthTokens` decrypts `~/.equin/state/auth/tokens.json.enc` with its own `.key`, writes the blob under `auth-tokens/blob-v1`, and renames both legacy files to `.migrated-<timestamp>`. Idempotent — subsequent boots see the secret already present and no-op.
+On central's first boot after upgrade, `migrateLegacyAuthTokens` decrypts `~/.muxos/state/auth/tokens.json.enc` with its own `.key`, writes the blob under `auth-tokens/blob-v1`, and renames both legacy files to `.migrated-<timestamp>`. Idempotent — subsequent boots see the secret already present and no-op.
 
 ## Explicit deferrals
 
@@ -48,11 +48,11 @@ On central's first boot after upgrade, `migrateLegacyAuthTokens` decrypts `~/.eq
 - **Key rotation.** No `rotateKey()` yet; the blob version byte in `crypto.ts` gives us a hook if we need it.
 - **Per-secret ACLs.** HTTP access is gated by the localhost trust boundary — same threat model as every other dev tool, and unchanged from when the unix socket gated reads with 0600 file permissions.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: The secrets API every backend calls (getSecret / setSecret / deleteSecret / hasSecret / getSecretMetadata / listKeysInNamespace), through the SecretStore host service (secrets.store) — provided on the computer by the machine half, a client of central's store. No browser host provides it, so nothing that reads secrets runs in one. Encrypted key-value primitive. AES-256-GCM blob at ~/.equin/state/secrets/secrets.json.enc with the master key in the OS keychain (fallback to the .key beside it). Hosted on the central runtime; consumers (auth, config) call /api/secrets/* via the gateway.
+- Description: The secrets API every backend calls (getSecret / setSecret / deleteSecret / hasSecret / getSecretMetadata / listKeysInNamespace), through the SecretStore host service (secrets.store) — provided on the computer by the machine half, a client of central's store. No browser host provides it, so nothing that reads secrets runs in one. Encrypted key-value primitive. AES-256-GCM blob at ~/.muxos/state/secrets/secrets.json.enc with the master key in the OS keychain (fallback to the .key beside it). Hosted on the central runtime; consumers (auth, config) call /api/secrets/* via the gateway.
 - Load-bearing: yes
 - Server:
   - Contributes: `host-service:secrets.store` "secrets.store"

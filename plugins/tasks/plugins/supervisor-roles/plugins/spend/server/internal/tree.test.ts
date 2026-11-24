@@ -221,13 +221,13 @@ describe("buildSpendTree", () => {
     expect(at(launcher, "task-tri").conversationId).toBe("c-tri");
   });
 
-  test("a session equin did not launch is the person's own, never a removed conversation", () => {
+  test("a session muxos did not launch is the person's own, never a removed conversation", () => {
     const own = buildSpendTree(
       [outside("abcdef123456", 4), outside("0123456789", 1)],
       MANDATES,
     );
     const group = at(own, "you", "outside");
-    expect(group.name).toBe("Claude Code outside equin");
+    expect(group.name).toBe("Claude Code outside muxos");
     expect(group.sub).toBe("2 sessions");
     const leaf = at(group, "session:abcdef123456");
     expect(leaf.kind).toBe("outside-session");

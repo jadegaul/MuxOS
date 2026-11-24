@@ -24,10 +24,10 @@ export const LEGACY_IDS = {
   keychainService: "singularity",
   /** The gateway's code-signing identifier (TCC grants are keyed on it). */
   codesignIdentifier: "dev.singularity.gateway",
-  /** The gateway's launchd / systemd label before the data-dir migration (`./equin data-dir migrate`). */
-  launchdLabel: "dev.singularity.gateway",
+  /** The gateway's launchd / systemd label before the data-dir migration (`./muxos data-dir migrate`). */
+  launchdLabel: "dev.equin.gateway",
   /** The data root's dir name under the home dir before the data-dir migration (`~/<dir>`). */
-  dataDirName: ".singularity",
+  dataDirName: ".equin",
   /** The trailer naming the conversation a commit came from. */
   conversationTrailer: "Singularity-Conversation",
   /** The trailer naming the push a commit landed with. */
@@ -70,8 +70,12 @@ export const LEGACY_IDS = {
   fileExplorerPlace: "singularity",
   /** The comment of a deploy SSH key (`<p><server id>`). */
   deployKeyCommentPrefix: "singularity-deploy-",
-  /** The legacy CLI name, still a shim at the repo root. */
-  cliShim: "singularity",
+  /** The legacy CLI names, still shims at the repo root (each forwards to `./muxos`). */
+  cliShims: ["equin", "singularity"],
+  /** The main namespace's previous-generation public host label: pre-rename agent env, bookmarks and transcripts still dial it; it resolves to the main namespace (`namespace` LEGACY_HOST_ALIASES) and goes when nothing dials it (rename track, Step 9). */
+  mainHostAlias: "equin",
+  /** The npm scope of the published platform-binary packages (`@equin/pgbouncer-*`, `@equin/pg-client-*`): installs pin them by name on the registry, so the scope outlives the rename (the workspace's own `@muxos/*` names are a same-build id and were renamed). */
+  npmScope: "@equin",
   /** The default checkout dir of a fresh install (`~/<dir>`). */
   defaultCheckoutDir: "singularity",
   /** The backups dir under the home dir (`~/.backups/<dir>`). */
@@ -123,11 +127,11 @@ export const LEGACY_ID_NOTES: Readonly<Record<LegacyIdKey, LegacyIdNote>> = {
     kept: "TCC grants are keyed on it; renaming re-prompts every permission",
   },
   launchdLabel: {
-    kept: "the installed service of an install not yet migrated; the gateway's login service stays bound to it while its definition is installed, until `./equin data-dir migrate` relabels it",
+    kept: "the installed service of an install not yet migrated; the gateway's login service stays bound to it while its definition is installed, until `./muxos data-dir migrate` relabels it",
     mirrors: ["install.sh"],
   },
   dataDirName: {
-    kept: "the data root of an install not yet migrated; it is used while it exists, until `./equin data-dir migrate` moves it (paths/data-root-layout dataRootLayout)",
+    kept: "the data root of an install not yet migrated; it is used while it exists, until `./muxos data-dir migrate` moves it (paths/data-root-layout dataRootLayout)",
     mirrors: [
       "gateway/dataroot.go",
       "install.sh",
@@ -197,12 +201,27 @@ export const LEGACY_ID_NOTES: Readonly<Record<LegacyIdKey, LegacyIdNote>> = {
   deployKeyCommentPrefix: {
     kept: "in the authorized_keys of every configured server",
   },
-  cliShim: {
-    kept: "the `./singularity` shim old transcripts and muscle memory call",
+  cliShims: {
+    kept: "the `./equin` and `./singularity` shims old transcripts and muscle memory call; both forward to ./muxos",
     mirrors: ["plugins/framework/plugins/cli/package.json"],
   },
+  mainHostAlias: {
+    kept: "a pre-rename EQUIN_…PARENT_URL value, bookmark or transcript still dials equin.localhost; it resolves to the main namespace until nothing dials it (rename track, Step 9)",
+    mirrors: ["gateway/proxy.go"],
+  },
+  npmScope: {
+    kept: "platform-binary packages published to npm under this scope; every install pins them by registry name, so a rename would break installs of a build that predates the new scope",
+    mirrors: [
+      "package.json",
+      "plugins/database/plugins/pgbouncer/package.json",
+      "plugins/database/plugins/pgbouncer/plugins/publish-watch/package.json",
+      "plugins/database/plugins/pgbouncer/plugins/binary/package.json",
+      "plugins/database/plugins/client-tools/package.json",
+      "plugins/database/plugins/client-tools/plugins/publish-watch/package.json",
+    ],
+  },
   defaultCheckoutDir: {
-    kept: "existing installs' checkout dir, which is never moved (git worktrees store absolute gitdirs); install.sh clones new installs to ~/equin",
+    kept: "existing installs' checkout dir, which is never moved (git worktrees store absolute gitdirs); install.sh clones new installs to ~/muxos",
     mirrors: [
       ".vscode/settings.json",
       "sidequests/claude-web/com.epot.claude-new.plist",

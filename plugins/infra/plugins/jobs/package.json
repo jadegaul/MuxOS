@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-jobs",
+  "name": "@muxos/plugin-infra-jobs",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

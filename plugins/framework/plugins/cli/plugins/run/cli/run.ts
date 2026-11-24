@@ -62,7 +62,7 @@ function inOwnScratch(abs: string): boolean {
 function darwinbgNote(): string | null {
   if (readDarwinBackground().kind !== "darwinbg") return null;
   return (
-    "[./equin run] scheduling tier: darwinbg (macOS background priority, inherited from this session). " +
+    "[./muxos run] scheduling tier: darwinbg (macOS background priority, inherited from this session). " +
     "CPU and I/O are throttled: wall times measured by this script are NOT foreground costs " +
     "(a plugin-tree build read about 3× slower) and must not be reported as such."
   );
@@ -71,7 +71,7 @@ function darwinbgNote(): string | null {
 const run: CliAction<[string, string[]], object> = async (script, args) => {
   const root = await getWorktreeRoot();
 
-  // `./equin` cd's to the checkout root before exec'ing the CLI, so
+  // `./muxos` cd's to the checkout root before exec'ing the CLI, so
   // `process.cwd()` IS the root here: a relative path is repo-root-relative,
   // which is how scripts are written down everywhere in this repo.
   const abs = resolve(process.cwd(), script);
@@ -129,7 +129,7 @@ const run: CliAction<[string, string[]], object> = async (script, args) => {
   // it takes one slot of the `e2e` pool. Any other script is kind `script`,
   // recorded but never admitted: no slot to wait for or hold — a one-off data
   // script must not queue behind builds — and no grant handed down, so a
-  // `./equin check` it spawns acquires its own; it stays in the session's
+  // `./muxos check` it spawns acquires its own; it stays in the session's
   // (darwinbg) tier. Recorded because unrecorded they were invisible: on
   // 2026-11-06 four agent-run `blocking-fs/scripts/inventory.ts` held ~11 GB
   // with nothing naming them

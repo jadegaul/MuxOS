@@ -89,12 +89,12 @@ export function siteIn(state: SiteExhibitState): SiteHealth {
   const now = Date.now();
   switch (state) {
     case "live":
-      return site(ID, "equin.ai", {
+      return site(ID, "MuxOS.app", {
         link: { kind: "linked", link: link(ID, { kind: "live" }) },
         run: DONE_RUN,
       });
     case "deploying":
-      return site(ID, "equin.ai", {
+      return site(ID, "MuxOS.app", {
         link: {
           kind: "linked",
           link: link(ID, { kind: "live" }, { host: BUSY }),
@@ -110,13 +110,13 @@ export function siteIn(state: SiteExhibitState): SiteHealth {
         behind: 142,
       });
     case "behind":
-      return site(ID, "equin.ai", {
+      return site(ID, "MuxOS.app", {
         link: { kind: "linked", link: link(ID, { kind: "live" }) },
         run: DONE_RUN,
         behind: 142,
       });
     case "reconnecting":
-      return site(ID, "equin.ai", {
+      return site(ID, "MuxOS.app", {
         link: {
           kind: "linked",
           link: link(
@@ -134,7 +134,7 @@ export function siteIn(state: SiteExhibitState): SiteHealth {
         run: DONE_RUN,
       });
     case "down":
-      return site(ID, "equin.ai", {
+      return site(ID, "MuxOS.app", {
         link: {
           kind: "linked",
           link: link(ID, { kind: "down" }, { heardAgoMin: 17 }),
@@ -142,7 +142,7 @@ export function siteIn(state: SiteExhibitState): SiteHealth {
         run: DONE_RUN,
       });
     case "failed":
-      return site(ID, "equin.ai", {
+      return site(ID, "MuxOS.app", {
         link: {
           kind: "linked",
           link: link(ID, { kind: "live" }, { upSec: 180 }),
@@ -164,7 +164,7 @@ export function siteIn(state: SiteExhibitState): SiteHealth {
 const ID2 = "dpl-1795000000002-exh2";
 
 /** A second site, live and current: the one-line row. */
-export const SECOND_SITE: SiteHealth = site(ID2, "chord.equin.ai", {
+export const SECOND_SITE: SiteHealth = site(ID2, "chord.MuxOS.app", {
   link: { kind: "linked", link: link(ID2, { kind: "live" }) },
   run: DONE_RUN,
 });

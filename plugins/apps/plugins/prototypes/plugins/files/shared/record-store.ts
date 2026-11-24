@@ -20,7 +20,7 @@ import { protoIdKind } from "../core";
 // `_template/` and `_history/` (`listPrototypeDirNames`).
 //
 // Over a `Mount`, in `shared/`: the server serves and writes the records
-// through the `prototypesFiles` root, and `./equin prototype …` reads the same
+// through the `prototypesFiles` root, and `./muxos prototype …` reads the same
 // files with no backend running, through a disk mount of the data dir.
 
 /** A record file's extension — the one the watcher's extension filter passes. */

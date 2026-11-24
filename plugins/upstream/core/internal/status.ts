@@ -32,7 +32,7 @@ const LOCAL_TIMEOUT_MS = 60_000;
  * "up to date" or "we never got to ask".
  *
  * A clone is measured against releases — annotated `v<YYYY.MM.DD>` tags the
- * author cuts on purpose (`./equin version cut`) — never against upstream's
+ * author cuts on purpose (`./muxos version cut`) — never against upstream's
  * `main`, which moves a hundred times a day and would leave every clone
  * permanently "behind".
  *
@@ -237,8 +237,8 @@ async function isAncestor(
  * Fetch upstream's main and release tags, and say where local `main` stands
  * against upstream's newest release.
  *
- * ONE definition of that question, because several things ask it: `./equin
- * upstream status|merge`, `./equin version`, main's daily detection job and the
+ * ONE definition of that question, because several things ask it: `./muxos
+ * upstream status|merge`, `./muxos version`, main's daily detection job and the
  * Upstream merges automation. They would run the same git commands either way —
  * this is them written once, so the command a user runs by hand and the status
  * the app shows can never disagree about what "behind" means.
@@ -349,7 +349,7 @@ export async function standingAgainst(
   if (present.exitCode !== 0)
     throw new Error(
       `Release ${latest} of ${remote} is not on disk (${ref} is missing), so where main stands against it is unknown. ` +
-        `Check upstream again (POST /api/upstream/check, or \`./equin upstream status\`) to fetch it.`,
+        `Check upstream again (POST /api/upstream/check, or \`./muxos upstream status\`) to fetch it.`,
     );
   if (await isAncestor(root, ref, UPSTREAM_BRANCH)) return { kind: "current" };
   return {

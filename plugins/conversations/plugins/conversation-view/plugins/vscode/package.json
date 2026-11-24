@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-conversation-view-vscode",
+  "name": "@muxos/plugin-conversations-conversation-view-vscode",
   "private": true,
   "version": "0.0.1"
 }

@@ -4,10 +4,10 @@ import { asPluginId } from "@plugins/framework/plugins/plugin-id/core";
  * transaction (`worktreeDbScenario`): nearest-wins resolution up `folder_id`,
  * the re-file-to-root copy, `clearMandate`'s refusal on a root, the
  * `tasks_root_has_mandate` CHECK, and every task's effective mandate
- * (`tasks_ext_mandate`) kept exact by each write that moves it. Needs this worktree's DB as `./equin build`
+ * (`tasks_ext_mandate`) kept exact by each write that moves it. Needs this worktree's DB as `./muxos build`
  * leaves it (the migration adding the column and the CHECK applied).
  *
- * Run: `./equin test plugins/tasks/plugins/tasks-core`.
+ * Run: `./muxos test plugins/tasks/plugins/tasks-core`.
  */
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { clearCollectedContributions } from "@plugins/framework/plugins/server-core/core/testing";

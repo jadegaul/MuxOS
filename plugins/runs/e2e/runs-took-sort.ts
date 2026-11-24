@@ -14,7 +14,7 @@
  *
  * Seeded rows are deleted at the end (also on failure). Refuses main.
  *
- *   ./equin run plugins/runs/e2e/runs-took-sort.ts [--headed]
+ *   ./muxos run plugins/runs/e2e/runs-took-sort.ts [--headed]
  */
 import { randomBytes } from "node:crypto";
 import type { Page } from "playwright";

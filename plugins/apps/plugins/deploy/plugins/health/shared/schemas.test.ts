@@ -3,7 +3,7 @@
  * `status` (what a saved view names), labelled "Status", and a server never
  * probed reads NULL (unknown).
  *
- * Run: `./equin test plugins/apps/plugins/deploy/plugins/health`.
+ * Run: `./muxos test plugins/apps/plugins/deploy/plugins/health`.
  */
 
 import { describe, expect, test } from "bun:test";

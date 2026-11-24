@@ -17,23 +17,23 @@ const manifest = {
 
 describe("releaseBackendSpec", () => {
   const spec = releaseBackendSpec(
-    "/srv/equin/website/runtime/equin-release/website-abc",
+    "/srv/muxos/website/runtime/muxos-release/website-abc",
     manifest,
     asNamespace("website"),
-    "/srv/equin/website/data/worktrees/website/web.live.run-2",
+    "/srv/muxos/website/data/worktrees/website/web.live.run-2",
   );
 
   test("runs the bundle's own server and identity, served from the namespace's dist", () => {
     expect(spec.command).toEqual([
-      "/srv/equin/website/runtime/equin-release/website-abc/server",
+      "/srv/muxos/website/runtime/muxos-release/website-abc/server",
     ]);
     // Never the extraction's own web/: a later ship prunes it under open tabs.
     expect(spec.web).toBe(
-      "/srv/equin/website/data/worktrees/website/web.live.run-2",
+      "/srv/muxos/website/data/worktrees/website/web.live.run-2",
     );
     expect(spec.env?.[envName("WEB_DIST")]).toBe(spec.web);
     expect(spec.env?.[envName("MIGRATIONS_DIR")]).toBe(
-      "/srv/equin/website/runtime/equin-release/website-abc/migrations/data",
+      "/srv/muxos/website/runtime/muxos-release/website-abc/migrations/data",
     );
     expect(spec.env?.[envName("RELEASE_RUN_ID")]).toBe("run-2");
     expect(spec.env?.[envName("RELEASE_COMPOSITION")]).toBe("website");

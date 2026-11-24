@@ -54,14 +54,14 @@ export const DEMO_PAGES: PageTreeFixture = [
   {
     id: DEMO_PAGE_IDS.welcome,
     type: "page",
-    title: "Welcome to equin",
+    title: "Welcome to muxos",
     icon: EmojiSchema.parse("👋"),
     cover: { type: "gradient", preset: "aurora" },
     starred: true,
     children: [
       md(
         '<callout icon="info" color="info">',
-        "  This is equin running in your browser, on Demo's data. Change anything you like: **Reset demo** puts it all back.",
+        "  This is muxos running in your browser, on Demo's data. Change anything you like: **Reset demo** puts it all back.",
         "</callout>",
         "## Things to try",
         "- [ ] Open the **Agent Manager**: an agent added a practice timer to Sonata and is waiting for review. Read what it did, step by step.",

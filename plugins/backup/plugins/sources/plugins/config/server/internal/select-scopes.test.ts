@@ -1,7 +1,7 @@
 /**
  * Which config subtrees the backup takes: the persistent namespaces only.
  *
- * Run: `./equin test plugins/backup/plugins/sources/plugins/config`
+ * Run: `./muxos test plugins/backup/plugins/sources/plugins/config`
  */
 
 import { describe, test, expect } from "bun:test";

@@ -2,7 +2,7 @@ import { SERVICE_STOP_TIMEOUT_S, SERVICE_STOP_WAIT_MS } from "../../core";
 
 /**
  * Waiting out a stopped service's process — the step between `unload` and the
- * next `load` (`reconcile.ts`), and `./equin stop`'s last word.
+ * next `load` (`reconcile.ts`), and `./muxos stop`'s last word.
  *
  * Here rather than in `infra/launcher`'s `server` barrel (where it was): a
  * machine half may not reach it there without a launcher ↔ login-services

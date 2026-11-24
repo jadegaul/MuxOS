@@ -24,7 +24,7 @@
  * `::text` casts and the `CatalogRowSchema` parse in `catalog-plan.ts` are the
  * standing answer; verification of that half is a real fork, not this file.
  *
- * Run: `./equin test plugins/database/plugins/admin`
+ * Run: `./muxos test plugins/database/plugins/admin`
  */
 
 import { describe, test, expect } from "bun:test";

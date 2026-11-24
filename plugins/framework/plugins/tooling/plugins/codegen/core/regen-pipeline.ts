@@ -31,7 +31,7 @@ import { generateSymbolNames } from "./symbol-names-gen";
  * Single source of truth for the ordered, non-migration **repo-tree** codegen
  * pipeline.
  *
- * The full `./equin build` and the push-time `regen-generated` normalize
+ * The full `./muxos build` and the push-time `regen-generated` normalize
  * step MUST regenerate the identical set of repo-tree artifacts, in the identical
  * order — otherwise push can commit a tree the next full build doesn't reproduce
  * (dirtying main) and push-time in-sync checks miss drift. This module is that
@@ -42,7 +42,7 @@ import { generateSymbolNames } from "./symbol-names-gen";
  * Out of scope (NOT repo-tree codegen, handled by their own steps in build):
  *   - DB migrations (`generateMigration`) — stateful, build-only.
  *   - `writeCentralRoutesManifest`, `central.json`, `propagateConfigToUser` —
- *     these write under `~/.equin/`, not the repo tree.
+ *     these write under `~/.muxos/`, not the repo tree.
  *   - `seedAuthoredOverrides` (authored-override-seed.ts) — repo-tree, but
  *     **deliberately build-only**, and this exception is load-bearing: it mints
  *     `@review` markers, and `regen-generated` runs inside push's merge-driver

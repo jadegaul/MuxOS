@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-ui-tokens-font-family",
+  "name": "@muxos/plugin-ui-tokens-font-family",
   "private": true,
   "version": "0.0.1",
   "description": "Font-family token group (sans/serif/mono families, letter-spacing) with switchable presets."

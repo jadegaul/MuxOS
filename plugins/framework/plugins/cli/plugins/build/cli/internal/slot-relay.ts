@@ -51,7 +51,7 @@ const defaultDeps = (): SlotRelayDeps => ({
 /**
  * A main build that was not handed a slot, re-run in one: a slot checked out
  * at `refs/heads/main` (the commit main's convergence would build), handed to
- * `<slot>/equin build` with this invocation's own arguments and environment
+ * `<slot>/muxos build` with this invocation's own arguments and environment
  * (its `BUILD_ID` — the row its claimer minted, the transcript it writes to),
  * output inherited (this process is already that run's transcript). Returns
  * the child's exit code, which this process exits with.

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-sonata-audio-piano",
+  "name": "@muxos/plugin-apps-sonata-audio-piano",
   "description": "Sonata Instrument: a sampled acoustic grand piano (smplr SplendidGrandPiano) that sounds the Score during playback.",
   "private": true,
   "version": "0.0.1",

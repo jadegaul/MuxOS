@@ -16,7 +16,7 @@ import {
 
 // The WRITER half of the per-op liveness marker (`./worktree-op` holds the
 // format and the readers). Apart from them because it runs only in the op's
-// own CLI process — `./equin build` / `push` / a direct op, never a backend —
+// own CLI process — `./muxos build` / `push` / a direct op, never a backend —
 // and its `release()` runs in that process's `process.on("exit")` handler,
 // which cannot await: so it is synchronous, and exempt from
 // `blocking-fs/no-sync-fs` (this plugin's `exempt/index.ts`). The readers a

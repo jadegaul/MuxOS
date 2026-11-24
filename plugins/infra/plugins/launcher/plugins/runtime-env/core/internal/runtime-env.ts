@@ -4,7 +4,7 @@
 // (main, central, each worktree) and Postgres / PgBouncer.
 // It used to start from whatever its STARTER happened to carry. The launcher
 // spawned the gateway with `{ ...process.env }`, and the gateway handed every
-// child its own `os.Environ()` plus a few additions. So `./equin start`
+// child its own `os.Environ()` plus a few additions. So `./muxos start`
 // run from an agent shell gave every backend on the host that shell's
 // conversation id and its CLAUDE_* session
 // variables (observed 2026-09-15). Every op-log record and every commit a
@@ -50,12 +50,12 @@
 // version frozen into (or missing from) the starter's shell. See `runtimePath`.
 //
 // The app's own variables are declared by KEY in the `env-names` sub-plugin (forwarded,
-// withheld, forwarded prefixes), each named `EQUIN_<key>`. `launcher:env-names`
+// withheld, forwarded prefixes), each named `MUXOS_<key>`. `launcher:env-names`
 // keeps the declaration closed: no full name spelled in TypeScript code, no
 // undeclared name in a mirror (Go, shell, JSON) or a doc, no key nothing uses.
 //
 // Design: research/2026-09-15-global-declared-runtime-environment.md,
-// research/2026-10-25-global-equin-env-vars.md (by key)
+// research/2026-10-25-global-muxos-env-vars.md (by key)
 
 import {
   RUNTIME_FORWARDED_ENV,
@@ -160,7 +160,7 @@ export function miseShimsDir(
  * A shell with mise activated does not put mise's shims on PATH and leave it
  * there — it puts the RESOLVED directory of each tool version in front of them.
  * That is right for a shell, which is re-activated per directory, and wrong for
- * the runtime tree, which is one long-lived daemon: `./equin start`
+ * the runtime tree, which is one long-lived daemon: `./muxos start`
  * snapshots the starter's PATH into the gateway, and every backend it ever
  * spawns resolves `bun` against that snapshot. So the version baked into the
  * snapshot outlives any later change to `mise.lock`.

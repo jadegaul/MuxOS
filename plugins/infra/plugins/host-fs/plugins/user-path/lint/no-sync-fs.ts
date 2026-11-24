@@ -70,7 +70,7 @@ export default createRule({
     },
     schema: [],
     messages: {
-      user: "`{{name}}` on a user-chosen path blocks the backend's JS thread while macOS asks whether equin may open its folder (5.5 h on 2026-10-11). Use the async `node:fs/promises` call, bounded so a caller never waits on the prompt: a probe still unanswered after a bound reads as a `checking` state (Sonata's midi folders: `createFolderStatusStore`), and host-fs is the async read API.",
+      user: "`{{name}}` on a user-chosen path blocks the backend's JS thread while macOS asks whether muxos may open its folder (5.5 h on 2026-10-11). Use the async `node:fs/promises` call, bounded so a caller never waits on the prompt: a probe still unanswered after a bound reads as a `checking` state (Sonata's midi folders: `createFolderStatusStore`), and host-fs is the async read API.",
       unproven:
         "`{{name}}` takes a path not proven app-owned — it may be one the user chose, and a sync fs call on a path in a folder macOS gates (Downloads, Documents, a volume…) blocks the backend's JS thread until its permission prompt is answered (5.5 h on 2026-10-11). Type the path `AppPath` where the app makes it (`@plugins/infra/plugins/host-fs/plugins/user-path/core`; data dirs and the paths module already answer one) so the proof follows it here, or use the async `node:fs/promises` call.",
     },

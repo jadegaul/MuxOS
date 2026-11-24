@@ -2,7 +2,7 @@
 // Every other test here feeds the parser canned output; this one is what fails
 // when a drizzle-kit release changes how its prompts can be driven (0.31.10
 // refused every prompt without a TTY, and a bump to it passed every gate). The
-// deps updater runs `./equin test`, so such a bump now fails its own task.
+// deps updater runs `./muxos test`, so such a bump now fails its own task.
 import { afterEach, describe, expect, test } from "bun:test";
 import {
   mkdtempSync,

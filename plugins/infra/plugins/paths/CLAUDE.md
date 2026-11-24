@@ -2,7 +2,7 @@
 
 The single source of truth for **where things are on this machine**: the repo
 root, the user's home, the Claude corpus, the per-worktree artifact layout, and
-the data root (`~/.equin/`). The repo root itself is the `repo-root`
+the data root (`~/.muxos/`). The repo root itself is the `repo-root`
 sub-plugin's `REPO_ROOT` — the one way a file reaches the repo; counting
 `../` from a file's own location is a lint error there.
 
@@ -15,21 +15,21 @@ browser that needs to *name* a directory reads the string literals in the
 
 ## Where the root is
 
-`EQUIN_DIR` when set (a release bundle, a preview, a VM). Otherwise it is
+`MUXOS_DIR` when set (a release bundle, a preview, a VM). Otherwise it is
 decided by what is **installed**, not by the code's version
 (the `data-root-layout` sub-plugin, `dataRootLayout()` — a leaf apart from this core barrel, so code keyed on its own closure can read the root without keying on this barrel's):
 
 | on disk | root |
 |---|---|
-| no legacy dir (`LEGACY_IDS.dataDirName`) | `~/.equin` — a fresh install, or a migrated one |
-| the legacy dir is a link to `~/.equin` | `~/.equin` (a migration whose leftover scan kept the link) |
-| the legacy dir (or a link elsewhere), no `~/.equin` | the legacy dir — an install not yet migrated |
+| no legacy dir (`LEGACY_IDS.dataDirName`) | `~/.muxos` — a fresh install, or a migrated one |
+| the legacy dir is a link to `~/.muxos` | `~/.muxos` (a migration whose leftover scan kept the link) |
+| the legacy dir (or a link elsewhere), no `~/.muxos` | the legacy dir — an install not yet migrated |
 | both, separate | `DataRootSplitError`, loudly: a human decides |
 
-Deciding by version would point new code at an empty `~/.equin` on every
+Deciding by version would point new code at an empty `~/.muxos` on every
 machine that has not migrated. The same rule is mirrored in `gateway/dataroot.go`
 (with the same test cases), `install.sh` and the host scripts listed as
-`dataDirName` mirrors. Only `./equin data-dir migrate` changes it, with the
+`dataDirName` mirrors. Only `./muxos data-dir migrate` changes it, with the
 app stopped. The local backups dir (`backupsDir()`, outside the root) follows
 the same layout.
 
@@ -38,26 +38,26 @@ the same layout.
 The home layout is a fact of the disk, and `dataRoot()` / every `DataDir`
 getter is read synchronously, from hundreds of call sites, in every kind of
 process. So the layout is **decided once per process TREE, at its root, and
-carried by the environment** (`EQUIN_DATA_ROOT_LAYOUT`: `current`,
+carried by the environment** (`MUXOS_DATA_ROOT_LAYOUT`: `current`,
 `current-legacy-link` or `legacy` — `HOME_LAYOUT_TOKENS`; both roots derive
 from the home dir). `dataRootLayout()` is then an environment read on any
-thread: `EQUIN_DIR` → custom; the declaration → its layout; an unknown token
+thread: `MUXOS_DIR` → custom; the declaration → its layout; an unknown token
 throws.
 
 A tree's root decides from the disk with `declareDataRootLayoutSync()` (it
 always re-reads the disk — its parent may be a long-lived process holding a
-pre-migration answer) and writes the variable; with `EQUIN_DIR` set, or on a
+pre-migration answer) and writes the variable; with `MUXOS_DIR` set, or on a
 split, it removes an inherited one instead. The roots:
 
 | process tree | who declares |
 |---|---|
-| `./equin` and everything it starts | the wrapper sources `scripts/declare-data-root.sh` (the shell twin, held to the TS rule case for case by `declare-data-root-sh.test.ts`); the CLI's `bin/index.ts` decides again in-process (a CLI started without the wrapper); a split install stays undeclared, so the verb that reads a path throws `DataRootSplitError` and `data-dir migrate` still runs to explain it (the hooks do the same) |
+| `./muxos` and everything it starts | the wrapper sources `scripts/declare-data-root.sh` (the shell twin, held to the TS rule case for case by `declare-data-root-sh.test.ts`); the CLI's `bin/index.ts` decides again in-process (a CLI started without the wrapper); a split install stays undeclared, so the verb that reads a path throws `DataRootSplitError` and `data-dir migrate` still runs to explain it (the hooks do the same) |
 | the gateway's children (every backend, Postgres / PgBouncer start scripts) | `gateway/dataroot.go` adds it to every child's base env (`dataRootLayoutEnv`) |
 | a backend (main, worktree, central) | the first import of its serving entry (`server-core/bin/declare-data-root.ts`, `central-core/bin/declare-data-root.ts`) — before it listens, so a gateway that predates the declaration still leaves the backend's thread decided |
 | a Claude Code hook | `guards/bin/declare-data-root.ts`, first import of `hook.ts` / `stop-hook.ts` |
 | an SDK agent (and the claude it runs) | `runtime-sdk/bin/declare-data-root.ts`, first import of `agent.ts` — the backend starts it under `env -i` with the agent session's allowlist, so nothing reaches it from the gateway |
 | `bun test` | `test/bun-preload.ts` |
-| a release | `EQUIN_DIR`, set by the launcher before anything reads a path |
+| a release | `MUXOS_DIR`, set by the launcher before anything reads a path |
 
 **Why the environment of the tree, not just of the process.** A Bun child
 spawned with no explicit `env` gets its parent's STARTING environment, never a
@@ -79,7 +79,7 @@ process is a root that found a split install (the CLI, the hooks): there every
 path read rethrows the `DataRootSplitError` its declaration found. The
 declared `movedFrom` moves follow the same model (§ Moving a declared dir).
 
-**Moving an install over:** `./equin data-dir migrate` (the `root-migration`
+**Moving an install over:** `./muxos data-dir migrate` (the `root-migration`
 sub-plugin) — dry run by default, `--apply` executes. It refuses while any
 op or agent runs. With `--apply`, it stops the app, renames the root (and the
 backups dir) and leaves a link back while it rewrites every stored copy of the
@@ -93,7 +93,7 @@ starts the app.
 
 ## Three questions that look alike
 
-`~/.equin/worktrees/` is host-global, so "which namespace?" has three
+`~/.muxos/worktrees/` is host-global, so "which namespace?" has three
 different right answers depending on who is asking:
 
 | question | answer | who may ask |
@@ -111,7 +111,7 @@ script that read it acted on MAIN's deploy while reporting success. See
 [`runtime-identity`](../runtime-identity/CLAUDE.md).
 
 The third is a READ, not a derivation, and that is what makes it safe.
-`./equin build` records the checkout that published a namespace in that
+`./muxos build` records the checkout that published a namespace in that
 namespace's own `spec.json` — the `server` field, an absolute path ending in
 `SERVER_CORE_RELATIVE` — and `deploysForCheckoutSync(root)` matches every registered
 spec against it. So a checkout that has never been built resolves to `none`
@@ -139,7 +139,7 @@ can say. A spec naming this checkout under a name no build mints (a
 
 ## The data root is a registry, not a string
 
-Everything under `~/.equin/` is a **declared directory with an owner**.
+Everything under `~/.muxos/` is a **declared directory with an owner**.
 Nothing joins the root by hand — that is how it accreted 60+ entries nobody
 could classify, of which nine were orphans with no reference left in the repo.
 
@@ -178,14 +178,14 @@ a reviewed edit to `DATA_DIR_KINDS`, and that friction is the point.
 ### The root itself is unjoinable
 
 `dataRoot()` returns the root, and its **only** legitimate use is handing that
-root to a child process as its `EQUIN_DIR` (the gateway spawn, a release
+root to a child process as its `MUXOS_DIR` (the gateway spawn, a release
 launch, a remote deploy's env line) — or reporting it to a human.
 `join(dataRoot(), …)` is exactly what `defineDataDir` exists to replace: a
 joined root is an undeclared directory, which is the failure mode the registry
 is here to make impossible.
 
 `paths:data-root-not-joined` enforces it: no `join`/`resolve`/`` `${…}/` `` of
-`dataRoot()`, and no **read** of `process.env.EQUIN_DIR` outside a
+`dataRoot()`, and no **read** of `process.env.MUXOS_DIR` outside a
 four-entry allowlist (a raw env read is a second derivation of the root).
 **Writing** that var — `=`, `??=`, an `env: {…}` key — is the handoff to a child
 and is never flagged; `*.test.ts` is exempt, since a test owning its own root is
@@ -196,7 +196,7 @@ preview's `/tmp` data dir, a fresh install's), use `relativeToDataRoot(dir, …)
 It takes a `DataDir`, so the answer comes from the declaration.
 
 `dataRoot()` is a **function**, and `DataDir.path` is a **getter** — never a
-value frozen at module eval. `EQUIN_DIR` is env-overridable and the release
+value frozen at module eval. `MUXOS_DIR` is env-overridable and the release
 launcher sets it *before* importing anything path-dependent, while
 `defineDataDir` runs at consumer module eval, which is earlier still. This is the
 same reasoning that made `webDistDir()` a function; the frozen-const form there
@@ -213,7 +213,7 @@ is what once made a release report a null build id.
    `check/` — no registry edit, no codegen edit.
 2. Import the declaration from your own plugin's code and read `.path` /
    `.file(…)` / `await .ensure()`. Never re-derive the path.
-3. Run `./equin build`, then `./equin check paths:no-undeclared-data-dirs`.
+3. Run `./muxos build`, then `./muxos check paths:no-undeclared-data-dirs`.
 
 A directory is declared **exactly once** — a duplicate `${kind}/${name}` throws,
 mirroring `defineFileSink`. Two owners claiming one directory is always a bug.
@@ -259,7 +259,7 @@ the whole dir). The moves are **settled once per process tree, at its entry,
 before anything reads a path** — `await settleDeclaredDataDirMoves({ perform })`
 loads every declaration, inspects both locations of each move (async) and
 declares the outcome for the process and everything it starts
-(`EQUIN_DATA_DIR_MOVES`: the root it inspected and each move's state). Every
+(`MUXOS_DATA_DIR_MOVES`: the root it inspected and each move's state). Every
 read (`.path`, `.file()`, `.ensure()`, a `subdir()`) then resolves from that
 declaration alone — no disk, on any thread — so nothing reads the new spot
 before the bytes are there:
@@ -323,10 +323,10 @@ entry nobody on this machine declares is an offender. Two things not to undo:
   declaration per pool, so a declared name is not always a literal.
 - The check is `scope: "host"` and so **does not run during a build**: no
   per-worktree op can assert a root that runs ahead of its own branch. Nor
-  does a bare `./equin check` select it: main's hourly `checks.host-audit`
+  does a bare `./muxos check` select it: main's hourly `checks.host-audit`
   runs it and files a `host-check` report per failure
   (`plugins/framework/plugins/tooling/plugins/checks/plugins/host-audit`). Run
-  it on demand with `./equin check paths:no-undeclared-data-dirs`. A namespace that has never booted
+  it on demand with `./muxos check paths:no-undeclared-data-dirs`. A namespace that has never booted
   publishes nothing, so its dirs read as undeclared until it does.
 
 An agent's hand-made write is refused BEFORE it lands, by the same rule:
@@ -340,7 +340,7 @@ hook cannot see (a script writing from inside). `OPEN_KINDS` is shared by both.
 entry that is neither declared nor grandfathered. Grandfathering is driven by
 one `LEGACY_LAYOUT` table (`core/internal/legacy-layout.ts`), shared by the
 check and by the one-off
-`./equin run plugins/infra/plugins/paths/scripts/migrate-data-layout.ts`
+`./muxos run plugins/infra/plugins/paths/scripts/migrate-data-layout.ts`
 (dry-run by default; `--apply` moves bytes and leaves a compat symlink at the
 old path; `--drop-legacy` removes it once every worktree has rebuilt), so the
 to-do list and the migration plan can't drift. A legacy name passes only if
@@ -395,7 +395,7 @@ only when a file no local claim matches needs an owner, and a file is
 Written after `postgres.log` (1.7 GB), `pgbouncer.log` (1.4 GB) and 1.9 GB of
 reaped namespaces' gateway logs were each found by accident, months in.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
@@ -599,10 +599,10 @@ reaped namespaces' gateway logs were each found by accident, months in.
     - `worktreesDir`
 - Sub-plugins:
   - **`data-files`** [test helpers] [exempt] [1 sub-plugin] — Data files: the files app-owned data dirs hold, on whatever host runs — the DataFiles host service (the computer's disk on the desktop, memory in a browser host) behind defineFileRoot, a root…
-  - **`data-root-layout`** [exempt] — The user's home (HOME_DIR) and where the data root sits in it: dataRootLayout() — named by the environment (custom), an install not yet migrated (legacy) or ~/.equin — declared once per process tree…
+  - **`data-root-layout`** [exempt] — The user's home (HOME_DIR) and where the data root sits in it: dataRootLayout() — named by the environment (custom), an install not yet migrated (legacy) or ~/.muxos — declared once per process tree…
   - **`display`** [exempt] — The human-facing spelling of the data dirs (the `~/…` form a message, an empty state, or an agent prompt writes). Web-safe by construction: string literals only, no node:* and no homedir() — so the…
   - **`file-systems`** — One read of a file in any file system: useFileText, useFileBytes and useFileStat take a FileLocation and read that system's live value (the computer's disk, the browser's storage, a checkout), so a…
-  - **`repo-root`** [exempt] — REPO_ROOT — the checkout this code runs from, the one place any file gets it. Derived without counting ../ (its own repo-relative dir is a literal `./equin plugin move` rewrites; a stale one throws…
-  - **`root-migration`** [exempt] — `./equin data-dir migrate`: moves an install's data root from the legacy home dir to ~/.equin (and its local backups beside it) in one run, with every other process of the app stopped — rewrites…
+  - **`repo-root`** [exempt] — REPO_ROOT — the checkout this code runs from, the one place any file gets it. Derived without counting ../ (its own repo-relative dir is a literal `./muxos plugin move` rewrites; a stale one throws…
+  - **`root-migration`** [exempt] — `./muxos data-dir migrate`: moves an install's data root from the legacy home dir to ~/.muxos (and its local backups beside it) in one run, with every other process of the app stopped — rewrites…
 
 <!-- AUTOGENERATED:END -->

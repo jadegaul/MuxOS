@@ -1,7 +1,7 @@
 /**
  * Writes the repo README's images (`README_FILES`) into docs/readme/:
  *
- *   ./equin run plugins/apps/plugins/website/plugins/readme/scripts/render.ts
+ *   ./muxos run plugins/apps/plugins/website/plugins/readme/scripts/render.ts
  *
  * Run it after changing what they draw (this plugin, the logo, the apps
  * catalog, the tile colours); the `readme:files-in-sync` check fails until you do.

@@ -72,7 +72,7 @@ export interface ConvergenceDecision {
  * `compositionWantsRebuild` (next door); this binds them to durable state — git,
  * the served dist, the `build_runs` ledger, the config files on disk — and to
  * NOTHING held in a backend's memory. That is the whole point: it runs in
- * main's convergence process (`./equin build --allow-main --converge`, started
+ * main's convergence process (`./muxos build --allow-main --converge`, started
  * by the gateway), so it answers the same while main's backend is down, which
  * is exactly when it matters most (the 2026-11-08 incident: a fix sat on main
  * for eleven minutes because the only thing that could decide to build it was

@@ -3,7 +3,7 @@ import { useSyncExternalStore } from "react";
 // The focused tab's resolved content title (the selected page, conversation,
 // song …) — a page-global signal beside `focusedApp`, for what renders OUTSIDE
 // `TabsProvider` and so cannot call `useTabs()` (a `Core.Root` host: the Ask
-// equin card attaches it to a question). `TabsProvider` publishes it on every
+// muxos card attaches it to a question). `TabsProvider` publishes it on every
 // focus or title change. `undefined` is a real answer, not "unknown": the
 // focused tab is at its app index, or its pane has no title (the tab bar then
 // shows the app's name).

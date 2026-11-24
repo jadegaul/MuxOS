@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-reports-host-check",
+  "name": "@muxos/plugin-reports-host-check",
   "private": true,
   "version": "0.0.1"
 }

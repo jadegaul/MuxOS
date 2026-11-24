@@ -20,7 +20,7 @@ const INSTALL_TIMEOUT_MS = 20 * 60_000;
 const OUTPUT_TAIL_CHARS = 8000;
 
 /**
- * Install the checkout at `path`: run ITS OWN CLI, `<path>/equin install`. Every checkout is installed before anything runs in it, so
+ * Install the checkout at `path`: run ITS OWN CLI, `<path>/muxos install`. Every checkout is installed before anything runs in it, so
  * its first guard hook or script never resolves npm packages by walking up into
  * main's `node_modules`.
  *
@@ -28,7 +28,7 @@ const OUTPUT_TAIL_CHARS = 8000;
  * import `cli`, and the checkout's copy is the install code and the lock that
  * belong to it (one chokepoint — stamp, `.install.lock`, freshness skip).
  *
- * `frozen` (EQUIN_FROZEN_LOCKFILE, read by the bootstrap before argv) for a
+ * `frozen` (MUXOS_FROZEN_LOCKFILE, read by the bootstrap before argv) for a
  * checkout of committed code — a fresh add or a claimed spare — so creation
  * never rewrites `bun.lock`. NOT for an existing checkout: its `package.json`s
  * are the agent's work in progress, and a dependency it added but has not

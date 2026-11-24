@@ -4,6 +4,6 @@ import { foundationsPage } from "../core";
 
 export default {
   description:
-    "The technical foundations page of the equin website on the server: its sitemap entry (WebsitePages.Page).",
+    "The technical foundations page of the muxos website on the server: its sitemap entry (WebsitePages.Page).",
   contributions: [WebsitePages.Page(foundationsPage)],
 } satisfies ServerPluginDefinition;

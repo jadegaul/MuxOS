@@ -12,8 +12,8 @@
 //   story): 1 min on the ii–V–I warm-up, which the agent's check also played
 //   once.
 //
-// Usage (after `./equin build`):
-//   ./equin run plugins/apps/plugins/website/plugins/demos/plugins/workspace/e2e/render-before-afters.ts
+// Usage (after `./muxos build`):
+//   ./muxos run plugins/apps/plugins/website/plugins/demos/plugins/workspace/e2e/render-before-afters.ts
 
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";

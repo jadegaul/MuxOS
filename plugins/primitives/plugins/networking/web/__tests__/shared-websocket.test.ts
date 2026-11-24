@@ -852,7 +852,7 @@ describe("SharedWebSocket — reported recoveries", () => {
   });
 
   test("a worker the browser restarted under the tab (its port handed to a fresh instance) tells the tab, which re-attaches and replays", async () => {
-    // 2026-11-18, equin.ai on desktop Safari: "shared-ws: expected attach, got
+    // 2026-11-18, MuxOS.app on desktop Safari: "shared-ws: expected attach, got
     // tx" — WebKit relaunched the worker and re-sent `connect` with the tab's
     // existing port, whose next message was a frame, not an attach.
     const hub = createTransportHub();

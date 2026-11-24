@@ -10,7 +10,7 @@ import { buildJob } from "./run-build";
  * There is no `isMain()` gate any more. Serving used to be a tail stage of
  * main's own build — it composed over main's artifact fleet and read main's
  * config — so every other backend had to refuse. A serve is now an ordinary
- * `./equin build --composition <id>` of the checkout this backend runs
+ * `./muxos build --composition <id>` of the checkout this backend runs
  * out of, publishing `<id>.<checkout>.localhost:<port>`; refusing it off main
  * would refuse the case the fan-out exists for.
  */

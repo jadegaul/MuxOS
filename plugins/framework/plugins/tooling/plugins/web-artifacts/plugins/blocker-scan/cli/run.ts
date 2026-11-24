@@ -50,7 +50,7 @@ import {
  */
 function origins(): string[] {
   return [
-    "https://equin.ai",
+    "https://MuxOS.app",
     namespaceUrl(MAIN_WORKTREE_NAME, "", gatewayPortSync()),
   ];
 }

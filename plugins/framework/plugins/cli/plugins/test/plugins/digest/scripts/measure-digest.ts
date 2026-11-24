@@ -3,7 +3,7 @@
  * take the checkout snapshot, digest the test files under a path (default
  * every one), twice — cold for this process, then warm.
  *
- *   ./equin run plugins/framework/plugins/cli/plugins/test/plugins/digest/scripts/measure-digest.ts [dir]
+ *   ./muxos run plugins/framework/plugins/cli/plugins/test/plugins/digest/scripts/measure-digest.ts [dir]
  */
 import { repoSnapshotNow } from "@plugins/framework/plugins/tooling/core";
 import { isTestFilePath } from "@plugins/framework/plugins/tooling/plugins/test-layout/core";

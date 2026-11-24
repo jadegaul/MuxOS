@@ -36,7 +36,7 @@ describe("translateRequest", () => {
     const openai = translateRequest({
       model: "qwen3.8-27b",
       system: [
-        { type: "text", text: "You are equin" },
+        { type: "text", text: "You are muxos" },
         { type: "text", text: "Be terse" },
       ],
       messages: [
@@ -99,7 +99,7 @@ describe("translateRequest", () => {
     expect(openai.model).toBe("qwen3.8-27b");
     expect(openai.messages[0]).toEqual({
       role: "system",
-      content: "You are equin\n\nBe terse",
+      content: "You are muxos\n\nBe terse",
     });
     // One user message: its text plus both images (a data URL, then the URL as-is).
     const firstUser = openai.messages[1] as {

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-page-code-block",
+  "name": "@muxos/plugin-page-code-block",
   "description": "Code block type for the page editor: editable code with live syntax highlighting, language picker, and copy button.",
   "private": true,
   "version": "0.0.1"

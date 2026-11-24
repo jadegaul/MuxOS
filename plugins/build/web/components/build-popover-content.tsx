@@ -49,7 +49,7 @@ function BuildControls({
   building: boolean;
   onBuild: () => void | Promise<void>;
 }) {
-  // A build spawns `./equin build` in this checkout: under a host without
+  // A build spawns `./muxos build` in this checkout: under a host without
   // the computer (the in-browser demo) the button is disabled, its tooltip
   // saying why.
   const availability = useMachineAvailability(triggerBuildEndpoint);
@@ -161,7 +161,7 @@ function BuildPopoverContentInner({
         type: "build",
         category: "updates",
         title: "Build started",
-        description: "Running ./equin build",
+        description: "Running ./muxos build",
         variant: "info",
       });
     } catch (err) {

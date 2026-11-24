@@ -1,7 +1,7 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * `./equin installer window` — build the installer window from this checkout
+ * `./muxos installer window` — build the installer window from this checkout
  * and open it over a DRY RUN of this checkout's install.sh: the real window,
  * the real process model (events on fd 3, decisions on fd 4), a scripted
  * install that touches nothing. Never a real install: install.sh run from a
@@ -10,7 +10,7 @@ import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
  */
 export default defineCliCommand({
   name: "installer",
-  description: "The equin installer: its window, and its time estimates",
+  description: "The muxos installer: its window, and its time estimates",
   subcommands: [
     defineCliCommand<[], { pace?: string; fail?: string; notice?: boolean }>({
       name: "window",

@@ -1,6 +1,6 @@
-//! equin-installer — the installer window.
+//! muxos-installer — the installer window.
 //!
-//! `equin-installer --script <install.sh> [-- <install args…>]` runs the
+//! `muxos-installer --script <install.sh> [-- <install args…>]` runs the
 //! script as its child (child.rs: events on fd 3, decisions on fd 4) and
 //! draws the event stream (protocol v1, plugins/installer/core) in a page
 //! compiled into the binary, served from `installer://app/` — nothing is
@@ -84,7 +84,7 @@ enum PageCommand {
     /// The user confirmed stopping the install.
     Stop,
     /// Open the installed app in the browser, then close.
-    OpenEquin,
+    OpenMuxOS,
     /// Open a link in the browser: a GitHub issue (Report issue), or the
     /// App Management settings — nothing else.
     OpenUrl { url: String },
@@ -97,7 +97,7 @@ enum PageCommand {
     Drag,
 }
 
-/// The settings pane that allows equin to add its apps (Privacy & Security → App Management).
+/// The settings pane that allows muxos to add its apps (Privacy & Security → App Management).
 const APP_MANAGEMENT_URL: &str =
     "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AppBundles";
 
@@ -109,10 +109,10 @@ fn openable(url: &str) -> bool {
 
 fn usage() -> ! {
     eprintln!(
-        "usage: equin-installer --script <install.sh> [-- <install.sh args…>]\n\
-         \x20      equin-installer [--ref <release tag>] [-- <install.sh args…>]   \
+        "usage: muxos-installer --script <install.sh> [-- <install.sh args…>]\n\
+         \x20      muxos-installer [--ref <release tag>] [-- <install.sh args…>]   \
          (download and verify the release's install.sh, then run it)\n\
-         \x20      equin-installer --probe | --version"
+         \x20      muxos-installer --probe | --version"
     );
     std::process::exit(2);
 }
@@ -125,7 +125,7 @@ fn main() {
     while let Some(arg) = args.next() {
         match arg.as_str() {
             "--version" => {
-                println!("equin-installer {}", env!("CARGO_PKG_VERSION"));
+                println!("muxos-installer {}", env!("CARGO_PKG_VERSION"));
                 return;
             }
             "--probe" => probe::run(),
@@ -137,14 +137,14 @@ fn main() {
             }
             "-h" | "--help" => usage(),
             other => {
-                eprintln!("equin-installer: unknown argument {other:?}");
+                eprintln!("muxos-installer: unknown argument {other:?}");
                 usage();
             }
         }
     }
     let script = match (script, release_ref) {
         (Some(_), Some(_)) => {
-            eprintln!("equin-installer: --script and --ref exclude each other");
+            eprintln!("muxos-installer: --script and --ref exclude each other");
             usage();
         }
         (Some(script), None) => script,
@@ -164,7 +164,7 @@ fn main() {
     };
 
     let mut signals = child::catch_signals().unwrap_or_else(|e| {
-        eprintln!("equin-installer: could not install its signal handlers: {e}");
+        eprintln!("muxos-installer: could not install its signal handlers: {e}");
         std::process::exit(1);
     });
 
@@ -174,7 +174,7 @@ fn main() {
     // sudo asks for its password through the window (askpass.rs); the
     // install's askpass wrapper finds this binary and the socket by these.
     let (askpass_listener, askpass_path) = askpass::listen().unwrap_or_else(|e| {
-        eprintln!("equin-installer: could not open the password socket: {e}");
+        eprintln!("muxos-installer: could not open the password socket: {e}");
         std::process::exit(1);
     });
     // Single-threaded still: nothing else reads the environment now.
@@ -184,12 +184,12 @@ fn main() {
     }
     ASKPASS_PATH.set(askpass_path).expect("set once");
     let install = child::spawn(&script, &rest).unwrap_or_else(|e| {
-        eprintln!("equin-installer: could not start {script}: {e}");
+        eprintln!("muxos-installer: could not start {script}: {e}");
         std::process::exit(1);
     });
     let child_pid = install.child.id();
     println!(
-        "\n  Installing in the equin window. Closing it stops the install; \
+        "\n  Installing in the muxos window. Closing it stops the install; \
          running the installer again picks up where it stopped.\n"
     );
 
@@ -217,7 +217,7 @@ fn main() {
             let code = match process.wait() {
                 Ok(status) => child::exit_code(status),
                 Err(e) => {
-                    eprintln!("equin-installer: waiting for the install failed: {e}");
+                    eprintln!("muxos-installer: waiting for the install failed: {e}");
                     1
                 }
             };
@@ -235,7 +235,7 @@ fn main() {
             for stream in askpass_listener.incoming() {
                 match stream.and_then(|s| askpass::read_prompt(&s).map(|p| (p, s))) {
                     Ok((prompt, stream)) => send(&proxy, UserEvent::Password { prompt, stream }),
-                    Err(e) => eprintln!("equin-installer: a password request failed: {e}"),
+                    Err(e) => eprintln!("muxos-installer: a password request failed: {e}"),
                 }
             }
         });
@@ -246,14 +246,14 @@ fn main() {
             match child::wait_signal(&mut signals) {
                 Ok(sig) => send(&proxy, UserEvent::Signal(sig)),
                 Err(e) => {
-                    eprintln!("equin-installer: the signal pipe failed: {e}");
+                    eprintln!("muxos-installer: the signal pipe failed: {e}");
                     return;
                 }
             }
         });
     }
 
-    // The Dock shows equin's icon, not a bare executable's.
+    // The Dock shows muxos's icon, not a bare executable's.
     #[cfg(target_os = "macos")]
     dock::set_icon();
 
@@ -261,7 +261,7 @@ fn main() {
     // until its first frame, which on a cold Mac takes seconds.
     let (r, g, b, a) = BACKGROUND;
     let mut builder = WindowBuilder::new()
-        .with_title("equin installer")
+        .with_title("muxos installer")
         .with_inner_size(LogicalSize::new(WIDTH, HEIGHT))
         .with_resizable(false)
         .with_visible(false)
@@ -275,7 +275,7 @@ fn main() {
             .with_fullsize_content_view(true);
     }
     let window = builder.build(&event_loop).unwrap_or_else(|e| {
-        eprintln!("equin-installer: could not open the window: {e}");
+        eprintln!("muxos-installer: could not open the window: {e}");
         child::signal_group(child_pid, libc::SIGINT);
         std::process::exit(1);
     });
@@ -306,7 +306,7 @@ fn main() {
     #[cfg(not(target_os = "linux"))]
     let webview = webview.build(&window);
     let webview = webview.unwrap_or_else(|e| {
-        eprintln!("equin-installer: could not open the page: {e}");
+        eprintln!("muxos-installer: could not open the page: {e}");
         child::signal_group(child_pid, libc::SIGINT);
         std::process::exit(1);
     });
@@ -388,16 +388,16 @@ fn main() {
                     if openable(&url) {
                         open_url(&url);
                     } else {
-                        eprintln!("equin-installer: refused to open a link the page may not open: {url}");
+                        eprintln!("muxos-installer: refused to open a link the page may not open: {url}");
                     }
                 }
                 Ok(PageCommand::Password { value }) => match state.password.take() {
                     Some((_, stream)) => {
                         if let Err(e) = askpass::answer(stream, Some(&value)) {
-                            eprintln!("equin-installer: could not hand the password to sudo: {e}");
+                            eprintln!("muxos-installer: could not hand the password to sudo: {e}");
                         }
                     }
-                    None => eprintln!("equin-installer: a password came with no request waiting; dropped"),
+                    None => eprintln!("muxos-installer: a password came with no request waiting; dropped"),
                 },
                 Ok(PageCommand::PasswordCancel) => {
                     if let Some((_, stream)) = state.password.take() {
@@ -411,7 +411,7 @@ fn main() {
                         None => child::signal_group(child_pid, libc::SIGINT),
                     }
                 }
-                Ok(PageCommand::OpenEquin) => {
+                Ok(PageCommand::OpenMuxOS) => {
                     if let Some(url) = &state.done_url {
                         open_url(url);
                     }
@@ -419,15 +419,15 @@ fn main() {
                 }
                 Ok(PageCommand::Drag) => {
                     if let Err(e) = window.drag_window() {
-                        eprintln!("equin-installer: could not move the window: {e}");
+                        eprintln!("muxos-installer: could not move the window: {e}");
                     }
                 }
                 Ok(PageCommand::Close) => match state.exit_code {
                     Some(code) => finish(code),
                     None if state.done_url.is_some() => state.close_done(),
-                    None => eprintln!("equin-installer: the page asked to close while the install runs; ignored"),
+                    None => eprintln!("muxos-installer: the page asked to close while the install runs; ignored"),
                 },
-                Err(e) => eprintln!("equin-installer: refused a message from the page ({e}): {body}"),
+                Err(e) => eprintln!("muxos-installer: refused a message from the page ({e}): {body}"),
             },
             Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => match state.exit_code {
                 Some(code) => finish(code),
@@ -435,7 +435,7 @@ fn main() {
                 None if state.done_url.is_some() => state.close_done(),
                 None => {
                     if let Err(e) = webview.evaluate_script("window.installer.confirmStop()") {
-                        eprintln!("equin-installer: could not ask the page to confirm: {e}");
+                        eprintln!("muxos-installer: could not ask the page to confirm: {e}");
                     }
                 }
             },
@@ -448,7 +448,7 @@ fn main() {
                     );
                     match webview.evaluate_script(&js) {
                         Ok(()) => state.sent = state.backlog.len(),
-                        Err(e) => eprintln!("equin-installer: could not send events to the page: {e}"),
+                        Err(e) => eprintln!("muxos-installer: could not send events to the page: {e}"),
                     }
                 }
             }
@@ -469,7 +469,7 @@ struct State {
     labels: HashMap<String, String>,
     /// The steps that have sub-steps (their terminal line is a heading).
     with_subs: HashSet<String>,
-    /// The `done` event's URL — the only URL Open equin opens.
+    /// The `done` event's URL — the only URL Open muxos opens.
     done_url: Option<String>,
     saw_exit: bool,
     exit_code: Option<i32>,
@@ -489,7 +489,7 @@ impl State {
             // Not ours to judge: the page parses every line against the
             // schema and shows a protocol error loudly.
             Err(e) => {
-                eprintln!("equin-installer: the install wrote a line that is not JSON ({e})");
+                eprintln!("muxos-installer: the install wrote a line that is not JSON ({e})");
                 After::Nothing
             }
         };
@@ -548,7 +548,7 @@ impl State {
             }
             Some("done") => {
                 let url = text(event, "url");
-                println!("\n  equin is running: {url}\n");
+                println!("\n  muxos is running: {url}\n");
                 self.done_url = Some(url);
             }
             Some("exit") => self.saw_exit = true,
@@ -567,7 +567,7 @@ impl State {
     fn decide(&mut self, decision: &str) {
         let Some(control) = self.control.as_mut() else { return };
         if let Err(e) = child::decide(control, decision) {
-            eprintln!("equin-installer: could not send '{decision}' to the install: {e}");
+            eprintln!("muxos-installer: could not send '{decision}' to the install: {e}");
             self.control = None;
         }
     }
@@ -643,7 +643,7 @@ fn send(proxy: &EventLoopProxy<UserEvent>, event: UserEvent) {
 fn open_url(url: &str) {
     let opener = if cfg!(target_os = "macos") { "open" } else { "xdg-open" };
     if let Err(e) = Command::new(opener).arg(url).status() {
-        eprintln!("equin-installer: could not open {url} with {opener}: {e}");
+        eprintln!("muxos-installer: could not open {url} with {opener}: {e}");
     }
 }
 
@@ -657,7 +657,7 @@ fn ask_password(webview: &wry::WebView, prompt: &str) {
         serde_json::to_string(prompt).expect("a string serializes")
     );
     if let Err(e) = webview.evaluate_script(&js) {
-        eprintln!("equin-installer: could not ask the page for the password: {e}");
+        eprintln!("muxos-installer: could not ask the page for the password: {e}");
     }
 }
 

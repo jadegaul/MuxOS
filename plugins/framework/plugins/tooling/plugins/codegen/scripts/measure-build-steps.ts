@@ -1,17 +1,17 @@
 /**
- * Times the shared costs behind the non-check `./equin build` steps, each in a
+ * Times the shared costs behind the non-check `./muxos build` steps, each in a
  * chosen order so the first payer of a process-wide memo is attributed:
  *
- *   ./equin run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-build-steps.ts \
+ *   ./muxos run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-build-steps.ts \
  *     [--order pipeline|docs-first|guard-first|tree-only|migrations-only] [--json out.json] [--records] \
  *     [--workers <n>]
  *
  * `--workers <n>`: record misses run on n record worker threads, as
- * `./equin build` runs them (`idealRecordWorkerThreads()`, clamped to its
+ * `./muxos build` runs them (`idealRecordWorkerThreads()`, clamped to its
  * grant); `--workers ideal` takes that count. Without it: in-process.
  *
  * `--records`: read and write the shared plugin-record store, as
- * `./equin build` does (without it: the process's memory store,
+ * `./muxos build` does (without it: the process's memory store,
  * every record computed — a cold run). Reports how many barrels each
  * evaluation imported live.
  *

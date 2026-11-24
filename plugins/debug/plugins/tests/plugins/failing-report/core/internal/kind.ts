@@ -12,7 +12,7 @@ export const TEST_FAILING_KIND = "test-failing";
 export const TEST_FAILING_MAX_CASES = 10;
 
 const RunRefSchema = z.object({
-  /** The `./equin test` run (its op id). */
+  /** The `./muxos test` run (its op id). */
   opId: z.string(),
   /** The commit the run tested; null when its record named none. */
   commit: z.string().nullable(),

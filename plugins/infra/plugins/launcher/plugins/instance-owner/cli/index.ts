@@ -1,5 +1,5 @@
 // Shared CLI machinery, not a command (no default export): which checkout this
-// account's equin runs from, and the refusal of every other one.
+// account's muxos runs from, and the refusal of every other one.
 export {
   assertThisInstance,
   instanceClaims,

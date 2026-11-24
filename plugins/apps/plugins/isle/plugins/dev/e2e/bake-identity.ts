@@ -7,8 +7,8 @@
 // first, so both runs read the hit masks of the buildings it crosses.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/isle/plugins/dev/e2e/bake-identity.ts \
-//     [--apps 14] [--out "$EQUIN_SCRATCH/isle-identity"]
+//   ./muxos run plugins/apps/plugins/isle/plugins/dev/e2e/bake-identity.ts \
+//     [--apps 14] [--out "$MUXOS_SCRATCH/isle-identity"]
 //
 // Exits non-zero on any differing key, or when the runs share too few keys to
 // say anything.

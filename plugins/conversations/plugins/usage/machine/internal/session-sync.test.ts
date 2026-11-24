@@ -1,11 +1,11 @@
 /**
  * The ledger-only path (`session-sync.ts`) against a real Postgres: a session
  * no conversation owns is counted under `session:<id>` with its source row and
- * scan rows, an append adds only its delta, a session equin ever ran is left to
+ * scan rows, an append adds only its delta, a session muxos ever ran is left to
  * the conversation path, a conversation adopting a scanned session takes its
  * tokens over (in the ledger once), and a rewritten file recounts its source.
  *
- * Run: `./equin test plugins/conversations/plugins/usage`
+ * Run: `./muxos test plugins/conversations/plugins/usage`
  */
 import {
   afterAll,
@@ -237,7 +237,7 @@ describe("syncSessionUsage", () => {
     expect(await scansOf(source)).toEqual([furthest]);
   });
 
-  test("leaves a session equin ever ran to the conversation path — a deleted conversation's included", async () => {
+  test("leaves a session muxos ever ran to the conversation path — a deleted conversation's included", async () => {
     const s = await newSession(line("m1", 10, 5));
     await t.db.insert(_conversationSessions).values({
       id: sessionLinkIdKind.mint(),
@@ -297,7 +297,7 @@ describe("syncSessionUsage", () => {
     });
 
     // A later pass of the ledger-only path (a backfill job queued before the
-    // adoption) sees the session as equin's and files nothing.
+    // adoption) sees the session as muxos's and files nothing.
     await appendFile(s.path, line("m2", 1, 1));
     await syncSessionUsage(t.db, s.id, s.path, "job");
     expect(await ledgerOf(source)).toMatchObject({ input: 0, output: 0 });

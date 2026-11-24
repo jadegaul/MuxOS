@@ -1,13 +1,13 @@
 // ─── Does the incremental walk ever differ from the full walk? ─────────────
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/walk-replay.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/walk-replay.ts \
 //     <scratch checkout> <from> <to> --data <dir> [--out <steps.json>]
 //
 // Replays the first-parent commits `<from>..<to>` (and `<from>` itself) in a
 // SCRATCH checkout (a `git clone --shared` outside the repo, its
 // `node_modules` installed — re-installed here when the lockfile moves) as
 // two independent CHAINS of the type-check worker, each under its own
-// `EQUIN_DIR` (`<dir>/inc`, `<dir>/full`):
+// `MUXOS_DIR` (`<dir>/inc`, `<dir>/full`):
 //
 //   inc  — the walk starts from the chain's last walk base
 //          (`../shared/walk-base.ts`, `walkBase: hint`);

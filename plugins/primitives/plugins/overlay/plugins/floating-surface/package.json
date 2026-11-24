@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-overlay-floating-surface",
+  "name": "@muxos/plugin-primitives-overlay-floating-surface",
   "description": "FloatingSurface: focus-less anchored floating surface (caret menus, hover previews, peeks, toolbars) positioned via Floating UI, rendering the shared OverlayPanel inside a ViewportOverlay.",
   "private": true,
   "version": "0.0.1",

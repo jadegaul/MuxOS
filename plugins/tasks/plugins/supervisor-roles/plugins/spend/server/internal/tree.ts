@@ -32,7 +32,7 @@ export interface SpendSourceRow {
   unattributed: boolean;
   /** The caller of a `cli:` source (`task-title`), else `null`. */
   caller: string | null;
-  /** A `session:` source's Claude Code session, which equin did not launch. */
+  /** A `session:` source's Claude Code session, which muxos did not launch. */
   session: {
     id: string;
     title: string | null;
@@ -197,7 +197,7 @@ function underSupervisor(
 /**
  * Where one source's cost lands: the chain of nodes from its category down to
  * its leaf, made as needed. First match wins: usage under no account; a
- * background caller; a Claude Code session equin did not launch (the
+ * background caller; a Claude Code session muxos did not launch (the
  * person's own); a system conversation (by its launcher); a role session's
  * tree; an ad-hoc supervisor's tree; an automation's task; else the person's
  * own (a conversation without a task included).
@@ -229,7 +229,7 @@ function chainOf(
   if (row.session !== null) {
     const you = category("you");
     const outside = child(you, "outside", () =>
-      draft("outside", "outside", "Claude Code outside equin"),
+      draft("outside", "outside", "Claude Code outside muxos"),
     );
     return [you, outside, outsideSessionOf(outside, row, row.session)];
   }

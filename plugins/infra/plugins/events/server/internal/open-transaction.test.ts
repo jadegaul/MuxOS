@@ -2,8 +2,8 @@
 // events.dispatch outbox, so it must tell a drizzle transaction from a database
 // handle on the real driver — not on a mock of drizzle's class hierarchy.
 //
-// Run: `./equin test plugins/infra/plugins/events`
-// (requires the running embedded cluster — `./equin build` first).
+// Run: `./muxos test plugins/infra/plugins/events`
+// (requires the running embedded cluster — `./muxos build` first).
 
 import { afterAll, beforeAll, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";

@@ -5,7 +5,7 @@ import { pianoSource } from "../shared/source";
 /**
  * Registers the splendid-grand-piano asset mirror so the web voices can fetch
  * samples from `/api/asset-mirror/splendid-grand-piano/…` (same-origin, cached
- * to `~/.equin/cache/asset-mirror/`) instead of the remote CDN. After one online warm-up the
+ * to `~/.muxos/cache/asset-mirror/`) instead of the remote CDN. After one online warm-up the
  * piano sounds fully offline.
  */
 export default {

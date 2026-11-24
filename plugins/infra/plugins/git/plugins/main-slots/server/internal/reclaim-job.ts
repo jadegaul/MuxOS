@@ -11,7 +11,7 @@ const reclaimLog = defineLogSink({
 });
 
 /**
- * Daily, main only (a schedule's default): `./equin main-slots-reclaim`
+ * Daily, main only (a schedule's default): `./muxos main-slots-reclaim`
  * (the `reclaim` sub-plugin's command) — the same `reclaimSlots` every main
  * build ends with, as a backstop for what no event can announce: a process
  * killed with SIGKILL never releases its lease, so the slot it held frees

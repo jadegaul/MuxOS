@@ -7,7 +7,7 @@ export function PrivacyOpening() {
       kind="page"
       lead="Your "
       accent="privacy"
-      lede="equin.ai counts its own visits, on its own server, to learn which pages work. No ads, no third parties, nothing sold or shared."
+      lede="MuxOS.app counts its own visits, on its own server, to learn which pages work. No ads, no third parties, nothing sold or shared."
     />
   );
 }

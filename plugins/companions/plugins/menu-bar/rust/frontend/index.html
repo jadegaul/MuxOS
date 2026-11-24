@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  The panel's offline page, bundled into equin-desktop: shown instead of
+  The panel's offline page, bundled into muxos-desktop: shown instead of
   http://<namespace>.localhost:<port>/home/menu-bar when nothing answers on the
   gateway's port (only an outside process can say the gateway is absent). The
   helper tells it the port (?port=<n>) or why it does not know it (?error=…,
@@ -13,7 +13,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>equin isn't running</title>
+    <title>muxos isn't running</title>
     <style>
       html,
       body {
@@ -90,8 +90,8 @@
           stroke-linejoin="round"
         />
       </svg>
-      <h1>equin isn't running</h1>
-      <p id="why">equin's gateway does not answer.</p>
+      <h1>muxos isn't running</h1>
+      <p id="why">muxos's gateway does not answer.</p>
       <button id="start" type="button">Start</button>
       <p id="error" hidden></p>
     </main>
@@ -102,10 +102,10 @@
       const port = params.get("port");
       const why = params.get("error");
       if (port) {
-        document.getElementById("why").textContent = `equin's gateway does not answer on localhost:${port}.`;
+        document.getElementById("why").textContent = `muxos's gateway does not answer on localhost:${port}.`;
       }
       if (why) {
-        document.getElementById("why").textContent = "equin cannot tell which port its gateway is on.";
+        document.getElementById("why").textContent = "muxos cannot tell which port its gateway is on.";
         error.textContent = why;
         error.hidden = false;
       }

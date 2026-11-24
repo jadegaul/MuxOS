@@ -1,7 +1,7 @@
 /**
  * The colours an app's tile wears on the website (the gallery's cards, the
  * homepage's shelf): a vivid palette, its hue circle filled in so every app the
- * site lists can have one of its own. The site's look only — equin's own
+ * site lists can have one of its own. The site's look only — muxos's own
  * launchers paint apps in `apps-core/app-icon`'s calmer palette.
  *
  * Each is a bright base in OKLCH (lightness, chroma, hue); a tile paints a

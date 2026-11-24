@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-ndjson-stream",
+  "name": "@muxos/plugin-infra-ndjson-stream",
   "private": true,
   "version": "0.0.1"
 }

@@ -1292,7 +1292,7 @@ describe("NotificationsClient — HTTP fetch path", () => {
     });
   });
 
-  // equin.ai 2026-11-19 05:33:51 UTC: a 3 s old tab primed its
+  // MuxOS.app 2026-11-19 05:33:51 UTC: a 3 s old tab primed its
   // `icons.runtime-symbols` tuples over HTTP (the server's version clock: the
   // tuples were not tracked yet), went hidden and came back before their first
   // sub-ack; the probe read that ack (734) as revealing a frame missed after

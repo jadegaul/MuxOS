@@ -17,7 +17,7 @@ const INSTALL_TIMEOUT_MS = 30 * 60_000;
  * `dep` installed, for a host process that holds no `ExecContext` and must
  * not mint one: a check (running inside an op that already holds its host
  * grant, where an in-process `exec.admit` could wait on itself) and an e2e
- * script. The install runs in a CHILD, `./equin deps install <id>` —
+ * script. The install runs in a CHILD, `./muxos deps install <id>` —
  * a CLI process of its own with its own `cliExecContext`, admitted to the host
  * like any other install, under the same host flock — and the proof is then
  * read back with `readyNow`.

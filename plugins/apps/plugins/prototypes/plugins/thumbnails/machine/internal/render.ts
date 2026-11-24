@@ -155,7 +155,7 @@ async function closeBrowser(browser: Browser, name: string): Promise<void> {
 /**
  * Render one prototype to a PNG: the folder at `folder` on this computer (the
  * live one under the prototypes data dir for the gallery's job; any folder for
- * `./equin prototype thumbnails`).
+ * `./muxos prototype thumbnails`).
  *
  * Throws — with a classified `kind` — rather than ever returning a picture it
  * does not trust. The caller turns that into a visible `failed` state on the
@@ -206,7 +206,7 @@ export async function renderThumbnail(
     throw new ThumbnailRenderError(
       "browser-unavailable",
       `could not launch chromium (if its install is damaged, ` +
-        `\`./equin deps install chromium\` reinstalls it): ${String(err)}`,
+        `\`./muxos deps install chromium\` reinstalls it): ${String(err)}`,
       { cause: err },
     );
   }

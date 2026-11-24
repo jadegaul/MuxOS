@@ -14,7 +14,7 @@ import { isHandoffOp } from "@plugins/framework/plugins/cli/plugins/foreground-h
 
 /**
  * Subcommands that take a host slot and run for minutes. From
- * `~/.equin/logs/op-log/op-log.jsonl` over 14 days: build p50 9.8 min / p90 36.8 min,
+ * `~/.muxos/logs/op-log/op-log.jsonl` over 14 days: build p50 9.8 min / p90 36.8 min,
  * push p50 9.1 min / p90 35.7 min, check p50 3.8 min / p90 18 min.
  */
 const LONG_OPS = new Set(["build", "push", "check", "test", "release"]);
@@ -68,7 +68,7 @@ function isTailCount(call: ShellCall): boolean {
 
 /**
  * The one op the command consists of, when backgrounding it cannot change what
- * the command means: a single `./equin build|push` call with its flags, and at
+ * the command means: a single `./muxos build|push` call with its flags, and at
  * most
  *
  * - a `2>&1`;
@@ -129,7 +129,7 @@ function soleRewritableOp(
  */
 function rewriteNote(op: string, subagent: boolean): string {
   const moved =
-    `\`./equin ${op}\` was typed in the foreground; it was started with \`run_in_background: true\` instead ` +
+    `\`./muxos ${op}\` was typed in the foreground; it was started with \`run_in_background: true\` instead ` +
     `(a ${op} regularly outlives the 600 s foreground limit). The command itself is unchanged.`;
   return subagent
     ? `${moved}\n${awaitInstead(op)}`
@@ -146,7 +146,7 @@ function shellDetachIn(parsed: ShellParseResult): boolean {
 }
 
 /**
- * Long equin ops must run as a tool-level background task.
+ * Long muxos ops must run as a tool-level background task.
  *
  * The foreground path caps at 600 s, which is below the median build. When it
  * expires the agent gets `Command timed out after 10m 0s` and nothing else — no
@@ -157,7 +157,7 @@ function shellDetachIn(parsed: ShellParseResult): boolean {
  *
  * `run_in_background: true` answers with "You will be notified when it
  * completes" and lives up to its `timeout` — 30 min by default, 2 h at most,
- * which `background-timeout` sets on every backgrounded `./equin` call.
+ * which `background-timeout` sets on every backgrounded `./muxos` call.
  * Forcing every long op through it deletes the handle-less state entirely.
  *
  * When the command is just the op ({@link soleRewritableOp}) the guard does
@@ -181,7 +181,7 @@ function shellDetachIn(parsed: ShellParseResult): boolean {
  * breaks for a subagent — see {@link awaitInstead}. The op still runs correctly
  * backgrounded, so the guard's advice is unchanged; what changes is what the
  * caller does next. A subagent is told to hold its turn open on
- * `./equin await <op>`, and the ops it started are recorded so the
+ * `./muxos await <op>`, and the ops it started are recorded so the
  * stop-guard can refuse a turn that walks away from one.
  */
 /**
@@ -202,7 +202,7 @@ function awaitInstead(op: string): string {
     `You are a subagent, so the completion notification for this ${op} will NOT reach you — ` +
     `the harness files it under the parent session's queue and nothing delivers it there. ` +
     `Do NOT end your turn expecting to be woken.\n` +
-    `Your next call must be: \`./equin await ${op}\` (foreground). It blocks until the ` +
+    `Your next call must be: \`./muxos await ${op}\` (foreground). It blocks until the ` +
     `${op} writes its verdict and prints it, so the wake-up becomes this call's own result. ` +
     `If it exits 70 the op is simply still going — run it again.`
   );
@@ -249,7 +249,7 @@ export const backgroundOpsGuard = defineGuard<BashInput>({
 
     if (shellDetachIn(parsed)) {
       return {
-        blocked: `\`./equin ${op}\` is being detached by the shell, which produces no tracked task.`,
+        blocked: `\`./muxos ${op}\` is being detached by the shell, which produces no tracked task.`,
         why: "A shell-detached process is invisible to the harness: nothing notifies you when it ends, so the only way to learn the outcome is to watch a file. That is the polling loop this repo is trying to remove.",
         hint: `Drop the \`&\`/\`nohup\` and pass \`run_in_background: true\` on the Bash tool call instead.`,
       };
@@ -279,10 +279,10 @@ export const backgroundOpsGuard = defineGuard<BashInput>({
       };
     }
     return {
-      blocked: `\`./equin ${pinned}\` must run with \`run_in_background: true\`.`,
+      blocked: `\`./muxos ${pinned}\` must run with \`run_in_background: true\`.`,
       why: `A ${pinned} takes about 10 minutes at the median and regularly exceeds the 600 s foreground limit. On timeout you get "Command timed out after 10m 0s" — no task id, no notification — while the op keeps running, leaving you with no handle on it.`,
       hint: ctx.agent
-        ? `Re-run the same command with \`run_in_background: true\`, then — WITHOUT ending your turn — call \`./equin await ${pinned}\`. ${awaitInstead(pinned)}`
+        ? `Re-run the same command with \`run_in_background: true\`, then — WITHOUT ending your turn — call \`./muxos await ${pinned}\`. ${awaitInstead(pinned)}`
         : `Re-run the same command with \`run_in_background: true\`, then END YOUR TURN. The timeout is raised to the 2 h ceiling for you, and you will be re-invoked with the output when it finishes. Do not sit and watch it.`,
     };
   },

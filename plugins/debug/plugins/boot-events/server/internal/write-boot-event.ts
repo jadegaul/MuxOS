@@ -10,7 +10,7 @@ import {
 import type { BootLine } from "./schema";
 
 // Writes the per-boot lines to the persisted `boot` log channel →
-// ~/.equin/worktrees/<wt>/logs/boot.jsonl: one `start` line as the process
+// ~/.muxos/worktrees/<wt>/logs/boot.jsonl: one `start` line as the process
 // starts, one `ready` line from `onReady` — or, when the process
 // exits before it, one `exited` line from its `exit` event. The two pair by
 // processStartedAt (readBootEvents), so a backend that wedges during

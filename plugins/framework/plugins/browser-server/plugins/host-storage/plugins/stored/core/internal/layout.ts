@@ -1,12 +1,12 @@
 // The IndexedDB layout of a persistent browser host's storage `<name>` — read
 // by `host-storage`'s open (which writes it) and by `hostDataStored` (which
 // only asks whether it is there):
-// - `equin-host--<name>--db` — PGlite's data dir (`idb://…`);
-// - `equin-host--<name>--stores` — the host stores' entries, keyed
+// - `muxos-host--<name>--db` — PGlite's data dir (`idb://…`);
+// - `muxos-host--<name>--stores` — the host stores' entries, keyed
 //   [store, key], and the lifecycle record (`meta`/`lifecycle`).
 
 /** Every IndexedDB database of storage `name` starts with this. */
-export const storagePrefix = (name: string): string => `equin-host--${name}--`;
+export const storagePrefix = (name: string): string => `muxos-host--${name}--`;
 
 /** The database holding the stores' entries and the lifecycle record. */
 export const storesDbName = (name: string): string =>
@@ -33,4 +33,4 @@ export interface Lifecycle {
  * worker serving it (`host-storage`'s ownership), or a page wiping it
  * (`wipeHostData`): nothing opens or deletes it without holding it.
  */
-export const storageLockName = (name: string): string => `equin-host:${name}`;
+export const storageLockName = (name: string): string => `muxos-host:${name}`;

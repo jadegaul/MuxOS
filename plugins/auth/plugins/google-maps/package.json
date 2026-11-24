@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-auth-google-maps",
+  "name": "@muxos/plugin-auth-google-maps",
   "private": true,
   "version": "0.0.1",
   "description": "Google Maps Platform API-key credential for the auth registry."

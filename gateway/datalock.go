@@ -29,7 +29,7 @@ import (
 // process exits, however it exits — nothing to clean up, nothing stale). A
 // second gateway fails at once, naming the one that holds the root. A
 // successor started by a restart never sees it: every restart path (systemd,
-// `./equin start`'s reload) waits for the old process to be gone first.
+// `./muxos start`'s reload) waits for the old process to be gone first.
 
 // dataRootLock is held, open, for the process's life. A package variable so the
 // *os.File is never unreachable: its finalizer would close the descriptor and

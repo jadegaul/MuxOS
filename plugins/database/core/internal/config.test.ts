@@ -17,12 +17,12 @@ import { dbConfigDir } from "../../data-dirs";
  * That is a real constraint, not an accident: every consumer in a backend or a
  * CLI process wants one stable answer. It does mean an in-process test cannot
  * point the reader at a different directory — by the time a `bun test` file
- * runs, that const has already captured the developer's real `~/.equin`,
+ * runs, that const has already captured the developer's real `~/.muxos`,
  * which on any dev host DOES contain `database.json`. The tolerant no-file
  * fallback would then never be exercised. (The capture is this module's own:
  * `paths` itself resolves the root lazily on every call.)
  *
- * So the probe runs in a CHILD process with `EQUIN_DIR` pointed at an empty
+ * So the probe runs in a CHILD process with `MUXOS_DIR` pointed at an empty
  * temp dir — the same technique the plan's bare-host simulation uses. The probe
  * script is written INSIDE the repo tree so Bun resolves the `@plugins/*` alias
  * from the repo tsconfig exactly as it does for the module under test.
@@ -30,7 +30,7 @@ import { dbConfigDir } from "../../data-dirs";
 const CONFIG_MODULE = join(import.meta.dir, "config.ts");
 
 const probeDir = mkdtempSync(join(import.meta.dir, ".config-test-"));
-const emptyDataDir = mkdtempSync(join(tmpdir(), "equin-empty-"));
+const emptyDataDir = mkdtempSync(join(tmpdir(), "muxos-empty-"));
 
 afterAll(() => {
   rmSync(probeDir, { recursive: true, force: true });
@@ -90,8 +90,8 @@ function writeDbConfig(root: string, body: string): void {
 }
 
 // A deliberately minimal, PG*-free base environment: PATH so Bun can exec, and
-// the empty EQUIN_DIR. Anything the dev's shell exports (PGHOST, a real
-// EQUIN_DIR, USER) must NOT leak in, or the assertions below stop meaning
+// the empty MUXOS_DIR. Anything the dev's shell exports (PGHOST, a real
+// MUXOS_DIR, USER) must NOT leak in, or the assertions below stop meaning
 // what they say.
 const baseEnv = {
   PATH: process.env.PATH ?? "",
@@ -147,7 +147,7 @@ describe("readDatabaseConfig / libpqEnv with no database.json", () => {
 
 describe("readDatabaseConfig with a real database.json", () => {
   test("reads the file when it exists", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "equin-cfg-"));
+    const dir = mkdtempSync(join(tmpdir(), "muxos-cfg-"));
     try {
       writeDbConfig(
         dir,
@@ -183,7 +183,7 @@ describe("readDatabaseConfig with a real database.json", () => {
   });
 
   test("malformed JSON is tolerated the same way a missing file is", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "equin-bad-"));
+    const dir = mkdtempSync(join(tmpdir(), "muxos-bad-"));
     try {
       writeDbConfig(dir, "{ not json");
       const { config } = await probe({

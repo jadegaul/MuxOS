@@ -14,7 +14,7 @@ const guard: Guard = {
   check: (_input, ctx) =>
     ctx.inform(
       [
-        "You are using Claude-in-Chrome: the user's own Chrome, on their screen, with their real accounts. Default to the equin agent browser instead — the `mcp__equin__browser_*` tools (load them with ToolSearch): a headless tab of your own that stays open across calls; a route (`/agents/…`) opens your own build, an absolute URL any site.",
+        "You are using Claude-in-Chrome: the user's own Chrome, on their screen, with their real accounts. Default to the muxos agent browser instead — the `mcp__muxos__browser_*` tools (load them with ToolSearch): a headless tab of your own that stays open across calls; a route (`/agents/…`) opens your own build, an absolute URL any site.",
         "",
         "Use Claude-in-Chrome only when the task needs THAT browser: the user's sign-ins, a state they have open, a demo they are watching, or the user asked for it. Otherwise switch to `browser_*` now. (Told once per session.)",
       ].join("\n"),

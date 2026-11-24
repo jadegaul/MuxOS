@@ -15,12 +15,12 @@ export function noticeText(
   const lines = [
     lead,
     "",
-    "The parts of your system prompt this changes are now out of date — each `<equin-context>` below replaces the one of the same id:",
+    "The parts of your system prompt this changes are now out of date — each `<muxos-context>` below replaces the one of the same id:",
     "",
   ];
   if (current.length === 0)
     lines.push(
-      "(none apply now — no rules beyond what your equin tools' descriptions say)",
+      "(none apply now — no rules beyond what your muxos tools' descriptions say)",
     );
   else lines.push(current.map((s) => s.text).join("\n\n"));
   if (withdrawn.length > 0)
@@ -39,13 +39,13 @@ export function noticeText(
 /** The mandate change notice's lead: a mandate says what the agent may do,
  * never that it should do anything now. */
 export const MANDATE_CHANGE_LEAD =
-  "Your task's mandate was just changed by the user. This is for your information only — it is NOT a request to act: do not start, change or stop any work because of it, and do not use any newly granted capability unless the user explicitly asks you to. Your equin MCP tools were refreshed to match.";
+  "Your task's mandate was just changed by the user. This is for your information only — it is NOT a request to act: do not start, change or stop any work because of it, and do not use any newly granted capability unless the user explicitly asks you to. Your muxos MCP tools were refreshed to match.";
 
 /** The lead of the notice a conversation gets when it takes over running its
  * task (the conversation it was opened beside closed): it now works under its
  * task's mandate, `label`, instead of the one it stated. */
 export function runHandedOverLead(label: string): string {
-  return `The conversation that ran your task has closed, so this conversation now runs it: it works under your task's mandate — ${label} — instead of the one it had as a conversation opened beside it. This is for your information only — it is NOT a request to act: do not start, change or stop any work because of it, and do not use any newly granted capability unless the user explicitly asks you to. Your equin MCP tools were refreshed to match.`;
+  return `The conversation that ran your task has closed, so this conversation now runs it: it works under your task's mandate — ${label} — instead of the one it had as a conversation opened beside it. This is for your information only — it is NOT a request to act: do not start, change or stop any work because of it, and do not use any newly granted capability unless the user explicitly asks you to. Your muxos MCP tools were refreshed to match.`;
 }
 
 /** What a conversation stating its own mandate (a side chat opened beside the

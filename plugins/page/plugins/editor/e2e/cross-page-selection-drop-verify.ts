@@ -15,7 +15,7 @@
 //   B. the sub-page's chevron collapses it afterwards (server `expanded` false,
 //      its content off screen)
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/cross-page-selection-drop-verify.ts
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/cross-page-selection-drop-verify.ts
 import {
   agentFetch,
   report,

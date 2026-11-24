@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The data-dir migration (`./equin data-dir migrate`), rehearsed end to end on
+# The data-dir migration (`./muxos data-dir migrate`), rehearsed end to end on
 # a throwaway install: install a tree from BEFORE the move (legacy data dir,
 # old gateway label), use it, check out the tree under test, migrate, and
 # check what a user would: the old dir and label are gone, the app answers,
@@ -33,13 +33,15 @@ step_01_install_old_TAG="harness-only"
 
 step_02_old_layout() {
   cat <<'CMD'
-LEGACY="$HOME/.singularity"
+LEGACY="$HOME/.equin"
 fail() { echo "FAIL: $*"; exit 1; }
 test -d "$LEGACY" && ! test -L "$LEGACY" || fail "no legacy data dir"
-test -e "$HOME/.equin" && fail "a current data dir already exists"
-launchctl print "gui/$(id -u)/dev.singularity.gateway" >/dev/null || fail "old label not loaded"
-# The pre-move tree predates the per-account port (and `./equin url`): it listens on 9000.
-code=$(curl -sS -o /dev/null -w '%{http_code}' http://equin.localhost:9000/); echo "http $code"
+test -e "$HOME/.muxos" && fail "a current data dir already exists"
+launchctl print "gui/$(id -u)/dev.equin.gateway" >/dev/null || fail "old label not loaded"
+# The pre-move tree predates the per-account port (and `./muxos url`): it listens on 9000,
+# under the previous generation's public label (assembled — this file names only the current one).
+PREV_LABEL=$(printf 'equ%s' in)
+code=$(curl -sS -o /dev/null -w '%{http_code}' "http://${PREV_LABEL}.localhost:9000/"); echo "http $code"
 [ "$code" = 200 ] || fail "the app does not answer"
 echo "legacy layout, old label, app answers"
 CMD
@@ -52,7 +54,7 @@ step_03_seed() {
   # a text file under state/ that names the root — the two shapes the
   # rewrite must move that a fresh install does not create by itself.
   cat <<'CMD'
-LEGACY="$HOME/.singularity"
+LEGACY="$HOME/.equin"
 set -e
 root="$LEGACY"
 mkdir -p "$root/state/workspaces/att-seed"
@@ -69,10 +71,10 @@ step_03_seed_TAG="harness-only"
 step_04_checkout_new() {
   cat <<'CMD'
 set -e
-cd ~/singularity 2>/dev/null || cd ~/equin
+cd ~/singularity 2>/dev/null || cd ~/muxos
 git fetch /tmp/new.bundle main
 git reset --hard FETCH_HEAD
-zsh -l -i -c './equin data-dir migrate'
+zsh -l -i -c './muxos data-dir migrate'
 CMD
 }
 step_04_checkout_new_DOC="Check out the tree under test; the dry run prints the plan."
@@ -80,30 +82,30 @@ step_04_checkout_new_TAG="harness-only"
 
 step_05_migrate() {
   cat <<'CMD'
-cd ~/singularity 2>/dev/null || cd ~/equin
-zsh -l -i -c './equin data-dir migrate --apply'
+cd ~/singularity 2>/dev/null || cd ~/muxos
+zsh -l -i -c './muxos data-dir migrate --apply'
 CMD
 }
-step_05_migrate_DOC="./equin data-dir migrate --apply."
+step_05_migrate_DOC="./muxos data-dir migrate --apply."
 step_05_migrate_TAG="harness-only"
 
 step_06_after() {
   cat <<'CMD'
-LEGACY="$HOME/.singularity"
+LEGACY="$HOME/.equin"
 fail() { echo "FAIL: $*"; exit 1; }
 { test -e "$LEGACY" || test -L "$LEGACY"; } && fail "the legacy data dir (or its link) is still there"
-test -d "$HOME/.equin" || fail "no ~/.equin"
-launchctl print "gui/$(id -u)/dev.equin.gateway" >/dev/null || fail "dev.equin.gateway not loaded"
-launchctl print "gui/$(id -u)/dev.singularity.gateway" >/dev/null 2>&1 && fail "the old label is still loaded"
-ls ~/Library/LaunchAgents/ | grep -q "dev\.singularity\." && fail "the old label's plist is still installed"
-APP=$( (cd ~/singularity 2>/dev/null || cd ~/equin; zsh -l -i -c './equin url') )   # the tree under test names its gateway port
+test -d "$HOME/.muxos" || fail "no ~/.muxos"
+launchctl print "gui/$(id -u)/dev.muxos.gateway" >/dev/null || fail "dev.muxos.gateway not loaded"
+launchctl print "gui/$(id -u)/dev.equin.gateway" >/dev/null 2>&1 && fail "the old label is still loaded"
+ls ~/Library/LaunchAgents/ | grep -q "dev\.equin\." && fail "the old label's plist is still installed"
+APP=$( (cd ~/singularity 2>/dev/null || cd ~/muxos; zsh -l -i -c './muxos url') )   # the tree under test names its gateway port
 code=$(curl -sS -o /dev/null -w '%{http_code}' "$APP/"); echo "http $code"
 [ "$code" = 200 ] || fail "the app does not answer"
-grep -q "$HOME/.equin/state/workspaces/att-seed" "$HOME/.equin/state/config/seed-path.json" || fail "stored path not rewritten"
-ls "$HOME/.claude/projects" | grep -q -- "-equin-state-workspaces-att-seed" || fail "transcript dir not renamed"
-grep -q "$LEGACY/" "$HOME/.equin/state/db-config/database.json" && fail "database.json still names the legacy dir"
-cd ~/singularity 2>/dev/null || cd ~/equin
-zsh -l -i -c './equin data-dir migrate' > /tmp/second-run.txt 2>&1; cat /tmp/second-run.txt
+grep -q "$HOME/.muxos/state/workspaces/att-seed" "$HOME/.muxos/state/config/seed-path.json" || fail "stored path not rewritten"
+ls "$HOME/.claude/projects" | grep -q -- "state-workspaces-att-seed" || fail "transcript dir not renamed"
+grep -q "$LEGACY/" "$HOME/.muxos/state/db-config/database.json" && fail "database.json still names the legacy dir"
+cd ~/singularity 2>/dev/null || cd ~/muxos
+zsh -l -i -c './muxos data-dir migrate' > /tmp/second-run.txt 2>&1; cat /tmp/second-run.txt
 grep -q "Nothing to do" /tmp/second-run.txt || fail "a second run still has work"
 echo "all checks passed"
 CMD
@@ -120,14 +122,14 @@ step_07_reboot_REBOOT=1
 
 step_08_after_reboot() {
   cat <<'CMD'
-APP=$( (cd ~/singularity 2>/dev/null || cd ~/equin; zsh -l -i -c './equin url') )   # the tree under test names its gateway port
+APP=$( (cd ~/singularity 2>/dev/null || cd ~/muxos; zsh -l -i -c './muxos url') )   # the tree under test names its gateway port
 for i in $(seq 1 100); do
   code=$(curl -sS -o /dev/null -m 5 -w '%{http_code}' "$APP/" 2>/dev/null || true)
   [ "$code" = 200 ] && { echo "http 200 after ~$((i * 3))s"; exit 0; }
   sleep 3
 done
 echo "http ${code:-none} — the app did not come back"
-launchctl print "gui/$(id -u)/dev.equin.gateway" 2>&1 | head -20
+launchctl print "gui/$(id -u)/dev.muxos.gateway" 2>&1 | head -20
 exit 1
 CMD
 }

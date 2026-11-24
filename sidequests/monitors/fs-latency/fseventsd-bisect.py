@@ -18,7 +18,7 @@ one being written (the newest file in the directory). This script:
    the mechanism but names no client.
 
 Writes a JSON summary (and the debug log stream) under
-~/.equin/logs/monitors/captures/. Read-only apart from the restarts.
+~/.muxos/logs/monitors/captures/. Read-only apart from the restarts.
 """
 import json
 import os
@@ -35,7 +35,7 @@ SETTLE_S = 20
 BEHIND_IDS = 0x08000000
 SUSPECTS = ["XprotectService", "XProtectBridgeService", "syspolicyd"]
 HOME = os.environ.get("MONITOR_HOME") or os.path.expanduser("~" + os.environ.get("SUDO_USER", ""))
-OUT = os.path.join(HOME, ".equin/logs/monitors/captures")
+OUT = os.path.join(HOME, ".muxos/logs/monitors/captures")
 
 
 def run_out(argv):

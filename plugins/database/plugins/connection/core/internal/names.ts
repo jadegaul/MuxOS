@@ -127,9 +127,9 @@ const CLI_APPLICATION_NAME_PREFIX = `${PRODUCT_NAME}-cli:`;
 
 /**
  * The `application_name` every connection built by `createDbPool` /
- * `createDbClient` logs in with: `equin:<pool>` from a process that reports
+ * `createDbClient` logs in with: `muxos:<pool>` from a process that reports
  * the end of its own sessions (a backend, serving or exec: it has a runtime
- * namespace and drains `idleTransactionEndedSink`), `equin-cli:<pool>` from
+ * namespace and drains `idleTransactionEndedSink`), `muxos-cli:<pool>` from
  * one that cannot (a CLI process: stderr only). It marks the session in
  * `pg_stat_activity` as one whose idle-in-transaction end its own client
  * reports — so the lock watch leaves it to that client — as opposed to any

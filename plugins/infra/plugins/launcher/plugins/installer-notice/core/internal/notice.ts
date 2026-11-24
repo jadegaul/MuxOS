@@ -5,15 +5,15 @@
  * than a habit to remember:
  *
  * 1. No internal names — checked on every user-facing field (`noticeProblems`).
- * 2. What equin was doing, and what it gives the user — `doing`.
+ * 2. What muxos was doing, and what it gives the user — `doing`.
  * 3. Why it was blocked, in the user's terms — `blocked`.
  * 4. What the user can do now, and what a skip costs — `now`, `ifSkipped`.
  * 5. Raw lines (error output, ids, paths) — `evidence`, rendered apart.
  */
 export interface InstallerNotice {
-  /** One line: what happened. "macOS blocked equin from adding its apps". */
+  /** One line: what happened. "macOS blocked muxos from adding its apps". */
   readonly title: string;
-  /** What equin was trying to do, and why that helps the user. */
+  /** What muxos was trying to do, and why that helps the user. */
   readonly doing: string;
   /** Why it was blocked, in the user's terms. */
   readonly blocked: string;
@@ -21,7 +21,7 @@ export interface InstallerNotice {
   readonly now: readonly string[];
   /**
    * What happens if they skip it or say no: optional (what still works, how
-   * to add it later), or needed (why equin cannot go on without it).
+   * to add it later), or needed (why muxos cannot go on without it).
    */
   readonly ifSkipped:
     | {
@@ -35,7 +35,7 @@ export interface InstallerNotice {
 }
 
 /**
- * Names a user does not know: equin's own parts and the OS machinery under
+ * Names a user does not know: muxos's own parts and the OS machinery under
  * them. A message says what the user gets instead ("an icon in your menu
  * bar", "app shortcuts in your Applications folder").
  */
@@ -149,7 +149,7 @@ export function joinNames(names: readonly string[]): string {
 }
 
 /**
- * A notice thrown: what a check that stops equin (deep inside a call, e.g. the
+ * A notice thrown: what a check that stops muxos (deep inside a call, e.g. the
  * launcher's host preconditions) raises so the command running it prints the
  * notice ITSELF — `console.error(err.message)` and exit 1 — never Bun's
  * uncaught-error dump of stack frames around it (rule 5).
@@ -176,7 +176,7 @@ export function renderNotice(notice: InstallerNotice): string {
     "",
     notice.ifSkipped.optional
       ? `  It's optional: ${notice.ifSkipped.stillWorks} ${notice.ifSkipped.addLater}`
-      : `  equin needs it: ${notice.ifSkipped.because}`,
+      : `  muxos needs it: ${notice.ifSkipped.because}`,
   ];
   if (notice.evidence.length > 0) {
     lines.push("", "  Details (for a bug report):");

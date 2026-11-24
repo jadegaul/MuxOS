@@ -11,7 +11,7 @@
  * - A darwinbg Chromium (E-cores, throttled) waits to be scheduled, and every
  *   frame time reports the wait as work — on a loaded host ~96 % of it
  *   (research/2026-11-06-apps-demo-main-thread-is-scheduling-starvation.md).
- *   `./equin run` spawns an e2e script in the foreground, so this should read
+ *   `./muxos run` spawns an e2e script in the foreground, so this should read
  *   `foreground`; the tier is READ (a self read, the only trustworthy one —
  *   packages/spawn-priority) rather than assumed, because a script run some
  *   other way, or a later change to how runs are admitted, would otherwise

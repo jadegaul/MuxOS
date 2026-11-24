@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-fields-location-filter",
+  "name": "@muxos/plugin-fields-location-filter",
   "version": "0.0.1",
   "private": true,
   "description": "Location field type: data-view filter (is set / is not set)."

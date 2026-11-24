@@ -415,7 +415,7 @@ export async function attemptWorkFrom(
  * already measured the same tips.
  *
  * And one fact the live value does not carry: a checkout holding uncommitted
- * work. Agents do not commit — `./equin push` does — so an agent that held
+ * work. Agents do not commit — `./muxos push` does — so an agent that held
  * its push for review leaves ALL its work in the checkout and a branch
  * `ahead: 0`; read as `"none"`, its exit_clean dropped the task
  * (task-1794193514-ia99gm). It turns only `"none"` into `"pending"`: a landed

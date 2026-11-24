@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * The verbs over a deployment, as the app launches them.
  *
- * **The CLI is the engine; this is only a launcher.** `./equin deploy
+ * **The CLI is the engine; this is only a launcher.** `./muxos deploy
  * converge|ship` owns every refusal, every host mutation and the health gate —
  * the endpoint spawns exactly that command and streams its output. Nothing about
  * converge or ship is re-implemented server-side, which is the same split
@@ -17,10 +17,10 @@ import { z } from "zod";
  * hand. It is the app's one primary action; `converge` and `ship` stay because
  * the row actions and scripted callers still name them individually.
  *
- * `restart` is a CLI subcommand of its own (`./equin deploy restart`): it
+ * `restart` is a CLI subcommand of its own (`./muxos deploy restart`): it
  * restarts the installed unit — no converge, no upload, no flip — and holds the
  * same health gate a ship does. It is how a site whose server answers but whose
- * equin is not running (the box link's `down`) is brought back, recorded as a
+ * muxos is not running (the box link's `down`) is brought back, recorded as a
  * run like the others.
  */
 export const DEPLOY_VERBS = ["converge", "ship", "update", "restart"] as const;

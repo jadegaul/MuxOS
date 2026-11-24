@@ -83,7 +83,7 @@ export const manifestCoversUses: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     const manifest = parseManifestLists(text);
@@ -108,7 +108,7 @@ export const manifestCoversUses: Check = {
       return {
         ok: false,
         message: `${missing.length} icon use(s) are not in ${rel}, so their sprite has no symbol for them:\n${missing.join("\n")}`,
-        hint: "Run `./equin build`. If the regenerated manifest still lacks them, the manifest scan (codegen/core/icon-manifest.scan.ts) misreads these calls — fix the scan, not this check.",
+        hint: "Run `./muxos build`. If the regenerated manifest still lacks them, the manifest scan (codegen/core/icon-manifest.scan.ts) misreads these calls — fix the scan, not this check.",
       };
     }
     return { ok: true };

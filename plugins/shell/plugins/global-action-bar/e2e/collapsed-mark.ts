@@ -11,7 +11,7 @@
 // bar's corner).
 //
 // Usage:
-//   ./equin run plugins/shell/plugins/global-action-bar/e2e/collapsed-mark.ts \
+//   ./muxos run plugins/shell/plugins/global-action-bar/e2e/collapsed-mark.ts \
 //     [--path /agents] [--out /tmp/collapsed-mark] [--wait-ring 600]
 
 import {

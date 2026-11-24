@@ -3,7 +3,7 @@
  * file (`infra/launcher/gateway-port`'s data dir, parsed by its core), else
  * {@link LEGACY_GATEWAY_PORT} — the port of an install that has not moved yet.
  *
- * The data-dirs half's `gatewayPortSync()` also honours `EQUIN_GATEWAY_PORT`; this
+ * The data-dirs half's `gatewayPortSync()` also honours `MUXOS_GATEWAY_PORT`; this
  * one deliberately does not: no environment variable has a spelling in this
  * runtime (`e2e-harness:target-not-env-derived`, see target.ts), and a script
  * run by a person or an agent has no gateway parent to inherit one from.

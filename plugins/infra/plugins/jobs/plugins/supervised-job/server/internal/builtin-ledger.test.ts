@@ -2,8 +2,8 @@
  * The built-in ledger: kind-id derivation, the failure-policy table, and the
  * claim lock against a real Postgres seeded with the real migration chain.
  *
- * Run: `./equin test plugins/infra/plugins/jobs/plugins/supervised-job`
- * (the DB half requires the running embedded cluster — `./equin build`
+ * Run: `./muxos test plugins/infra/plugins/jobs/plugins/supervised-job`
+ * (the DB half requires the running embedded cluster — `./muxos build`
  * first, which is also what generates the `supervised_job_runs` migration).
  */
 import {
@@ -481,7 +481,7 @@ describe("the built-in ledger (real DB)", () => {
         '[exec] failed\nerror: [fs-wait] already records as "cli"',
     );
 
-    // An `./equin` child records its uncaught exception in its run's error
+    // An `./muxos` child records its uncaught exception in its run's error
     // file: that, message first, beats a transcript ending in stack frames.
     const thrown = await claim("thrown");
     writeFileSync(

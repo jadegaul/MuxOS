@@ -46,7 +46,7 @@ import {
 // Every variable a test below rewrites, plus the process's declared runtime
 // namespace. The move tests impersonate a process that may or may not move
 // shared data, and that is decided by the declared namespace and
-// `EQUIN_RELEASE`. The `bun test` preload declared this process's
+// `MUXOS_RELEASE`. The `bun test` preload declared this process's
 // namespace as the checkout it runs from, so each test puts that exact
 // declaration back rather than merely dropping it.
 const ENV_KEYS: readonly EnvKey[] = ["DIR", "RELEASE", "DATA_DIR_MOVES"];

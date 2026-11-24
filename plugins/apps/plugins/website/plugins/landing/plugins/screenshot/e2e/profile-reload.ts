@@ -13,7 +13,7 @@
  * what the worker logged.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/profile-reload.ts [--out <dir>] [--top 25] [--worker-console]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/profile-reload.ts [--out <dir>] [--top 25] [--worker-console]
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import type { CDPSession } from "playwright";

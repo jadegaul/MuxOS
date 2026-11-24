@@ -30,7 +30,7 @@ import { sweepDistLeftovers } from "./dist-publish";
 import { reapLegacyCheckoutDist } from "./legacy-dist-reap";
 
 /**
- * The HERMETIC posture of `./equin build` (`--hermetic --composition …`):
+ * The HERMETIC posture of `./muxos build` (`--hermetic --composition …`):
  * produce the app-artifact set for one or more compositions — filtered
  * registries, generated migration SQL, one web dist each — as a deterministic
  * function of (source tree, composition). Nothing here reads or mutates the
@@ -171,7 +171,7 @@ export async function runHermeticBuild(opts: {
   // served from a non-main checkout, which is exactly what the brand catches.
   const namespace = await checkoutNamespace(root);
 
-  // A release is NOT a build run, so `EQUIN_BUILD_ID` is deliberately
+  // A release is NOT a build run, so `MUXOS_BUILD_ID` is deliberately
   // neither read nor written here: reading it would make a release adopt the
   // id of whatever build spawned it (and, through the profiler/log writers,
   // append to that build's artifacts); writing it would leak this id into
@@ -201,7 +201,7 @@ export async function runHermeticBuild(opts: {
 
   // The per-checkout artifact lock. REQUIRED, and the one non-obvious
   // hermetic step: it is the only thing serializing this run against a
-  // concurrent `./equin build` in the same checkout — both rewrite
+  // concurrent `./muxos build` in the same checkout — both rewrite
   // the committed registries in it (`checkoutBuildLock`). The lock is per-checkout because it guards codegen
   // written INTO the checkout, which is a separate question from where the
   // dist lands. A plain filesystem symlink, so it works on a bare host.
@@ -357,7 +357,7 @@ export async function runHermeticBuild(opts: {
           minify: opts.minify,
           // Self-contained dist: `release` copies this tree into the shippable
           // bundle, so every artifact must be REAL bytes, not a symlink into
-          // this host's `~/.equin/cache/web-artifacts/` store.
+          // this host's `~/.muxos/cache/web-artifacts/` store.
           materialize: true,
           // A release artifact is never experimental — it is the shipped app.
           experimental: false,

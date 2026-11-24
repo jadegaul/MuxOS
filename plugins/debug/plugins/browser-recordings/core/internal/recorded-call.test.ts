@@ -6,15 +6,15 @@ describe("isRecordedToolCall", () => {
   test("a Bash call running an e2e script", () => {
     expect(
       isRecordedToolCall("Bash", {
-        command: "./equin run plugins/x/e2e/flow.ts --no-x",
+        command: "./muxos run plugins/x/e2e/flow.ts --no-x",
       }),
     ).toBe(true);
-    expect(isRecordedToolCall("Bash", { command: "./equin build" })).toBe(
+    expect(isRecordedToolCall("Bash", { command: "./muxos build" })).toBe(
       false,
     );
     expect(
       isRecordedToolCall("Bash", {
-        command: "./equin run scripts/x.ts",
+        command: "./muxos run scripts/x.ts",
       }),
     ).toBe(false);
   });
@@ -30,10 +30,10 @@ describe("isRecordedToolCall", () => {
   });
 
   test("a page-changing browser_* MCP call", () => {
-    expect(isRecordedToolCall("mcp__equin__browser_act", {})).toBe(true);
-    expect(isRecordedToolCall("mcp__equin__browser_navigate", {})).toBe(true);
-    expect(isRecordedToolCall("mcp__equin__browser_read_page", {})).toBe(false);
-    expect(isRecordedToolCall("mcp__equin__browser_screenshot", {})).toBe(
+    expect(isRecordedToolCall("mcp__muxos__browser_act", {})).toBe(true);
+    expect(isRecordedToolCall("mcp__muxos__browser_navigate", {})).toBe(true);
+    expect(isRecordedToolCall("mcp__muxos__browser_read_page", {})).toBe(false);
+    expect(isRecordedToolCall("mcp__muxos__browser_screenshot", {})).toBe(
       false,
     );
     expect(isRecordedToolCall("Read", {})).toBe(false);

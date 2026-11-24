@@ -8,7 +8,7 @@ import {
 } from "./reduce";
 import { VISITOR_ERROR_LIMITS, WebsiteVisitorErrorSchema } from "./kind";
 
-const SITE = { deploymentId: "dpl-1794000000-abc", hostnames: ["equin.ai"] };
+const SITE = { deploymentId: "dpl-1794000000-abc", hostnames: ["MuxOS.app"] };
 
 function record(over: Partial<SiteReportRecord> = {}): SiteReportRecord {
   return {
@@ -20,7 +20,7 @@ function record(over: Partial<SiteReportRecord> = {}): SiteReportRecord {
     data: {
       errorType: "TypeError",
       stack:
-        "TypeError: x is undefined\n    at render (https://equin.ai/assets/app-1a2b.js:10:5)\n    at https://equin.ai/assets/vendor.js:3:9",
+        "TypeError: x is undefined\n    at render (https://MuxOS.app/assets/app-1a2b.js:10:5)\n    at https://MuxOS.app/assets/vendor.js:3:9",
     },
     path: "/demo/at/agents",
     buildId: "b-123",
@@ -56,7 +56,7 @@ describe("reduceSiteReport", () => {
     const r = reduceSiteReport(record(), SITE);
     expect(r).toMatchObject({
       deploymentId: SITE.deploymentId,
-      hostname: "equin.ai",
+      hostname: "MuxOS.app",
       siteKind: "crash",
       visitorSource: "browser-error",
       errorType: "TypeError",
@@ -219,9 +219,9 @@ describe("reduceSiteReport", () => {
   test("a hostile hostname in this computer's own deployment row is not used", () => {
     const r = reduceSiteReport(record(), {
       deploymentId: SITE.deploymentId,
-      hostnames: ["<evil>", "equin.ai"],
+      hostnames: ["<evil>", "MuxOS.app"],
     });
-    expect(r.hostname).toBe("equin.ai");
+    expect(r.hostname).toBe("MuxOS.app");
   });
 });
 
@@ -233,7 +233,7 @@ function stallData(
     tabId: "tab-1",
     app: "website",
     routePattern: "(root)",
-    url: "https://equin.ai/about/vision?who=me",
+    url: "https://MuxOS.app/about/vision?who=me",
     visible: true,
     focused: true,
     startedAt: 1_794_000_000_000,
@@ -253,7 +253,7 @@ function stallData(
         {
           invokerType: "user-callback",
           invoker: "FrameRequestCallback",
-          sourceURL: "https://equin.ai/assets/vision-1a2b.js",
+          sourceURL: "https://MuxOS.app/assets/vision-1a2b.js",
           sourceFunctionName: "play",
           sourceCharPosition: 1234,
           startMs: 1,
@@ -290,7 +290,7 @@ function stallData(
       stacks: [],
       topSelf: [
         {
-          frame: "play (https://equin.ai/assets/vision-1a2b.js:1:1234)",
+          frame: "play (https://MuxOS.app/assets/vision-1a2b.js:1:1234)",
           ms: 380,
         },
         { frame: "<script>alert(1)</script> (x.js:1:1)", ms: 20 },
@@ -370,7 +370,7 @@ describe("reduceSiteReport: main-thread stalls", () => {
     });
     // No URL, page or source position survives anywhere in the evidence.
     for (const s of strings(r.stall)) {
-      expect(s).not.toMatch(/https?:|equin\.ai|evil|vision-1a2b|who=me/);
+      expect(s).not.toMatch(/https?:|muxos\.ai|evil|vision-1a2b|who=me/);
     }
   });
 
@@ -437,16 +437,16 @@ describe("reduceStack", () => {
   test("keeps only the site's own origin or relative frames, as file / line / column", () => {
     const stack = [
       "Error: boom",
-      "    at a (https://equin.ai/assets/a.js:1:2)",
+      "    at a (https://MuxOS.app/assets/a.js:1:2)",
       "    at b (https://evil.example/steal.js:3:4)",
       "    at c (chrome-extension://abcdef/inject.js:5:6)",
       "    at d (javascript://%0aalert(1)/x.js:7:8)",
       "    at e (/assets/e.js:9:10)",
-      "f@https://equin.ai/assets/f.js:11:12",
+      "f@https://MuxOS.app/assets/f.js:11:12",
       "    at g (https://user@evil.example/g.js:1:1)",
       "    at h (//evil.example/h.js:1:1)",
     ].join("\n");
-    const { frames, omitted } = reduceStack(stack, ["equin.ai"]);
+    const { frames, omitted } = reduceStack(stack, ["MuxOS.app"]);
     expect(frames.map((f) => f.file)).toEqual([
       "/assets/a.js",
       "/assets/e.js",
@@ -458,23 +458,23 @@ describe("reduceStack", () => {
   test("caps the number of frames and counts the rest", () => {
     const stack = Array.from(
       { length: 40 },
-      (_, i) => `    at f${i} (https://equin.ai/a.js:${i + 1}:1)`,
+      (_, i) => `    at f${i} (https://MuxOS.app/a.js:${i + 1}:1)`,
     ).join("\n");
-    const { frames, omitted } = reduceStack(stack, ["equin.ai"]);
+    const { frames, omitted } = reduceStack(stack, ["MuxOS.app"]);
     expect(frames).toHaveLength(VISITOR_ERROR_LIMITS.maxFrames);
     expect(omitted).toBe(40 - VISITOR_ERROR_LIMITS.maxFrames);
   });
 
   test("a frame path with markup or a query is dropped", () => {
     const { frames } = reduceStack(
-      "    at x (https://equin.ai/a<script>.js:1:1)\n    at y (/a.js?x=1:2:3)",
-      ["equin.ai"],
+      "    at x (https://MuxOS.app/a<script>.js:1:1)\n    at y (/a.js?x=1:2:3)",
+      ["MuxOS.app"],
     );
     expect(frames).toEqual([]);
   });
 
   test("a non-string stack yields nothing", () => {
-    expect(reduceStack({ evil: true }, ["equin.ai"])).toEqual({
+    expect(reduceStack({ evil: true }, ["MuxOS.app"])).toEqual({
       frames: [],
       omitted: 0,
     });
@@ -488,14 +488,14 @@ describe("sanitizeMessage", () => {
 });
 
 describe("reducePayload", () => {
-  const own = ["equin.ai"];
+  const own = ["MuxOS.app"];
   const L = VISITOR_ERROR_LIMITS;
 
   test("keeps a resize-loop trace readable: elements, owners, sizes", () => {
     const resizeLoop = {
       pass: [
         {
-          site: "at new TracedResizeObserver (https://equin.ai/a/x.js:1:2)\nat useElementSize (https://equin.ai/a/y.js:3:4)",
+          site: "at new TracedResizeObserver (https://MuxOS.app/a/x.js:1:2)\nat useElementSize (https://MuxOS.app/a/y.js:3:4)",
           targets: [
             {
               element: "div.bar.flex",
@@ -537,7 +537,7 @@ describe("reducePayload", () => {
     const p = reducePayload(
       {
         stack:
-          "PortHostBootError: boot failed\n  at boot (https://equin.ai/w.js?v=1:5:6)\n  at x (https://cdn.other.net/lib.js:1:1)\nCaused by: TypeError: nope",
+          "PortHostBootError: boot failed\n  at boot (https://MuxOS.app/w.js?v=1:5:6)\n  at x (https://cdn.other.net/lib.js:1:1)\nCaused by: TypeError: nope",
       },
       own,
     );
@@ -551,15 +551,15 @@ describe("reducePayload", () => {
 
   test("never passes a foreign URL for the site's own, nor misses one after a digit or _", () => {
     const evil = [
-      "https://equin.ai@evil.example/phish",
-      "https://equin.ai:443@evil.example/p",
-      "https://equin.ai//evil.example/p",
-      "https://equin.ai/?u=https://evil.example/p",
-      "https://equin.ai/x_?u=https://evil.example/p",
+      "https://MuxOS.app@evil.example/phish",
+      "https://MuxOS.app:443@evil.example/p",
+      "https://MuxOS.app//evil.example/p",
+      "https://MuxOS.app/?u=https://evil.example/p",
+      "https://MuxOS.app/x_?u=https://evil.example/p",
       "_https://evil.example/x",
       "0https://evil.example/x",
       "_www.evil.example",
-      "https://equin.ai.evil.example/p",
+      "https://MuxOS.app.evil.example/p",
     ];
     const p = reducePayload({ evil }, own);
     for (const line of strings(p)) {
@@ -573,7 +573,7 @@ describe("reducePayload", () => {
       "evil",
     );
     expect(
-      reducePayload({ s: "at f (https://equin.ai:8443/a/b.js?v=2:7:9)" }, own)
+      reducePayload({ s: "at f (https://MuxOS.app:8443/a/b.js?v=2:7:9)" }, own)
         .fields.s,
     ).toBe("at f (/a/b.js:7:9)");
   });

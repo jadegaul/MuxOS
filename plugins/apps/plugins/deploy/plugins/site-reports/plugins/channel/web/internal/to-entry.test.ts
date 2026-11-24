@@ -9,13 +9,13 @@ describe("toSiteReport", () => {
         source: "browser-error",
         message: "boom",
         data: { errorType: "Error", stack: "x" },
-        url: "https://equin.ai/demo/tasks?q=secret#frag",
+        url: "https://MuxOS.app/demo/tasks?q=secret#frag",
         userAgent: "Mozilla/5.0",
         clientId: "tab-1",
         buildId: "b",
         commit: "c",
       },
-      "https://equin.ai/",
+      "https://MuxOS.app/",
     );
     expect(entry).toEqual({
       kind: "crash",
@@ -36,7 +36,7 @@ describe("toSiteReport", () => {
         message: "m".repeat(5_000),
         data: { stack: "s".repeat(5_000), nested: { v: "n".repeat(5_000) } },
       },
-      "https://equin.ai/",
+      "https://MuxOS.app/",
     );
     expect(entry.message.length).toBeLessThanOrEqual(1_000);
     expect(entry.message).toContain("chars trimmed");
@@ -50,7 +50,7 @@ describe("toSiteReport", () => {
     );
     const entry = toSiteReport(
       { kind: "crash", source: "browser-error", message: "m", data },
-      "https://equin.ai/",
+      "https://MuxOS.app/",
     );
     expect(JSON.stringify(entry.data).length).toBeLessThanOrEqual(4_096);
     expect(entry.message).toStartWith(

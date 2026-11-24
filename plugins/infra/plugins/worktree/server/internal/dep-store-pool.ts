@@ -90,7 +90,7 @@ const NODE_MODULES = "node_modules";
 // `ensureDeps`' stamp (bootstrap's STAMP_REL — a `cli` barrel this server code
 // may not import): written once an install has fully succeeded, so its presence
 // is "this store is complete", and its mtime is when it was last made correct.
-const STAMP_REL = join("node_modules", ".equin-deps");
+const STAMP_REL = join("node_modules", ".muxos-deps");
 
 // HOW MANY WAIT: every one harvested, until it ages out — the pool has no count
 // bound, because supply IS demand, three days late. A store is produced when

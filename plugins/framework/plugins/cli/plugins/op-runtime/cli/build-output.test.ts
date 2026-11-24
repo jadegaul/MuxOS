@@ -25,8 +25,8 @@ function failureVerdict(steps: Verdict["steps"], viteOnly = false): Verdict {
       viteOnly ? "The frontend compiled, but the artifact was discarded." : "",
     ].filter(Boolean),
     pointers: [
-      "Full output: /home/x/.equin/worktrees/att-x/build.log",
-      "Check logs:  /home/x/.equin/worktrees/att-x/check.log",
+      "Full output: /home/x/.muxos/worktrees/att-x/build.log",
+      "Check logs:  /home/x/.muxos/worktrees/att-x/check.log",
     ],
     steps,
   };
@@ -164,7 +164,7 @@ describe("renderVerdict — success", () => {
 describe("fallbackVerdict", () => {
   const ctx = {
     urls: [URL],
-    buildLogPath: "/home/x/.equin/worktrees/att-x/build.log",
+    buildLogPath: "/home/x/.muxos/worktrees/att-x/build.log",
   };
 
   // Narrows Verdict | null and fails loudly instead of papering over with `!`.
@@ -228,7 +228,7 @@ describe("fallbackVerdict", () => {
 describe("runVerdictGuard", () => {
   const ctx = {
     urls: [URL],
-    buildLogPath: "/home/x/.equin/worktrees/att-x/runs/build-x.log",
+    buildLogPath: "/home/x/.muxos/worktrees/att-x/runs/build-x.log",
   };
 
   test("an agreeing verdict prints nothing", () => {
@@ -242,7 +242,7 @@ describe("runVerdictGuard", () => {
 describe("fallbackVerdict — terminated from outside", () => {
   const ctx = {
     urls: [URL],
-    buildLogPath: "/home/x/.equin/worktrees/att-x/build.log",
+    buildLogPath: "/home/x/.muxos/worktrees/att-x/build.log",
   };
 
   test("(no verdict, exit 143, SIGTERM) → BUILD ABORTED, not BUILD FAILED", () => {

@@ -3,7 +3,7 @@
  * field id `starred` (`starred is true`), so the id is pinned — a boolean, the
  * side row's presence.
  *
- * Run: `./equin test plugins/apps/plugins/pages/plugins/starred`.
+ * Run: `./muxos test plugins/apps/plugins/pages/plugins/starred`.
  */
 
 import { expect, test } from "bun:test";

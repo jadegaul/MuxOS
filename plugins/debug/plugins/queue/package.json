@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-queue",
+  "name": "@muxos/plugin-debug-queue",
   "private": true,
   "version": "0.0.1"
 }

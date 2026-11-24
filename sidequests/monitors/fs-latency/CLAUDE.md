@@ -1,8 +1,8 @@
-# fs-latency — on-demand diagnostics (the monitor moved into equin)
+# fs-latency — on-demand diagnostics (the monitor moved into muxos)
 
-The fs-latency **monitor** is no longer here: it is equin's
+The fs-latency **monitor** is no longer here: it is muxos's
 [`io-health/plugins/monitor`](../../../plugins/infra/plugins/host/plugins/io-health/plugins/monitor/CLAUDE.md)
-— a binary run every 30 s by a login service `./equin start` installs, its
+— a binary run every 30 s by a login service `./muxos start` installs, its
 line typed against the app's tick schema, its log rotated into kept archives.
 Install, root opt-in, what a tick holds, `report.ts`: see there.
 
@@ -13,7 +13,7 @@ What stays here are two on-demand tools, below: `census.py` and
 ## Who is churning, without root
 
 ```sh
-/usr/bin/python3 -I "$MAIN"/sidequests/monitors/fs-latency/census.py --seconds 300 [--out "$EQUIN_SCRATCH/census.json"]
+/usr/bin/python3 -I "$MAIN"/sidequests/monitors/fs-latency/census.py --seconds 300 [--out "$MUXOS_SCRATCH/census.json"]
 ```
 
 On demand, not a launchd job. Once a second it reads every process's

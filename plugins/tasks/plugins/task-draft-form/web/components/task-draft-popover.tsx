@@ -195,7 +195,7 @@ export interface TaskDraftPopoverProps {
   heading?: string;
   /**
    * Actions drawn in the form's header, before its × — another way to handle
-   * what the user came for (Wish's Ask equin), handed the words drafted so far
+   * what the user came for (Wish's Ask muxos), handed the words drafted so far
    * so they can carry them over.
    */
   headerActions?: (draft: TaskDraftActionDraft) => ReactNode;

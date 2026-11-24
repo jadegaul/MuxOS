@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-keyset",
+  "name": "@muxos/plugin-primitives-keyset",
   "description": "Field-agnostic keyset pagination machinery: a null-aware keyset seek / at-or-before / order-by compiler over drizzle SQL, over keys the caller builds from declared columns. No data-view dependency, so any server-delegated windowed query can reuse it.",
   "private": true,
   "version": "0.0.1"

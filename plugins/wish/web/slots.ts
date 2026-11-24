@@ -24,7 +24,7 @@ export interface WishHeaderActionContribution {
   id: string;
   /**
    * An action in the Wish popover's header, before its × — another entry point
-   * for what the user came for (Ask equin, for a question rather than a task).
+   * for what the user came for (Ask muxos, for a question rather than a task).
    * Renders one `IconButton`.
    */
   component: ComponentType<WishHeaderActionProps>;

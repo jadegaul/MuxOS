@@ -4,7 +4,7 @@
  * design "a job that starts the whole app, or names the lists it reads, should
  * have no spelling" (wiki: Import time and lazy imports, 2026-11-20).
  *
- *   ./equin run plugins/framework/plugins/server-core/scripts/measure-job-read-reach.ts \
+ *   ./muxos run plugins/framework/plugins/server-core/scripts/measure-job-read-reach.ts \
  *     [--job <name>] [--json] [--sites] [--why [--level <level>]]
  *
  * Every non-test, non-web module under `plugins/` is parsed once (syntax only):

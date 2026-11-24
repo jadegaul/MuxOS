@@ -1,6 +1,6 @@
 /**
  * The live demo where the browser has no Web Locks — neither in the page nor
- * in the demo's worker (iOS Lockdown Mode, some in-app webviews; equin.ai's
+ * in the demo's worker (iOS Lockdown Mode, some in-app webviews; MuxOS.app's
  * demo on Safari died in its worker on "undefined is not an object
  * (evaluating 'navigator.locks.request')", report-1795088221-b1uksj).
  *
@@ -10,7 +10,7 @@
  * imports the real entry — so the host's code runs exactly as in such a
  * browser. Then, in one fresh context:
  *
- *  1. the demo boots (Enter equin → the Agent Manager renders), its worker
+ *  1. the demo boots (Enter muxos → the Agent Manager renders), its worker
  *     really having no `navigator.locks`;
  *  2. its storage is in memory, filled from the snapshot (the boot report
  *     says so; nothing is written to the storage's IndexedDB);
@@ -18,7 +18,7 @@
  *  4. no page error, no console error naming Web Locks.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/no-web-locks.ts [--out /tmp/demo-no-web-locks] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/no-web-locks.ts [--out /tmp/demo-no-web-locks] [--headed]
  */
 import {
   arg,
@@ -136,7 +136,7 @@ await withBrowser(async (h) => {
     );
     r.eq(
       "the demo's storage wrote nothing to IndexedDB (in memory)",
-      dbs.filter((n) => n.includes("equin-host--")),
+      dbs.filter((n) => n.includes("muxos-host--")),
       [],
     );
 

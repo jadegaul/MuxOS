@@ -53,7 +53,7 @@ import {
 const PS_TIMEOUT_MS = 10_000;
 
 /**
- * The machine's gateway against what `./equin start --force` would install
+ * The machine's gateway against what `./muxos start --force` would install
  * now: {@link compareGatewayLaunch}'s differences, plus whether the running
  * gateway stamps the principal — read off THIS backend's own argv, so only a
  * backend can say it (the follow-main restart in a CLI does not ask).
@@ -93,7 +93,7 @@ export type GatewayLaunchComparison =
     };
 
 /**
- * Compare the machine's gateway with what `./equin start --force` would
+ * Compare the machine's gateway with what `./muxos start --force` would
  * install now: the installed service definition's argv and cwd against main's
  * (`devGatewayLaunchOptions` + `gatewayLaunchFlags` — the derivation `start`
  * writes, with `-log-level` taken from the installed argv since it is
@@ -124,7 +124,7 @@ export async function compareGatewayLaunch(): Promise<GatewayLaunchComparison> {
   if (installed === null) {
     return notApplicable(
       (await exists(service.definitionPath()))
-        ? `The gateway's ${service.manager} definition was not written by ./equin start`
+        ? `The gateway's ${service.manager} definition was not written by ./muxos start`
         : `The gateway is not registered with ${service.manager} on this machine`,
     );
   }
@@ -146,7 +146,7 @@ export async function compareGatewayLaunch(): Promise<GatewayLaunchComparison> {
     }),
   );
   // A definition naming another data root's pidfile is not the gateway this
-  // process runs beside (a preview under its own EQUIN_DIR).
+  // process runs beside (a preview under its own MUXOS_DIR).
   if (
     flagValue(installedFlags, "-pid-file") !==
     flagValue(expectedFlags, "-pid-file")
@@ -189,7 +189,7 @@ export async function compareGatewayLaunch(): Promise<GatewayLaunchComparison> {
     differences.push(
       bundle === null
         ? "binary not signed by this machine's identity"
-        : "equin app not signed by this machine's identity",
+        : "muxos app not signed by this machine's identity",
     );
   } else if (signature === "no-identity") {
     differences.push("no stable signing identity on this machine yet");
@@ -211,7 +211,7 @@ export async function compareGatewayLaunch(): Promise<GatewayLaunchComparison> {
 
 /**
  * How the installed binary differs from main's `gateway-binary` build, or null
- * when it is that build, where `start` would run it (inside the equin app on
+ * when it is that build, where `start` would run it (inside the muxos app on
  * macOS). Main's build may not exist yet (its source moved and nothing built
  * it): the installed one is then older by definition — `start --force` builds
  * it.
@@ -235,7 +235,7 @@ async function describeBinary(
       );
       if (installedBinary !== expected.path) {
         return expected.bundled
-          ? "runs outside the equin app (its permissions are a bare binary's)"
+          ? "runs outside the muxos app (its permissions are a bare binary's)"
           : `binary at ${installedBinary}, not ${expected.path}`;
       }
       if (was === expected.identity) return null;
@@ -250,7 +250,7 @@ async function describeBinary(
 }
 
 /**
- * Which gateway build the installed job runs: the build the equin app records
+ * Which gateway build the installed job runs: the build the muxos app records
  * for its `gateway` component, or the one a deps-cache path names; null when
  * neither says.
  */

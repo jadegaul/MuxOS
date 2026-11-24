@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "equin",
-  "description": "equin from any tab: send a wish, jump between equin.ai and your own equin, and run the actions your apps offer on the page.",
+  "name": "muxos",
+  "description": "muxos from any tab: send a wish, jump between MuxOS.app and your own muxos, and run the actions your apps offer on the page.",
   "version": "1.0.0",
   "action": {
-    "default_title": "equin",
+    "default_title": "muxos",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icon-16.png",

@@ -71,7 +71,7 @@ export interface DataFilesImpl {
    * Where the root's folder is in this host's file system — a reader names
    * its files by that location, never by the root: on the desktop the data
    * dir on the computer's disk, in a browser host the same dir under the
-   * browser storage's hidden `~/.equin/`.
+   * browser storage's hidden `~/.muxos/`.
    */
   location(spec: FileRootSpec): FileLocation;
 }

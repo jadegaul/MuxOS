@@ -196,7 +196,7 @@ export interface RunChecksOptions {
  * The requested fan-out width, or null for "the runner decides". Resolved from
  * the option first and the environment second.
  *
- * The env read lives HERE, beside `EQUIN_CHECK_NO_CACHE` and for the same
+ * The env read lives HERE, beside `MUXOS_CHECK_NO_CACHE` and for the same
  * structural reason: `build` and `push` do not call `runChecks` in-process, they
  * spawn the `check` command, and `runCheckSubprocess` hands the child
  * `...process.env` (op-runtime/cli/check-subprocess.ts). So an env knob reaches
@@ -205,7 +205,7 @@ export interface RunChecksOptions {
  * that stays true for any future caller.
  *
  * A malformed value THROWS rather than falling back to the default: a typo'd
- * `--jobs` or a stale `EQUIN_CHECK_JOBS=auto` in a shell profile would
+ * `--jobs` or a stale `MUXOS_CHECK_JOBS=auto` in a shell profile would
  * otherwise silently run at a width nobody asked for, and the whole point of the
  * knob is that the width is known.
  *
@@ -279,7 +279,7 @@ export async function runChecks(
   // REQUEST is well-formed is knowable now, with no work done.
   const jobs = requestedJobs(options.jobs);
 
-  // Durable, per-run progress records (~/.equin/logs/check-progress/check-progress.jsonl).
+  // Durable, per-run progress records (~/.muxos/logs/check-progress/check-progress.jsonl).
   // These exist because a single hung check makes the whole run report NOTHING:
   // the print loop far below only reaches the console after `Promise.all` fully
   // resolves. Written as each unit of work starts and settles — never from that
@@ -1023,7 +1023,7 @@ export async function runChecks(
       const omitted = lines.length - 100;
       const moreHint = transcript
         ? `see ${transcript.path} for full output`
-        : `re-run \`./equin check ${check.id}\` for full output`;
+        : `re-run \`./muxos check ${check.id}\` for full output`;
       log(
         `  ${head}\n  ... (${omitted} lines omitted — ${moreHint})\n  ${tail}`,
         "stderr",

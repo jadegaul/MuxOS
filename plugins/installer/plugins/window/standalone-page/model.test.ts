@@ -37,8 +37,8 @@ function plan(
     mode: "window",
     groups: [
       { id: "prepare", label: "Prepare your Mac" },
-      { id: "download", label: "Download equin" },
-      { id: "build", label: "Build equin" },
+      { id: "download", label: "Download muxos" },
+      { id: "build", label: "Build muxos" },
     ],
     steps: [
       {
@@ -50,15 +50,15 @@ function plan(
       },
       {
         id: "clone",
-        label: "Download equin",
-        doing: "Downloading equin",
+        label: "Download muxos",
+        doing: "Downloading muxos",
         group: "download",
         est_s: est.clone ?? null,
       },
       {
         id: "build",
-        label: "Build equin",
-        doing: "Building equin",
+        label: "Build muxos",
+        doing: "Building muxos",
         group: "build",
         est_s: null,
         substeps: [
@@ -136,11 +136,11 @@ describe("installer page model", () => {
       log("\u001b[32mok\u001b[0m"),
     ]);
     expect(view.phase).toBe("running");
-    expect(currentStep(view)?.step.label).toBe("Download equin");
+    expect(currentStep(view)?.step.label).toBe("Download muxos");
     expect(currentGroup(view)).toEqual({ index: 1, count: 3 });
-    expect(statusText(view, now(2))).toBe("Downloading equin…");
+    expect(statusText(view, now(2))).toBe("Downloading muxos…");
     expect(view.log).toEqual([
-      { kind: "section", text: "Downloading equin" },
+      { kind: "section", text: "Downloading muxos" },
       { kind: "line", text: "ok" },
     ]);
   });
@@ -181,13 +181,13 @@ describe("installer page model", () => {
       step(0, "clone", "start"),
       count(1, "clone", 3, null, "%"),
     ]);
-    expect(statusText(unknown, now(2))).toBe("Downloading equin…");
+    expect(statusText(unknown, now(2))).toBe("Downloading muxos…");
     const pct = fold([
       plan(),
       step(0, "clone", "start"),
       count(1, "clone", 42, 100, "%"),
     ]);
-    expect(statusText(pct, now(2))).toBe("Downloading equin · 42%");
+    expect(statusText(pct, now(2))).toBe("Downloading muxos · 42%");
     const stale = fold([
       plan(),
       step(0, "build", "start"),
@@ -214,7 +214,7 @@ describe("installer page model", () => {
       "Installing the system libraries the Chromium browser runs on · 10%",
     );
     applyLine(view, step(6, "clone", "start"));
-    expect(statusText(view, now(7))).toBe("Downloading equin…");
+    expect(statusText(view, now(7))).toBe("Downloading muxos…");
     // A v1 stream (recorded before `doing` existed) still reads.
     expect(fold([plan(), step(0, "clone", "start")]).phase).toBe("running");
   });
@@ -354,13 +354,13 @@ describe("installer page model", () => {
         v: 1,
         t: at(1),
         type: "done",
-        url: "http://equin.localhost:9000",
+        url: "http://muxos.localhost:9000",
         ms: 1000,
       }),
       JSON.stringify({ v: 1, t: at(1), type: "exit", code: 0 }),
     ]);
     expect(view.phase).toBe("done");
-    expect(view.doneUrl).toBe("http://equin.localhost:9000");
+    expect(view.doneUrl).toBe("http://muxos.localhost:9000");
     expect(progress(view, now(2))).toBe(1);
   });
 
@@ -397,8 +397,8 @@ const pauseEv = (s: number, blocking: boolean, kind = "unknown"): string =>
     type: "pause",
     step: "clone",
     kind,
-    title: "Downloading equin didn't finish",
-    text: "equin stopped while downloading equin.",
+    title: "Downloading muxos didn't finish",
+    text: "muxos stopped while downloading muxos.",
     evidence: ["fatal: unable to access", "step exit 128"],
     blocking,
     optional: false,
@@ -463,16 +463,16 @@ describe("installer page model: pauses, Fix with Claude, notices", () => {
     const notice = (state: string): string =>
       ev(1, {
         type: "notice",
-        id: "dev.equin.menu-bar",
+        id: "dev.muxos.menu-bar",
         state,
-        title: "macOS blocked equin from adding its apps",
+        title: "macOS blocked muxos from adding its apps",
         text: "Turn it on.",
         without: "the menu-bar icon and app shortcuts",
       });
     const view = fold([
       plan(),
       notice("skipped"),
-      ev(2, { type: "done", url: "http://equin.localhost:9000", ms: 2000 }),
+      ev(2, { type: "done", url: "http://muxos.localhost:9000", ms: 2000 }),
     ]);
     expect(view.phase).toBe("done");
     expect(view.notice?.state).toBe("skipped");
@@ -483,11 +483,11 @@ describe("installer page model: pauses, Fix with Claude, notices", () => {
   test("a notice answering a Skip is the person's choice: kept apart, no banner", () => {
     const leftOut = ev(4, {
       type: "notice",
-      id: "dev.equin.menu-bar",
+      id: "dev.muxos.menu-bar",
       state: "skipped",
-      title: "Installed without the equin icon in your menu bar",
-      text: "equin works without it, in your browser.",
-      without: "the equin icon in your menu bar",
+      title: "Installed without the muxos icon in your menu bar",
+      text: "muxos works without it, in your browser.",
+      without: "the muxos icon in your menu bar",
     });
     const view = fold([
       plan(),
@@ -501,11 +501,11 @@ describe("installer page model: pauses, Fix with Claude, notices", () => {
     ]);
     expect(view.notice).toBeNull();
     expect(view.leftOut.map((n) => n.without)).toEqual([
-      "the equin icon in your menu bar",
+      "the muxos icon in your menu bar",
     ]);
     // Once the step moved on, a notice is no longer the Skip's.
     applyLine(view, leftOut);
-    expect(view.notice?.id).toBe("dev.equin.menu-bar");
+    expect(view.notice?.id).toBe("dev.muxos.menu-bar");
     expect(view.leftOut).toHaveLength(1);
   });
 

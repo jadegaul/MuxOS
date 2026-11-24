@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-desktop-wallpaper",
+  "name": "@muxos/plugin-apps-desktop-wallpaper",
   "description": "Floating desktop wallpaper: provider registry, picker, context menu, store, and global config.",
   "private": true,
   "version": "0.0.1"

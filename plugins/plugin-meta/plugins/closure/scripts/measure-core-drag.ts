@@ -4,7 +4,7 @@
  * `deps/`) ships its whole plugin — `web/` UI, `server/` endpoints and jobs,
  * `machine/` halves — and everything THOSE import.
  *
- *   ./equin run plugins/plugin-meta/plugins/closure/scripts/measure-core-drag.ts \
+ *   ./muxos run plugins/plugin-meta/plugins/closure/scripts/measure-core-drag.ts \
  *     [--composition <id>,…] [--top 30] [--edges 12] [--dist-links <file>] [--json <out>]
  *
  * For every composition (packs, main and base-exclusions skipped), under each

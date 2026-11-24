@@ -5,7 +5,7 @@
  * middle re-materializes one.
  *
  * Headless Lexical under Bun — the corpus's decorator never renders.
- * Run: `./equin test plugins/page/plugins/editor/core`.
+ * Run: `./muxos test plugins/page/plugins/editor/core`.
  */
 
 import { describe, expect, test } from "bun:test";

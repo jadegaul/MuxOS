@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-page-toggle",
+  "name": "@muxos/plugin-page-toggle",
   "description": "Toggle (collapsible) block type for the page editor.",
   "private": true,
   "version": "0.0.1"

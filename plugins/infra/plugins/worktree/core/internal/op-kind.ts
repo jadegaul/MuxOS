@@ -26,7 +26,7 @@ export interface OpKindMeta {
   /**
    * Whether an in-flight op of this kind stands for its conversation's pending
    * WORK — the op-status banner above the prompt, the sidebar chip, and what a
-   * bare `./equin await` (no kinds named) waits on. False for a
+   * bare `./muxos await` (no kinds named) waits on. False for a
    * plain script run: it can be a watcher or a dev server that never ends, and
    * a conversation must not read "working" for as long as one lives. It is
    * still an op everywhere else (the op log, the Ops views, machine-usage).

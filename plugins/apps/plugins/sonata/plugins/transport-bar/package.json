@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-sonata-transport-bar",
+  "name": "@muxos/plugin-apps-sonata-transport-bar",
   "description": "Sonata transport controls: the play/pause button at the head of the player's transport strip and the playback-speed jog wheel in the player header.",
   "private": true,
   "version": "0.0.1"

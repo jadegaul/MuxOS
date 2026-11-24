@@ -14,7 +14,7 @@ import { SectionNameSchema } from "./page-sections";
  *
  * Every message carries {@link REPLAY_PROTOCOL}; anything else is ignored.
  */
-export const REPLAY_PROTOCOL = "equin.session-replay/1";
+export const REPLAY_PROTOCOL = "muxos.session-replay/1";
 
 /** What the replay asks the framed site to do. */
 export const ReplayCommandSchema = z.discriminatedUnion("kind", [

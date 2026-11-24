@@ -19,7 +19,7 @@ describe("convertTweakcnTheme", () => {
         shadow: "0 1px 2px black",
         spacing: "0.25rem",
         "tracking-normal": "0.01em",
-        // Not an equin token: dropped by the key maps.
+        // Not an muxos token: dropped by the key maps.
         "not-a-token": "x",
       },
       dark: {

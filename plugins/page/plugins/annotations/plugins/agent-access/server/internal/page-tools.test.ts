@@ -17,7 +17,7 @@
  * and registers its graph process-wide, which would leak into every suite after
  * it in the shared `bun test` process.
  *
- * Run: `./equin test plugins/page/plugins/annotations/plugins/agent-access`.
+ * Run: `./muxos test plugins/page/plugins/annotations/plugins/agent-access`.
  */
 
 import { beforeAll, describe, expect, setDefaultTimeout, test } from "bun:test";

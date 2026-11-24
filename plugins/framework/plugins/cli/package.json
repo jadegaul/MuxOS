@@ -1,9 +1,10 @@
 {
-  "name": "@equin/plugin-framework-cli",
-  "description": "The `./equin` CLI (its old name is kept as a shim): the command declaration contract, the generated-artifact normalize contract, and every built-in command (build, push, check, test, run, release, deploy, and more).",
+  "name": "@muxos/plugin-framework-cli",
+  "description": "The `./muxos` CLI (its old name is kept as a shim): the command declaration contract, the generated-artifact normalize contract, and every built-in command (build, push, check, test, run, release, deploy, and more).",
   "private": true,
   "type": "module",
   "bin": {
+    "muxos": "bin/index.ts",
     "equin": "bin/index.ts",
     "singularity": "bin/index.ts"
   },

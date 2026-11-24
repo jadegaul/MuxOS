@@ -101,7 +101,7 @@ export const pageHostsOnDemand: Check = {
       message:
         "Page root hosts of plugins held only on demand — mounted at no page of these compositions:\n  " +
         problems.join("\n  "),
-      hint: 'Decide each host. Page chrome the composition needs → hold the plugin as the composition\'s own (name it, or a subsystem row it extends, in plugins/plugin-meta/plugins/composition/core/config.ts). A host of the plugins it reads → `scope: "each"`, keyed by usePluginScopeId(). Legitimately absent → exempt it from the owning plugin\'s exempt/index.ts (`rule: "page-hosts-on-demand"`, paths: ["web/index.ts"], with why). Current list: ./equin exempt list --rule page-hosts-on-demand.',
+      hint: 'Decide each host. Page chrome the composition needs → hold the plugin as the composition\'s own (name it, or a subsystem row it extends, in plugins/plugin-meta/plugins/composition/core/config.ts). A host of the plugins it reads → `scope: "each"`, keyed by usePluginScopeId(). Legitimately absent → exempt it from the owning plugin\'s exempt/index.ts (`rule: "page-hosts-on-demand"`, paths: ["web/index.ts"], with why). Current list: ./muxos exempt list --rule page-hosts-on-demand.',
     };
   },
 };

@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-duration-filter",
+  "name": "@muxos/plugin-fields-duration-filter",
   "version": "0.0.1",
   "private": true,
-  "description": "Duration field type: data-view filter — number's operators, with operands typed in units."
+  "description": "Duration field type: data-view filter \u2014 number's operators, with operands typed in units."
 }

@@ -1,6 +1,6 @@
 // ─── Does the two-program check ever differ from a full check? ──────────────
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/dual-check.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/dual-check.ts \
 //     <checkout> [--mode keyed|walks|dual] [--walk-base hint|none] [--json <out.json>]
 //
 // `--mode keyed` runs the two-program check alone (what a check run's tsc half
@@ -21,7 +21,7 @@
 // The correctness gate for any change to the type check, and how it was
 // validated before it decided verdicts: run it on a tree, apply a commit, run
 // it again — the second run is the incremental one under test.
-// Point `EQUIN_DIR` at a scratch directory to keep the store isolated
+// Point `MUXOS_DIR` at a scratch directory to keep the store isolated
 // from the fleet's.
 //
 // Manual and expensive: two program builds and a full check (minutes, ~15 GB).

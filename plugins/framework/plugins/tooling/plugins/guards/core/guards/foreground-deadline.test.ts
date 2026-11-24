@@ -22,7 +22,7 @@ const EXPORT_RE = new RegExp(
 describe("foreground-deadline guard", () => {
   test("a foreground check gets the deadline exported and the full limit", () => {
     const before = Date.now();
-    const p = patch({ command: "./equin check type-check", timeout: 120_000 });
+    const p = patch({ command: "./muxos check type-check", timeout: 120_000 });
     expect(p?.timeout).toBe(MAX_FOREGROUND_TIMEOUT_MS);
     const m = String(p?.command).match(EXPORT_RE);
     expect(m).not.toBeNull();
@@ -30,21 +30,21 @@ describe("foreground-deadline guard", () => {
     // Inside the call's window, short of its limit.
     expect(deadline).toBeGreaterThan(before);
     expect(deadline).toBeLessThan(before + MAX_FOREGROUND_TIMEOUT_MS);
-    expect(String(p?.command)).toEndWith("; ./equin check type-check");
+    expect(String(p?.command)).toEndWith("; ./muxos check type-check");
   });
 
   test("a chain reaches every op in it", () => {
     expect(
-      String(patch({ command: "cd x && ./equin test plugins/a" })?.command),
+      String(patch({ command: "cd x && ./muxos test plugins/a" })?.command),
     ).toMatch(EXPORT_RE);
   });
 
   test("background calls, other ops and instant flags are untouched", () => {
     expect(
-      patch({ command: "./equin test", run_in_background: true }),
+      patch({ command: "./muxos test", run_in_background: true }),
     ).toBeUndefined();
-    expect(patch({ command: "./equin format" })).toBeUndefined();
-    expect(patch({ command: "./equin check --list" })).toBeUndefined();
+    expect(patch({ command: "./muxos format" })).toBeUndefined();
+    expect(patch({ command: "./muxos check --list" })).toBeUndefined();
     expect(patch({ command: "ls" })).toBeUndefined();
   });
 });

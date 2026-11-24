@@ -16,14 +16,14 @@
 //
 // Why config is RE-PROPAGATED, not just deleted: a bare `rm -rf` of the config
 // dir would fall back to *code* defaults, not a genuine first-launch. Re-running
-// propagateConfigToUser (as `./equin config-propagate`, in a child: it evaluates
+// propagateConfigToUser (as `./muxos config-propagate`, in a child: it evaluates
 // every plugin barrel, build tooling that never runs in a serving backend)
 // restores the shipped *git-layer* defaults a serve build installs (the build
 // calls the same function), so the reset lands on the exact first-launch config,
 // not a code-default approximation.
 //
 // OUT OF SCOPE — central secrets / auth tokens: they live in one global encrypted
-// store (~/.equin/state/secrets/) shared by every namespace by the
+// store (~/.muxos/state/secrets/) shared by every namespace by the
 // single-instance-per-user architecture, carry no per-composition dimension, and
 // are deliberately untouched here (see research/2026-07-02-global-adr-single-
 // instance-per-user.md).

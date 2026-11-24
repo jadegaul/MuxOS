@@ -6,12 +6,12 @@ import { assemblePlatform } from "./internal/assemble-platform";
 
 export default {
   description:
-    "Backs up equin platform files (auth, database config) into the backup archive.",
+    "Backs up muxos platform files (auth, database config) into the backup archive.",
   contributions: [
     ConfigV2.Register({ descriptor: platformSourceConfig }),
     BackupSource({
       id: PLATFORM_SOURCE_ID,
-      name: "equin platform",
+      name: "muxos platform",
       assemble: assemblePlatform,
     }),
   ],

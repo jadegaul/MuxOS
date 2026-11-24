@@ -5,7 +5,7 @@ import { Logo } from "@plugins/ui/plugins/logo/web";
 /**
  * The app's mark at the tab bar's leading edge, in the column above the rail:
  * it anchors the frame's corner and lines the first tab up with the app's own
- * left edge. The equin logo (`ui/logo`) drawn in the current text colour, so
+ * left edge. The muxos logo (`ui/logo`) drawn in the current text colour, so
  * it is as quiet as the idle rail icons below it. Decorative — it does
  * nothing, so it is hidden from the a11y tree.
  */

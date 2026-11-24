@@ -9,10 +9,10 @@
 // be flowing.
 //
 // Usage:
-//   ./equin run plugins/debug/plugins/live-state-churn/plugins/emit/e2e/live-state-churn.ts --key <resourceKey> [--url <url>] [--rate 10] [--seconds 8]
+//   ./muxos run plugins/debug/plugins/live-state-churn/plugins/emit/e2e/live-state-churn.ts --key <resourceKey> [--url <url>] [--rate 10] [--seconds 8]
 //
 // Example:
-//   ./equin run plugins/debug/plugins/live-state-churn/plugins/emit/e2e/live-state-churn.ts \
+//   ./muxos run plugins/debug/plugins/live-state-churn/plugins/emit/e2e/live-state-churn.ts \
 //     --url http://<worktree>.localhost:<port>/agents \
 //     --key tasks.list --rate 10 --seconds 8
 
@@ -101,7 +101,7 @@ const ok = await withBrowser(async (h) => {
     console.error(
       `window.${LIVE_STATE_EMIT_GLOBAL} and/or window.${RENDER_PROFILER_GLOBAL} are undefined —\n` +
         "the live-state-churn emit and render-profiler Debug plugins are not loaded.\n" +
-        "Run ./equin build and retry.",
+        "Run ./muxos build and retry.",
     );
     return false;
   }

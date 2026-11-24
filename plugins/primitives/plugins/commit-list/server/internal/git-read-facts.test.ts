@@ -107,7 +107,7 @@ describe("indexTraceEnv", () => {
 describe("checkoutKindOf", () => {
   const root = "/u/repo";
   test("from the path's layout", () => {
-    expect(checkoutKindOf("/h/.equin/services/main-slots/slot-3", null)).toBe(
+    expect(checkoutKindOf("/h/.muxos/services/main-slots/slot-3", null)).toBe(
       "main slot",
     );
     expect(checkoutKindOf(`${root}/.claude/worktrees/att-1-x`, null)).toBe(

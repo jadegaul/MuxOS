@@ -9,7 +9,7 @@ import { joinAppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/co
  * `@iconify-json/material-symbols*` upgrade needs no rerun. Rerun it only to
  * pick up Google's newer metadata (new icons, tags, categories).
  *
- * Usage: ./equin run plugins/primitives/plugins/icon-picker/scripts/gen-symbols-metadata.ts
+ * Usage: ./muxos run plugins/primitives/plugins/icon-picker/scripts/gen-symbols-metadata.ts
  */
 import { z } from "zod";
 import { writeGenerated } from "@plugins/framework/plugins/tooling/plugins/codegen/core";

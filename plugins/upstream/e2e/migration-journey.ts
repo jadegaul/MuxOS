@@ -21,14 +21,14 @@
  *                          the shape in which `origin/main` is the AUTHOR's main
  *                          (Problem 1). On `main`: push fast-forwards it here.
  *   e2e-cj-<id>-clone-wt/  linked worktree of the clone, where its branches
- *                          live and every clone-side `./equin` runs.
+ *                          live and every clone-side `./muxos` runs.
  *
  * Nothing here is special-cased for being a test. A repository other than the
  * one this machine's main app is served from names its main checkout by its
  * directory (`checkoutRef`), so the upstream's CLI calls run in its own main
  * checkout without touching main's namespace. The clone's origin is a local
  * path, which `resolvePublishTarget` answers `local` from the URL. Pushes are
- * the real `./equin push`: its lock is the clone's own (`pushLockFor`),
+ * the real `./muxos push`: its lock is the clone's own (`pushLockFor`),
  * its `migration-applies-clean` dry-runs against the clone's own main database
  * (a throwaway one, as that main was never deployed), and it refuses to land on
  * any repository but the clone's. On top of that, every push first asserts that
@@ -74,7 +74,7 @@ const UPSTREAM_TABLE = "e2e_upstream_probe";
 
 const GIT_TIMEOUT_MS = 120_000;
 /**
- * Every `./equin` call. The first one in each worktree installs that
+ * Every `./muxos` call. The first one in each worktree installs that
  * worktree's dependencies (a cold `bun install` plus provisions), and each
  * regen loads every schema file through drizzle-kit — minutes, not seconds.
  */
@@ -104,7 +104,7 @@ interface Ctx {
  * fixture's):
  *
  * - a commit identity;
- * - `EQUIN_CONVERSATION_ID`: the session that authors the clone's work.
+ * - `MUXOS_CONVERSATION_ID`: the session that authors the clone's work.
  *   The repo's `prepare-commit-msg` hook (core.hooksPath, set as the `setup`
  *   task sets it — see `configureCheckout`) stamps it on every commit, and
  *   push's `conversation-trailer` check requires it;
@@ -140,7 +140,7 @@ async function git(cwd: string, ...args: string[]): Promise<string> {
   return r.stdout.trim();
 }
 
-/** `./equin <args>` in `cwd`, captured, full output kept in the log dir. */
+/** `./muxos <args>` in `cwd`, captured, full output kept in the log dir. */
 async function cli(
   ctx: Ctx,
   cwd: string,
@@ -160,13 +160,13 @@ async function cli(
   );
   writeFileSync(
     log,
-    `$ (cd ${cwd} && ./equin ${args.join(" ")})\nexit ${r.exitCode}${r.timedOut ? " (TIMED OUT)" : ""}\n\n--- stdout\n${r.stdout}\n--- stderr\n${r.stderr}`,
+    `$ (cd ${cwd} && ./muxos ${args.join(" ")})\nexit ${r.exitCode}${r.timedOut ? " (TIMED OUT)" : ""}\n\n--- stdout\n${r.stdout}\n--- stderr\n${r.stderr}`,
   );
   const secs = ((Date.now() - started) / 1000).toFixed(0);
   console.log(
-    `    $ ./equin ${args.join(" ")}  → exit ${r.exitCode} (${secs}s, ${log})`,
+    `    $ ./muxos ${args.join(" ")}  → exit ${r.exitCode} (${secs}s, ${log})`,
   );
-  if (r.timedOut) throw new HarnessError(`./equin ${args.join(" ")} timed out`);
+  if (r.timedOut) throw new HarnessError(`./muxos ${args.join(" ")} timed out`);
   return r;
 }
 
@@ -290,7 +290,7 @@ function probeSource(
 // --- landing: the real push -------------------------------------------------
 
 /**
- * `./equin push` of `branch` from the clone's worktree — after asserting
+ * `./muxos push` of `branch` from the clone's worktree — after asserting
  * that the repository it will land on is this fixture's, under the temp dir.
  * `push` makes the same check against its own checkout; this one also pins it
  * to the temp dir, so a fixture wired to the wrong repository fails here.
@@ -603,7 +603,7 @@ async function journey(ctx: Ctx, pristine: boolean): Promise<void> {
   }
   await commitAll(upWt, "upstream: e2e_upstream_probe");
   // A clone updates to releases, never to upstream's main: cut one, as the
-  // author's `./equin version cut` would (an annotated tag on main).
+  // author's `./muxos version cut` would (an annotated tag on main).
   await git(upWt, "tag", "-a", "v2026.11.14", "-m", "e2e release 1");
   const upMain = await filesAt(upWt, "main");
   const upstreamPublished = added(baseFiles, upMain);

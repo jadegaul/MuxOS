@@ -34,7 +34,7 @@ requires-python = ">=3.12"
 exclude-newer = "2026-09-26T00:00:00Z"
 
 [[package]]
-name = "equin-audio"
+name = "muxos-audio"
 version = "0.0.0"
 source = { virtual = "." }
 
@@ -45,7 +45,7 @@ source = { registry = "https://pypi.org/simple" }
 `;
     const versions = parseUvLockVersions(lock);
     expect(versions.get("numpy")).toBe("2.5.3");
-    expect(versions.get("equin-audio")).toBe("0.0.0");
+    expect(versions.get("muxos-audio")).toBe("0.0.0");
     expect(versions.has("exclude-newer")).toBe(false);
   });
 

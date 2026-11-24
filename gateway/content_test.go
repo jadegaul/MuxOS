@@ -17,7 +17,7 @@ func TestParseContentHost(t *testing.T) {
 		{"PROTO-1.Content.localhost.", "proto-1", true},
 		{"content.localhost:9000", "", true},
 		{"a.b.content.localhost", "a.b", true}, // a content host, refused by the item syntax
-		{"equin.localhost:9000", "", false},
+		{"muxos.localhost:9000", "", false},
 		{"content-x.localhost", "", false},
 		{"sonata.att-x.localhost", "", false},
 		{"localhost:9000", "", false},
@@ -36,9 +36,9 @@ func TestSplitContentPath(t *testing.T) {
 		path, label, rest string
 		ok                bool
 	}{
-		{"/equin/api/prototypes/p/index.html", "equin", "/api/prototypes/p/index.html", true},
+		{"/muxos/api/prototypes/p/index.html", "muxos", "/api/prototypes/p/index.html", true},
 		{"/sonata.att-x/api/x", "sonata.att-x", "/api/x", true},
-		{"/equin", "", "", false},
+		{"/muxos", "", "", false},
 		{"//api/x", "", "", false},
 		{"/../api/x", "", "", false},
 	}
@@ -63,15 +63,15 @@ func TestContentHostRefusals(t *testing.T) {
 		status int
 		body   string
 	}{
-		{"no item", contentReq(http.MethodGet, "content.localhost:9000", "/equin/api/prototypes/p/index.html"), 404, "not a content item"},
-		{"dotted item", contentReq(http.MethodGet, "a.b.content.localhost:9000", "/equin/api/x"), 404, "not a content item"},
-		{"spa", contentReq(http.MethodGet, "p.content.localhost:9000", "/equin/tasks"), 404, "only content routes"},
+		{"no item", contentReq(http.MethodGet, "content.localhost:9000", "/muxos/api/prototypes/p/index.html"), 404, "not a content item"},
+		{"dotted item", contentReq(http.MethodGet, "a.b.content.localhost:9000", "/muxos/api/x"), 404, "not a content item"},
+		{"spa", contentReq(http.MethodGet, "p.content.localhost:9000", "/muxos/tasks"), 404, "only content routes"},
 		{"root", contentReq(http.MethodGet, "p.content.localhost:9000", "/"), 404, "only content routes"},
 		{"gateway api", contentReq(http.MethodGet, "p.content.localhost:9000", "/gateway/worktrees"), 404, "only content routes"},
-		{"ws path", contentReq(http.MethodGet, "p.content.localhost:9000", "/equin/ws/live"), 404, "only content routes"},
+		{"ws path", contentReq(http.MethodGet, "p.content.localhost:9000", "/muxos/ws/live"), 404, "only content routes"},
 		{"unknown namespace", contentReq(http.MethodGet, "p.content.localhost:9000", "/nope/api/x"), 404, "unknown namespace: nope"},
 	}
-	ws := contentReq(http.MethodGet, "p.content.localhost:9000", "/equin/api/x")
+	ws := contentReq(http.MethodGet, "p.content.localhost:9000", "/muxos/api/x")
 	ws.Header.Set("Upgrade", "websocket")
 	ws.Header.Set("Connection", "Upgrade")
 	cases = append(cases, struct {
@@ -80,7 +80,7 @@ func TestContentHostRefusals(t *testing.T) {
 		status int
 		body   string
 	}{"websocket", ws, 403, "no socket"})
-	sw := contentReq(http.MethodGet, "p.content.localhost:9000", "/equin/api/prototypes/p/sw.js")
+	sw := contentReq(http.MethodGet, "p.content.localhost:9000", "/muxos/api/prototypes/p/sw.js")
 	sw.Header.Set("Service-Worker", "script")
 	cases = append(cases, struct {
 		name   string

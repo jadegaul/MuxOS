@@ -9,7 +9,7 @@ import {
  * The ONE directory ship looks in for a composition's bundles, resolved once.
  *
  * **Which namespace it keys on, and why.** `releaseOutDir` roots every release
- * at `<EQUIN_DIR>/releases/<namespace>/<comp>-<target>/`, and the
+ * at `<MUXOS_DIR>/releases/<namespace>/<comp>-<target>/`, and the
  * namespace is a PARAMETER on both sides — the producer names it, the reader
  * names it, and they agree because each kind of process answers the same
  * question the same way:

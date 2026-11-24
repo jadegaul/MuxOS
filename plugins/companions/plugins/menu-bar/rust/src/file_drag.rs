@@ -1,4 +1,4 @@
-//! An app window's native file drag (`equinWindow.startFileDrag`): the page
+//! An app window's native file drag (`muxosWindow.startFileDrag`): the page
 //! hands the host paths it is dragging to the OS, which drags them as real
 //! files — the drag Finder starts — so any app takes them: Finder, Mail, a
 //! browser tab (Google Drive, Photos, …). The page cancels its own HTML drag
@@ -327,7 +327,7 @@ mod tests {
         assert!(validate(&[here.to_string_lossy().into_owned()]).is_ok());
         assert!(validate(&[]).is_err());
         assert!(validate(&["Cargo.toml".into()]).is_err());
-        assert!(validate(&["/no/such/equin/path".into()]).is_err());
+        assert!(validate(&["/no/such/muxos/path".into()]).is_err());
         assert!(validate(&vec![here.to_string_lossy().into_owned(); MAX_PATHS + 1]).is_err());
     }
 
@@ -338,7 +338,7 @@ mod tests {
         let dir = here.to_string_lossy().into_owned();
         assert!(readable(&[file, dir]));
         // Not a privacy refusal: not the drag's concern.
-        assert!(readable(&["/no/such/equin/path".into()]));
+        assert!(readable(&["/no/such/muxos/path".into()]));
     }
 
     #[test]

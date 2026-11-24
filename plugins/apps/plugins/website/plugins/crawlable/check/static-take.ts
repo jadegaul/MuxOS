@@ -7,7 +7,7 @@ import { asAppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core
 /**
  * Every crawlable composition's static take succeeds on this tree: each page
  * the composition declares renders, through the real app, to a document with
- * text — the same take `./equin build --composition <c>` runs, at the same
+ * text — the same take `./muxos build --composition <c>` runs, at the same
  * address (`takeCrawlSnapshot`).
  *
  * Without it a page that cannot render statically — a layout's provider the

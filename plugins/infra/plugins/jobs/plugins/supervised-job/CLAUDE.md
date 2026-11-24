@@ -34,7 +34,7 @@ the `@ts-expect-error` for each.
 ### Bodies
 
 - **`argv`** — the child is that command line (build, release).
-- **`run`** — the child is `./equin supervised-exec <job name>
+- **`run`** — the child is `./muxos supervised-exec <job name>
   <{runId, attempt, input}>`, booted in `exec` mode, calling the function. The
   input is re-parsed against the job's schema in the child. `log(line, stream?)`
   writes stdout/stderr, which is the transcript the parent tails into `channel`
@@ -98,7 +98,7 @@ the `@ts-expect-error` for each.
     waiter quoting the row (`latestSupervisedRun`) say why, never just
     "crashed".
   - **The run's error file** (`worktreeArtifacts.runError`, named to the child
-    as `SUPERVISED_RUN_ERROR` by the shim's env): an `./equin` command's
+    as `SUPERVISED_RUN_ERROR` by the shim's env): an `./muxos` command's
     `runCli` writes its uncaught exception there (op-runtime's
     `recordCliCrash`), message first and head-capped, and takes the variable
     out of its environment at start so a command it spawns cannot write over
@@ -172,7 +172,7 @@ exists to enforce, made unspellable rather than documented:
 
 - The event can be **lost**. If the backend dies between the shim writing the
   exit marker and the emit landing, nothing ever fires. And for a kind whose own
-  CLI stamps its ledger row early (`./equin build` does, ~100 s before its
+  CLI stamps its ledger row early (`./muxos build` does, ~100 s before its
   child exits) the `supervised-run` reconciler will not re-announce it either,
   because the row left `listUnfinished` long ago.
 - The event can arrive **late, twice, or for a row already closed**. `finish` is
@@ -280,7 +280,7 @@ gets a second chance.
 `claim` mints the row seeded with `process.pid` — this backend's own, alive — so
 between the claim and a live child there is a window where the row exists and
 nothing will ever finish it. A spawn that throws in that window (no
-`./equin` on PATH, `EAGAIN`, a DB write refusing) leaves a row the
+`./muxos` on PATH, `EAGAIN`, a DB write refusing) leaves a row the
 reconciler reads as _running_ forever: no child exists to write a marker, and the
 seeded pid does not die until the backend does. **That row is the kind's lock**,
 so the kind then refuses every future run with no symptom at the call site.
@@ -295,7 +295,7 @@ failure in the bookkeeping that follows `Bun.spawn` — the `setPid` write, the
 watcher — leaves a child genuinely running, which will write its transcript and
 its exit marker and be settled by the reconciler in the ordinary way. Stamping
 `finished_at` there releases the in-flight lock **under a live child**, so the
-next enqueue claims cleanly and spawns a second one: two `./equin build`
+next enqueue claims cleanly and spawns a second one: two `./muxos build`
 runs against one checkout, two converges against one remote. That is exactly the
 overlap the index exists to prevent, so doing nothing on that side is not a gap —
 it is the correct action.
@@ -486,7 +486,7 @@ Four clauses look redundant and are not:
 - **The `wait` retry.** A trapped signal makes `wait` return `128+signo`
   **immediately — the child has not necessarily exited**. Without the retry the
   shim recorded `143 TERM` and exited while a child that handles TERM (what
-  `./equin build` does via `installFatalSignalExit`) was still shutting
+  `./muxos build` does via `installFatalSignalExit`) was still shutting
   down: reparented, unwatched, real exit code lost. With it, `42 TERM`. The
   `kill -0` guard is required, not defensive — a second `wait` on an
   already-reaped pid returns 127 and prints `wait: pid N is not a child of this
@@ -553,7 +553,7 @@ the register phase completes before any `onReady` sees the kind set.
 The reconciler also drops runs the ledger no longer lists — the caller's own CLI
 closing its own row, which is the ordinary case. **That drop goes through the
 close rule above, never through a bare untrack**, and the difference is not
-cosmetic: `./equin build` stamps its row after the health probe and then
+cosmetic: `./muxos build` stamps its row after the health probe and then
 runs for another ~100s of compose-serve tail (measured: 75.8s). Dropping it on
 the ledger's say-so stopped the tail mid-run — truncating the live log for every
 kind that stamps early — and, once it was the last live run, tore down the
@@ -630,7 +630,7 @@ is already restarted by the time it is called.
 
 ### Attached runs: the same record for a hand-run command (`cli/`'s `runAttached`)
 
-A command a person (or agent) types — `./equin build` — has no backend to spawn
+A command a person (or agent) types — `./muxos build` — has no backend to spawn
 it, yet its run must leave the same two files a backend-started run does, so
 every reader (the build pane, the ledger's claim-time settle) reads ONE record.
 `runAttached({ namespace, kindId, runId, argv, env })` runs the command as its
@@ -665,7 +665,7 @@ does not — it is ~11 contributed `BackupSource`s staged into a directory, one
 stands for such a body:
 
 ```
-./equin supervised-exec <job name> <{"runId","attempt","input"}>
+./muxos supervised-exec <job name> <{"runId","attempt","input"}>
 ```
 
 The task is registered under the job name by the job's own `register:` token,
@@ -729,14 +729,14 @@ Everything else still comes from the ambient environment —
 `startSupervisedRun` spawns with `{ ...process.env }`:
 
 - **`PATH`** — `tar`, `gzip`, `pg_dump` resolve exactly as in the backend.
-- **cwd** is `REPO_ROOT`, because `./equin` is a path.
+- **cwd** is `REPO_ROOT`, because `./muxos` is a path.
 
 A task that needs anything else puts it in the payload, not the environment.
 Keep payloads small: they are JSON on a command line.
 
 `supervised-exec` declares `detachable: true`. A supervised child is meant to
 outlive the backend that started it, and the orphan guard — armed for every
-`./equin` invocation — would otherwise be free to kill it.
+`./muxos` invocation — would otherwise be free to kill it.
 
 ### Failure is loud
 
@@ -787,7 +787,7 @@ The child's argv is minted only by the registered task's `invoke`, and the task
 and the job are one declaration — so the id in the argv is a registered id by
 construction, and the job and the body it spawns cannot drift apart.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 

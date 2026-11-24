@@ -17,7 +17,7 @@ import (
 // timeout (launchd's ExitTimeOut, 20 s), so a gateway holding one open stream
 // and one slow backend was SIGKILLed by launchd mid-teardown — 2026-11-08
 // 18:05: the drain took 15.0 s, a backend's grace then ran into the kill, and
-// `./equin start --force` gave up waiting at the same instant and never
+// `./muxos start --force` gave up waiting at the same instant and never
 // loaded the new gateway.
 //
 // Now the deadline is shared: the drain gets what is left once the backend

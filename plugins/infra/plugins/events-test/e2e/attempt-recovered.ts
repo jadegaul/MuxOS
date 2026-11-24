@@ -5,7 +5,7 @@
 // in Debug → Reports, or `reports` with query_db.
 //
 // Usage:
-//   ./equin run plugins/infra/plugins/events-test/e2e/attempt-recovered.ts
+//   ./muxos run plugins/infra/plugins/events-test/e2e/attempt-recovered.ts
 
 import {
   pathUrl,

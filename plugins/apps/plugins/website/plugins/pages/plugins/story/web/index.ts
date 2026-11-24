@@ -10,7 +10,7 @@ export { WebsiteStory } from "./slots";
 
 export default {
   description:
-    "The story page of the equin website: the /about/story pane answering 'how did equin come to be?', its entry in the header's Learn menu, and the WebsiteStory.Section slot the story is written into.",
+    "The story page of the muxos website: the /about/story pane answering 'how did muxos come to be?', its entry in the header's Learn menu, and the WebsiteStory.Section slot the story is written into.",
   contributions: [
     // This pane BORROWS the shared site header (`actions: WebsiteHeader`), so it
     // mints no slot of its own and is deliberately absent from `slots:` — the

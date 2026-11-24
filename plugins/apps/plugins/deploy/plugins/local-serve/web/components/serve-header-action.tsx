@@ -91,7 +91,7 @@ function ServeHeaderButton({
     );
   }
   // Main's composition is the one that can never be served: its namespace is
-  // where this checkout's own `./equin build` deploys.
+  // where this checkout's own `./muxos build` deploys.
   const canServe = isServableCompositionId(item.id);
   return (
     <Button
@@ -100,7 +100,7 @@ function ServeHeaderButton({
       tooltip={
         canServe
           ? action.tooltip
-          : "The main app is built by ./equin build — it is not served as a composition."
+          : "The main app is built by ./muxos build — it is not served as a composition."
       }
       onClick={() => {
         // Already on (nothing served — the enabling build failed, or its

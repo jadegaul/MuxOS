@@ -105,7 +105,7 @@ describe("boot-failure screen", () => {
     entry.dispatchEvent(new Event("error"));
     await settle();
     const screen = document.getElementById("boot-failure-screen");
-    expect(screen?.textContent).toContain("./equin build");
+    expect(screen?.textContent).toContain("./muxos build");
     expect(screen?.textContent).toContain("/artifacts/a.web.1/index.js");
     expect(screen?.textContent).not.toContain("b.web.2");
     expect(reports()).toHaveLength(1);
@@ -178,7 +178,7 @@ describe("boot-failure screen", () => {
     expect(source).toContain(SHELL_REPORT_QUEUE_GLOBAL);
   });
 
-  // equin.ai/story adds a Google Fonts stylesheet once the app runs; a
+  // MuxOS.app/story adds a Google Fonts stylesheet once the app runs; a
   // visitor's blocker refusing it covered the working page with this screen.
   it("ignores a stylesheet added once the document was parsed", async () => {
     const { fetchMock } = serve(PAGE_MAP);

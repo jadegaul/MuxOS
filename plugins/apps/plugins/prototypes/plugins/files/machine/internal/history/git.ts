@@ -32,7 +32,7 @@ const GIT_TIMEOUT_MS = 60_000;
 
 /** Who every version is committed as — the store, never the user. */
 const STORE_IDENTITY = {
-  name: "equin prototypes",
+  name: "muxos prototypes",
   email: `prototypes@${LEGACY_IDS.autoIdentityDomain}`,
 };
 

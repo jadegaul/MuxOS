@@ -4,8 +4,8 @@
  * one holder per job id, released when the handler ends however it ends, and
  * every holder told when the session dies.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

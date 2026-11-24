@@ -31,7 +31,7 @@ import { liveCollection, liveValue } from "@plugins/network/plugins/live/core";
 import { useLive, type LiveRowResult } from "../internal/use-live";
 
 const MESSAGE =
-  "Reading the checkout isn't available in this version of the app — it needs equin running on your computer.";
+  "Reading the checkout isn't available in this version of the app — it needs muxos running on your computer.";
 
 const ROW_FIELDS = { id: textField({ label: "Id" }) };
 

@@ -16,7 +16,7 @@
  * form POST and a WebSocket at the deploy. All must be refused; the headers
  * Chromium actually sent are recorded. A same-origin fetch is the control.
  *
- *   ./equin run plugins/framework/plugins/principal/e2e/cross-site-probe.ts [--headed] [--url <origin>]
+ *   ./muxos run plugins/framework/plugins/principal/e2e/cross-site-probe.ts [--headed] [--url <origin>]
  */
 import http from "node:http";
 import {
@@ -136,7 +136,7 @@ async function readTable(route: string): Promise<HostRoute[]> {
     // probing would only report every route open, for a reason it can name.
     r.fail(
       `${route}: gateway not stamping — no --principal-stamped on this host's argv`,
-      "this host serves every route ungated until the gateway is restarted: ./equin start --force",
+      "this host serves every route ungated until the gateway is restarted: ./muxos start --force",
     );
     return await r.finish();
   }

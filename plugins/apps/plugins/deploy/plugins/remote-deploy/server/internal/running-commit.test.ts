@@ -3,7 +3,7 @@
  * taken on `refs/heads/main` (not HEAD), and every arm that cannot name a
  * commit is `unknown`.
  *
- * Run: `./equin test plugins/apps/plugins/deploy/plugins/remote-deploy`.
+ * Run: `./muxos test plugins/apps/plugins/deploy/plugins/remote-deploy`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

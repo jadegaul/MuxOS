@@ -2,7 +2,7 @@
 //! sudo; macOS uses Apple's own dialog and never gets here).
 //!
 //! install.sh runs `sudo -A` with SUDO_ASKPASS set to a two-line wrapper that
-//! execs this binary as `equin-installer --askpass <prompt>`. That process is
+//! execs this binary as `muxos-installer --askpass <prompt>`. That process is
 //! a grandchild of the window, with no window of its own: it connects to the
 //! window's socket (its path in [`SOCKET_ENV`], set for the install), sends
 //! the prompt as one line and waits for one line back — `ok <password>` or
@@ -15,13 +15,13 @@ use std::os::unix::net::{UnixListener, UnixStream};
 use std::path::PathBuf;
 
 /// The socket's path, for the askpass process.
-pub const SOCKET_ENV: &str = "EQUIN_INSTALLER_ASKPASS";
+pub const SOCKET_ENV: &str = "MUXOS_INSTALLER_ASKPASS";
 /// This binary's path, for install.sh's askpass wrapper.
-pub const BIN_ENV: &str = "EQUIN_INSTALLER_BIN";
+pub const BIN_ENV: &str = "MUXOS_INSTALLER_BIN";
 
 /// A listening socket in a directory only this user can enter.
 pub fn listen() -> io::Result<(UnixListener, PathBuf)> {
-    let dir = std::env::temp_dir().join(format!("equin-installer-{}", std::process::id()));
+    let dir = std::env::temp_dir().join(format!("muxos-installer-{}", std::process::id()));
     std::fs::DirBuilder::new().mode(0o700).create(&dir)?;
     std::fs::set_permissions(&dir, std::fs::Permissions::from_mode(0o700))?;
     let path = dir.join("askpass.sock");
@@ -61,7 +61,7 @@ pub fn run_client(prompt: &str) -> ! {
         }
         Ok(None) => 1,
         Err(e) => {
-            eprintln!("equin-installer --askpass: could not ask the installer window: {e}");
+            eprintln!("muxos-installer --askpass: could not ask the installer window: {e}");
             1
         }
     };

@@ -17,7 +17,7 @@
 // Leaves the track as it found it (level and mute).
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/sonata/plugins/track-mixer/e2e/track-fader.ts \
+//   ./muxos run plugins/apps/plugins/sonata/plugins/track-mixer/e2e/track-fader.ts \
 //     --song <songId> [--url http://<namespace>.localhost:<port>] [--headed]
 
 import {

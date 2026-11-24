@@ -9,7 +9,7 @@ interface T {
   namespace: string;
   isMainComposition: boolean;
 }
-const main: T = { namespace: "equin", isMainComposition: true };
+const main: T = { namespace: "muxos", isMainComposition: true };
 const sonata: T = { namespace: "sonata", isMainComposition: false };
 const website: T = { namespace: "website", isMainComposition: false };
 
@@ -38,7 +38,7 @@ describe("deployEachTarget", () => {
       seen.push(t.namespace);
       return t === sonata ? fail("sonata health") : { ok: true };
     });
-    expect(seen).toEqual(["equin", "sonata", "website"]);
+    expect(seen).toEqual(["muxos", "sonata", "website"]);
     expect(out.deployed).toEqual([main, website]);
     expect(out.failed.map((f) => f.target)).toEqual([sonata]);
     expect(out.notAttempted).toEqual([]);
@@ -50,7 +50,7 @@ describe("deployEachTarget", () => {
       seen.push(t.namespace);
       return fail("checks");
     });
-    expect(seen).toEqual(["equin"]);
+    expect(seen).toEqual(["muxos"]);
     expect(out.deployed).toEqual([]);
     expect(out.failed.map((f) => f.target)).toEqual([main]);
     expect(out.notAttempted).toEqual([sonata, website]);
@@ -77,7 +77,7 @@ describe("deployEachTarget", () => {
       },
       prepared,
     );
-    expect(seen).toEqual(["equin", "website"]);
+    expect(seen).toEqual(["muxos", "website"]);
     expect(out.deployed).toEqual([main, website]);
     expect(out.failed.map((f) => f.target)).toEqual([sonata]);
   });

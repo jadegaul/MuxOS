@@ -48,7 +48,7 @@ import { historyGit, initBareRepo, type HistoryGit } from "./git";
 // The desktop's prototype version store: one private bare git repo per
 // prototype, at `<prototypes>/_history/<id>.git`, whose work tree is the
 // prototype folder — the `PrototypeHistoryStore` provider (`../../index.ts`), and
-// what `./equin prototype log|checkpoint|restore` read and write with no
+// what `./muxos prototype log|checkpoint|restore` read and write with no
 // backend running.
 //
 // Beside the folder, not in it: a prototype is flat (the file route serves

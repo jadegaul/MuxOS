@@ -32,7 +32,7 @@ export const fsLatencyLogWatcher = defineFileWatcher({
 /**
  * The value on a computer whose OS the monitor does not exist on (its login
  * service's `platforms`), or null where it does: there is no log to follow,
- * and no `./equin start` will ever write one, so the row says the disk is not
+ * and no `./muxos start` will ever write one, so the row says the disk is not
  * measured here rather than that its monitor is missing.
  */
 export const unsupportedHere: IoHealth | null =

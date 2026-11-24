@@ -1,4 +1,4 @@
-// @hash 1d5c63e8c367
+// @hash 9c064295c185
 {
   // Item: "<key>" (terse; <key> is "<pluginId>:<id>")
   // Hide: { "item": "<key>", "hidden": true }
@@ -16,7 +16,6 @@
     "apps.website.shell:wordmark",
     "apps.website.shell:learn",
     "apps.website.shell:github",
-    "apps.website.shell:discord",
     "primitives.pane:title"
   ]
 }

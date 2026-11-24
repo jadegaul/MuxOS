@@ -21,7 +21,7 @@ const DESCRIPTION = `Publish a before / after pair of screenshots: the user sees
 When: after you change something VISIBLE in the app, before you report back. One call per screen or state that changed (a list, its empty state, a dialog open) — not one for the whole change. Then cite the returned \`ba-…\` id in your final message (bare, as written), next to what it shows.
 
 Two forms — pass exactly one:
-- capture (default): \`route\` (+ \`title\`, optional \`width\` / \`height\` / \`colorScheme\`). Captures that route on MAIN (before) and on THIS conversation's build (after), at the same viewport (default ${DEFAULT_CAPTURE_VIEWPORT.width}×${DEFAULT_CAPTURE_VIEWPORT.height}, light), each once the page is ready (painted, network idle, no loader). Needs a build: run \`./equin build\` first. Main is read-only, so this shows a route as it loads — not a state that needs clicks.
+- capture (default): \`route\` (+ \`title\`, optional \`width\` / \`height\` / \`colorScheme\`). Captures that route on MAIN (before) and on THIS conversation's build (after), at the same viewport (default ${DEFAULT_CAPTURE_VIEWPORT.width}×${DEFAULT_CAPTURE_VIEWPORT.height}, light), each once the page is ready (painted, network idle, no loader). Needs a build: run \`./muxos build\` first. Main is read-only, so this shows a route as it loads — not a state that needs clicks.
 - files: \`beforePath\` + \`afterPath\` (+ \`title\`, optional \`beforeLabel\` / \`afterLabel\`): two PNGs you already made — a state that needs interaction (\`screenshot.ts --click …\` writes \`<out>-before.png\` / \`<out>-after.png\`), or a comparison other than main vs this build.
 
 Returns the pair's id and both images, so you see what you published.`;

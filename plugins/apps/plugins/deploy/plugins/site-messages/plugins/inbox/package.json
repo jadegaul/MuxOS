@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-deploy-site-messages-inbox",
+  "name": "@muxos/plugin-apps-deploy-site-messages-inbox",
   "description": "Messages tab of a site's page, shown only when the deployment's composition ships the site-messages intake: every message visitors sent through the site, from this computer's copy of the site's messages (site-mirror), as a live DataView paged, searched and filtered in SQL, with the copy's freshness line.",
   "private": true,
   "version": "0.0.1"

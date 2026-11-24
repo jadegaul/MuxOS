@@ -52,7 +52,7 @@ describe("watchSubjects", () => {
   });
 
   test("a pgrep pattern", () => {
-    expect(watchSubjects(`pgrep -f "equin push"`)).toEqual(["proc:equin push"]);
+    expect(watchSubjects(`pgrep -f "muxos push"`)).toEqual(["proc:muxos push"]);
   });
 
   test("kill -0 names the pid", () => {
@@ -214,7 +214,7 @@ describe("classify", () => {
   test("the real loop from conv-1786116592-b70n", () => {
     expect(
       classify(
-        `cat ${TASK} 2>/dev/null | tail -40; pgrep -f "equin push" >/dev/null && echo running || echo finished`,
+        `cat ${TASK} 2>/dev/null | tail -40; pgrep -f "muxos push" >/dev/null && echo running || echo finished`,
       ),
     ).toBe("observe");
   });
@@ -222,13 +222,13 @@ describe("classify", () => {
   test("an until/sleep waiter is an observation, not progress", () => {
     expect(
       classify(
-        `until ! pgrep -f "equin build" >/dev/null 2>&1; do sleep 5; done`,
+        `until ! pgrep -f "muxos build" >/dev/null 2>&1; do sleep 5; done`,
       ),
     ).toBe("observe");
   });
 
   test("running a build is progress", () => {
-    expect(classify("./equin build")).toBe("mutate");
+    expect(classify("./muxos build")).toBe("mutate");
   });
 
   test("a write redirection is progress", () => {
@@ -236,7 +236,7 @@ describe("classify", () => {
   });
 
   test("> /dev/null is not a write", () => {
-    expect(classify(`pgrep -f "equin build" >/dev/null && echo yes`)).toBe(
+    expect(classify(`pgrep -f "muxos build" >/dev/null && echo yes`)).toBe(
       "observe",
     );
   });
@@ -275,7 +275,7 @@ describe("detectPoll", () => {
       firstTrip([
         `cat ${TASK}`,
         `cat ${TASK} | tail -25`,
-        `tail -30 ${TASK}; pgrep -f "equin push"`,
+        `tail -30 ${TASK}; pgrep -f "muxos push"`,
         `wc -l ${TASK}`,
       ]),
     ).toBe(3);
@@ -299,7 +299,7 @@ describe("detectPoll", () => {
         `cat ${TASK}`,
         `cat ${TASK}`,
         `cat ${TASK}`,
-        "./equin build",
+        "./muxos build",
         `cat ${TASK}`,
         `cat ${TASK}`,
       ]),

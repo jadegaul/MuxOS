@@ -13,8 +13,8 @@
  *  - a restored root whose slot was taken lands after the occupant;
  *  - every test ends with the ledger invariant asserted.
  *
- * Run: `./equin test plugins/page/plugins/editor`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/page/plugins/editor`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

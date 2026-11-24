@@ -21,7 +21,7 @@ const ELEMENT =
 
 /**
  * The same shapes for an engine without `v` (Safari < 17, Firefox < 116 —
- * below equin's browser floor of Safari 16.4 / Firefox 115): UTS #51's emoji
+ * below muxos's browser floor of Safari 16.4 / Firefox 115): UTS #51's emoji
  * sequence grammar spelled with per-character properties under `u` — a flag
  * pair, a keycap, a tag sequence (subdivision flags), or fully-qualified
  * elements joined by ZWJ. It accepts a well-formed sequence Unicode never
@@ -32,7 +32,7 @@ export const EMOJI_SEQUENCE_SOURCE = `^(?:\\p{Regional_Indicator}{2}|[#*0-9]\\uF
 
 // Built at module evaluation, so it must not throw on a floor browser: an
 // engine without `v` throws "Invalid flags supplied to RegExp constructor"
-// here, which failed every importer to load (equin.ai's page editor and
+// here, which failed every importer to load (MuxOS.app's page editor and
 // page-link plugins, Safari 16, 2026-11-19).
 const EMOJI =
   "unicodeSets" in RegExp.prototype

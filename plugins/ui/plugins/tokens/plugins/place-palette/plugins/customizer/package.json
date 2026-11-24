@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-ui-tokens-place-palette-customizer",
+  "name": "@muxos/plugin-ui-tokens-place-palette-customizer",
   "description": "Customizer section for the place colour token group.",
   "private": true,
   "version": "0.0.1"

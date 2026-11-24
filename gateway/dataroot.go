@@ -12,13 +12,13 @@ import (
 // LEGACY_IDS.dataDirName (framework/product-name); the current one is
 // "." + PRODUCT_NAME.
 const (
-	currentDataDirName = ".equin"
-	legacyDataDirName  = ".singularity"
+	currentDataDirName = ".muxos"
+	legacyDataDirName  = ".equin"
 )
 
 // homeDataRoot is the Go twin of paths/core's readHomeDataRootLayout
 // (data-root-layout.ts), with the same cases (dataroot_test.go): an install
-// keeps its legacy root until `./equin data-dir migrate` moves it.
+// keeps its legacy root until `./muxos data-dir migrate` moves it.
 //
 //   - legacy absent                         → current (fresh, or migrated)
 //   - legacy a link resolving to current    → current (a migration that kept its link)
@@ -46,13 +46,13 @@ func homeDataRoot(home string) (string, error) {
 		return current, nil
 	}
 	if currentExists {
-		return "", fmt.Errorf("two data roots: %s and %s both exist and are not the same directory; an install not yet migrated keeps its data in %s, and %s is what `./equin data-dir migrate` moves it to — look at what %s holds and remove or move one aside", legacy, current, legacy, current, current)
+		return "", fmt.Errorf("two data roots: %s and %s both exist and are not the same directory; an install not yet migrated keeps its data in %s, and %s is what `./muxos data-dir migrate` moves it to — look at what %s holds and remove or move one aside", legacy, current, legacy, current, current)
 	}
 	return legacy, nil
 }
 
 // homeDataRootLayoutToken is the decided home layout as it travels to every
-// child in EQUIN_DATA_ROOT_LAYOUT (paths/core HOME_LAYOUT_TOKENS): "current",
+// child in MUXOS_DATA_ROOT_LAYOUT (paths/core HOME_LAYOUT_TOKENS): "current",
 // "current-legacy-link" or "legacy", or "" for two separate roots, which no
 // child is told about — its own entry point decides and throws the split.
 // Case for case paths/core decideDataRootLayout, which is stricter than
@@ -85,7 +85,7 @@ func homeDataRootLayoutToken(home string) string {
 // dataRootLayoutEnv is the entry the gateway adds to every child's base
 // environment: the layout it decided, so a backend, a supervised service and
 // everything they start inherit a decided root (infra/paths CLAUDE.md, § The
-// data root). None when EQUIN_DIR names the root, or for a split.
+// data root). None when MUXOS_DIR names the root, or for a split.
 func dataRootLayoutEnv() []string {
 	if readEnv("DIR") != "" {
 		return nil

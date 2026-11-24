@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-dom-element-size",
+  "name": "@muxos/plugin-primitives-dom-element-size",
   "description": "Element-size ResizeObserver idiom as a primitive: useElementSize + useResizeObserver.",
   "private": true,
   "version": "0.0.1"

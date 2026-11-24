@@ -10,8 +10,8 @@
 // opt-out is reported separately rather than counted as one.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/css/plugins/ui-kit/e2e/control-cursor.ts
-//   ./equin run …/control-cursor.ts --path /settings
+//   ./muxos run plugins/primitives/plugins/css/plugins/ui-kit/e2e/control-cursor.ts
+//   ./muxos run …/control-cursor.ts --path /settings
 
 import {
   pageUrl,

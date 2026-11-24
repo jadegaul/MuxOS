@@ -3,8 +3,8 @@ import { upgradeThisWorktree } from "@plugins/infra/plugins/deps/plugins/updates
 import { miseUpdater } from "@plugins/infra/plugins/deps/plugins/mise/core";
 
 /**
- * `./equin toolchain upgrade [--tool a,b]` — the alias of
- * `./equin deps upgrade mise`: the same updater through the same gated
+ * `./muxos toolchain upgrade [--tool a,b]` — the alias of
+ * `./muxos deps upgrade mise`: the same updater through the same gated
  * runner. It imports the updater directly rather than going through the
  * updater registry, so it needs no booted backend (the registry is server
  * contributions).

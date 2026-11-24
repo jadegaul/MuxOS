@@ -21,7 +21,7 @@ const DIRECTIVE_RE =
  * `networking/no-request-guard-capability` (the request guard's natives are
  * the same kind of key: a way past the subtree's transport). Importing the page's
  * transport is sanctioned only by a `kind: "sanctioned"` entry in the
- * importer's own `exempt/index.ts`: visible in `./equin exempt list`,
+ * importer's own `exempt/index.ts`: visible in `./muxos exempt list`,
  * with a reason — and what the browser-host coverage guard trusts when it
  * reads a page-bound module's endpoints as the page's. An inline disable would
  * be both invisible and a way out of the guard, so it fails here, where no

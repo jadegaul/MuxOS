@@ -23,8 +23,8 @@ import {
  * granted it exactly when the other is gone.
  */
 
-const CHANNEL = "equin.background-music";
-const LOCK_PREFIX = "equin.background-music.page:";
+const CHANNEL = "muxos.background-music";
+const LOCK_PREFIX = "muxos.background-music.page:";
 
 /** This page's id — not the tab id, which a duplicated tab shares. */
 const pageId = crypto.randomUUID();

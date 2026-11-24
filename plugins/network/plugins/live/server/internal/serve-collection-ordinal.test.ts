@@ -8,7 +8,7 @@
  * The values are chosen so the declared order disagrees with the text order
  * (`todo` < `doing` < `done`, alphabetically `doing` < `done` < `todo`).
  *
- * Run: `./equin test plugins/network/plugins/live`
+ * Run: `./muxos test plugins/network/plugins/live`
  * (requires the running embedded cluster).
  */
 

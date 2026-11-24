@@ -72,7 +72,7 @@ describe("a deploy from another slot that fails with the previous backend servin
       backend: "previous",
       publication: pub.p,
       restore: switched.restore,
-      site: "http://equin.localhost:9000",
+      site: "http://muxos.localhost:9000",
     });
     expect(pub.events).toEqual(["revert"]);
     // The spec names the slot that serves again: a respawn boots slot A.

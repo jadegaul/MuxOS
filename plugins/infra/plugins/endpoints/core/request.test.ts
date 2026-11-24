@@ -142,7 +142,7 @@ describe("readEndpointResponse — a refusal names its request", () => {
     );
   });
 
-  test("an HTML page is not our answer: refused before reaching equin, on its own row", async () => {
+  test("an HTML page is not our answer: refused before reaching muxos, on its own row", async () => {
     // report-1795142633-zarb92: a corporate web gateway's block page.
     const page = "<!DOCTYPE html>\n<html><head><title>Access denied</title>";
     const byType = await refusal(
@@ -155,10 +155,10 @@ describe("readEndpointResponse — a refusal names its request", () => {
     expect(byType.status).toBe(403);
     expect(byType.body).toBe(page);
     expect(byType.message).toStartWith(
-      "HTTP 403 from POST /api/x/collect: refused before reaching equin",
+      "HTTP 403 from POST /api/x/collect: refused before reaching muxos",
     );
     expect(crashFieldsOf(byType).scope).toBe(
-      "POST /api/x/collect 403 not-from-equin",
+      "POST /api/x/collect 403 not-from-muxos",
     );
     // A page served under another type (or none) is sniffed by its start.
     expect(

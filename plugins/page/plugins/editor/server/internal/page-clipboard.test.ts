@@ -14,8 +14,8 @@
  *  - pasting a copy of a page into that page terminates;
  *  - moving a page into its own content is refused.
  *
- * Run: `./equin test plugins/page/plugins/editor`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/page/plugins/editor`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

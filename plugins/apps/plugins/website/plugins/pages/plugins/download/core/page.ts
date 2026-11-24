@@ -5,5 +5,5 @@ export const downloadPage = defineWebsitePage({
   path: "/about/download",
   title: "Download",
   description:
-    "How to run your own copy of equin: one install command, or a prompt for an agent to do it, and what to try once it is running.",
+    "How to run your own copy of muxos: one install command, or a prompt for an agent to do it, and what to try once it is running.",
 });

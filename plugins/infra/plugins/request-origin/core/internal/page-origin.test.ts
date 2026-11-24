@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, test } from "bun:test";
 import { agentOriginHeaders, markAgentContext, pageOrigin } from "./origin";
 
-const GLOBAL = "__equinAgentOrigin";
+const GLOBAL = "__muxosAgentOrigin";
 
 afterEach(() => {
   delete (globalThis as Record<string, unknown>)[GLOBAL];

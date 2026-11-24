@@ -60,7 +60,7 @@ function renderDescription(
     `**What to do:** ${
       d.kind === "permanent"
         ? "reconnect the account; if it keeps being refused soon after connecting, read the hint and the provider's OAuth client setup."
-        : "check whether the machine is online and the token endpoint answers; a 5xx or timeout that lasts is the provider's, an error from equin's own code (resolveCredentials, the token store) is a bug in `plugins/auth/central`."
+        : "check whether the machine is online and the token endpoint answers; a 5xx or timeout that lasts is the provider's, an error from muxos's own code (resolveCredentials, the token store) is a bug in `plugins/auth/central`."
     }`,
     "",
     `**Error:** ${d.error}`,

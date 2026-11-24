@@ -7,7 +7,7 @@ const saved = new Map<string, string | undefined>([
   ["tweakcn:ocean", undefined],
   ["custom:a", "tweakcn:ocean"],
   ["custom:b", "custom:a"],
-  ["custom:on-code", "equin"],
+  ["custom:on-code", "muxos"],
 ]);
 
 describe("checkExtendsTarget", () => {

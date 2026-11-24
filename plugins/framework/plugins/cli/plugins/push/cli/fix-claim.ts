@@ -39,7 +39,7 @@ export function fixClaimCarrier(input: {
         `--fixes-report ${fixed.fixes.join(", ")}: this push lands no commit, so it cannot be the fix. Nothing was pushed.`,
         ``,
         `If an earlier commit on main fixed it, claim that commit instead:`,
-        `  ./equin push --report-fixed-by <report-id>@<sha> -m "…"`,
+        `  ./muxos push --report-fixed-by <report-id>@<sha> -m "…"`,
       ].join("\n"),
     };
   }

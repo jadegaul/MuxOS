@@ -1,6 +1,6 @@
 import { LEGACY_GATEWAY_PORT } from "@plugins/infra/plugins/namespace/core";
 /**
- * How an installed gateway launch differs from the one `./equin start --force`
+ * How an installed gateway launch differs from the one `./muxos start --force`
  * would write — one short phrase per difference, for the health report's
  * summary. Pure.
  *

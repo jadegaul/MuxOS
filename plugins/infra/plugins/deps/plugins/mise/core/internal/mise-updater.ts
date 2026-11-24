@@ -89,7 +89,7 @@ async function assertSound(root: AppPath): Promise<{
   });
   if (problems.length > 0) {
     throw new Error(
-      `mise.toml / mise.lock are not sound; fix them first (\`./equin check toolchain:resolved\`):\n  ${problems.join("\n  ")}`,
+      `mise.toml / mise.lock are not sound; fix them first (\`./muxos check toolchain:resolved\`):\n  ${problems.join("\n  ")}`,
     );
   }
   return { locked, fresh };

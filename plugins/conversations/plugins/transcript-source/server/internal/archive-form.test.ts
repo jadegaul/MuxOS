@@ -35,7 +35,7 @@ const toolCall = {
       {
         type: "tool_use",
         id: "t1",
-        name: "mcp__equin__browser_screenshot",
+        name: "mcp__muxos__browser_screenshot",
         input: {},
       },
       { type: "tool_use", id: "t2", name: "Read", input: { path: "a.png" } },

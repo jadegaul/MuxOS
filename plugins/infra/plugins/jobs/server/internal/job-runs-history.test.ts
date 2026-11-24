@@ -5,8 +5,8 @@
  * one bounded window (never the whole ring), with `waitMs` computed in SQL, and
  * filters by `jobId` — what a detail pane follows a finished queue row by.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/infra/plugins/jobs`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/infra/plugins/jobs`.
  */
 
 import { afterAll, beforeAll, expect, setDefaultTimeout, test } from "bun:test";

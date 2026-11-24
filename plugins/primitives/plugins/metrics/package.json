@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-metrics",
+  "name": "@muxos/plugin-primitives-metrics",
   "description": "Metrics primitive: declare a metric once as data, evaluate it through one tz-aware bucketing engine on the server, and render it anywhere.",
   "private": true,
   "version": "0.0.1"

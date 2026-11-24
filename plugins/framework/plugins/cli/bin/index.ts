@@ -20,12 +20,12 @@ import { holdSlotLeaseSync } from "@plugins/infra/plugins/git/plugins/main-slots
 import { realpathSync } from "@plugins/packages/plugins/timed-fs/core";
 
 /**
- * `./equin`'s entrypoint — and deliberately NOT the CLI. Four ordered
+ * `./muxos`'s entrypoint — and deliberately NOT the CLI. Four ordered
  * steps that must all be able to run with `node_modules` absent or stale:
  *
  *   1. arm the orphan guard
  *   2. `await ensureDeps()`   — this checkout's `node_modules` is correct
- *      (`./equin install` — exactly this step — ends here: `install-verb.ts`)
+ *      (`./muxos install` — exactly this step — ends here: `install-verb.ts`)
  *   3. if `node_modules` changed (installed here, or by a command we waited on),
  *      hand the command to a fresh process and exit
  *   4. `await import("./cli")` — the commander program, from ./cli.ts
@@ -38,7 +38,7 @@ import { realpathSync } from "@plugins/packages/plugins/timed-fs/core";
  * concurrent installs in one checkout race on `clonefileat` and one loses).
  * `set -e` then aborted the wrapper before `exec`, and `--silent` meant nothing
  * was printed: every subcommand looked like it had failed on its own, with exit
- * 1 and zero bytes of output — `./equin check` reading as "checks failed"
+ * 1 and zero bytes of output — `./muxos check` reading as "checks failed"
  * when no check ever ran. The fix is structural rather than better error
  * handling in shell: there is now NO step before the CLI process, so no step can
  * die before the CLI. The wrapper is a bare `exec`, and the install lives here,
@@ -90,17 +90,17 @@ import { realpathSync } from "@plugins/packages/plugins/timed-fs/core";
 // `./orphan-guard.ts`.
 installOrphanGuard(() => process.exit(ORPHAN_EXIT_CODE));
 
-// A `./equin` running from one of main's SLOTS (infra/git/main-slots) — a
+// A `./muxos` running from one of main's SLOTS (infra/git/main-slots) — a
 // supervised child of main's backend, main's convergence run — holds the
 // slot shared for its whole life, so no build checks the slot out while this
 // process may still load code from it (its command, its lazy imports, the
 // workers and scripts it starts). Taken before anything below loads more of
 // the slot; dropped by the kernel when the process ends. Not in a slot handed
-// to a build (`EQUIN_BUILD_SLOT`): that build takes the slot's exclusive lease
+// to a build (`MUXOS_BUILD_SLOT`): that build takes the slot's exclusive lease
 // itself, and its descendants are covered by it. A no-op anywhere else.
 // The hold is labelled with what this process is, for the slow-drain report
 // (main-slots' `main-slot-drain-slow`): argv read as a LABEL only, never to
-// decide what runs. A `./equin build` here was handed no slot, so it relays
+// decide what runs. A `./muxos build` here was handed no slot, so it relays
 // into one and waits for it (main's convergence run, a relayed build) —
 // holding this slot past the switch it causes by design (`build-relay`).
 const handedSlot = readEnv("BUILD_SLOT");
@@ -124,7 +124,7 @@ if (
 }
 
 // The CLI is the root of its process tree: decide the data root from the disk
-// before anything reads a path. `./equin` has already put the same answer in
+// before anything reads a path. `./muxos` has already put the same answer in
 // the environment every descendant starts from (a Bun child with no explicit
 // `env` gets its parent's STARTING environment, never this process's writes);
 // this covers a CLI started without the wrapper. A split install (two separate
@@ -139,7 +139,7 @@ try {
 
 // Take this invocation's re-exec budget out of the environment before anything
 // is spawned (the install below included): it counts THIS chain of re-execs, and
-// a descendant `./equin` is a new invocation with a budget of its own.
+// a descendant `./muxos` is a new invocation with a budget of its own.
 const reexecBudget = takeReexecBudget();
 
 // Run on the Bun `mise.lock` records, not whichever one the caller's PATH found.
@@ -150,8 +150,8 @@ const reexecBudget = takeReexecBudget();
 // the locked Bun too. See `./locked-bun.ts` in the bootstrap plugin.
 const lockedBun = await reexecUnderLockedBun(import.meta.path);
 if (lockedBun.kind === "reexeced") process.exit(lockedBun.exitCode);
-if (lockedBun.kind === "mismatch") console.error(`equin: ${lockedBun.reason}`);
-// Now on the Bun the lock picks: name the next `./equin` after it.
+if (lockedBun.kind === "mismatch") console.error(`muxos: ${lockedBun.reason}`);
+// Now on the Bun the lock picks: name the next `./muxos` after it.
 else await recordCheckoutBun();
 
 // The one dependency chokepoint: freshness-gated (the common case is ~140 ms and
@@ -161,8 +161,8 @@ else await recordCheckoutBun();
 // failed, the likely cause, and what to do — so print the message and stop.
 // Deliberately no stack: the stack would name this bootstrap, not the problem.
 //
-// Frozen when the SPAWNER asks (EQUIN_FROZEN_LOCKFILE): infra/worktree sets it
-// for the `./equin install` it runs in a checkout it just created, so creation
+// Frozen when the SPAWNER asks (MUXOS_FROZEN_LOCKFILE): infra/worktree sets it
+// for the `./muxos install` it runs in a checkout it just created, so creation
 // installs exactly the committed `bun.lock` and a lock that disagrees with its
 // `package.json`s fails there instead of being rewritten. Env, not argv, for the
 // orphan guard's reason: this line runs before the install, so it cannot load
@@ -183,7 +183,7 @@ try {
   process.exit(1);
 }
 
-// `./equin install` asks for exactly the step above, so it ends here — whether
+// `./muxos install` asks for exactly the step above, so it ends here — whether
 // that step installed or found the stamp fresh. Handing it on would re-exec
 // (after an install) and import the whole CLI only for the verb to confirm the
 // stamp this process just wrote: ~0.6 s of every checkout creation. The verb's
@@ -205,7 +205,7 @@ if (deps.kind !== "fresh") {
   if (outcome.reexeced) process.exit(outcome.exitCode);
   // Budget spent — say so and fall through rather than loop. The reason is the
   // whole story; see `reexecAfterInstall`.
-  console.error(`equin: ${outcome.reason}`);
+  console.error(`muxos: ${outcome.reason}`);
 }
 
 // Only now is `node_modules` known good AND resolvable from this process, so

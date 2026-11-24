@@ -25,7 +25,7 @@ export const menuBarLogs = defineDataDir({
   name: "menu-bar",
   owner: "companions/menu-bar",
   description:
-    "The native menu-bar helper's stdio capture, when it runs as the dev.equin.menu-bar login service",
+    "The native menu-bar helper's stdio capture, when it runs as the dev.muxos.menu-bar login service",
   reclaim: { kind: "safe" },
   logs: [
     {

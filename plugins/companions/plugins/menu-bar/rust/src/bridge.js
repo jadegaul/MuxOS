@@ -1,6 +1,6 @@
-// window.equinNative — the panel's bridge to equin-desktop. Injected into the
+// window.muxosNative — the panel's bridge to muxos-desktop. Injected into the
 // "panel" window's main frame only (never an app window, never a sub-frame),
-// and defined only on the pinned panel page (`__EQUIN_PIN__` = { origin, path },
+// and defined only on the pinned panel page (`__MUXOS_PIN__` = { origin, path },
 // filled by src/panel.rs). This guard is a courtesy: the helper enforces the
 // pin natively — the ACL grants the commands to that exact origin, the window
 // loads no other page and no frame, and every command checks the page the
@@ -8,7 +8,7 @@
 // codes against (menu-bar/web's useNativeHost) — bump `version` in host_info
 // on any breaking change.
 (function () {
-  var pin = __EQUIN_PIN__;
+  var pin = __MUXOS_PIN__;
   if (window.location.origin !== pin.origin) return;
   if (window.top !== window) return;
   function invoke(cmd, args) {
@@ -51,7 +51,7 @@
       return invoke("pin_app", { appId: String(appId) }).then(done);
     },
   };
-  Object.defineProperty(window, "equinNative", {
+  Object.defineProperty(window, "muxosNative", {
     value: Object.freeze(api),
     writable: false,
     configurable: false,

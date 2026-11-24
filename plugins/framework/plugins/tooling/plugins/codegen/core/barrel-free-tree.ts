@@ -8,7 +8,7 @@ import type { CodegenPass } from "./codegen-pass";
  * The barrel-FREE plugin tree — a pure function of committed plugin source
  * (facet extraction reads only .ts/.tsx/package.json; no generated manifest
  * feeds it), so it is IDENTICAL for every caller in a pass. Memoized per pass
- * so one `./equin build` does ONE barrel-free tree build, not one per codegen
+ * so one `./muxos build` does ONE barrel-free tree build, not one per codegen
  * step. `buildEnrichedTree` reads the same facet records again and enriches
  * them with the evaluated barrels.
  *

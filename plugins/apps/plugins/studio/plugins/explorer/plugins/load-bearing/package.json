@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-studio-explorer-load-bearing",
+  "name": "@muxos/plugin-apps-studio-explorer-load-bearing",
   "description": "Load-bearing badge in the explorer plugin tree row.",
   "private": true,
   "version": "0.0.1"

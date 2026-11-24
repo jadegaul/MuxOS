@@ -18,7 +18,7 @@
 //     a third time → the blank goes and ∅ leaves the box as the callout's next
 //     sibling, aaa alone inside.
 //
-// Usage: ./equin run plugins/page/plugins/container/e2e/container-enter-verify.ts [--out /tmp/container-enter]
+// Usage: ./muxos run plugins/page/plugins/container/e2e/container-enter-verify.ts [--out /tmp/container-enter]
 import {
   pageFetch,
   arg,

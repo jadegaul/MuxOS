@@ -22,11 +22,11 @@ const WHAT_TO_DO: Record<IoHealthRule, string> = {
   "cache-collapse":
     "Something evicts the file cache with neither vnode churn nor memory reclaim measured: a process purging (`purge`, a cache-deleting daemon), or a kernel change in how the cache ages pages. Check the evidence's count of ticks that measured no memory reclaim first: a monitor older than 2026-11-11 measures none, and the eviction may be `memory-pressure` it cannot see — rebuild main so the login service runs the current monitor.",
   "memory-pressure":
-    "RAM is full and an app's allocations are taken from the file cache, so files read a minute ago are read from the SSD again. The evidence names the largest memory users by footprint (only your own processes; Activity Monitor → Memory shows WindowServer and system daemons too). Close or restart what holds the most (often browser tabs: Chrome's renderers sum under `Google Chrome Helper (Renderer)`); a long uptime with swap in use is worth a reboot. If an equin process is at the top, investigate it as a leak (`leak-test.ts`, the debug SKILL). Per tick: `memory.file_reclaim_mb_s` (cache taken back), `memory.zero_fill_mb_s` (allocation rate), `memory.top_footprint_mb` in the monitor's log.",
+    "RAM is full and an app's allocations are taken from the file cache, so files read a minute ago are read from the SSD again. The evidence names the largest memory users by footprint (only your own processes; Activity Monitor → Memory shows WindowServer and system daemons too). Close or restart what holds the most (often browser tabs: Chrome's renderers sum under `Google Chrome Helper (Renderer)`); a long uptime with swap in use is worth a reboot. If an muxos process is at the top, investigate it as a leak (`leak-test.ts`, the debug SKILL). Per tick: `memory.file_reclaim_mb_s` (cache taken back), `memory.zero_fill_mb_s` (allocation rate), `memory.top_footprint_mb` in the monitor's log.",
   "fsevents-flood":
     "Find the writer. Count FSEvents by path for a minute with a user-level client on `/` (`kFSEventStreamCreateFlagFileEvents | UseCFTypes`, latency 0.2 s; the Swift counter in research/2026-11-10-global-fseventsd-relapse-orphaned-churn.md): a handful of paths taking nearly every event is one loop. Then find its process: `ps -axo pid,ppid,lstart,time,command` — on 2026-11-09 it was three `node -e` churn children orphaned (ppid 1) by a crash repro whose parent segfaulted as designed, 99 % of the machine's events for 25 h. A sustained flood makes fseventsd grow until jetsam kills it (82–97 GB), and each kill destroys the FSEvents history every client resumes from.",
   "root-daemon":
-    "Run the evidence's reinstall command (sudo, from any directory): it renders the plist to a temporary file, checks it with `plutil -lint`, moves it into place and bootstraps it, or leaves nothing installed. For `not-writing`, read the daemon's own log (evidence) and `sudo launchctl print system/dev.equin.fs-latency-monitor` (`last exit code`). Not wanted any more: `uninstall-root` (the monitor's CLAUDE.md, *Root*).",
+    "Run the evidence's reinstall command (sudo, from any directory): it renders the plist to a temporary file, checks it with `plutil -lint`, moves it into place and bootstraps it, or leaves nothing installed. For `not-writing`, read the daemon's own log (evidence) and `sudo launchctl print system/dev.muxos.fs-latency-monitor` (`last exit code`). Not wanted any more: `uninstall-root` (the monitor's CLAUDE.md, *Root*).",
 };
 
 function renderTask(row: ReportRow): { title: string; description: string } {
@@ -39,7 +39,7 @@ function renderTask(row: ReportRow): { title: string; description: string } {
     "",
     `**What to do:** ${WHAT_TO_DO[f.rule]}`,
     "",
-    "Read the monitor's history per hour with its `report.ts` (`plugins/infra/plugins/host/plugins/io-health/plugins/monitor/CLAUDE.md`, *Read it*), and replay its log through the detector with `./equin run plugins/infra/plugins/host/plugins/io-health/scripts/replay-monitor-log.ts`.",
+    "Read the monitor's history per hour with its `report.ts` (`plugins/infra/plugins/host/plugins/io-health/plugins/monitor/CLAUDE.md`, *Read it*), and replay its log through the detector with `./muxos run plugins/infra/plugins/host/plugins/io-health/scripts/replay-monitor-log.ts`.",
   ];
   return {
     title: `[host-io] ${f.summary}`,

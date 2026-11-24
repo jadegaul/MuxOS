@@ -11,7 +11,7 @@
  * (1 s), so every session on it — the watch's included — reads that bound,
  * exactly as they read the cluster's 5 min in the app.
  *
- * Run: `./equin test plugins/database/plugins/lock-watch`
+ * Run: `./muxos test plugins/database/plugins/lock-watch`
  * (requires the running embedded cluster).
  */
 
@@ -145,7 +145,7 @@ describe("a transaction left idle past the bound", () => {
     expect(look1Ends.idleTimeoutMs).toBe(BOUND_MS);
     expect(look1Rows.find((r) => r.pid === pid)).toMatchObject({
       state: "idle in transaction",
-      applicationName: "equin:app-background",
+      applicationName: "muxos:app-background",
     });
     expect(noticeIdleEnds(look1Rows, look1Ends, Date.now())).toEqual([]);
 
@@ -217,7 +217,7 @@ describe("a transaction left idle past the bound", () => {
         origin: "conversations.usage:sync",
         sql: "SELECT pg_backend_pid() AS pid",
         pid,
-        applicationName: "equin:app-background",
+        applicationName: "muxos:app-background",
         boundMs: BOUND_MS,
       },
     });

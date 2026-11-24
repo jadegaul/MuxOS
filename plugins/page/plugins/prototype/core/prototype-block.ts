@@ -60,7 +60,7 @@ export const prototypeBlock = defineBlock({
         }
         if (!protoIdKind.is(id)) {
           throw new Error(
-            `markdown: <prototype id="${id}"/> — \`id\` must be a prototype id (\`proto-…\`, as \`./equin prototype new\` prints it).`,
+            `markdown: <prototype id="${id}"/> — \`id\` must be a prototype id (\`proto-…\`, as \`./muxos prototype new\` prints it).`,
           );
         }
         const width = sizeAttr(attrs.width, "width");

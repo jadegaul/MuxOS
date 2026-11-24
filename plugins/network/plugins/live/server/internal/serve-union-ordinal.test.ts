@@ -8,7 +8,7 @@
  * The values disagree with their text order (`queued` < `running` < `failed`,
  * alphabetically `failed` < `queued` < `running`).
  *
- * Run: `./equin test plugins/network/plugins/live`
+ * Run: `./muxos test plugins/network/plugins/live`
  * (requires the running embedded cluster).
  */
 

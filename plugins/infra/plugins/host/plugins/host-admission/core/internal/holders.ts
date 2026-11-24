@@ -25,13 +25,13 @@ import { PER_UNIT_BYTES } from "./budget";
  * the whole quantum per unit until it has a record).
  */
 export const HOLDER_WORK = [
-  /** `./equin build`: its whole run, nested check included. */
+  /** `./muxos build`: its whole run, nested check included. */
   "build",
-  /** A top-level `./equin check`. */
+  /** A top-level `./muxos check`. */
   "check",
-  /** A top-level `./equin test`. */
+  /** A top-level `./muxos test`. */
   "test",
-  /** `./equin push`'s critical section (rebase, install, normalize, checks). */
+  /** `./muxos push`'s critical section (rebase, install, normalize, checks). */
   "push",
   /** A supervised job body or a CLI exec context (`admitBackground`): one unit. */
   "job",

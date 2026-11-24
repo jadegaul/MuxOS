@@ -19,7 +19,7 @@
 //     pass against the prototype's gallery.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/pages/plugins/foundations/e2e/foundations-verify.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/pages/plugins/foundations/e2e/foundations-verify.ts \
 //     [--out /tmp/foundations] [--width 1280] [--height 900] [--color-scheme dark|light] [--headed]
 //
 // Manual only — nothing runs this automatically.

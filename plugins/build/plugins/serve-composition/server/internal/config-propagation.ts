@@ -1,7 +1,7 @@
 // The reset's two config reads/writes. Neither runs build tooling in this
 // process (`boot:closure-digestable`): the manifest read is a plain off-disk
 // read (`config_v2/disk-read`), and re-propagation — which has to evaluate
-// every plugin barrel to find the configs — runs as `./equin config-propagate`
+// every plugin barrel to find the configs — runs as `./muxos config-propagate`
 // in a child.
 import type { AppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core";
 import { asPath, asPluginId } from "@plugins/framework/plugins/plugin-id/core";

@@ -7,8 +7,8 @@
  * `insertRun` — so each scenario asserts the whole path: the insert losing to
  * the index, the holder being settled (or not), and the one retry.
  *
- * Run: `./equin test plugins/build/plugins/run-ledger`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/build/plugins/run-ledger`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

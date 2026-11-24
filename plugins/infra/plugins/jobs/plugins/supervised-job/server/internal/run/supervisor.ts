@@ -320,7 +320,7 @@ export async function reconcileSupervisedRuns(): Promise<void> {
       // other run, NOT through a bare `untrack`, and that distinction is the
       // whole point of this block.
       //
-      // **A stamped row is not a finished process.** `./equin build`
+      // **A stamped row is not a finished process.** `./muxos build`
       // closes its row after the health probe and then runs for another ~100s
       // of compose-serve tail (measured: 75.8s). Dropping it here on the
       // ledger's say-so stopped the tail mid-run — truncating the live log for
@@ -459,7 +459,7 @@ function reportWatchFailure(err: unknown): void {
  * Opening the follow lists the runs dir (parcel stats every entry, ignored ones
  * included), and under upstream @parcel/watcher an entry deleted between the
  * listing and its stat fails the WHOLE open with `error watching <runs>: No
- * such file or directory`. The addon `./equin build` links skips such an entry
+ * such file or directory`. The addon `./muxos build` links skips such an entry
  * (`infra/file-watcher/plugins/parcel-addon`); a release still runs the
  * upstream prebuild, which is what this guard is kept for. The
  * prune is the only thing in this process that deletes there, and another
@@ -587,7 +587,7 @@ export interface StartedRun {
  * - **`detached: true`** puts the child in its own process group. The gateway
  *   hot-restarts a backend by signalling its whole process group, so a plain
  *   child shares that group and dies with its parent. That is the entire
- *   2026-08-28 deploy incident: an unrelated `./equin build` of main
+ *   2026-08-28 deploy incident: an unrelated `./muxos build` of main
  *   restarted the backend and took a running deploy with it, 0.9 s after spawn.
  * - **stdout and stderr both point at the SAME fd**, which is `2>&1` at the
  *   kernel level. Interleaving order is preserved; the per-line stdout/stderr
@@ -667,7 +667,7 @@ export async function startSupervisedRun(
       // A run is work, not what serves: on a host with a systemd user
       // manager it runs in an `op` scope of its own (packages/systemd-scope),
       // so systemd-oomd — which kills a whole leaf cgroup — can take the run
-      // alone, never the gateway's unit with it. A `./equin` op inside sees
+      // alone, never the gateway's unit with it. A `./muxos` op inside sees
       // the scope and stays in it. `systemd-run --scope` execs the shim: the
       // pid and process group signalled below are still the shim's.
       const launch = inAppScope(

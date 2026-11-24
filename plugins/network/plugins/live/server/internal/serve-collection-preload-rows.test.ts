@@ -5,7 +5,7 @@
  * holding that set in any order asks for exactly the preloaded tuple. With
  * `field`, the ids are one field of `idsOf`'s rows (deduped).
  *
- * Run: `./equin test plugins/network/plugins/live`.
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { describe, expect, test } from "bun:test";

@@ -31,7 +31,7 @@ export interface SchemaTag<T> {
  */
 export function defineSchemaTag<T>(name: string): SchemaTag<T> {
   if (name === "") throw new Error("defineSchemaTag: an empty tag name.");
-  const key = `~equin.tag.${name}`;
+  const key = `~muxos.tag.${name}`;
   return {
     name,
     set<S extends object>(schema: S, value: T): S {

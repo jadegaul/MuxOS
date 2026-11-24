@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-page-formatting-bold",
+  "name": "@muxos/plugin-page-formatting-bold",
   "description": "Bold mark button for the page editor's selection toolbar.",
   "private": true,
   "version": "0.0.1"

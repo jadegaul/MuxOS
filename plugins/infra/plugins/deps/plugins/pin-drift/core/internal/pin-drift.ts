@@ -67,7 +67,7 @@ export type PinnedDepRow = z.infer<typeof PinnedDepRowSchema>;
 
 /**
  * Every pinned dependency against main's checkout (`mainRoot`, where the
- * daemons' start scripts run and where `./equin deps pin` switches them);
+ * daemons' start scripts run and where `./muxos deps pin` switches them);
  * not applicable on a release (its bundle sealed the binaries) or a checkout
  * declaring no pin; unreadable when the check itself failed.
  */
@@ -100,10 +100,10 @@ export const pinDrift = liveValue("deps.pin-drift", {
  * version (a stay, bounded like a dependency hold), run in main's checkout.
  */
 export function pinStayCommand(mainRoot: string, id: string): string {
-  return `cd ${mainRoot} && ./equin deps pin-stay ${id} --reason "<why it stays>"`;
+  return `cd ${mainRoot} && ./muxos deps pin-stay ${id} --reason "<why it stays>"`;
 }
 
 /** The command that moves `id`'s pin to what main declares, run in main's checkout. */
 export function pinSwitchCommand(mainRoot: string, id: string): string {
-  return `cd ${mainRoot} && ./equin deps pin ${id}`;
+  return `cd ${mainRoot} && ./muxos deps pin ${id}`;
 }

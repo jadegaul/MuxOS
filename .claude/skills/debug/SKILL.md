@@ -1,7 +1,7 @@
 ---
 name: debug
 description: >
-  Decision tree for debugging equin — start at the alert funnel (Reports)
+  Decision tree for debugging muxos — start at the alert funnel (Reports)
   and the incident Timeline, THEN branch by symptom to the right surface.
   Read BEFORE debugging anything.
 ---
@@ -97,7 +97,7 @@ thrashes; the on-demand **React fiber-commit profiler** names the INITIATING
 component + hook (esp. `useSyncExternalStore`, where `useResource`/`useQuery`
 land), splits mount vs update, and ranks remounts with the structural cause
 (element-type flip, key-change). OFF by default. Open **Debug → Render
-Profiler**, or headless `./equin run plugins/debug/plugins/render-profiler/e2e/render-profile.ts --url … --seconds 8`; the
+Profiler**, or headless `./muxos run plugins/debug/plugins/render-profiler/e2e/render-profile.ts --url … --seconds 8`; the
 report dumps to `logs/render-profiler.jsonl`; API `window.__reactRenderProfiler`.
 → [`plugins/debug/plugins/render-profiler/CLAUDE.md`](../../../plugins/debug/plugins/render-profiler/CLAUDE.md)
 
@@ -132,11 +132,11 @@ restart does not kill (how backups, builds, releases and DB forks run), not a
 smarter retry. → [`plugins/infra/plugins/jobs/plugins/supervised-job/CLAUDE.md`](../../../plugins/infra/plugins/jobs/plugins/supervised-job/CLAUDE.md)
 
 ## Cross-cutting tools (reach for these inside any branch)
-- **Logs** — per-worktree `~/.equin/worktrees/<wt>/logs/<channel>.jsonl`
+- **Logs** — per-worktree `~/.muxos/worktrees/<wt>/logs/<channel>.jsonl`
   (survives restarts). `clientLog(channel, line)` to emit; `tail`/`cat` to read.
   → [`plugins/debug/plugins/logs/CLAUDE.md`](../../../plugins/debug/plugins/logs/CLAUDE.md)
 - **Query DB** — `query_db` MCP, read-only SQL (`database` for another worktree /
-  `"equin"` for main). → [`plugins/database/plugins/query/CLAUDE.md`](../../../plugins/database/plugins/query/CLAUDE.md)
+  `"muxos"` for main). → [`plugins/database/plugins/query/CLAUDE.md`](../../../plugins/database/plugins/query/CLAUDE.md)
 - **Claude CLI calls** — every `claude --print` with prompt / output / source /
   duration. → [`plugins/debug/plugins/claude-cli-calls/CLAUDE.md`](../../../plugins/debug/plugins/claude-cli-calls/CLAUDE.md)
 - **Verify in the real app** — scripted Playwright (`plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts`): clicks,

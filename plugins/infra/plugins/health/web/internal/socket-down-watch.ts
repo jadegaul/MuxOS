@@ -30,7 +30,7 @@ export interface SocketDownWatch {
  * before. A visitor whose link drops has a health request that hangs rather
  * than fails, and is answered the instant the link returns — a moment before
  * the socket, whose handshake was dialed into the dead link, reopens
- * (equin.ai, 2026-11-19 05:13:38 UTC: the host answered at .281, the socket
+ * (MuxOS.app, 2026-11-19 05:13:38 UTC: the host answered at .281, the socket
  * reopened at .450, and a socket-down wedge was filed for the visitor's
  * 20 s outage). Only a socket that cannot open on a link shown working is
  * ours. When the host gives no answer at all (`reachHost`,

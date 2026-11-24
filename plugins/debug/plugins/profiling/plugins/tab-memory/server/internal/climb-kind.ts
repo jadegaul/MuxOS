@@ -62,7 +62,7 @@ const GROWTH_TEXT: Record<TabMemoryGrowth, string> = {
   native:
     "**Native.** Pages sampled themselves through the window, but neither their JS heap, DOM nor canvas/images explain the growth: native memory the page cannot see (decoded audio, GPU tiles, network buffers, the inspector…). Measure it per allocator with `e2e/clean-soak.ts` on the candidate routes / in-app tabs.",
   unattributed:
-    "**Unattributed.** No equin page sampled itself through the window: the tab may not be equin, or ran a build without the tab-memory recorder.",
+    "**Unattributed.** No muxos page sampled itself through the window: the tab may not be muxos, or ran a build without the tab-memory recorder.",
 };
 
 function pageLine(p: ClimbPage): string {
@@ -111,7 +111,7 @@ function renderDescription(row: ReportRow, d: TabMemoryClimb): string {
   );
   lines.push("");
   lines.push(
-    "**Candidate pages** — a page cannot learn its renderer's pid, so these are the equin pages that sampled themselves through the window (joined by time): the page behind **What grew** first, then open pages, then the ones whose figures grew most:",
+    "**Candidate pages** — a page cannot learn its renderer's pid, so these are the muxos pages that sampled themselves through the window (joined by time): the page behind **What grew** first, then open pages, then the ones whose figures grew most:",
   );
   lines.push("");
   lines.push(d.pages.length ? d.pages.map(pageLine).join("\n") : "- (none)");

@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * The report kind string, spelled once: the server registers its `ReportKind`
  * under it, the web dispatches its `Reports.KindView` on it, and
- * `./equin check --file-reports` files under it.
+ * `./muxos check --file-reports` files under it.
  */
 export const HOST_CHECK_KIND = "host-check";
 

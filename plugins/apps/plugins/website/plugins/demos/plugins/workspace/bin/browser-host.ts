@@ -1,5 +1,5 @@
 // The workspace demo's browser host (the Agent Manager, Pages, Prototypes and Sonata on
-// Demo's own equin): a worker booting the portable server graph inferred from
+// Demo's own muxos): a worker booting the portable server graph inferred from
 // `./browser-host.composition.ts` on PGlite, served to every tab of the demo
 // (one SharedWorker per build, where the browser has them). Its data is kept in
 // the browser (`WORKSPACE_DEMO_STORAGE`): seeded once, on a fresh storage, then the

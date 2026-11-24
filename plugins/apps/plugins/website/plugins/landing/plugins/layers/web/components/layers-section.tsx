@@ -22,11 +22,11 @@ import { Icon } from "@plugins/ui/plugins/icons/web";
 const arrowDownwardIcon = symbol("arrow-downward");
 const arrowForwardIcon = symbol("arrow-forward");
 
-const HEADING = "What is equin?";
+const HEADING = "What is muxos?";
 const SUBHEADING = "Three layers, each built on the one before it.";
 
 /**
- * "What is equin?" — the homepage's map of the project, as three stacked layers
+ * "What is muxos?" — the homepage's map of the project, as three stacked layers
  * joined by arrows: the technical foundations, the applications built on them,
  * and the vision they add up to.
  *

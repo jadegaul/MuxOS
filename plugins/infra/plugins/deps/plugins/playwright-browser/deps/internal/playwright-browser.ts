@@ -42,7 +42,7 @@ const INSTALL_TIMEOUT_MS = 15 * MINUTE;
  * resolved from HERE in whichever checkout is asked (`root`), because
  * `launchChromium` below imports `playwright` from here: installer, identity
  * and launcher then walk one module graph and cannot disagree about which
- * version is meant. A literal (a path mention `./equin plugin move` rewrites),
+ * version is meant. A literal (a path mention `./muxos plugin move` rewrites),
  * never derived from this module's own location.
  */
 const KIND_REL = "plugins/infra/plugins/deps/plugins/playwright-browser";
@@ -394,7 +394,7 @@ export async function launchChromium(
   const read = await readBrowserExecutables(ready.dir);
   if (!read.ok) {
     throw new Error(
-      `${ready.dep.id} is no longer intact (${read.reason}) — reinstall it: ./equin deps install ${ready.dep.id}`,
+      `${ready.dep.id} is no longer intact (${read.reason}) — reinstall it: ./muxos deps install ${ready.dep.id}`,
     );
   }
   const { gpu = false, signals, ...launch } = opts;
@@ -442,7 +442,7 @@ export async function launchPersistentChromium(
   const read = await readBrowserExecutables(ready.dir);
   if (!read.ok) {
     throw new Error(
-      `${ready.dep.id} is no longer intact (${read.reason}) — reinstall it: ./equin deps install ${ready.dep.id}`,
+      `${ready.dep.id} is no longer intact (${read.reason}) — reinstall it: ./muxos deps install ${ready.dep.id}`,
     );
   }
   const { derive, signals, ...launchOpts } = opts;

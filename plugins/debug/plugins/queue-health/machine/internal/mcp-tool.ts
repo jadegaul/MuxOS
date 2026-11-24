@@ -79,13 +79,13 @@ Fields:
 - \`running\` — currently-locked jobs, longest-held slot first (\`jobName\`, \`hold\`, \`jobId\`, \`lockedForMs\`, \`lockedBy\`, \`alive\`): **who holds the slots.** \`alive\` is exact worker liveness (a granted advisory lock), not an inference from duration — a long \`lockedForMs\` with \`alive: true\` is a healthy slow job, the same duration with \`alive: false\` is an abandoned row the stuck-lock sweeper will reclaim.
 - \`dead\` — terminally-failed jobs per jobName (\`deadCount\`, \`attempts\`/\`maxAttempts\`, \`lastError\`, \`sampleJobId\`): **the terminal failures** clogging the queue.
 
-Default: reads the current conversation's own worktree. Pass \`worktree\` to target a different one (e.g. "att-1778089188-7uvf" or "equin" for main).`,
+Default: reads the current conversation's own worktree. Pass \`worktree\` to target a different one (e.g. "att-1778089188-7uvf" or "muxos" for main).`,
   inputSchema: {
     worktree: z
       .string()
       .optional()
       .describe(
-        "Target worktree name. Defaults to the conversation's own worktree (main for a session equin did not launch).",
+        "Target worktree name. Defaults to the conversation's own worktree (main for a session muxos did not launch).",
       ),
   },
   async handler({ worktree }, { conversationId }) {
@@ -93,7 +93,7 @@ Default: reads the current conversation's own worktree. Pass \`worktree\` to tar
     if (worktree) {
       raw = resolveNamespaceAlias(worktree);
     } else if (conversationId === null) {
-      // A session equin did not launch has no worktree of its own: main.
+      // A session muxos did not launch has no worktree of its own: main.
       raw = MAIN_WORKTREE_NAME;
     } else {
       const conv = await getConversation(conversationId);

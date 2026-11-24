@@ -64,8 +64,8 @@
  * open-ended range cost ~6 MB a visit before `rangedBlobResponse` bounded it).
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/home-load.ts \
- *     --url https://equin.ai [--profile fast4g|slow4g|desktop] [--cpu 4] [--runs 1] [--visits 2]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/home-load.ts \
+ *     --url https://MuxOS.app [--profile fast4g|slow4g|desktop] [--cpu 4] [--runs 1] [--visits 2]
  *     [--window <KB>] [--path /] [--top 15] [--cpu-profile] [--coverage [--group-depth 2]] [--block <text>] [--out <prefix>] [--no-record]
  */
 import { writeFile } from "node:fs/promises";

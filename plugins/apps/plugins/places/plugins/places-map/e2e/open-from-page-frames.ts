@@ -9,9 +9,9 @@
 // from the page itself on every animation frame: whether a view transition
 // was running, and how many Google map tiles were in the Places map.
 //
-// Usage (after `./equin build`, or against any deploy with `--url`):
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/open-from-page-frames.ts \
-//     --page <pageId> [--out "$EQUIN_SCRATCH/open-frames"] [--viewport 1280x720] [--settle 3000]
+// Usage (after `./muxos build`, or against any deploy with `--url`):
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/open-from-page-frames.ts \
+//     --page <pageId> [--out "$MUXOS_SCRATCH/open-frames"] [--viewport 1280x720] [--settle 3000]
 //
 // The page must hold a `/map` block with places on it.
 

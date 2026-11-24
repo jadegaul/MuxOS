@@ -47,7 +47,7 @@ export async function getHealth(
  * otherwise answers. A page that cannot reach its host at all is not looking
  * at one: a laptop whose network dropped, a train through a tunnel. Its
  * reports were only ever delivered after the network came back, describing an
- * outage of the visitor's link as a wedge of ours (equin.ai, 2026-11-18
+ * outage of the visitor's link as a wedge of ours (MuxOS.app, 2026-11-18
  * 00:31–00:35 UTC: a visitor's tab lost the box for 4 minutes — every
  * handshake hung, every fetch failed — while the box's network, server and
  * jobs ran on; three wedge reports landed 1 s after its socket reopened).

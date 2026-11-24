@@ -47,7 +47,7 @@ export function upstreamMergeVariables(d: UpstreamUpdates): {
  * merged branch). The Upstream merges automation commits it as its config's
  * default `prompt`.
  *
- * The mechanical half is one command (`./equin upstream merge`), so the agent
+ * The mechanical half is one command (`./muxos upstream merge`), so the agent
  * never re-derives the fetch/merge/refspec dance from prose. The rest is the
  * agent's own work: it resolves every conflict itself — the user's intent and
  * the release's behaviour both kept, a schema decided in its `schema.ts`, never
@@ -60,7 +60,7 @@ export const UPSTREAM_MERGE_PROMPT = `{{updates}}
 
 Bring it into THIS worktree. You own resolving the merge and proving the merged tree works.
 
-1. Run \`./equin upstream merge\` in this worktree. It fetches upstream and merges its
+1. Run \`./muxos upstream merge\` in this worktree. It fetches upstream and merges its
    newest release, the tag \`{{ref}}\`, into the branch you are on.
    This is the one sanctioned merge in this repo: rebasing the user's own trunk onto
    upstream would replay their entire history on every update and rewrite \`main\` under
@@ -72,7 +72,7 @@ Bring it into THIS worktree. You own resolving the merge and proving the merged 
    release's behaviour (its fixes and features). Prefer the release's structure and re-apply
    the user's change on top of it when the two reshape the same code.
    - **Generated files re-derive themselves.** The \`.gitattributes\` merge drivers take the
-     upstream side, and \`./equin build\` / \`./equin push\` re-run the generators over the
+     upstream side, and \`./muxos build\` / \`./muxos push\` re-run the generators over the
      merged tree. Do not hand-resolve a generated artifact.
    - **A schema is decided in code.** When both sides changed a table, resolve the owning
      \`schema.ts\` to the shape that serves both, and let the build generate whatever
@@ -86,10 +86,10 @@ Bring it into THIS worktree. You own resolving the merge and proving the merged 
      which they would choose. Ask one precise question: the conflict, the options, and the
      one you recommend. Then wait for the answer; this conversation stays open for it.
      Anything you can decide from the code, decide.
-   Then \`git add\` what you resolved and run \`./equin upstream merge --continue\`, which
+   Then \`git add\` what you resolved and run \`./muxos upstream merge --continue\`, which
    concludes the merge for you.
 
-3. Run \`./equin build\` in the background, then confirm the deploy receipt at
+3. Run \`./muxos build\` in the background, then confirm the deploy receipt at
    \`${WORKTREES_DIR_DISPLAY}/<worktree>/build-status.json\` says \`"status": "ok"\`. Fix
    what the build or its checks report — a type error, a failing check — the same way: keep
    both sides' intent.

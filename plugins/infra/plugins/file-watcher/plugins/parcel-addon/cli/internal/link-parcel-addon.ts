@@ -14,7 +14,7 @@ import { parcelWatcherAddon, parcelWatcherPackageDir } from "../../deps";
  * per machine by identity — a hash and one `ready.json` read when unchanged)
  * and copy it into `node_modules/@parcel/watcher/build/Release/watcher.node`.
  *
- * Run by `./equin build` after its install, every build: an install that
+ * Run by `./muxos build` after its install, every build: an install that
  * re-creates the package (a patch or a version change) drops the copy, and the
  * next build puts the matching one back. A copy rather than a link, so the
  * deps sweep removing an old identity can never leave a checkout loading

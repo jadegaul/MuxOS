@@ -7,7 +7,7 @@
 //   over the same files, and their union.
 // The union's stylesheet must equal the scan's.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-tailwind.ts [--runs 3]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-tailwind.ts [--runs 3]
 
 import { REPO_ROOT } from "@plugins/infra/plugins/paths/plugins/repo-root/core";
 import { writeFileSync } from "node:fs";

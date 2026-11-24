@@ -6,7 +6,7 @@
 // panel shows the set-up action and the script stops there.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/tour.ts \
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/tour.ts \
 //     [--out /tmp/places] [--queries "Septime Paris;Musée Rodin Paris"] [--skip-add]
 //
 // Writes `<out>-<step>.png`. Saving is idempotent per Google place

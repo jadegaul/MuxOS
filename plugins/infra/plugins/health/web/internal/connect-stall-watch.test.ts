@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import type { HostReach } from "./client";
 import { createConnectStallWatch } from "./connect-stall-watch";
 
-const URL = "wss://equin.ai/ws/notifications";
+const URL = "wss://MuxOS.app/ws/notifications";
 const ANSWERED: HostReach = { kind: "answered", status: 200, health: null };
 
 function harness() {
@@ -24,7 +24,7 @@ function harness() {
 }
 
 describe("connect-stall watch", () => {
-  // equin.ai 2026-11-19 05:21:47–05:22:02 UTC: attempt 3 was dialed into the
+  // MuxOS.app 2026-11-19 05:21:47–05:22:02 UTC: attempt 3 was dialed into the
   // visitor's dead link; its health check was answered as the link came back.
   test("a stall dialed before the host was shown answering files nothing", async () => {
     const h = harness();

@@ -25,9 +25,9 @@ import type { CatalogApp } from "../internal/catalog";
 /**
  * One app of the gallery: its picture, its tile and name, what it does, and
  * Install — which goes to the download page, because installing happens in
- * equin itself, never on the site. An app not built yet is drawn dashed and
+ * muxos itself, never on the site. An app not built yet is drawn dashed and
  * faded, with a Soon badge where Install would be. Its sizes are the gallery's
- * (`equinGalleryTheme`, worn by the gallery around it).
+ * (`muxosGalleryTheme`, worn by the gallery around it).
  *
  * An app the homepage's live demo carries (`APP_DEMO_PLACES`) is a link as a
  * whole: the card opens the demo maximized on the app's home

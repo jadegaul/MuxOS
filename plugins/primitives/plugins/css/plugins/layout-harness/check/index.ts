@@ -105,7 +105,7 @@ const check: Check = {
     if (existsSync(markerFile(sig))) return { ok: true };
 
     // Chromium is an on-demand dependency. Install it (a no-op once it is)
-    // BEFORE taking the pool: in a `./equin deps install` child, which
+    // BEFORE taking the pool: in a `./muxos deps install` child, which
     // spends the unit of THIS op's grant reserved for it here rather than queueing
     // host-wide behind it — on a one-unit host that queue waited on its own
     // parent until the install timed out. The suite's measurer then finds it
@@ -118,7 +118,7 @@ const check: Check = {
       return {
         ok: false,
         message: `Chromium, which the layout geometry suite runs in, could not be installed: ${(err as Error).message}`,
-        hint: "Run `./equin deps install chromium` to see the install fail in full (its log is also in Debug → Dependencies), then re-run.",
+        hint: "Run `./muxos deps install chromium` to see the install fail in full (its log is also in Debug → Dependencies), then re-run.",
       };
     }
 

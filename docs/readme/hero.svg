@@ -44,6 +44,6 @@
 </g>
 <rect x=".5" y=".5" width="1199" height="439" rx="16" fill="none" stroke="#30363d"/>
 <g transform="translate(70 120) scale(2)"><g fill="none"><defs><linearGradient id="hero-logo-gradient" gradientUnits="userSpaceOnUse" x1="88" y1="12" x2="12" y2="88"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient><style>.hero-logo-draw{stroke-dasharray:1;stroke-dashoffset:1;animation:hero-logo-draw 2.4s cubic-bezier(.65,0,.35,1) 0.2s forwards}@keyframes hero-logo-draw{to{stroke-dashoffset:0}}@media (prefers-reduced-motion: reduce){.hero-logo-draw{animation:none;stroke-dashoffset:0}}</style></defs><path d="M50 12 A38 38 0 1 1 12 50 L12 46 A29 29 0 0 0 70 46 A20 20 0 0 1 30 46 A11 11 0 0 0 52 46" pathLength="1" class="hero-logo-draw" stroke="url(#hero-logo-gradient)" stroke-width="7.8" stroke-linecap="round" stroke-linejoin="round"/></g></g>
-<g class="rise" style="animation-delay:.9s"><text x="300" y="206" class="word">equin</text></g>
+<g class="rise" style="animation-delay:.9s"><text x="300" y="206" class="word">muxos</text></g>
 <g class="rise" style="animation-delay:1.3s"><text x="304" y="256" class="tag">A self-evolving, personal operating system</text><text x="304" y="290" class="tag">for the agentic era.</text></g>
 </svg>

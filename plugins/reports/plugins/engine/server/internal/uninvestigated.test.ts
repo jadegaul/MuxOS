@@ -3,8 +3,8 @@
  * as data when one is briefed by hand — against a throwaway Postgres seeded
  * with the REAL migration chain (the worklist's predicate is SQL).
  *
- * Run: `./equin test plugins/reports/plugins/engine`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/reports/plugins/engine`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

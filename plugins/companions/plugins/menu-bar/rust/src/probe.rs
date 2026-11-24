@@ -1,4 +1,4 @@
-//! `equin-desktop probe --namespace <ns>`: the bridge's trust boundary,
+//! `muxos-desktop probe --namespace <ns>`: the bridge's trust boundary,
 //! checked against the real panel — the tray's own window, capability and
 //! command gate, on WebKit — with no tray icon and nothing handed to the
 //! browser. Once the pinned page loads, `src/probe.js` is evaluated natively
@@ -21,7 +21,7 @@ use crate::{commands, panel};
 const PROBE_JS: &str = include_str!("probe.js");
 /// The whole matrix takes ~30 s; past this the probe fails rather than hangs.
 const DEADLINE: Duration = Duration::from_secs(120);
-const TITLE_PREFIX: &str = "equin-probe:";
+const TITLE_PREFIX: &str = "muxos-probe:";
 
 #[derive(Default)]
 struct Seen {
@@ -57,7 +57,7 @@ enum Report {
 }
 
 fn record_hand_off(url: &Url) {
-    eprintln!("equin-desktop: probe: would hand {url} to the browser");
+    eprintln!("muxos-desktop: probe: would hand {url} to the browser");
     seen(|s| s.handed_off.push(url.to_string()));
 }
 
@@ -66,7 +66,7 @@ fn record_refused(url: &Url) {
 }
 
 fn new_window_url() -> String {
-    "https://equin-probe.invalid/new-window".into()
+    "https://muxos-probe.invalid/new-window".into()
 }
 
 fn on_loaded(window: &WebviewWindow, url: &Url) {
@@ -86,10 +86,10 @@ fn on_loaded(window: &WebviewWindow, url: &Url) {
     let other = OTHER.lock().unwrap().clone().expect("set before the panel");
     let params = json!({
         "otherOrigin": other,
-        "sameOrigin": format!("{}/prototypes/__equin_probe__/index.html", pin.origin()),
+        "sameOrigin": format!("{}/prototypes/__muxos_probe__/index.html", pin.origin()),
         "newWindow": new_window_url(),
     });
-    let script = PROBE_JS.replace("__EQUIN_PROBE__", &params.to_string());
+    let script = PROBE_JS.replace("__MUXOS_PROBE__", &params.to_string());
     if let Err(e) = window.eval(script) {
         finish(app, Err(format!("cannot run the probe in the panel: {e}")));
     }
@@ -103,7 +103,7 @@ fn on_title(window: &WebviewWindow, title: String) {
     };
     match report {
         Report::Row(row) => {
-            eprintln!("equin-desktop: probe: {} {}", row.id, row.outcome);
+            eprintln!("muxos-desktop: probe: {} {}", row.id, row.outcome);
             seen(|s| s.rows.push(row));
         }
         Report::Error { message } => {
@@ -192,9 +192,9 @@ fn finish(app: &AppHandle, result: Result<Vec<Verdict>, String>) {
 }
 
 pub fn run(namespace: String, other: String) {
-    eprintln!("equin-desktop: probe mode, panel on {namespace}, elsewhere {other}");
+    eprintln!("muxos-desktop: probe mode, panel on {namespace}, elsewhere {other}");
     let port = crate::gateway::listening_port().unwrap_or_else(|e| {
-        eprintln!("equin-desktop: probe: {e}");
+        eprintln!("muxos-desktop: probe: {e}");
         std::process::exit(1);
     });
     let other_origin = panel::Pin::new(&other, port).origin();
@@ -208,7 +208,7 @@ pub fn run(namespace: String, other: String) {
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
             let handle: AppHandle = app.handle().clone();
             if !crate::gateway::up(port) {
-                eprintln!("equin-desktop: probe: nothing answers on port {port}");
+                eprintln!("muxos-desktop: probe: nothing answers on port {port}");
                 std::process::exit(1);
             }
             panel::create(&handle)?;
@@ -223,6 +223,6 @@ pub fn run(namespace: String, other: String) {
             Ok(())
         })
         .build(crate::context())
-        .expect("equin-desktop: cannot build the probe");
+        .expect("muxos-desktop: cannot build the probe");
     app.run(|_, _| {});
 }

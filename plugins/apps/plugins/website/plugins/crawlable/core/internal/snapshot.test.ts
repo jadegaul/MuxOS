@@ -10,7 +10,7 @@ import {
 
 const landing = defineWebsitePage({
   path: "/about",
-  title: "equin",
+  title: "muxos",
   description: "The app.",
 });
 const download = defineWebsitePage({
@@ -41,8 +41,8 @@ describe("snapshotFiles", () => {
   test("a manifest the contract accepts, one fragment per page", () => {
     const { manifest, fragments } = snapshotFiles(
       [
-        { page: landing, title: "equin", semantic: "<h1>equin</h1>" },
-        { page: download, title: "Download — equin", semantic: "<p>Run</p>" },
+        { page: landing, title: "muxos", semantic: "<h1>muxos</h1>" },
+        { page: download, title: "Download — muxos", semantic: "<p>Run</p>" },
       ],
       "/about",
     );
@@ -50,19 +50,19 @@ describe("snapshotFiles", () => {
       home: "/about",
       pages: {
         "/about": {
-          title: "equin",
+          title: "muxos",
           description: "The app.",
           file: "about.html",
         },
         "/about/download": {
-          title: "Download — equin",
+          title: "Download — muxos",
           description: "One command.",
           file: "about/download.html",
         },
       },
     });
     expect([...fragments]).toEqual([
-      ["about.html", "<h1>equin</h1>"],
+      ["about.html", "<h1>muxos</h1>"],
       ["about/download.html", "<p>Run</p>"],
     ]);
   });

@@ -1,7 +1,7 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * `./equin upstream status|merge` — the repo this checkout was cloned
+ * `./muxos upstream status|merge` — the repo this checkout was cloned
  * from, read and (on request) merged in.
  *
  * A GROUP, like `db` and `deploy`: it routes and never runs, and the
@@ -13,7 +13,7 @@ import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
  * the same reason `toolchain upgrade` is a command rather than a checklist.
  *
  * The declaration is data; both bodies sit behind their own lazy `import()`,
- * so every other `./equin` invocation pays for this file alone.
+ * so every other `./muxos` invocation pays for this file alone.
  */
 export default defineCliCommand({
   name: "upstream",

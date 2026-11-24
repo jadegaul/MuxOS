@@ -8,7 +8,7 @@ export const RUN_TERMINAL_ENV = "SUPERVISED_RUN_TERMINAL";
 /**
  * The environment variable naming where the child records the error it dies
  * of (`worktreeArtifacts.runError`). The shim does not read it: it is for the
- * child — an `./equin` command records its uncaught exception there
+ * child — an `./muxos` command records its uncaught exception there
  * (`../../cli/internal/run-error.ts`), and takes the variable out of its own environment so
  * a command it spawns cannot write over it.
  */
@@ -104,7 +104,7 @@ const SHIM_SCRIPT = [
   // would throw away the status the child is about to produce. So: wait again
   // whenever a signal fired and there is still a child to wait for. Measured on
   // a child that traps TERM and exits 42 after a moment — exactly what
-  // `./equin build` does via `installFatalSignalExit`: without this the
+  // `./muxos build` does via `installFatalSignalExit`: without this the
   // marker read `143 TERM` with the child still alive; with it, `42 TERM` and
   // the child already gone.
   //

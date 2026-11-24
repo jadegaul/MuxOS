@@ -3,7 +3,7 @@
 // number, a heatmap and a picture instead of an eyeball.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/compare/e2e/compare-diff.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/compare/e2e/compare-diff.ts \
 //     --name <proto-id> [--width <px>] [--options <name>=<value>,…] [--out <prefix>] [--threshold 0.1] \
 //     [--delta-e 5] [--fail-above <pct>] [--wait <ms>] [--color-scheme dark|light] [--headed] \
 //     [--metrics <app>/e2e/<proto>.parts.json] [--metrics-tolerance px=0.5,de=3,weight=0,opacity=0.01] \
@@ -67,7 +67,7 @@
 // metric outside --metrics-tolerance one.
 //
 // Example:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/compare/e2e/compare-diff.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/compare/e2e/compare-diff.ts \
 //     --name proto-1786877040-3k6f --out /tmp/mist-panes
 
 import { DEVICE_SIZES } from "@plugins/primitives/plugins/dom/plugins/device-sizes/core";
@@ -132,7 +132,7 @@ import {
 } from "./part-metrics";
 
 const USAGE =
-  "--name <proto-id> is required — the prototype folder's minted id (`./equin prototype list` prints them)";
+  "--name <proto-id> is required — the prototype folder's minted id (`./muxos prototype list` prints them)";
 const name = requireArg("name", USAGE);
 if (!protoIdKind.is(name)) {
   usage(
@@ -171,7 +171,7 @@ async function readMeta(): Promise<PrototypeMeta> {
   const meta = rows.find((p) => p.name === name);
   if (!meta) {
     usage(
-      `no prototype "${name}" on this deploy (${rows.length} listed — \`./equin prototype list\`)`,
+      `no prototype "${name}" on this deploy (${rows.length} listed — \`./muxos prototype list\`)`,
     );
   }
   return meta;

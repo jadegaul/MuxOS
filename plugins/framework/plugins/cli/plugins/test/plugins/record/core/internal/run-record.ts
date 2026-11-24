@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /**
- * What one `./equin test` run leaves behind for the test-status page
+ * What one `./muxos test` run leaves behind for the test-status page
  * (`debug/tests`): a harvest record, one JSON file per run in the host-global
  * `testRunRecordsDir` (`<opId>.json`), written by the run's LEADER once its
  * verdict is in. Every backend ingests the directory into its own tables.
@@ -18,7 +18,7 @@ import { z } from "zod";
  */
 export const TEST_RUN_RECORD_VERSION = 1;
 
-/** Who started the run (`EQUIN_TEST_ORIGIN`; unset = an agent typed it). */
+/** Who started the run (`MUXOS_TEST_ORIGIN`; unset = an agent typed it). */
 export const TEST_RUN_ORIGINS = ["agent", "run-now", "idle"] as const;
 export const TestRunOriginSchema = z.enum(TEST_RUN_ORIGINS);
 export type TestRunOrigin = z.infer<typeof TestRunOriginSchema>;
@@ -99,7 +99,7 @@ export function testRunRecordOpId(fileName: string): string | null {
 export const TEST_RUN_RECORD_RETENTION_DAYS = 14;
 
 /**
- * The whole checkout's digests, as `./equin test-digest --out <file>` writes
+ * The whole checkout's digests, as `./muxos test-digest --out <file>` writes
  * them for the `tests.checkout-digests` job: one entry per test file, or
  * `unchanged` when the caller's `--unless-tree` already names the current tree.
  */

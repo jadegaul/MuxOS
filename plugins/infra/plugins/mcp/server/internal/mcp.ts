@@ -21,7 +21,7 @@ export interface McpToolCallContext extends McpToolContext {
 
 /**
  * What the handler of a tool declared `unattached: true` gets: the same, except
- * that `conversationId` is `null` for a session equin did not launch (a
+ * that `conversationId` is `null` for a session muxos did not launch (a
  * `claude` started in a terminal — see `MCP_UNATTACHED_ID`). Such a tool must
  * answer without a conversation: its "own" worktree, deploy or anything else
  * read off the conversation defaults to main.
@@ -48,7 +48,7 @@ interface McpToolBase<T extends z.ZodRawShape> {
   inputSchema: T;
 }
 
-/** A tool only a conversation equin launched sees (the default). */
+/** A tool only a conversation muxos launched sees (the default). */
 export interface McpConversationTool<
   T extends z.ZodRawShape = z.ZodRawShape,
 > extends McpToolBase<T> {

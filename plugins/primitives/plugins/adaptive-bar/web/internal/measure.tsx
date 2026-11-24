@@ -24,7 +24,7 @@ import {
  * cached as `exact` with nothing ever coming to correct it: once the window
  * settled at scale 1, an occupant measured at 96% of its real width was fitted
  * at that width and the row overflowed its box (the `row-overflow` Sonata's
- * library pane filed on equin.ai's phone demo). The same trap
+ * library pane filed on MuxOS.app's phone demo). The same trap
  * `dom/element-size` already closed for its consumers.
  *
  * Read off the computed `width`, which is the used width for any element that
@@ -249,7 +249,7 @@ function lengthPx(raw: string): number {
  * separately), but a divider is a 1px rule with a 6px margin either side that
  * never gives — priced at its gap alone, two of them in Sonata's player header
  * let the fit bless a row 2 × 13px wider than the room (a 7.7px `row-overflow`
- * on equin.ai, 2026-11-19).
+ * on MuxOS.app, 2026-11-19).
  *
  * `own` is what the fit already prices: the docked occupant containers and the
  * trigger. A flex item holding one of them (a host wrapper the anchor sits in)

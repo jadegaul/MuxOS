@@ -988,7 +988,7 @@ describe("<DemoScope>", () => {
     }
   });
 
-  it("a host whose data is from newer code says equin was updated, with a Reload", async () => {
+  it("a host whose data is from newer code says muxos was updated, with a Reload", async () => {
     const view = await renderAsync(
       <PluginProvider plugins={PLUGINS}>
         <Boundary>
@@ -1006,7 +1006,7 @@ describe("<DemoScope>", () => {
       </PluginProvider>,
     );
     await waitFor(() =>
-      expect(view.getByText(/equin was updated in another tab/)).toBeTruthy(),
+      expect(view.getByText(/muxos was updated in another tab/)).toBeTruthy(),
     );
     expect(view.getByText("Reload")).toBeTruthy();
     expect(view.queryByText("never")).toBeNull();

@@ -17,7 +17,7 @@ afterEach(() => {
 });
 
 const OLD = "/home/u/.old";
-const NEW = "/home/u/.equin";
+const NEW = "/home/u/.muxos";
 const CWD = `${OLD}/state/workspaces/att-1`;
 
 function projectsWith(firstLines: string[]): string {

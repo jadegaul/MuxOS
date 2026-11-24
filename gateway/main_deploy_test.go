@@ -22,11 +22,11 @@ func TestMainDeployEntryMatchesTheGolden(t *testing.T) {
 		ExitCode: &code,
 		Causes:   []string{"ref advanced"},
 		Tail: []string{
-			"[converge 2026-11-10T12:00:00.000Z] building equin at 2baf0e2a3",
+			"[converge 2026-11-10T12:00:00.000Z] building muxos at 2baf0e2a3",
 			"error: connect ECONNREFUSED /tmp/.s.PGSQL.6432",
 		},
-		Checkout:  "/x/equin",
-		Log:       "/x/.equin/logs/gateway/deploy/main.log",
+		Checkout:  "/x/muxos",
+		Log:       "/x/.muxos/logs/gateway/deploy/main.log",
 		StartedAt: 1794312000000,
 		EndedAt:   1794312004000,
 	}
@@ -51,7 +51,7 @@ func TestMainDeployEntryMatchesTheGolden(t *testing.T) {
 }
 
 // fakeCheckout is a directory shaped like main's checkout: a .git dir with
-// refs/heads/main, and an `equin` CLI file.
+// refs/heads/main, and an `muxos` CLI file.
 func fakeCheckout(t *testing.T, ref string) string {
 	t.Helper()
 	dir := t.TempDir()
@@ -59,7 +59,7 @@ func fakeCheckout(t *testing.T, ref string) string {
 		t.Fatal(err)
 	}
 	writeRef(t, dir, ref)
-	if err := os.WriteFile(filepath.Join(dir, "equin"), []byte("#!/bin/sh\n"), 0o755); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "muxos"), []byte("#!/bin/sh\n"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	return dir
@@ -289,8 +289,8 @@ func TestMainDeployRunsFromTheCurrentSlot(t *testing.T) {
 	}
 	expect := func(s spawnSpec, dir string) {
 		t.Helper()
-		if s.Dir != dir || s.Argv[0] != filepath.Join(dir, "equin") {
-			t.Fatalf("ran %v in %s, want %s/equin in %s", s.Argv, s.Dir, dir, dir)
+		if s.Dir != dir || s.Argv[0] != filepath.Join(dir, "muxos") {
+			t.Fatalf("ran %v in %s, want %s/muxos in %s", s.Argv, s.Dir, dir, dir)
 		}
 	}
 	mkSlot := func(name string) string {

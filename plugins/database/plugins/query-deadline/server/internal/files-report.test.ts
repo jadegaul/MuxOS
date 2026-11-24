@@ -35,7 +35,7 @@ import { queryDeadlineFingerprint } from "./render";
 // row — the kind's fingerprint — so a second miss from the same caller lands
 // on the first one's row and raises its count.
 //
-// Requires the running embedded cluster (./equin build).
+// Requires the running embedded cluster (./muxos build).
 
 const DEADLINE_MS = 300;
 

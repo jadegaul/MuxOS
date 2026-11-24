@@ -15,7 +15,7 @@ import { isMain } from "@plugins/infra/plugins/runtime-identity/core";
 //
 // Read ONCE, at the register phase, and memoized — the one reader here that is
 // NOT fresh per call, and deliberately so. The question is "which bundle was
-// this PROCESS's code built with?", and `./equin build` swaps the served
+// this PROCESS's code built with?", and `./muxos build` swaps the served
 // dist before it restarts this backend: a fresh read in that window names the
 // NEW bundle while the old code still answers, and would call a current tab's
 // mismatch "same-build" (or an old tab's "skew" of the wrong build). At boot

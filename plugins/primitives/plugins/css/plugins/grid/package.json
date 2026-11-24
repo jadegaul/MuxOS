@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-primitives-css-grid",
-  "description": "Responsive/uniform grid layout primitive: <Grid minCellWidth> lays out a wrapping, equal-width card grid via a closed prop surface — not a raw grid-template passthrough.",
+  "name": "@muxos/plugin-primitives-css-grid",
+  "description": "Responsive/uniform grid layout primitive: <Grid minCellWidth> lays out a wrapping, equal-width card grid via a closed prop surface \u2014 not a raw grid-template passthrough.",
   "private": true,
   "version": "0.0.1"
 }

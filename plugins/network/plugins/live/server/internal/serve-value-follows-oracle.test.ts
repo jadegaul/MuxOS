@@ -20,8 +20,8 @@
  *   hand fails; a follower whose loader then reads nothing is judged on its
  *   own empty run, never on the earlier capture.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/network/plugins/live`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

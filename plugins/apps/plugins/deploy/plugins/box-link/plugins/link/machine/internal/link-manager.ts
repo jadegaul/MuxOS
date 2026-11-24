@@ -426,7 +426,7 @@ function onRun(run: { deploymentId: string; status: string }): void {
   } else if (kind !== "down") {
     return;
   }
-  // A run that passed its health gate (a deploy, a Restart site) means equin
+  // A run that passed its health gate (a deploy, a Restart site) means muxos
   // answers again: reconnect now rather than at the end of the backoff.
   streamOf(run.deploymentId)?.stream?.kick();
 }

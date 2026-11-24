@@ -1,16 +1,16 @@
 # window
 
-`equin-installer`: a small wry + tao Rust app (`rust/`, not Tauri — one page,
+`muxos-installer`: a small wry + tao Rust app (`rust/`, not Tauri — one page,
 one window, one child needs no config, ACL or capabilities; the same wry/tao
 releases as the menu-bar helper) that runs `install.sh` as its child and draws
 its event stream ([`../../CLAUDE.md`](../../CLAUDE.md)).
 
 ```bash
-./equin installer window [--pace 0.4] [--fail clone[:sigkill|:vanish|:quiet]] [--notice]   # over a DRY RUN
-./equin deps install installer-window --json          # just build it; prints where
-<dir>/equin-installer --script <install.sh> [-- <install.sh args…>]
-<dir>/equin-installer [--ref <tag>] [-- <install.sh args…>]  # self-bootstrap
-<dir>/equin-installer --probe                          # can a window show here?
+./muxos installer window [--pace 0.4] [--fail clone[:sigkill|:vanish|:quiet]] [--notice]   # over a DRY RUN
+./muxos deps install installer-window --json          # just build it; prints where
+<dir>/muxos-installer --script <install.sh> [-- <install.sh args…>]
+<dir>/muxos-installer [--ref <tag>] [-- <install.sh args…>]  # self-bootstrap
+<dir>/muxos-installer --probe                          # can a window show here?
 ```
 
 - **`--probe`** (`rust/src/probe.rs`): opens a hidden window and webview,
@@ -23,14 +23,14 @@ its event stream ([`../../CLAUDE.md`](../../CLAUDE.md)).
   `SHA256SUMS`, `install.sh`, each sha256-checked (`sha2`) — and runs that
   script with `--release <tag> --checkout <tag>`. That is what lets a
   notarized double-click app wrap this same binary with no shell around it.
-  Downloads go through `curl`; `EQUIN_RELEASES_URL` overrides the source.
+  Downloads go through `curl`; `MUXOS_RELEASES_URL` overrides the source.
   A failure is printed on stderr (no window yet).
 - **Release builds**: `.github/workflows/installer-release.yml`
   ([`release-assets`](../release-assets/CLAUDE.md)) bundles the page with
   `scripts/bundle-page.ts` and builds the crate per release tag (universal
   macOS ad-hoc signed, Linux x64 / arm64).
 
-`./equin installer window` only ever runs a dry run: `install.sh` run from a
+`./muxos installer window` only ever runs a dry run: `install.sh` run from a
 checkout installs THAT checkout, which on a developer's machine would
 re-register the running gateway from a worktree. A real install runs the
 binary through the curl stage 0 (`install.sh`), or directly.
@@ -60,7 +60,7 @@ binary through the curl stage 0 (`install.sh`), or directly.
 - **Closing the window mid-install** asks "Stop installing?" in the page;
   Stop sends SIGINT to the group. A child that exits 130 (Ctrl-C, Stop) closes
   the window. Otherwise the window stays on its done / stopped screen until
-  closed or Open equin, and exits with the script's code.
+  closed or Open muxos, and exits with the script's code.
 - **The window writes events too**: each line of the script's own stdout /
   stderr becomes a `log` event with `step: null`, and an `exit` event when the
   script died before its EXIT trap could write one. All of them go through the
@@ -74,7 +74,7 @@ binary through the curl stage 0 (`install.sh`), or directly.
   WKWebView paints white until its first frame, seconds on a cold Mac.
 - **The Dock icon** (`rust/src/dock.rs`, macOS): a bare executable has no
   bundle, so the Dock would show the generic "exec" square; the binary sets
-  `NSApplication`'s icon from equin's own PNG (web-core's
+  `NSApplication`'s icon from muxos's own PNG (web-core's
   `icon_512x512.png`, compiled in with `include_bytes!` and an identity input
   of the dependency).
 
@@ -88,16 +88,16 @@ binary through the curl stage 0 (`install.sh`), or directly.
   `Bun.build` of `main.ts`, inlined at the HTML's `<script>/*BUNDLE*/</script>`
   slot), through `cargoBuild`'s `embed` (the rust kind): the page's sources,
   `installer/core` and `bun.lock` are identity inputs, the file is handed to
-  `build.rs` as `EQUIN_INSTALLER_PAGE`, and a bare `cargo build` fails loudly
+  `build.rs` as `MUXOS_INSTALLER_PAGE`, and a bare `cargo build` fails loudly
   without it. Served from `installer://app/`; nothing is fetched.
 - **A pure function of the events and the clock**: `model.ts` folds each
   line (parsed against the schema — a line outside it is a loud
   protocol-error screen, never skipped); every time-dependent read takes
   `now`, so a reload asks for the backlog (`ready`) and lands on the same
   screen. Commands back are a closed set (`ready retry quit skip fix-app
-  fix-cli show-claude add-services stop open-equin open-url password
+  fix-cli show-claude add-services stop open-muxos open-url password
   password-cancel close drag`), refused by Rust otherwise; the decisions are
-  written to fd 4. Open equin opens only the `done` event's URL; `open-url`
+  written to fd 4. Open muxos opens only the `done` event's URL; `open-url`
   only a `https://github.com/` link (Report issue) or App Management.
 - **Paused / fixing / done** (the mockup's, pixel for pixel — `moment.ts`
   writes each mockup moment; 0 differing pixels for the failed states and
@@ -115,8 +115,8 @@ binary through the curl stage 0 (`install.sh`), or directly.
 - **Closing after the done** writes `quit` (the script may wait on Add it
   now) and exits 0.
 - **sudo's password** (`rust/src/askpass.rs`, Linux): the window listens on a
-  socket in a 0700 temp dir (`EQUIN_INSTALLER_ASKPASS`, with its own path in
-  `EQUIN_INSTALLER_BIN`); `equin-installer --askpass <prompt>` connects,
+  socket in a 0700 temp dir (`MUXOS_INSTALLER_ASKPASS`, with its own path in
+  `MUXOS_INSTALLER_BIN`); `muxos-installer --askpass <prompt>` connects,
   sends the prompt, prints the answer for sudo. The page's password sheet
   answers (`password` / `password-cancel`); nothing is written anywhere.
 - **Running state** (the mockup's, pixel for pixel): the status line is what
@@ -139,7 +139,7 @@ binary through the curl stage 0 (`install.sh`), or directly.
   dialog sits in the middle of the screen, over this window's logo, status
   and bar (both are centred), so the page hides the log and moves the status
   to the window's lower half (`.iw.apple`).
-- **Done**: "equin opens by itself whenever you log in" on macOS, "starts by
+- **Done**: "muxos opens by itself whenever you log in" on macOS, "starts by
   itself whenever this computer starts" on Linux (the plan's `platform`); each
   part the person skipped (`view.leftOut`: a notice answering a `resolved
   skip`) as "Installed without … " with what it means, no button.
@@ -151,21 +151,21 @@ binary through the curl stage 0 (`install.sh`), or directly.
 - **Font: the system's** (SF Pro on macOS). No web font to embed or fetch; the
   mockup's Inter falls back to the system font wherever Inter isn't installed.
 - Ported from the approved mockup's window view (`proto-1794832268-wlybzk`):
-  running, paused, fixing, stopped, done (Open equin), and the stop sheet.
+  running, paused, fixing, stopped, done (Open muxos), and the stop sheet.
 
 ## Replaying a stream (`e2e/`)
 
 ```bash
-./equin run plugins/installer/plugins/window/e2e/moment.ts --out "$EQUIN_SCRATCH/m.jsonl" \
+./muxos run plugins/installer/plugins/window/e2e/moment.ts --out "$MUXOS_SCRATCH/m.jsonl" \
   [--state running|failed|fixing|done] [--failure sandbox|security|stall] [--claude app|cli]
-./equin run plugins/installer/plugins/window/e2e/replay.ts --url http://equin.localhost:<port> \
-  --events "$EQUIN_SCRATCH/m.jsonl" --now <iso it printed> --out "$EQUIN_SCRATCH/replay" \
+./muxos run plugins/installer/plugins/window/e2e/replay.ts --url http://muxos.localhost:<port> \
+  --events "$MUXOS_SCRATCH/m.jsonl" --now <iso it printed> --out "$MUXOS_SCRATCH/replay" \
   [--mockup "<prototype url>?view=window&state=failed&failure=security"] [--threshold 0.1] [--mockup-own-font]
-./equin run plugins/installer/plugins/window/e2e/password-sheet.ts --url http://equin.localhost:<port> --out "$EQUIN_SCRATCH/password"
+./muxos run plugins/installer/plugins/window/e2e/password-sheet.ts --url http://muxos.localhost:<port> --out "$MUXOS_SCRATCH/password"
 ```
 
 The prototype URL is its content host's:
-`http://proto-1794832268-wlybzk.content.localhost:<port>/equin/api/prototypes/proto-1794832268-wlybzk/index.html`.
+`http://proto-1794832268-wlybzk.content.localhost:<port>/muxos/api/prototypes/proto-1794832268-wlybzk/index.html`.
 
 `replay.ts` bundles the page (`deps`' `bundlePage`), draws any recorded
 stream at 760 × 640 with its clock pinned to `--now`, and screenshots it; with
@@ -174,11 +174,11 @@ corners and shadow hidden; its font set to the page's) and diffs the two.
 `moment.ts` writes one of the mockup's moments as events (the mockup's own
 strings, medians, failures and log lines).
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: The installer window: equin-installer, a small wry/tao Rust app (rust/) that runs install.sh as its child — events on fd 3, decisions on fd 4 — and draws the stream in a page bundled into the binary (standalone-page/). Built locally as the installer-window dependency; `./equin installer window` runs it over this checkout's install.sh.
+- Description: The installer window: muxos-installer, a small wry/tao Rust app (rust/) that runs install.sh as its child — events on fd 3, decisions on fd 4 — and draws the stream in a page bundled into the binary (standalone-page/). Built locally as the installer-window dependency; `./muxos installer window` runs it over this checkout's install.sh.
 - Cli:
   - Uses: `infra/jobs/supervised-job.cliExecContext`
 - Deps:

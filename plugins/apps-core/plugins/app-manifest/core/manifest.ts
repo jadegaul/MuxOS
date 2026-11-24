@@ -5,7 +5,7 @@ import type { AppDeclaration } from "@plugins/apps-core/core";
  * each owns a URL: a tab app its routes, a surface-mode app (the desktop) its
  * base path as a route prefix (`/desktop`, `/desktop/agents/c/x`). Not an
  * unlisted app (`defineApp({ listed: false })`), which only something outside
- * equin opens.
+ * muxos opens.
  */
 export function installableApp(
   apps: readonly AppDeclaration[],

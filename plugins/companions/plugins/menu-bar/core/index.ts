@@ -2,7 +2,7 @@ export {
   BRIDGE_METHODS,
   NativeAppsSchema,
   NativeHostInfoSchema,
-  type EquinNativeBridge,
+  type MuxOSNativeBridge,
   type NativeApps,
   type NativeCapabilities,
   type NativeHostInfo,

@@ -15,7 +15,7 @@ import { envName } from "@plugins/infra/plugins/launcher/plugins/env-names/core"
  * sessions or more (`tc.log`, `push.log`, `main.bundle`, `msg.txt`, …).
  *
  * So every session has a private scratch directory (`launcher/agent-scratch`;
- * `$EQUIN_SCRATCH` in an app-launched shell), and this guard refuses a call
+ * `$MUXOS_SCRATCH` in an app-launched shell), and this guard refuses a call
  * that would WRITE a fixed name in a shared temp root outside it — the write is
  * where two sessions' files become one. Reading one stays free: a log a person
  * or a tool put there, a background task's output file.
@@ -69,7 +69,7 @@ function denial(path: string, how: string, ctx: GuardContext): Denial {
       `Use ${where}: ${spelled}. No other session writes there. ` +
       "An `rm` of an old fixed name there is refused too — it may be another session's file; leave it, the OS clears /tmp. " +
       "Or a name that is unique by construction: `f=$(mktemp)` / `d=$(mktemp -d)`. " +
-      "For a commit message you need no file at all: `./equin push -m \"$(cat <<'EOF'\n…\nEOF\n)\"`.",
+      "For a commit message you need no file at all: `./muxos push -m \"$(cat <<'EOF'\n…\nEOF\n)\"`.",
     skipEpilogue: true,
   };
 }

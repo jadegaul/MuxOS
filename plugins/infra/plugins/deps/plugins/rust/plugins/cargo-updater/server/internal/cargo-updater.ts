@@ -198,7 +198,7 @@ async function crateReleases(pkg: string): Promise<CrateRelease[]> {
   while (url !== null) {
     const res = await fetch(url, {
       // crates.io refuses requests without an identifying User-Agent.
-      headers: { "User-Agent": "equin-deps-cargo-updater" },
+      headers: { "User-Agent": "muxos-deps-cargo-updater" },
       signal: AbortSignal.timeout(MINUTE),
     });
     if (!res.ok) {

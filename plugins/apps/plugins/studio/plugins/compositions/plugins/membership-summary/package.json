@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-studio-compositions-membership-summary",
+  "name": "@muxos/plugin-apps-studio-compositions-membership-summary",
   "description": "Bundle-size summary section in the composition detail pane: plugin counts per membership state.",
   "private": true,
   "version": "0.0.1"

@@ -9,7 +9,7 @@
 //      line's text WITHOUT the `/code` query (its strip lands after the commit);
 //   3. it survives a reload (the row, not just the optimistic view).
 //
-// Usage: ./equin run plugins/page/plugins/code-block/e2e/absorb-text-verify.ts [--url <deploy>]
+// Usage: ./muxos run plugins/page/plugins/code-block/e2e/absorb-text-verify.ts [--url <deploy>]
 import {
   report,
   withBrowser,

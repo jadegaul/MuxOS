@@ -63,7 +63,7 @@ export async function capturePair(
   if (target.kind === "unbuilt") {
     throw new UnbuiltCheckoutError(
       `This conversation's checkout (${target.checkout}) has no build yet, so there is no "after" to capture. ` +
-        "Run `./equin build` first, then call again.",
+        "Run `./muxos build` first, then call again.",
     );
   }
   const mainOrigin = namespaceUrl(MAIN_WORKTREE_NAME, "", servedGatewayPort());

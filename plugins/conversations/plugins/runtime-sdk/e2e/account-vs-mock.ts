@@ -9,9 +9,9 @@
  * diffed, logging the differing-pixel ratio — and the menu once more with a
  * switch row hovered.
  *
- * Manual only. After `./equin build`:
+ * Manual only. After `./muxos build`:
  *
- *   ./equin run plugins/conversations/plugins/runtime-sdk/e2e/account-vs-mock.ts [--out /tmp/account]
+ *   ./muxos run plugins/conversations/plugins/runtime-sdk/e2e/account-vs-mock.ts [--out /tmp/account]
  */
 import { writeFileSync } from "node:fs";
 import type { Page } from "playwright";

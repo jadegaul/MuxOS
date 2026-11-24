@@ -8,9 +8,9 @@ import { readSpecComposition } from "./spec-composition";
 // `./spec-composition` answers WHICH APP this backend is, and `./select-registry`
 // turns that into a registry path.
 //
-// Which COMPOSITION comes off `~/.equin/worktrees/<namespace>/spec.json` —
+// Which COMPOSITION comes off `~/.muxos/worktrees/<namespace>/spec.json` —
 // the same file the gateway read to spawn this process — rather than from a
-// value the gateway would have to pass. `./equin build` rebuilds this
+// value the gateway would have to pass. `./muxos build` rebuilds this
 // backend but not the Go gateway, so a running gateway is routinely older than
 // the tree it serves; a value that had to survive that hop could silently go
 // missing, and a missing composition means booting the full app under a

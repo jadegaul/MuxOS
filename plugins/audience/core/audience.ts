@@ -6,7 +6,7 @@ import { symbol } from "@plugins/ui/plugins/icons/core";
  * audience is the Developer mode setting (`useAudience` / `getAudience`).
  *
  *  - `user` — a regular user: developer tools stay out of the way;
- *  - `developer` — someone building equin itself.
+ *  - `developer` — someone building muxos itself.
  */
 export type Audience = (typeof AUDIENCES)[number];
 

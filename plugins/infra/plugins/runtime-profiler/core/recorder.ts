@@ -1579,7 +1579,7 @@ let sinceMs = now();
 // via `recordReadTables` mid-load) is handed to it once, when the entry finishes.
 // The index it feeds is runtime state owned by the resource runtime
 // (server-core's read-set) — not profile data: it survives
-// `resetRuntimeProfile`, and it is fed whatever the EQUIN_PROFILING
+// `resetRuntimeProfile`, and it is fed whatever the MUXOS_PROFILING
 // kill-switch says, because the route drift guard (A8 / D5) and the persisted
 // `tables_read` depend on it. This module only
 // owns the capture scope (the ambient loader entry). The server installs the
@@ -1671,7 +1671,7 @@ const flightRing: FlightRingSlot[] = Array.from(
 let flightRingHead = 0;
 
 // Called from record(), just above the slow-span notify loop, so it sits behind
-// the EQUIN_PROFILING kill-switch and suppression early-returns while
+// the MUXOS_PROFILING kill-switch and suppression early-returns while
 // still landing BEFORE any handler can capture a window (see `record`).
 function pushCompleted(
   kind: SpanKind,
@@ -2155,7 +2155,7 @@ function pendingOf(
 }
 
 /**
- * The EQUIN_PROFILING kill-switch (`"0"` disables span recording). Read
+ * The MUXOS_PROFILING kill-switch (`"0"` disables span recording). Read
  * through `readEnv`, which tolerates a missing `process`, so the recorder also loads where there is
  * no `process` (a browser host of the resource runtime): there it is never
  * disabled.
@@ -3218,7 +3218,7 @@ export function gateWaitHooks(
  * nothing: a read-set only makes sense inside an entry. Read+charge
  * synchronously, before any await, so the ambient context is still active.
  *
- * NOT gated on the EQUIN_PROFILING kill-switch: the read-set is runtime
+ * NOT gated on the MUXOS_PROFILING kill-switch: the read-set is runtime
  * state (see `installLoaderReadSetSink`), and a kill-switched profiler must not
  * silently blind the route drift guard or the persisted `tables_read`.
  *

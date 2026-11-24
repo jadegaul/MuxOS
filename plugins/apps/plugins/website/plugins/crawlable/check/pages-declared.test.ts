@@ -178,7 +178,7 @@ export const computedPage = defineWebsitePage({ path: base + "/x", title: "Y", d
 
   test("only the landing page is the app's index", () => {
     const landing = `export const landingPage = defineWebsitePage({
-  path: "/about", title: "equin", description: "D.",
+  path: "/about", title: "muxos", description: "D.",
 });`;
     const landingRoute = `defineRoute({ id: "website-landing", segment: "" })`;
     const ok = pageProblems(

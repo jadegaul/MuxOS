@@ -18,7 +18,7 @@
  * older build) must be untouched — an `ALTER DATABASE SET` of even the same
  * value rewrites the row, so its xmin would move.
  *
- * Run: `./equin test plugins/database/machine`.
+ * Run: `./muxos test plugins/database/machine`.
  */
 import { describe, expect, setDefaultTimeout, test } from "bun:test";
 import { z } from "zod";

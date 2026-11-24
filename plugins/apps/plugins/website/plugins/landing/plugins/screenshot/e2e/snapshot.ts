@@ -18,7 +18,7 @@
  * And, throughout: the page stays on the demo, no page error, no console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/snapshot.ts [--out /tmp/demo-snapshot] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/snapshot.ts [--out /tmp/demo-snapshot] [--headed]
  */
 import type { Page } from "playwright";
 import {

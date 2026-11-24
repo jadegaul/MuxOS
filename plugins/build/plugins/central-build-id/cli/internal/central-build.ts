@@ -7,7 +7,7 @@ import { centralCodeSet } from "../../shared/central-code-set";
 
 /**
  * Central's code build as the checkout at `root` holds it — the digest central
- * computes over the same entry when it runs this code. `./equin build` bakes it
+ * computes over the same entry when it runs this code. `./muxos build` bakes it
  * into the page beside the web graph, so a tab names the central build its
  * bundle was built against. Throws when the closure cannot be digested (a
  * computed-path import, an unresolvable one — `boot:closure-digestable` keeps

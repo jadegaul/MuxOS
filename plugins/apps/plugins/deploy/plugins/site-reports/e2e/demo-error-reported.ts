@@ -1,7 +1,7 @@
 /**
  * An error a visitor hits in the website's live demo reaches the site's own
  * server:
- *  1. on the website build, Enter equin and wait for the demo to run;
+ *  1. on the website build, Enter muxos and wait for the demo to run;
  *  2. raise an error while it runs (the page's crash collector catches it,
  *     as it does whatever the demo raises) — three times, the same error;
  *  3. the page sends ONE batch to POST /api/site-reports (its report
@@ -15,8 +15,8 @@
  *  stores nothing an automated page sends.
  *
  * Manual only. Needs the website composition built from this checkout:
- *   ./equin build --composition website
- *   ./equin run plugins/apps/plugins/deploy/plugins/site-reports/e2e/demo-error-reported.ts --composition website
+ *   ./muxos build --composition website
+ *   ./muxos run plugins/apps/plugins/deploy/plugins/site-reports/e2e/demo-error-reported.ts --composition website
  */
 import type { Request } from "playwright";
 import {
@@ -59,7 +59,7 @@ await withBrowser(async (h) => {
     waitUntil: "domcontentloaded",
   });
   await page
-    .getByRole("button", { name: /Enter equin/ })
+    .getByRole("button", { name: /Enter muxos/ })
     .click({ timeout: BOOT_TIMEOUT_MS });
   const running = await waitFor(
     async () => page.locator('[data-app-embed="home"]').count(),

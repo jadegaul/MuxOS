@@ -58,7 +58,7 @@ export const mcpCatalog = liveValue("mcp.catalog", {
 });
 
 /** The name the MCP server announces itself under at `initialize`. */
-export const MCP_SERVER_NAME = "equin";
+export const MCP_SERVER_NAME = "muxos";
 
 /** The name an agent sees a tool under: Claude Code prefixes the server's. */
 export function agentToolName(name: string): string {

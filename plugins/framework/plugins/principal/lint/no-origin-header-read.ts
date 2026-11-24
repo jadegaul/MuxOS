@@ -6,7 +6,7 @@ import type { TSESTree } from "@typescript-eslint/utils";
  *
  * Who a request is — the owner or anyone else — is decided once, at the edge:
  * the gateway reads `Origin` / `Sec-Fetch-Site` / the Host and stamps its
- * verdict as `X-Equin-Principal`, and the socket hosts gate every route on it
+ * verdict as `X-MuxOS-Principal`, and the socket hosts gate every route on it
  * by the route's declared `access` (`framework/principal`). A handler that
  * reads those request headers itself is a second, hand-rolled answer to the
  * same question — host-fs's `isAppOrigin` was one, copied onto three routes
@@ -58,7 +58,7 @@ export default createRule({
     messages: {
       originRead:
         'Reading the "{{name}}" request header hand-rolls who the caller is. ' +
-        "The gateway already decided it (X-Equin-Principal) and every route is " +
+        "The gateway already decided it (X-MuxOS-Principal) and every route is " +
         'owner-only unless declared `access: { public: "<reason>" }` on its ' +
         "defineEndpoint — the socket host refuses an anonymous caller before the " +
         "handler runs. Read the verdict with principalOf(req), or, for a route no " +

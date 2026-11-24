@@ -37,13 +37,13 @@ const run: CliAction<[], object> = async () => {
   // A created or corrected package.json leaves `bun.lock` without the new
   // member, or recording its old name. This
   // command does not install (it runs inside push's merge-driver path), so it
-  // says so; the next `./equin` invocation's dependency check sees the
+  // says so; the next `./muxos` invocation's dependency check sees the
   // changed package.json and re-resolves the lockfile.
   if (renamedPackages.length > 0) {
     console.error(
       `Wrote the derived package name in (new or renamed workspace members):\n  ${renamedPackages.join("\n  ")}\n` +
         "bun.lock does not record them until dependencies are " +
-        "re-resolved — `./equin build` does it.",
+        "re-resolved — `./muxos build` does it.",
     );
   }
 
@@ -52,7 +52,7 @@ const run: CliAction<[], object> = async () => {
   // `@review` marker is a machine-seeded / re-stamped default nobody has
   // reviewed — amending it would land exactly what the marker exists to
   // prevent. So the marker is asserted absent HERE rather than trusted to a
-  // check ordering. (Markers are minted by `./equin build` only; this
+  // check ordering. (Markers are minted by `./muxos build` only; this
   // pipeline never creates one — see codegen's regen-pipeline.ts.)
   const marked = listReviewMarkedOverrides({ root });
   if (marked.length > 0) {
@@ -61,7 +61,7 @@ const run: CliAction<[], object> = async () => {
         .map((rel) => `config/${rel}`)
         .join("\n  ")}\n` +
         "These overrides were machine-seeded and are not yet reviewed. Run " +
-        "`./equin build` locally, review each file (arrange the values, " +
+        "`./muxos build` locally, review each file (arrange the values, " +
         "then delete its `// @review` line), and commit it.",
     );
     process.exit(1);

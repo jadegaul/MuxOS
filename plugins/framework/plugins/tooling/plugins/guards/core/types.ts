@@ -112,11 +112,11 @@ export interface GuardContext {
    * and this is the whole point of the field. A data dir's absolute path is
    * only reachable from its owner's `data-dirs/index.ts`, which the boundary
    * rules keep out of `core/` — so a guard that wanted to name one had no
-   * choice but to hardcode `~/.equin/…`, and that literal would go
+   * choice but to hardcode `~/.muxos/…`, and that literal would go
    * silently wrong the next time the data root moves (it already has once, in
    * the `apps/` layout migration). Passing the RESOLVED paths in means the
    * guard compares against wherever the declaration says the directory is
-   * today, including under a `EQUIN_DIR` override.
+   * today, including under a `MUXOS_DIR` override.
    */
   writableDataDirs: readonly string[];
   /**
@@ -155,7 +155,7 @@ export interface GuardContext {
   /**
    * This session's private scratch directory (`agentScratchDir`) — the one
    * place in a shared temp root its fixed names are its own. `delivered` says
-   * whether the shell has it as `$EQUIN_SCRATCH` (an app launch) or only the
+   * whether the shell has it as `$MUXOS_SCRATCH` (an app launch) or only the
    * guard knows it (a session no app launched, keyed by its Claude session id).
    */
   scratch: { dir: string; delivered: boolean };

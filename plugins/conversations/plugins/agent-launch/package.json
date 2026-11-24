@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-agent-launch",
+  "name": "@muxos/plugin-conversations-agent-launch",
   "private": true,
   "version": "0.0.1"
 }

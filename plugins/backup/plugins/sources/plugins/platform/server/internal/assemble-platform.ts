@@ -32,7 +32,7 @@ export async function assemblePlatform(
   if (!enabled) {
     return {
       id: PLATFORM_SOURCE_ID,
-      name: "equin platform",
+      name: "muxos platform",
       outcome: "skipped",
       items: [],
       sizeBytes: 0,
@@ -73,7 +73,7 @@ export async function assemblePlatform(
 
   return {
     id: PLATFORM_SOURCE_ID,
-    name: "equin platform",
+    name: "muxos platform",
     outcome: "included",
     items,
     sizeBytes,

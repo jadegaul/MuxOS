@@ -1,7 +1,7 @@
 [package]
-name = "equin-installer"
+name = "muxos-installer"
 version = "0.1.0"
-description = "The equin installer window: runs install.sh as its child and draws its event stream (protocol v1) in a page compiled into the binary"
+description = "The muxos installer window: runs install.sh as its child and draws its event stream (protocol v1) in a page compiled into the binary"
 edition = "2021"
 rust-version = "1.77"
 publish = false
@@ -11,7 +11,7 @@ publish = false
 [workspace]
 
 [[bin]]
-name = "equin-installer"
+name = "muxos-installer"
 path = "src/main.rs"
 
 [dependencies]

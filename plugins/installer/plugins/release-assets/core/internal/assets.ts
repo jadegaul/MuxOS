@@ -16,10 +16,10 @@ export const RELEASE_WORKFLOW = ".github/workflows/installer-release.yml";
 
 /**
  * What every installer binary's name starts with: the rest is its platform
- * key. install.sh spells it as `equin-installer-$key` (it reads no
+ * key. install.sh spells it as `muxos-installer-$key` (it reads no
  * manifest field for it since v2), which `release-assets:asset-names` holds.
  */
-export const INSTALLER_BINARY_PREFIX = "equin-installer-";
+export const INSTALLER_BINARY_PREFIX = "muxos-installer-";
 
 /**
  * The installer window's binary per platform, keyed as stage 0 names the
@@ -83,7 +83,7 @@ export const ATTACH_MARKER = `# installer-attach: ${INSTALL_PROTOCOL_VERSION}`;
 /**
  * The line install.sh carries when it reads the install's internal arguments
  * (`--release`, `--checkout`, `--attach`, `--mode`, `--since`) from
- * `EQUIN_INSTALL_INTERNAL_ARGS` (one per line) rather than its command line:
+ * `MUXOS_INSTALL_INTERNAL_ARGS` (one per line) rather than its command line:
  * a terminal shows the running command line in its title bar, and those are
  * the install's own plumbing. A script hands them that way only to a script
  * carrying the line; an older one gets them on its command line.

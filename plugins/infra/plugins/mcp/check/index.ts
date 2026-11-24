@@ -14,7 +14,7 @@ import { MCP_SERVER_NAME, MCP_UNATTACHED_ID } from "../core";
 const MCP_JSON = ".mcp.json";
 
 /**
- * The URL `.mcp.json` must give the equin server. A session equin launched
+ * The URL `.mcp.json` must give the muxos server. A session muxos launched
  * carries both variables (conversations/agent-launch); one it did not — a
  * `claude` started in a terminal to recover a broken main — falls back to
  * main's gateway origin and the unattached route.
@@ -22,7 +22,7 @@ const MCP_JSON = ".mcp.json";
  * The fallback names the DEFAULT port (the first of the range, what a fresh
  * install takes): `.mcp.json` is committed JSON, read by Claude Code, and
  * cannot read this account's port. An account on another port reaches main
- * through `EQUIN_PARENT_URL`, which every equin-launched session carries.
+ * through `MUXOS_PARENT_URL`, which every muxos-launched session carries.
  */
 function expectedMcpUrl(): string {
   return (
@@ -39,7 +39,7 @@ function expectedMcpUrl(): string {
  */
 const mcpJsonInSync: Check = {
   id: "mcp:mcp-json-in-sync",
-  description: `${MCP_JSON}'s ${MCP_SERVER_NAME} server must dial the launching backend's conversation route, falling back to main and the unattached route (${MCP_UNATTACHED_ID}) for a session equin did not launch`,
+  description: `${MCP_JSON}'s ${MCP_SERVER_NAME} server must dial the launching backend's conversation route, falling back to main and the unattached route (${MCP_UNATTACHED_ID}) for a session muxos did not launch`,
   async run() {
     const root = await getWorktreeRoot();
     const parsed: unknown = JSON.parse(
@@ -51,7 +51,7 @@ const mcpJsonInSync: Check = {
     return {
       ok: false,
       message: `${MCP_JSON}'s "${MCP_SERVER_NAME}" server url is ${url === null ? "missing" : `"${url}"`}, expected "${expected}"`,
-      hint: `Set mcpServers.${MCP_SERVER_NAME}.url in ${MCP_JSON} to the expected string. Its defaults are main's origin on the default port (namespaceUrl(MAIN_WORKTREE_NAME, "", GATEWAY_PORT_RANGE.first)) and MCP_UNATTACHED_ID (plugins/infra/plugins/mcp/core), so a claude equin did not launch still reaches the unattached tools.`,
+      hint: `Set mcpServers.${MCP_SERVER_NAME}.url in ${MCP_JSON} to the expected string. Its defaults are main's origin on the default port (namespaceUrl(MAIN_WORKTREE_NAME, "", GATEWAY_PORT_RANGE.first)) and MCP_UNATTACHED_ID (plugins/infra/plugins/mcp/core), so a claude muxos did not launch still reaches the unattached tools.`,
     };
   },
 };

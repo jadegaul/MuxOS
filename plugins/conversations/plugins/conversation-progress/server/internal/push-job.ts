@@ -6,7 +6,7 @@ import { _conversations } from "@plugins/tasks/plugins/tasks-core/server";
 import { conversationProgress } from "./tables";
 
 // Triggered on every `pushLanded` event. Sets phase = "pushed" for ALL
-// conversations in the attempt — not just the one that ran ./equin push.
+// conversations in the attempt — not just the one that ran ./muxos push.
 // Push is reliable and immediate; it is the terminal phase regardless of
 // transcript content.
 export const markProgressPushedJob = defineJob({
@@ -17,7 +17,7 @@ export const markProgressPushedJob = defineJob({
   input: z.object({}).passthrough(),
   event: z
     .object({
-      // Null when the push named only its attempt (a session equin did not
+      // Null when the push named only its attempt (a session muxos did not
       // launch); the attempt's conversations are marked either way.
       conversationId: z.string().nullable().optional(),
       attemptId: z.string().optional(),

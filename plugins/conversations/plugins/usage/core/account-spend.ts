@@ -19,9 +19,9 @@ export type AccountSpendDay = z.infer<typeof AccountSpendDaySchema>;
 
 /**
  * What one Claude account spent per UTC day of one month, at API prices —
- * counted from the agents equin ran on it (the usage sync files each newly
+ * counted from the agents muxos ran on it (the usage sync files each newly
  * priced cost under the account running the agent at the time). Spend outside
- * equin, and before the account was first counted, is not in it. "Today" is
+ * muxos, and before the account was first counted, is not in it. "Today" is
  * picked in the browser, where the day moves with the clock.
  *
  * BOUND: one entry per day of the month the account spent anything — 31 at

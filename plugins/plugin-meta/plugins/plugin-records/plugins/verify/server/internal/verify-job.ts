@@ -16,7 +16,7 @@ const verifyLog = defineLogSink({
  * every input its value is a function of. Once a day, on main (a schedule's
  * default), this computes every record a tree check pass makes again and
  * compares each with the store's value under the same key
- * (`./equin check --verify-records`): a disagreement is a key that missed an
+ * (`./muxos check --verify-records`): a disagreement is a key that missed an
  * input, and fails the run — loudly, through the job's failure report — rather
  * than being papered over by a cache bypass.
  *

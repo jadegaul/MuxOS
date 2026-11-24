@@ -63,7 +63,7 @@ describe("identityInfo", () => {
   test("the main checkout is titled by its kind, its namespace below", () => {
     expect(identityInfo(placeOf(MAIN_WORKTREE_NAME), NONE)).toEqual({
       title: "Main checkout",
-      summary: "equin",
+      summary: "muxos",
     });
   });
 

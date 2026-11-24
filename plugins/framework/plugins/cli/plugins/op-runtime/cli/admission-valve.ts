@@ -90,7 +90,7 @@ import { buildProfilerStart } from "./profiler";
 /**
  * Does the gate apply to this build? Only background-lane (agent) builds. The
  * interactive lane (main — a human is blocked) is never held, and per the
- * adopted v1 decision main's detached auto-build (EQUIN_BUILD_DETACHED,
+ * adopted v1 decision main's detached auto-build (MUXOS_BUILD_DETACHED,
  * spawned by build/run-build.ts) also passes. Push never reaches the gate —
  * it holds the reserved push slot, not a build grant.
  */

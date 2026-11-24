@@ -65,7 +65,7 @@ export interface OpProfilerOptions {
   buildId?: string | null;
   /**
    * The op runs only because the host is idle and yields to any other work
-   * (direct ops under `EQUIN_OP_OPPORTUNISTIC`). Omitted: `false`.
+   * (direct ops under `MUXOS_OP_OPPORTUNISTIC`). Omitted: `false`.
    */
   opportunistic?: boolean;
   /**

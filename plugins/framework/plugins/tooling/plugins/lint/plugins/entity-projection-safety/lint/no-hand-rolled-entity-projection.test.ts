@@ -1,6 +1,6 @@
 /**
  * Tests for the `no-hand-rolled-entity-projection` lint rule. Run with
- * `./equin test plugins/framework/plugins/tooling/plugins/lint/plugins/entity-projection-safety`.
+ * `./muxos test plugins/framework/plugins/tooling/plugins/lint/plugins/entity-projection-safety`.
  *
  * The rule flags an all-pure identity `.map` over a `db.select().from(…)` chain
  * inside a resource loader — the `loader` property of `defineResource(…)` or of

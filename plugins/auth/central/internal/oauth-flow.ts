@@ -44,7 +44,7 @@ export interface PendingState {
   /**
    * The opener page's origin — the callback page's postMessage target. The
    * origin the page is really on, not one derived from its namespace: a
-   * namespace answers on more than one host (main on `equin.localhost` and on
+   * namespace answers on more than one host (main on `muxos.localhost` and on
    * its own name, the old address), and the browser drops a message
    * whose target origin is not the opener's exact one.
    */

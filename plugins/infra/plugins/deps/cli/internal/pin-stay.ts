@@ -8,7 +8,7 @@ import {
 import { declaredDep, liftPinStay, stayPin } from "../../deps";
 
 // A person's decision about a pin lagging main, the other answer to
-// `./equin deps pin`: keep the pinned version, with a reason and a review day
+// `./muxos deps pin`: keep the pinned version, with a reason and a review day
 // (a hold, bounded like every dependency hold). Compared with main's checkout,
 // where the daemons' start scripts run. Nothing is switched or restarted.
 const run: CliAction<

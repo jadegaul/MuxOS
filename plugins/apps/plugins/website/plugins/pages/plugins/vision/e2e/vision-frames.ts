@@ -10,7 +10,7 @@
 // read as the page's cost.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-frames.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-frames.ts \
 //     [--seconds 3] [--width 1400] [--height 900] [--gpu] [--headed]
 //
 // --gpu renders with the machine's GPU, as a visitor's browser does: a canvas

@@ -4,9 +4,9 @@
  * tab resubscribes at once, as main does on every push. Plan and findings:
  * the "Main restart storm" track page, and `../CLAUDE.md`.
  *
- *   ./equin run plugins/debug/plugins/profiling/plugins/restart-storm/e2e/restart-storm.ts \
+ *   ./muxos run plugins/debug/plugins/profiling/plugins/restart-storm/e2e/restart-storm.ts \
  *     [--handoff off|on] [--iterations 3] [--paths /agents,/pages,…] [--contexts 1] \
- *     [--settle 8000] [--timeout 180000] [--out "$EQUIN_SCRATCH/storm.json"]
+ *     [--settle 8000] [--timeout 180000] [--out "$MUXOS_SCRATCH/storm.json"]
  *
  * Per iteration: every tab is open and settled; `POST /gateway/worktrees/<ns>/
  * restart` (the deploy's own hot restart: the successor boots beside the old

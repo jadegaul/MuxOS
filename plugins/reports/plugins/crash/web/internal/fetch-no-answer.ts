@@ -16,7 +16,7 @@ import { FetchRequestError } from "@plugins/primitives/plugins/networking/plugin
 //   request is what is wrong. Filed, as before.
 // - No answer either → the visitor's link (or the whole host) is down. Not a
 //   bug of the page, and a report that could only reach us once the link came
-//   back (equin.ai, 2026-11-18 00:35:17 UTC: an analytics beacon of a visitor
+//   back (MuxOS.app, 2026-11-18 00:35:17 UTC: an analytics beacon of a visitor
 //   offline for 4 min; 2026-11-18 18:13 UTC: a Firefox Android visitor's beacon
 //   from a backgrounded tab). Warned to the console, not filed.
 

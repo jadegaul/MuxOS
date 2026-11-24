@@ -4,7 +4,7 @@
  * guard, so the head's pre-entry window is closed (see
  * {@link headRequestScript}).
  */
-export const REQUEST_GUARD_INSTALLED_GLOBAL = "__equinRequestGuardInstalled";
+export const REQUEST_GUARD_INSTALLED_GLOBAL = "__muxosRequestGuardInstalled";
 
 /**
  * A head script that starts requests to the app's own server before the app

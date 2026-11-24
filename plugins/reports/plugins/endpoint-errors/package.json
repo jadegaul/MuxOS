@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-reports-endpoint-errors",
+  "name": "@muxos/plugin-reports-endpoint-errors",
   "private": true,
   "version": "0.0.1"
 }

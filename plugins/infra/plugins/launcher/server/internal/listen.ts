@@ -8,10 +8,10 @@ import {
  *
  * A released bundle's listen address can be expressed in exactly two places:
  * `RELEASE.json`'s `port` (the build's default, which is what makes a bundle
- * runnable by double-click with no environment at all) and `EQUIN_LISTEN`
+ * runnable by double-click with no environment at all) and `MUXOS_LISTEN`
  * (the runtime override). Nothing else.
  *
- * `EQUIN_LISTEN` replaced the older `PORT` override rather than joining
+ * `MUXOS_LISTEN` replaced the older `PORT` override rather than joining
  * it. `PORT` was a strictly weaker form of the same knob — no bind host — and
  * the bind host is the whole point: a deployment sits behind Caddy on loopback,
  * and "the gateway is not reachable off-box" must be a property of how it was
@@ -46,7 +46,7 @@ export interface ListenAddress {
 }
 
 /**
- * Resolve where to listen: `EQUIN_LISTEN` if set, else `manifestPort` on
+ * Resolve where to listen: `MUXOS_LISTEN` if set, else `manifestPort` on
  * loopback ({@link LOOPBACK_BIND}). An explicit `:<port>` is the wildcard opt-in.
  *
  * A malformed override throws rather than falling back to the manifest — a

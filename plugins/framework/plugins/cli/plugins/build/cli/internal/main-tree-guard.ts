@@ -26,7 +26,7 @@
 // served (the guard runs before the deploy), and the next build that takes it
 // runs `git checkout --force` there, which resets every tracked path. (It used
 // to restore every path the build dirtied, when main built in the checkout
-// `./equin push` fast-forwards: a dirty file there failed every later main
+// `./muxos push` fast-forwards: a dirty file there failed every later main
 // build and aborted every push's merge — 2026-11-04 a build raced a push's
 // fast-forward and seedAuthoredOverrides rewrote 135 hand-authored `config/`
 // overrides; 2026-11-16 a crashed build's half-written docs failed the next.)

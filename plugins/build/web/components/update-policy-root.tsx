@@ -11,7 +11,7 @@ import {
 } from "../internal/update-policy";
 import { quietUpdate, updateArrival } from "../internal/update-state";
 
-/** The channel the policy narrates its decisions on (`~/.equin/worktrees/<wt>/logs`). */
+/** The channel the policy narrates its decisions on (`~/.muxos/worktrees/<wt>/logs`). */
 const LOG = "tab-update";
 
 /**

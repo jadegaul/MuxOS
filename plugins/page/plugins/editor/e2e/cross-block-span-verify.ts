@@ -27,7 +27,7 @@
 //  12. Tab over a span indents every line it touches (partially included), the
 //      span stays painted, and Shift+Tab outdents them back.
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/cross-block-span-verify.ts [--url <deploy>]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/cross-block-span-verify.ts [--url <deploy>]
 import {
   report,
   withBrowser,

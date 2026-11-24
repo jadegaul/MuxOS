@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-safe-fetch-browser-fetch",
+  "name": "@muxos/plugin-infra-safe-fetch-browser-fetch",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

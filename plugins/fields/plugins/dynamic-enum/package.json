@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-dynamic-enum",
+  "name": "@muxos/plugin-fields-dynamic-enum",
   "version": "0.0.1",
   "private": true,
-  "description": "Dynamic enum (select) field type: identity only — single-choice from a runtime-resolved set of string options."
+  "description": "Dynamic enum (select) field type: identity only \u2014 single-choice from a runtime-resolved set of string options."
 }

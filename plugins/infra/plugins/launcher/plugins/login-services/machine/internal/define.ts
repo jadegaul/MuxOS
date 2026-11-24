@@ -37,7 +37,7 @@ export interface DefineLoginServiceSpec<
   R extends string = never,
 > {
   /**
-   * The service label, reverse-DNS (`dev.equin.menu-bar`): the launchd
+   * The service label, reverse-DNS (`dev.muxos.menu-bar`): the launchd
    * `Label` and plist name, the systemd unit name. Unique across the
    * composition.
    */
@@ -47,8 +47,8 @@ export interface DefineLoginServiceSpec<
   /** One line, as a user reads it in `systemctl status`. */
   description: string;
   /**
-   * The service as the person installing equin knows it — never its id or
-   * equin's name for the part (the installer message rules,
+   * The service as the person installing muxos knows it — never its id or
+   * muxos's name for the part (the installer message rules,
    * `infra/launcher/installer-notice`): `name`, what a message calls it
    * ("an icon in your menu bar"); `gives`, what it adds for them, one
    * sentence. Every `start` line and notice about it says these.
@@ -69,8 +69,8 @@ export interface DefineLoginServiceSpec<
    */
   dep: Dep<S>;
   /**
-   * The program it runs, as a component of the equin app: on macOS an
-   * executable inside `equin.app`, so its permissions are the app's
+   * The program it runs, as a component of the muxos app: on macOS an
+   * executable inside `muxos.app`, so its permissions are the app's
    * (`macos-app.ts`). `build` says which file of the installed dependency that
    * is (and the app icon, when this component brings it).
    */
@@ -103,8 +103,8 @@ export interface DefineLoginServiceSpec<
 }
 
 /**
- * A declared login service: a plugin's per-user OS service that `./equin start`
- * registers and starts next to the gateway, and `./equin stop` stops.
+ * A declared login service: a plugin's per-user OS service that `./muxos start`
+ * registers and starts next to the gateway, and `./muxos stop` stops.
  * Collected from every plugin's `login-services/index.ts` default export.
  */
 export interface LoginServiceDeclaration<

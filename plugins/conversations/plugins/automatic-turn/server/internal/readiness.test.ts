@@ -4,7 +4,7 @@
  * collection passed in: held while busy, while waiting on the user, while
  * another plugin's turn is pending — never by the sender's own — else ready.
  *
- * Run: `./equin test plugins/conversations/plugins/automatic-turn`.
+ * Run: `./muxos test plugins/conversations/plugins/automatic-turn`.
  */
 import { describe, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";

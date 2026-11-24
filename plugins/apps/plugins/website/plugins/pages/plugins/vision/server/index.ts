@@ -4,6 +4,6 @@ import { visionPage } from "../core";
 
 export default {
   description:
-    "The vision page of the equin website on the server: its sitemap entry (WebsitePages.Page).",
+    "The vision page of the muxos website on the server: its sitemap entry (WebsitePages.Page).",
   contributions: [WebsitePages.Page(visionPage)],
 } satisfies ServerPluginDefinition;

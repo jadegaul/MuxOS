@@ -4,7 +4,7 @@
 // redirect) a request for this URL of ours?
 //
 // Only GENERIC rules are kept: ones that name no domain the request goes to
-// or comes from. A rule naming a domain cannot match our origin (equin.ai,
+// or comes from. A rule naming a domain cannot match our origin (MuxOS.app,
 // localhost), so the generic ones are the whole risk, and they are a few
 // thousand rules rather than tens of thousands.
 
@@ -58,7 +58,7 @@ const CANCELLING_ACTIONS = new Set(["block", "redirect"]);
  * The hosts our URLs are served from — the public site and every local
  * namespace. A rule excluding one of them does not apply to us.
  */
-export const SERVED_HOSTS = ["equin.ai", "localhost"] as const;
+export const SERVED_HOSTS = ["MuxOS.app", "localhost"] as const;
 
 function coversServedHost(domains: readonly string[] | undefined): boolean {
   return (domains ?? []).some((d) =>

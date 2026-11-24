@@ -14,7 +14,7 @@ function site(
   return {
     deploymentId: "dpl-1",
     compositionId: "website",
-    hostname: "equin.ai",
+    hostname: "MuxOS.app",
     link:
       state === "main-only"
         ? { kind: "main-only" }
@@ -158,7 +158,7 @@ describe("siteFreshness / siteAlert / siteTitle", () => {
   });
 
   it("names a site by its hostname, else its composition", () => {
-    expect(siteTitle(site(LIVE))).toBe("equin.ai");
+    expect(siteTitle(site(LIVE))).toBe("MuxOS.app");
     expect(siteTitle({ ...site(LIVE), hostname: null })).toBe("website");
   });
 });

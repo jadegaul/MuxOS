@@ -135,7 +135,7 @@ function writeBell(
       // report's lifetime — so neither number passes for the other.
       detail: formatReportActivity(reportActivity(row, Date.now())),
       muted: row.noise,
-      // equin's own telemetry: a user not in Developer mode never sees it.
+      // muxos's own telemetry: a user not in Developer mode never sees it.
       audience: "developer",
       dedupeKey: bellKeyOf(row),
       resurfaceAfterMs,

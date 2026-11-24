@@ -341,7 +341,7 @@ export async function servedSlotOf(
  * before any slot exists — the repo's main checkout.
  *
  * Not `getMainRepoRoot()` (`infra/spawn`), which is the git STORE: refs,
- * worktrees, the human's checkout `./equin push` fast-forwards.
+ * worktrees, the human's checkout `./muxos push` fast-forwards.
  */
 export async function servedMainRoot(): Promise<AppPath> {
   return (

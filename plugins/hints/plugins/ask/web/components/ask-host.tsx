@@ -45,7 +45,7 @@ function extentOf(
 }
 
 /**
- * The one Ask equin host, at `Core.Root` — above every tab, so the card (or
+ * The one Ask muxos host, at `Core.Root` — above every tab, so the card (or
  * its pill) stays put while the user moves between apps. It places the card
  * where the user left it
  * (`askPositionStore`): dragged by its header, free, snapping only when

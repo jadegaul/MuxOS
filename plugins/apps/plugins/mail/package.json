@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-mail",
-  "description": "Mail — a Gmail-class client.",
+  "name": "@muxos/plugin-apps-mail",
+  "description": "Mail \u2014 a Gmail-class client.",
   "private": true,
   "version": "0.0.1"
 }

@@ -18,13 +18,13 @@ import { packageNameFor } from "@plugins/framework/plugins/plugin-id/core";
 import { asAppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core";
 import { syncPluginPackageNames, withPackageName } from "./package-names";
 
-const NAME = "@equin/plugin-a-b";
+const NAME = "@muxos/plugin-a-b";
 
 describe("packageNameFor", () => {
   test("joins every non-`plugins` segment with -", () => {
-    expect(packageNameFor("tasks")).toBe("@equin/plugin-tasks");
+    expect(packageNameFor("tasks")).toBe("@muxos/plugin-tasks");
     expect(packageNameFor("stats/plugins/tasks")).toBe(
-      "@equin/plugin-stats-tasks",
+      "@muxos/plugin-stats-tasks",
     );
   });
 });
@@ -37,10 +37,10 @@ describe("withPackageName", () => {
 
   test("wrong name: only the value changes, key order and bytes kept", () => {
     const text =
-      '{\n  "version": "0.0.1",\n  "name": "@equin/plugin-old",\n' +
+      '{\n  "version": "0.0.1",\n  "name": "@muxos/plugin-old",\n' +
       '  "private": true,\n  "dependencies": { "x": "1.0.0" }\n}\n';
     expect(withPackageName(text, NAME)).toBe(
-      '{\n  "version": "0.0.1",\n  "name": "@equin/plugin-a-b",\n' +
+      '{\n  "version": "0.0.1",\n  "name": "@muxos/plugin-a-b",\n' +
         '  "private": true,\n  "dependencies": { "x": "1.0.0" }\n}\n',
     );
   });

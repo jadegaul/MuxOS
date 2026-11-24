@@ -11,7 +11,7 @@ describe("nativeSpawn", () => {
   });
 
   test("a name ending in .ts is still exec'd itself, never through bun", () => {
-    const bin = "/a/bin/equin · conv-1 · fixture lacks pglite-cluster.ts";
+    const bin = "/a/bin/muxos · conv-1 · fixture lacks pglite-cluster.ts";
     const spawn = {
       ...base,
       command: "bun",

@@ -40,7 +40,7 @@ const AMBIENT_GROUP = "Core";
  * companions, usage rules. A plugin mounted from `Core.Root` / `Core.Boot`
  * that none of those reach ships only where a composition NAMES it — and if
  * none but main (`**`) does, it is missing from every served app with no
- * warning. That is how equin.ai shipped blank icons (the sprite sheet), theme
+ * warning. That is how MuxOS.app shipped blank icons (the sprite sheet), theme
  * fonts that never loaded and slots ignoring their layouts: each was a root
  * mount some capability needed, and nothing said so.
  *

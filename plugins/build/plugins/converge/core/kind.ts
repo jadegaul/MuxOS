@@ -6,7 +6,7 @@ import {
 
 // The jsonb payload of a `main-deploy-failed` report. Written by the GATEWAY
 // (Go, gateway/main_deploy.go `mainDeployFailed`) into the report outbox when
-// main's convergence run (`./equin build --allow-main --converge`) itself
+// main's convergence run (`./muxos build --allow-main --converge`) itself
 // fails — so this schema is a cross-language contract:
 // gateway/testdata/main-deploy-failed-entry.json is what the Go writer
 // produces, and kind.test.ts parses it with this schema. Strict: a field the Go

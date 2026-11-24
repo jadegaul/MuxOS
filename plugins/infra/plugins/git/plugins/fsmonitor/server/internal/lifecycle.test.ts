@@ -299,7 +299,7 @@ test("the MAIN worktree is turned on through a gitdir-scoped include — not con
   expect(r.started).toEqual([repo]);
   expect(await fsmonitorSetting(repo)).toBe("true");
   expect(
-    readFileSync(join(mainGitDir, "equin-fsmonitor.config"), "utf8"),
+    readFileSync(join(mainGitDir, "muxos-fsmonitor.config"), "utf8"),
   ).toMatch(/fsmonitor = true/);
   const shared = readFileSync(join(mainGitDir, "config"), "utf8");
   expect(shared).toContain(`[includeIf "gitdir:${mainGitDir}"]`);

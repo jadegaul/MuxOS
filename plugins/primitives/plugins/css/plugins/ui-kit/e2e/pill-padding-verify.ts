@@ -11,10 +11,10 @@
 //
 // Two scopes, because the interesting cases are "extra is 0" and "extra is set":
 // the app's own theme (0 by default — a pill pads exactly like a rectangle) and
-// the website's equin-document sub-theme (6px).
+// the website's muxos-document sub-theme (6px).
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/css/plugins/ui-kit/e2e/pill-padding-verify.ts
+//   ./muxos run plugins/primitives/plugins/css/plugins/ui-kit/e2e/pill-padding-verify.ts
 //
 // Manual only — nothing runs this automatically.
 
@@ -99,10 +99,10 @@ await withBrowser(async (h) => {
   }
 
   await boot(page, pathUrl("/about"), {
-    marker: "text=Curious how equin came to be?",
+    marker: "text=Curious how muxos came to be?",
     settleMs: 800,
   });
-  const site = await probe(page, '[data-theme-scope*="equin-document"]', "sm");
+  const site = await probe(page, '[data-theme-scope*="muxos-document"]', "sm");
   r.ok("the website's document sub-theme was measured", site !== null);
   if (site) {
     r.ok(

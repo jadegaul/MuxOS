@@ -62,7 +62,7 @@ describe("lastStepOfLines", () => {
     const step = lastStepOfLines([
       assistant([
         toolUse("Bash", {
-          command: "./equin await build; echo EXIT=$?",
+          command: "./muxos await build; echo EXIT=$?",
           description: "Wait for the build verdict",
         }),
       ]),

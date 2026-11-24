@@ -31,14 +31,14 @@ function fakeIdb(listed: string[] | null): string[] {
 describe("deleteStorageDatabases", () => {
   it("deletes every database of the storage, the stores last, and nothing else", async () => {
     const deleted = fakeIdb([
-      "equin-host--demo--stores",
-      "/pglite/equin-host--demo--db",
-      "equin-host--other--stores",
+      "muxos-host--demo--stores",
+      "/pglite/muxos-host--demo--db",
+      "muxos-host--other--stores",
     ]);
     await deleteStorageDatabases("demo");
     expect(deleted).toEqual([
-      "/pglite/equin-host--demo--db",
-      "equin-host--demo--stores",
+      "/pglite/muxos-host--demo--db",
+      "muxos-host--demo--stores",
     ]);
   });
 
@@ -46,8 +46,8 @@ describe("deleteStorageDatabases", () => {
     const deleted = fakeIdb(null);
     await deleteStorageDatabases("demo");
     expect(deleted).toEqual([
-      "/pglite/equin-host--demo--db",
-      "equin-host--demo--stores",
+      "/pglite/muxos-host--demo--db",
+      "muxos-host--demo--stores",
     ]);
   });
 });

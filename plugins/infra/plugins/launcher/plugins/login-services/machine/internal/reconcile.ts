@@ -22,9 +22,9 @@ import { awaitProcessGone } from "./process";
 /**
  * How far a reconcile may go with a declared service:
  *
- * - `start` — `./equin start`: load it when it is not running, reload it when
+ * - `start` — `./muxos start`: load it when it is not running, reload it when
  *   its job changed.
- * - `force` — `./equin start --force`: always (re)load it.
+ * - `force` — `./muxos start --force`: always (re)load it.
  * - `follow` — main's boot: only a service that is registered AND loaded is
  *   reloaded, and only when its job changed. Registered but not loaded (a
  *   `stop`) gets its definition rewritten, never loaded — it comes up on the
@@ -56,8 +56,8 @@ export interface Reconciled {
  * Bring one declared login service to `ready`'s job under `policy`: bind it
  * and every service it refers to under `manager`, hold the dependency (off
  * macOS the job names its binary by path long after main moves on), install
- * its executable into the equin app (macOS), write the job, and (re)load it
- * when the policy says so. The one per-service body shared by `./equin start`
+ * its executable into the muxos app (macOS), write the job, and (re)load it
+ * when the policy says so. The one per-service body shared by `./muxos start`
  * and main's boot (`follow-main.ts`), so the two cannot disagree on what
  * "changed" means, on the unload → gone → load order, or on which labels the
  * job names.
@@ -153,7 +153,7 @@ async function reconcileBound<S extends DepSource>(
  * Swap a loaded service for its written job: unload it, wait for the running
  * generation (`runningPid`) to be gone, run `beforeLoad` (skipped when the wait
  * gave up), load. The one reload
- * body — `reconcileLoginService` and the gateway's `./equin start --force`
+ * body — `reconcileLoginService` and the gateway's `./muxos start --force`
  * both go through it.
  *
  * **Once `unload` has run, the load is always attempted.** The unload has

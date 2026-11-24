@@ -266,6 +266,13 @@ describe("file categories", () => {
     expect(
       isInAnyCategory("plugins/auth/server/x.ts", ["e2e", "central"]),
     ).toBe(false);
-    expect(Object.keys(FILE_CATEGORY_GLOBS).length).toBe(9);
+    expect(isInCategory("README.md", "readme")).toBe(true);
+    expect(isInCategory("docs/readme/hero.svg", "readme")).toBe(true);
+    expect(isInCategory("docs/readme.md", "readme")).toBe(false);
+    expect(
+      isInCategory("patches/%40parcel%2Fwatcher@2.6.0.patch", "patch"),
+    ).toBe(true);
+    expect(isInCategory("patches.md", "patch")).toBe(false);
+    expect(Object.keys(FILE_CATEGORY_GLOBS).length).toBe(11);
   });
 });

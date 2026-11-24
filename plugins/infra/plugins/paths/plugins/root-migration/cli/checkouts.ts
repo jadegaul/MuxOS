@@ -10,14 +10,14 @@ import type { StaleCheckout } from "./plan";
 //
 // The probe asks each checkout's HEAD whether it HAS the capability, not
 // whether it descends from the commit that added it: a checkout whose code
-// decides the data root by what is installed follows `~/.equin` (and a legacy
+// decides the data root by what is installed follows `~/.muxos` (and a legacy
 // link to it) by itself, and that decision is one module. Its presence at a
 // HEAD is exact for every history that carries the code — a fork or an import
 // that rewrote the commits included — where an ancestry test against a
 // hardcoded SHA is exact only for this repo's own history. If the module ever
 // moves, the test beside this file fails until the path follows it.
 //
-// Every checkout, not only those that built: a worktree's `./equin` verbs, its
+// Every checkout, not only those that built: a worktree's `./muxos` verbs, its
 // guard hooks, its backend (served from its source tree) and a relaunched
 // agent all run its source as it is now, built or not — so the deploy
 // registry, which only knows the last build, would undercount.

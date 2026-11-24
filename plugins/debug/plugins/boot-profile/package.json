@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-debug-boot-profile",
-  "description": "Browser boot profiler Gantt debug page: the request → first-paint timeline plus per-resource wait/work split.",
+  "name": "@muxos/plugin-debug-boot-profile",
+  "description": "Browser boot profiler Gantt debug page: the request \u2192 first-paint timeline plus per-resource wait/work split.",
   "private": true,
   "version": "0.0.1"
 }

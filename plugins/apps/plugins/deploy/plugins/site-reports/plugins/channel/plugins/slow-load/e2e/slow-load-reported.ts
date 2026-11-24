@@ -11,14 +11,14 @@
  *  4. on a local deploy only (the site's database is readable there): after
  *     the intake's flush window, `site_reports` holds the visitor's
  *     slow-page-load row and `site_report_drops` counts the automated batch.
- *     On the public site (`--url https://equin.ai`) the row is read by the
+ *     On the public site (`--url https://MuxOS.app`) the row is read by the
  *     computer's hourly mirror pull instead (Debug → Reports, Website
  *     visitors).
  *
  * Manual only:
- *   ./equin build --composition website
- *   ./equin run plugins/apps/plugins/deploy/plugins/site-reports/plugins/channel/plugins/slow-load/e2e/slow-load-reported.ts --composition website
- *   ./equin run <this script> --url https://equin.ai
+ *   ./muxos build --composition website
+ *   ./muxos run plugins/apps/plugins/deploy/plugins/site-reports/plugins/channel/plugins/slow-load/e2e/slow-load-reported.ts --composition website
+ *   ./muxos run <this script> --url https://MuxOS.app
  */
 import type { Page, Request } from "playwright";
 import {

@@ -66,7 +66,7 @@ export function renderCheckThreadStallTask(
   const lines: string[] = [];
   if (d.trigger === "stall") {
     lines.push(
-      `A \`./equin check\` run in \`${d.worktree}\` could not run a timer ` +
+      `A \`./muxos check\` run in \`${d.worktree}\` could not run a timer ` +
         `for **${formatSeconds(d.lateMs)}**, and code held the one JS thread every ` +
         `check shares for ${d.held?.measured === true ? `**${formatSeconds(d.held.heldMs)}**` : "it (held time unmeasured)"} of that ` +
         "— its own CPU time plus synchronous I/O, not the time the OS left it " +
@@ -83,7 +83,7 @@ export function renderCheckThreadStallTask(
     );
   } else {
     lines.push(
-      `A \`./equin check\` run in \`${d.worktree}\` spent ` +
+      `A \`./muxos check\` run in \`${d.worktree}\` spent ` +
         `**${formatSeconds(d.held?.heldMs ?? d.stalledMs)}** with its thread held ` +
         `(${formatSeconds(d.stalledMs)} late in total), over ${d.stallCount} ` +
         `stalls (the longest ${formatSeconds(d.longestLateMs)}). The track's target ` +

@@ -12,7 +12,7 @@ const phoneIcon = symbol("phone-iphone");
  * how a page tells it is the phone window itself (`window.name` lives as long
  * as the window).
  */
-const PHONE_WINDOW_NAME = "equin-phone";
+const PHONE_WINDOW_NAME = "muxos-phone";
 
 const readIsPhoneWindow = (): boolean => window.name === PHONE_WINDOW_NAME;
 

@@ -2,7 +2,7 @@
 // window view (proto-1794832268-wlybzk), for `replay.ts` to draw and compare
 // against the mockup at the same options:
 //
-//   ./equin run plugins/installer/plugins/window/e2e/moment.ts --out "$EQUIN_SCRATCH/m.jsonl" \
+//   ./muxos run plugins/installer/plugins/window/e2e/moment.ts --out "$MUXOS_SCRATCH/m.jsonl" \
 //     [--state running|failed|fixing|done] [--failure sandbox|security|stall] [--claude app|cli]
 //
 // running: the build group active, a sub-step at 137 of 312, About 7 minutes
@@ -159,10 +159,10 @@ emit({
   mode: "window",
   groups: [
     { id: "prepare", label: "Prepare your Mac" },
-    { id: "download", label: "Download equin" },
+    { id: "download", label: "Download muxos" },
     { id: "tools", label: "Install tools" },
     { id: "services", label: "Start services" },
-    { id: "build", label: "Build equin" },
+    { id: "build", label: "Build muxos" },
   ],
   steps: [
     {
@@ -181,8 +181,8 @@ emit({
     },
     {
       id: "clone",
-      label: "Download equin",
-      doing: "Downloading equin",
+      label: "Download muxos",
+      doing: "Downloading muxos",
       group: "download",
       est_s: 40,
     },
@@ -202,8 +202,8 @@ emit({
     },
     {
       id: "build",
-      label: "Build equin",
-      doing: "Building equin",
+      label: "Build muxos",
+      doing: "Building muxos",
       group: "build",
       est_s: 520,
       substeps: [
@@ -235,8 +235,8 @@ emit({
         },
         {
           id: "build.deploy",
-          label: "Start equin",
-          doing: "Starting equin",
+          label: "Start muxos",
+          doing: "Starting muxos",
           est_s: 25,
         },
       ],
@@ -253,7 +253,7 @@ const FAILURES = {
     kind: "sandbox",
     title: "Blocked by the app you started it from",
     plain:
-      "The install builds parts of equin on your Mac, and the coding tool you ran it from doesn't allow that. Run it from the Terminal app instead.",
+      "The install builds parts of muxos on your Mac, and the coding tool you ran it from doesn't allow that. Run it from the Terminal app instead.",
     evidence: [
       "error: could not compile `ring` (build script)",
       "process didn't exit successfully: signal 9, SIGKILL",
@@ -264,12 +264,12 @@ const FAILURES = {
     leaf: "services",
     frac: 0.3,
     kind: "security",
-    title: "Your company's security software removed part of equin",
+    title: "Your company's security software removed part of muxos",
     plain:
-      "Jamf Protect deletes programs it hasn't seen before, including the one that connects equin to your browser. Your IT team can allow it.",
+      "Jamf Protect deletes programs it hasn't seen before, including the one that connects muxos to your browser. Your IT team can allow it.",
     evidence: [
-      "./equin start: exec ~/.equin/bin/gateway: no such file or directory",
-      "JamfProtect: quarantined ~/.equin/bin/gateway (unsigned, first seen)",
+      "./muxos start: exec ~/.muxos/bin/gateway: no such file or directory",
+      "JamfProtect: quarantined ~/.muxos/bin/gateway (unsigned, first seen)",
     ],
   },
   stall: {
@@ -278,7 +278,7 @@ const FAILURES = {
     kind: "stall",
     title: "The install is waiting for an older task",
     plain:
-      "equin builds one thing at a time. A test started 3 hours ago stopped responding and is holding the turn. Stopping it lets the install continue.",
+      "muxos builds one thing at a time. A test started 3 hours ago stopped responding and is holding the turn. Stopping it lets the install continue.",
     evidence: [
       "waiting for host grant · holder op-48211 (test, pid 48211)",
       "holder's last output: 3h 9m ago",

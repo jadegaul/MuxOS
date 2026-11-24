@@ -58,7 +58,7 @@ function InstructionPartFold({ part }: { part: InstructionPart }) {
 }
 
 /**
- * Everything equin appended to the agent's system prompt — its preprompt and
+ * Everything muxos appended to the agent's system prompt — its preprompt and
  * every contributed section (mandate, page instructions, supervisor roles,
  * task tree, …) — as one Instructions card, each part folding on its own.
  */

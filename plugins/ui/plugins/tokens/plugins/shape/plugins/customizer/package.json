@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-ui-tokens-shape-customizer",
-  "description": "Customizer section for the shape token group, with \"Fill from…\" shortcuts.",
+  "name": "@muxos/plugin-ui-tokens-shape-customizer",
+  "description": "Customizer section for the shape token group, with \"Fill from\u2026\" shortcuts.",
   "private": true,
   "version": "0.0.1"
 }

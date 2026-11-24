@@ -193,7 +193,7 @@ export function upstreamRows(args: {
     const after = args.groups.find((x) => x.id === wraps.after);
     if (after === undefined)
       throw new Error(
-        `group "${g.id}": wraps.after names group "${wraps.after}", which no dependencyPolicy declares (\`./equin check deps-npm:policy\`).`,
+        `group "${g.id}": wraps.after names group "${wraps.after}", which no dependencyPolicy declares (\`./muxos check deps-npm:policy\`).`,
       );
     if (
       reaches(

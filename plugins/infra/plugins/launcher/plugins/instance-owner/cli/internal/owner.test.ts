@@ -36,16 +36,16 @@ describe("otherInstanceNotice", () => {
   test("keeps the installer message rules, the paths only in commands and details", () => {
     const notice = otherInstanceNotice({
       action: "start",
-      here: "/srv/x/equin-2",
+      here: "/srv/x/muxos-2",
       verdict: {
         kind: "other",
-        checkout: "/srv/x/my equin",
-        claims: [{ source: "deploy", checkout: "/srv/x/my equin" }],
+        checkout: "/srv/x/my muxos",
+        claims: [{ source: "deploy", checkout: "/srv/x/my muxos" }],
       },
     });
     const text = renderNotice(notice);
-    expect(text).toContain("`cd '/srv/x/my equin' && ./install.sh`");
-    expect(text).toContain("this checkout: /srv/x/equin-2");
+    expect(text).toContain("`cd '/srv/x/my muxos' && ./install.sh`");
+    expect(text).toContain("this checkout: /srv/x/muxos-2");
     expect(notice.blocked).not.toContain("/srv");
   });
 

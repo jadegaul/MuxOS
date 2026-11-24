@@ -11,7 +11,7 @@ import { askInstructions } from "./instructions";
 import { copyRepoContext } from "./repo-context";
 
 /**
- * The Ask equin agent's workspace: a scratch directory whose CLAUDE.md is the
+ * The Ask muxos agent's workspace: a scratch directory whose CLAUDE.md is the
  * question's context (where the user is, the page outline) and imports the
  * repo's own CLAUDE.md (copied in at launch, `copyRepoContext`), pointing at
  * the main checkout to explore. It reads anything — Read / Grep / Glob, and
@@ -28,9 +28,9 @@ import { copyRepoContext } from "./repo-context";
  */
 export const helpAskProfile = defineScratchProfile({
   id: HELP_ASK_PROFILE,
-  label: "Ask equin",
+  label: "Ask muxos",
   description:
-    "Ask equin: a how-to helper answering from equin's own code and history, with the page the user asked from; it reads and annotates the user's pages, and changes nothing else.",
+    "Ask muxos: a how-to helper answering from muxos's own code and history, with the page the user asked from; it reads and annotates the user's pages, and changes nothing else.",
   inputSchema: AskInputSchema,
   instructions: (input) =>
     askInstructions(
@@ -45,7 +45,7 @@ export const helpAskProfile = defineScratchProfile({
     "write_agent_note",
     "flag_raise",
     // Read-only lookups a working agent has: the databases (tasks, attempts,
-    // conversations — equin's own history, which git does not hold), the
+    // conversations — muxos's own history, which git does not hold), the
     // incident timeline and queue health. `task_tree` is not here (its
     // mandate gate needs a task of its own).
     "query_db",

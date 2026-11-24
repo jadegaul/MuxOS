@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-browser",
+  "name": "@muxos/plugin-apps-browser",
   "private": true,
   "version": "0.0.1",
   "description": "Web browser app: each tab is a page in a real Chromium on the machine (persistent profile, so logins stick), streamed to a canvas with input sent back."

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-reports-live-state-stale-drop",
+  "name": "@muxos/plugin-reports-live-state-stale-drop",
   "private": true,
   "version": "0.0.1"
 }

@@ -377,7 +377,7 @@ wheels = [
 ]
 
 [[package]]
-name = "equin-audio"
+name = "muxos-audio"
 version = "0.0.0"
 source = { virtual = "." }
 dependencies = [

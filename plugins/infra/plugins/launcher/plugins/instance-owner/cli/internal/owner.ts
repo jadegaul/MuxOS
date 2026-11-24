@@ -11,11 +11,11 @@ import { mainNamespaceOwner } from "@plugins/infra/plugins/paths/core";
 import { getMainRepoRoot } from "@plugins/infra/plugins/spawn/core";
 
 /**
- * One equin per account (research/2026-07-02-global-adr-single-instance-per-user.md):
+ * One muxos per account (research/2026-07-02-global-adr-single-instance-per-user.md):
  * one data root, one database cluster, one main namespace, one background
  * service, one Keychain entry, one set of app bundles. A second checkout of the
  * repo cannot have its own — it would share all of them — so whichever
- * checkout holds the account's equin is the only one that may start it or
+ * checkout holds the account's muxos is the only one that may start it or
  * deploy its main app.
  *
  * Two records say which checkout that is, each written by a different step,
@@ -27,7 +27,7 @@ import { getMainRepoRoot } from "@plugins/infra/plugins/spawn/core";
  *   per-commit slots (`infra/git/main-slots`, linked worktrees of the repo),
  *   so the spec names a slot while the repo's main checkout holds the account;
  * - `service`: the checkout the background service is registered to follow
- *   (`-main-checkout` in its installed job) — written by `./equin start`
+ *   (`-main-checkout` in its installed job) — written by `./muxos start`
  *   before the first build, so a first install that stopped before its build
  *   still holds the account.
  *
@@ -100,17 +100,17 @@ export type InstanceAction = "start" | "build";
 
 const DOING: Record<InstanceAction, string> = {
   start:
-    "equin was setting this copy of its code up to run in the background on this account.",
+    "muxos was setting this copy of its code up to run in the background on this account.",
   build:
-    "equin was building this copy of its code to serve as the equin of this account.",
+    "muxos was building this copy of its code to serve as the muxos of this account.",
 };
 
 const SOURCE: Record<InstanceClaim["source"], string> = {
-  deploy: "the equin app is served from",
+  deploy: "the muxos app is served from",
   service: "the background service follows",
 };
 
-/** The refusal: another checkout already holds this account's equin. */
+/** The refusal: another checkout already holds this account's muxos. */
 export function otherInstanceNotice(opts: {
   action: InstanceAction;
   here: string;
@@ -118,19 +118,19 @@ export function otherInstanceNotice(opts: {
 }): InstallerNotice {
   const { action, here, verdict } = opts;
   return defineNotice({
-    title: "equin is already installed on this account, from another folder",
+    title: "muxos is already installed on this account, from another folder",
     doing: DOING[action],
     blocked:
-      "This account already has an equin, and a second one would share its database, its address and its background service: going on would replace the equin you use, possibly with an older version than your data. equin runs one copy per account.",
+      "This account already has an muxos, and a second one would share its database, its address and its background service: going on would replace the muxos you use, possibly with an older version than your data. muxos runs one copy per account.",
     now: [
-      `To update the equin you already have, run the installer from its folder: \`cd ${shellWord(verdict.checkout)} && ./install.sh\`.`,
-      "To try a second equin, use another account on this computer, or a virtual machine.",
-      `If that other folder is a leftover copy you no longer use, stop it with \`cd ${shellWord(verdict.checkout)} && ./equin stop --disable\`, move it away, then run this again.`,
+      `To update the muxos you already have, run the installer from its folder: \`cd ${shellWord(verdict.checkout)} && ./install.sh\`.`,
+      "To try a second muxos, use another account on this computer, or a virtual machine.",
+      `If that other folder is a leftover copy you no longer use, stop it with \`cd ${shellWord(verdict.checkout)} && ./muxos stop --disable\`, move it away, then run this again.`,
     ],
     ifSkipped: {
       optional: false,
       because:
-        "an account holds one equin. Nothing was changed: the equin you have keeps running as it is.",
+        "an account holds one muxos. Nothing was changed: the muxos you have keeps running as it is.",
     },
     evidence: [
       `this checkout: ${here}`,
@@ -148,9 +148,9 @@ function shellWord(path: string): string {
 
 /**
  * Refuse to `action` from `checkout` when another checkout holds this
- * account's equin: throws an {@link InstallerNoticeError} the command prints
- * as itself. Called by `./equin start` (with the main checkout it starts
- * from) and by every `./equin build` of main (with the checkout it builds),
+ * account's muxos: throws an {@link InstallerNoticeError} the command prints
+ * as itself. Called by `./muxos start` (with the main checkout it starts
+ * from) and by every `./muxos build` of main (with the checkout it builds),
  * before either touches anything shared.
  */
 export async function assertThisInstance(

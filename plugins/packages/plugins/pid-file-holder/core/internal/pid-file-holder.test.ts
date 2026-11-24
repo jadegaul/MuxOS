@@ -7,8 +7,8 @@ import {
   type ProcessSnapshot,
 } from "./pid-file-holder";
 
-const DATA_DIR = "/home/u/.equin/postgres/data-pg18";
-const PG_LOCK = `4242\n${DATA_DIR}\n1793824090\n5433\n/home/u/.equin/postgres/socket\n\n  4927358    196609\nready   \n`;
+const DATA_DIR = "/home/u/.muxos/postgres/data-pg18";
+const PG_LOCK = `4242\n${DATA_DIR}\n1793824090\n5433\n/home/u/.muxos/postgres/socket\n\n  4927358    196609\nready   \n`;
 const WRITTEN = Date.parse("2026-11-08T12:00:00Z");
 const POSTMASTER = `/x/native/bin/postgres -D ${DATA_DIR} -k /s -p 5433 -c listen_addresses=`;
 
@@ -72,7 +72,7 @@ describe("judgePidFile", () => {
   });
 
   test("a marker at the end of the command line (PgBouncer's config file)", () => {
-    const ini = "/home/u/.equin/postgres/pgbouncer.ini";
+    const ini = "/home/u/.muxos/postgres/pgbouncer.ini";
     for (const args of [`/b/pgbouncer ${ini}`, `/b/pgbouncer ${ini} -d`]) {
       const holder = judgePidFile(
         { text: "777\n", mtimeMs: WRITTEN },

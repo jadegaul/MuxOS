@@ -44,7 +44,7 @@ import type { DeploysSettled } from "../../server/internal/driver";
  *   checkout's own namespace — main's for every composition main serves):
  *   main's convergence run holds it exclusively from before it decides to its
  *   end, its compositions' builds and a second push's build included.
- * - **the checkout's build lock** (`checkoutBuildLock`): every `./equin
+ * - **the checkout's build lock** (`checkoutBuildLock`): every `./muxos
  *   build` holds it exclusively for its whole process — across its backend's
  *   spawn, until that backend's boot settled or a deadline arm gave up on it.
  * - **the namespace's schema-owner boot marker**

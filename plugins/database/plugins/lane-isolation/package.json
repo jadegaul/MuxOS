@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-database-lane-isolation",
+  "name": "@muxos/plugin-database-lane-isolation",
   "private": true,
   "version": "0.0.1"
 }

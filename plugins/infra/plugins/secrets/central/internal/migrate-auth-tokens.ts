@@ -11,7 +11,7 @@ const AUTH_TOKENS_KEY = "blob-v1";
 const MIGRATION_ACCESS: Access = { scope: "machine", caller: null };
 
 /**
- * One-shot migration: read the legacy `~/.equin/state/auth/tokens.json.enc`
+ * One-shot migration: read the legacy `~/.muxos/state/auth/tokens.json.enc`
  * blob with its own `.key`, write it into the secrets store under the
  * `auth-tokens` namespace, then rename both legacy files so they're recoverable
  * if something goes wrong. Idempotent (skips on subsequent boots).

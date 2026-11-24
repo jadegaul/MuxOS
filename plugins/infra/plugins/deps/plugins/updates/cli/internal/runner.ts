@@ -257,7 +257,7 @@ function firstLine(err: unknown): string {
  * never left `running`.
  *
  * Pure of process state: the caller resolves the checkout, the receipt path and
- * the gates (the real ones spawn `./equin check` / `test`).
+ * the gates (the real ones spawn `./muxos check` / `test`).
  */
 export async function runUpgrade(args: {
   selection: readonly UpgradeSelection[];

@@ -12,7 +12,7 @@
 // the screenshot (`animations: "disabled"`). Each shot is the pinned stage.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-globe-shots.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-globe-shots.ts \
 //     --out <dir> [--width 1400] [--height 900] [--color-scheme dark|light] \
 //     [--against <dir> [--fail-above <pct>]] [--page-url <prototype page URL>] [--headed]
 //

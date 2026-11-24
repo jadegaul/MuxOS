@@ -6,7 +6,7 @@ import {
   forkExclusionsFrom,
 } from "./fork-exclusion";
 
-// `forkExclusionsFrom` is what `./equin db fork` reads the declared set with,
+// `forkExclusionsFrom` is what `./muxos db fork` reads the declared set with,
 // off loaded plugin definitions and without a booted backend — so it must read
 // both kinds off any definition list, and refuse an empty one rather than hand
 // back "exclude nothing" (a full ~2 GB fork that looks like it worked).

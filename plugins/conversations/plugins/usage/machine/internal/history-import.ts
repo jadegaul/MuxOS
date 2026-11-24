@@ -58,10 +58,10 @@ import {
 //      `claude_transcript_scans` row is already counted (by (1), or by the
 //      session scanner — which match their rows by the same key);
 //    - a transcript still on disk, under any project dir, is the scanners' —
-//      unless its session is equin's
+//      unless its session is muxos's
 //      (in a session chain) but no LIVE conversation owns it: a deleted
 //      conversation's transcripts, which neither the conversation path (its
-//      conversation is gone) nor the session path (the session is equin's)
+//      conversation is gone) nor the session path (the session is muxos's)
 //      will ever read;
 //    - a path gone from disk can gain no scan row, so what is decided here
 //      stays true after the import (a file deleted between the archive's last

@@ -644,7 +644,7 @@ export const computerFileCopy = defineEndpoint({
 /**
  * Move paths of the browser's storage into a folder — as
  * {@link computerFileMove}, in the browser's own tree. The apps' folders under
- * `~/.equin/` are the apps' to keep: a move of or into one is refused
+ * `~/.muxos/` are the apps' to keep: a move of or into one is refused
  * (`archive`).
  */
 export const browserFileMove = defineEndpoint({

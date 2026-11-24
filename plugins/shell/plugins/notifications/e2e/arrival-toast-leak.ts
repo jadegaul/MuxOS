@@ -18,8 +18,8 @@
  * user, category other); a `finally` dismisses all of them.
  *
  * Usage:
- *   ./equin run plugins/shell/plugins/notifications/e2e/arrival-toast-leak.ts \
- *     [--iterations 10] [--out "$EQUIN_SCRATCH/arrival-leak"] [--no-record]
+ *   ./muxos run plugins/shell/plugins/notifications/e2e/arrival-toast-leak.ts \
+ *     [--iterations 10] [--out "$MUXOS_SCRATCH/arrival-leak"] [--no-record]
  */
 
 import { mkdtempSync } from "node:fs";

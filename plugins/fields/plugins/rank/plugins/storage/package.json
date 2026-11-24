@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-rank-storage",
+  "name": "@muxos/plugin-fields-rank-storage",
   "version": "0.0.1",
   "private": true,
-  "description": "Rank field type: DB storage capability — maps to the rank_text (C-collation) Postgres domain column."
+  "description": "Rank field type: DB storage capability \u2014 maps to the rank_text (C-collation) Postgres domain column."
 }

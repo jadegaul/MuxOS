@@ -13,7 +13,7 @@ import type {
  * rule 3, `boundaries/core`) this barrel and every server barrel loading it
  * are not portable, and no browser host boots them.
  *
- * A process that runs this code WITHOUT booting a graph (a `./equin` verb, an
+ * A process that runs this code WITHOUT booting a graph (a `./muxos` verb, an
  * agent process) names the provider itself:
  * `provideHostServicesUnbooted([SecretStore.provide(centralSecretStore)])`,
  * `centralSecretStore` from `infra/secrets/cli` (or `centralSecretStoreFor(ns)`

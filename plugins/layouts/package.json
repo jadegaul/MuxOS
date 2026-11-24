@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-layouts",
+  "name": "@muxos/plugin-layouts",
   "description": "Umbrella for layout renderers that map the pane chain to a visible arrangement (columns, tabs, grid, overlays).",
   "private": true,
   "version": "0.0.1"

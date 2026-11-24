@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-idle-blocker",
+  "name": "@muxos/plugin-conversations-idle-blocker",
   "private": true,
   "version": "0.0.1"
 }

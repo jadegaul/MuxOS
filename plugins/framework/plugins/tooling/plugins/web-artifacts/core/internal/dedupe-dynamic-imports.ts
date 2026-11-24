@@ -20,8 +20,8 @@
 
 import { init as lexerInit, parse as lexerParse } from "es-module-lexer";
 
-/** The memo's name in a chunk: no rolldown-emitted identifier starts `__equin`. */
-const ONCE = "__equinImportOnce";
+/** The memo's name in a chunk: no rolldown-emitted identifier starts `__muxos`. */
+const ONCE = "__muxosImportOnce";
 
 /** Prepended to a chunk with a repeated dynamic import (module scope, hoisted). */
 export const IMPORT_ONCE_HELPER =
@@ -41,7 +41,7 @@ export interface DynamicImportEdit {
 
 /**
  * The edits that route each repeated literal dynamic import of `code` through
- * {@link IMPORT_ONCE_HELPER}: `import(X)` → `__equinImportOnce(X,()=>import(X))`.
+ * {@link IMPORT_ONCE_HELPER}: `import(X)` → `__muxosImportOnce(X,()=>import(X))`.
  * Empty when no target is imported twice (the chunk is left untouched). An
  * import with attributes, or of a computed specifier, is never touched.
  */

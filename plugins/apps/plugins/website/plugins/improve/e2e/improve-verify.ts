@@ -22,7 +22,7 @@
 // GitHub itself is never contacted: the new tab's request is answered by a stub.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/improve/e2e/improve-verify.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/improve/e2e/improve-verify.ts \
 //     [--out /tmp/improve] [--headed]
 //
 // Manual only — nothing runs this automatically.
@@ -49,13 +49,13 @@ const NEW_ISSUE = `${SOURCE_REPO_URL}/issues/new?`;
 // The pick goes between these two, at a caret put there with the arrow keys.
 const BEFORE_PICK = "Make the";
 const AFTER_PICK = " bigger";
-const MARKER = "text=Curious how equin came to be?";
+const MARKER = "text=Curious how muxos came to be?";
 
 /** The panel: base-ui's popover popup, found by its title in either view. */
 function panel(page: Page): Locator {
   return page
     .getByRole("dialog")
-    .filter({ hasText: /Make a wish|What equin would do now/ });
+    .filter({ hasText: /Make a wish|What muxos would do now/ });
 }
 
 /**
@@ -67,7 +67,7 @@ function panel(page: Page): Locator {
  */
 function improveButton(page: Page): Locator {
   return page
-    .getByRole("button", { name: "equin.", exact: true })
+    .getByRole("button", { name: "muxos.", exact: true })
     .locator('xpath=ancestor::*[.//button[normalize-space()="Wish"]][1]')
     .getByRole("button", { name: "Wish", exact: true });
 }

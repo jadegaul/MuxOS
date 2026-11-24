@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-sonata-sources-ultimate-guitar-alignment",
-  "description": "Aligns an Ultimate Guitar sheet's chord sequence to a YouTube recording's beat features (jump-alignment HMM over all 12 transpositions), stores the alignment record per song, and runs the fetch → features → align chain job.",
+  "name": "@muxos/plugin-apps-sonata-sources-ultimate-guitar-alignment",
+  "description": "Aligns an Ultimate Guitar sheet's chord sequence to a YouTube recording's beat features (jump-alignment HMM over all 12 transpositions), stores the alignment record per song, and runs the fetch \u2192 features \u2192 align chain job.",
   "private": true,
   "version": "0.0.1"
 }

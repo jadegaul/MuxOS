@@ -8,7 +8,7 @@ import { CLI_NAMES } from "@plugins/framework/plugins/cli/plugins/cli-name/core"
  *
  * `repo` is `"unknown"` whenever the call names its repository in a way this
  * reader does not follow (`--git-dir`, `--work-tree`, a `GIT_DIR=` prefix): a
- * guard asking "is this the equin repo?" must then assume it is.
+ * guard asking "is this the muxos repo?" must then assume it is.
  */
 export interface GitInvocation {
   subcommand: string | undefined;
@@ -57,30 +57,30 @@ export function readGitInvocation(call: ShellCall): GitInvocation {
 }
 
 /**
- * The equin CLI's entry point, relative to a checkout's root. A repo
- * whose root holds it lands work through `./equin push`; any other repo
+ * The muxos CLI's entry point, relative to a checkout's root. A repo
+ * whose root holds it lands work through `./muxos push`; any other repo
  * (a separate package an agent publishes, a scratch clone) has no such flow.
  */
 const CLI_ENTRY = "plugins/framework/plugins/cli/bin/index.ts";
 
 export type RepoKind =
-  | { kind: "equin"; root: string }
+  | { kind: "muxos"; root: string }
   | { kind: "other"; root: string }
   | { kind: "not-a-repo" };
 
 /**
  * Classifies the repository containing `dir`: walks up to the nearest `.git`
  * (a directory in a clone, a file in a worktree) and checks that root for the
- * equin CLI.
+ * muxos CLI.
  */
 export function classifyRepo(dir: string): RepoKind {
   let cur = resolve(dir);
   for (;;) {
     if (existsSync(join(cur, ".git"))) {
-      const isEquinRepo =
+      const isMuxOSRepo =
         CLI_NAMES.some((name) => existsSync(join(cur, name))) &&
         existsSync(join(cur, CLI_ENTRY));
-      return { kind: isEquinRepo ? "equin" : "other", root: cur };
+      return { kind: isMuxOSRepo ? "muxos" : "other", root: cur };
     }
     const parent = dirname(cur);
     if (parent === cur) return { kind: "not-a-repo" };

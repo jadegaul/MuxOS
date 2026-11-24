@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-database-pgbouncer",
+  "name": "@muxos/plugin-database-pgbouncer",
   "description": "PgBouncer connection pooler for the embedded Postgres cluster.",
   "private": true,
   "version": "0.0.1",
@@ -28,7 +28,10 @@
             "pattern": "^pgbouncer_(\\d+)_(\\d+)_(\\d+)$"
           },
           "agree": "version",
-          "revisions": { "digits": 2, "legacyThrough": "1.26.1" },
+          "revisions": {
+            "digits": 2,
+            "legacyThrough": "1.26.1"
+          },
           "prerequisite": "the daily auto-publish of github.com/equinai/pgbouncer-embedded has not published @equin/pgbouncer-* for PgBouncer <version>: check its latest Build and Publish run (`gh run list -R equinai/pgbouncer-embedded -w 'Build and Publish'`; `gh workflow enable` it if GitHub disabled it after 60 days without activity), fix it and re-run, then upgrade"
         }
       }

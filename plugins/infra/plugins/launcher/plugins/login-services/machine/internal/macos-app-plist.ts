@@ -1,22 +1,22 @@
 import { PRODUCT_NAME } from "@plugins/framework/plugins/product-name/core";
 
 /**
- * The equin app's bundle id: what macOS files every permission of every login
+ * The muxos app's bundle id: what macOS files every permission of every login
  * service under (Files & Folders, Notifications, Login Items), and what
- * `tccutil reset <Service> dev.equin` resets. The per-app shims
- * (`dev.equin.app.<id>`) sit under it. Not `dev.equin.app`: an id ending in
+ * `tccutil reset <Service> dev.muxos` resets. The per-app shims
+ * (`dev.muxos.app.<id>`) sit under it. Not `dev.muxos.app`: an id ending in
  * `.app` names folders (`~/Library/Application Support/<id>`) that Finder takes
  * for app bundles — Tauri warns against it, and this is the menu-bar helper's
  * Tauri identifier too (`rust/tauri.conf.json`), which its notifications use.
  */
-export const APP_BUNDLE_ID = "dev.equin";
+export const APP_BUNDLE_ID = "dev.muxos";
 
 /** The bundle's file name, in the login services' app dir (`macosAppDir`). */
-export const APP_BUNDLE_NAME = "equin.app";
+export const APP_BUNDLE_NAME = "muxos.app";
 
 /**
  * The bundle id of the app `program` runs from — {@link APP_BUNDLE_ID} when it
- * is an executable in an equin bundle's `Contents/MacOS` (the installed one, or
+ * is an executable in an muxos bundle's `Contents/MacOS` (the installed one, or
  * any copy of it: the id is the bundle's, not its path's), else null.
  */
 export function appBundleIdOfProgram(program: string): string | null {
@@ -30,7 +30,7 @@ export function appBundleIdOfProgram(program: string): string | null {
 }
 
 /** The bundle's icon, `Contents/Resources/<ICON_NAME>.icns`. */
-export const ICON_NAME = "equin";
+export const ICON_NAME = "muxos";
 
 /** One installed component, as the bundle's `Info.plist` records it. */
 export interface InstalledComponent {
@@ -59,7 +59,7 @@ export function mainComponent(
 }
 
 /**
- * `equin.app`'s `Info.plist`. Fixed but for the components:
+ * `muxos.app`'s `Info.plist`. Fixed but for the components:
  *
  * - `LSUIElement` — no Dock icon or app-switcher entry: the gateway has no
  *   window, and the menu-bar helper's status item is its only presence.
@@ -69,7 +69,7 @@ export function mainComponent(
  *   cover `*.localhost`).
  * - `CFBundleURLTypes` — every component's URL schemes, when one declares
  *   any: LaunchServices hands such a link to the running app.
- * - `EquinComponents` — which build of which component is inside (JSON), read
+ * - `MuxOSComponents` — which build of which component is inside (JSON), read
  *   back by {@link readAppComponents}: "is this component current?" is a file
  *   read, not a hash of the executables.
  */
@@ -104,7 +104,7 @@ ${icon}  <key>CFBundlePackageType</key>${s("APPL")}
   <key>LSUIElement</key><true/>
   <key>NSHighResolutionCapable</key><true/>
 ${urlTypes}  <key>NSAppTransportSecurity</key><dict><key>NSExceptionDomains</key><dict><key>localhost</key><dict><key>NSIncludesSubdomains</key><true/><key>NSExceptionAllowsInsecureHTTPLoads</key><true/></dict></dict></dict>
-  <key>EquinComponents</key>${s(JSON.stringify(sorted))}
+  <key>MuxOSComponents</key>${s(JSON.stringify(sorted))}
 </dict>
 </plist>
 `;
@@ -117,12 +117,12 @@ ${urlTypes}  <key>NSAppTransportSecurity</key><dict><key>NSExceptionDomains</key
  */
 export function readAppComponents(plist: string): InstalledComponent[] | null {
   if (plistString(plist, "CFBundleIdentifier") !== APP_BUNDLE_ID) return null;
-  const raw = plistString(plist, "EquinComponents");
+  const raw = plistString(plist, "MuxOSComponents");
   if (raw === null) return null;
   const parsed: unknown = JSON.parse(xmlUnescape(raw));
   if (!Array.isArray(parsed) || !parsed.every(isInstalledComponent)) {
     throw new Error(
-      `equin.app's Info.plist records malformed EquinComponents: ${raw}`,
+      `muxos.app's Info.plist records malformed MuxOSComponents: ${raw}`,
     );
   }
   return parsed;

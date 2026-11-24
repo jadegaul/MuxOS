@@ -10,14 +10,14 @@ import { BoxBeatFrameSchema } from "./protocol";
  * - `slept` — this computer slept since the box was last heard (or just woke);
  * - `restarting` — a deploy run of the deployment is active: the box's
  *   backend restarts as part of it;
- * - `network` — anything else (SSH lost, equin not answering yet).
+ * - `network` — anything else (SSH lost, muxos not answering yet).
  */
 export const ReconnectCauseSchema = z.enum(["slept", "restarting", "network"]);
 export type ReconnectCause = z.infer<typeof ReconnectCauseSchema>;
 
 /**
  * What a failure says about the box once the grace is over: `down` — SSH
- * answers but equin does not (the stream refused, a 502, the stream closed);
+ * answers but muxos does not (the stream refused, a 502, the stream closed);
  * `unreachable` — the SSH transport itself failed (dns, unreachable,
  * timeout, a dropped session).
  */
@@ -50,7 +50,7 @@ export type LinkRefusal = z.infer<typeof LinkRefusalSchema>;
  * - `reconnecting` — was live, lost, within its grace (`graceUntil`, epoch
  *   ms); `then` is what it will be once the grace runs out (and `sshKind`
  *   the transport's own failure kind, carried into `unreachable`);
- * - `down` — SSH answers, equin does not;
+ * - `down` — SSH answers, muxos does not;
  * - `unreachable` — the SSH transport fails (`sshKind` when ssh said why);
  * - `refused` — see {@link LinkRefusalSchema};
  * - `outdated` — the box's release has no stream route (`route-missing`) or

@@ -5,12 +5,12 @@
 // fixture's owner re-runs this after editing it; its
 // `prototypeFixtureThumbnailsCheck` fails the build until then.
 //
-// Run: `./equin run plugins/apps/plugins/prototypes/plugins/fixtures/scripts/render-fixture-thumbnails.ts --fixture <dir>`
+// Run: `./muxos run plugins/apps/plugins/prototypes/plugins/fixtures/scripts/render-fixture-thumbnails.ts --fixture <dir>`
 // (`<dir>` holds the fixture's `prototypes/` and `thumbnails/`, from the repo root).
 //
 // Each version's folder is laid out in a temp tree (one folder per version,
 // named `<id>.v<N>` — the renderer reads a folder, the fingerprint its files,
-// never its name), then `./equin prototype thumbnails` renders the tree.
+// never its name), then `./muxos prototype thumbnails` renders the tree.
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import {
   existsSync,
@@ -71,7 +71,7 @@ try {
     }
   const child = Bun.spawnSync(
     [
-      join(REPO_ROOT, "equin"),
+      join(REPO_ROOT, "muxos"),
       "prototype",
       "thumbnails",
       tree,
@@ -81,7 +81,7 @@ try {
     { stdout: "inherit", stderr: "inherit" },
   );
   if (child.exitCode !== 0)
-    throw new Error(`./equin prototype thumbnails exited ${child.exitCode}`);
+    throw new Error(`./muxos prototype thumbnails exited ${child.exitCode}`);
 } finally {
   rmSync(tree, { recursive: true, force: true });
 }

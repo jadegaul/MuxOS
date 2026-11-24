@@ -11,7 +11,7 @@
 // seeded it with.
 //
 // Usage:
-//   ./equin run plugins/active-data/plugins/page-link/e2e/page-link-verify.ts \
+//   ./muxos run plugins/active-data/plugins/page-link/e2e/page-link-verify.ts \
 //     --conv <conversationId> --page <block-…> [--block <block-…>] \
 //     [--url http://<worktree>.localhost:<port>] [--headed]
 

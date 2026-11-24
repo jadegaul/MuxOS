@@ -11,7 +11,7 @@ export const pushAndCloseHint = defineHint({
   id: "push-and-exit.push-and-exit",
   anchor: mainActionAnchor,
   title: "Push & Close",
-  body: "Looks good? Ship it to your equin and mark the conversation as complete. Want changes instead? Just reply — the agent keeps going.",
+  body: "Looks good? Ship it to your muxos and mark the conversation as complete. Want changes instead? Just reply — the agent keeps going.",
   placement: "top",
   order: 2,
 });
@@ -21,7 +21,7 @@ export const closeHint = defineHint({
   id: "push-and-exit.exit",
   anchor: mainActionAnchor,
   title: "Close",
-  body: "Changes have been pushed to your equin. Close the conversation to mark it complete.",
+  body: "Changes have been pushed to your muxos. Close the conversation to mark it complete.",
   placement: "top",
   order: 2,
 });

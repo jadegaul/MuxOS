@@ -55,12 +55,12 @@ const run: CliAction<[], { disable?: boolean }> = async (opts) => {
     }
     console.log(
       (await loginService.remove())
-        ? `Removed ${loginService.definitionPath()}: it no longer starts at ${at}. \`./equin start\` registers it again.`
+        ? `Removed ${loginService.definitionPath()}: it no longer starts at ${at}. \`./muxos start\` registers it again.`
         : `It was not registered to start at ${at}.`,
     );
   } else {
     console.log(
-      `It starts again at the next ${at} (\`./equin stop --disable\` to prevent that), or now with \`./equin start\`.`,
+      `It starts again at the next ${at} (\`./muxos stop --disable\` to prevent that), or now with \`./muxos start\`.`,
     );
   }
 };

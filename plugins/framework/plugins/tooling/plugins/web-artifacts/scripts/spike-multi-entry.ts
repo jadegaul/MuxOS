@@ -4,7 +4,7 @@
 // imports a chunk shared with another entry (Rolldown's runtime helpers
 // included). Times the run against building the same entries one by one.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/spike-multi-entry.ts [--n 40] [--one-by-one]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/spike-multi-entry.ts [--n 40] [--one-by-one]
 
 import { REPO_ROOT } from "@plugins/infra/plugins/paths/plugins/repo-root/core";
 import { readFileSync } from "@plugins/packages/plugins/timed-fs/core";

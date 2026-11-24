@@ -39,7 +39,7 @@ const SEGMENT = /^[a-z0-9][a-z0-9._~-]*$/;
  * export const downloadPage = defineWebsitePage({
  *   path: "/about/download",
  *   title: "Download",
- *   description: "One command to install equin, and what to do once it runs.",
+ *   description: "One command to install muxos, and what to do once it runs.",
  * });
  * ```
  *

@@ -55,7 +55,7 @@ const ForkExclusionsSchema = z.object({
 
 async function declaredForkExclusions(root: AppPath): Promise<ForkExclusions> {
   const namespace = await checkoutNamespace(root);
-  const dir = mkdtempSync(join(tmpdir(), "equin-fork-exclusions-"));
+  const dir = mkdtempSync(join(tmpdir(), "muxos-fork-exclusions-"));
   try {
     const out = join(dir, "exclusions.json");
     const probe = await spawnCaptured(
@@ -98,7 +98,7 @@ const run: CliAction<[string | undefined], { replace?: boolean }> = async (
   // Backend down before its data: the namespace's backend (if it runs) is
   // stopped and held down before its database is dropped, and cold-started on
   // the fresh fork afterwards. A fork that fails in between leaves it held —
-  // `./equin build` (a deploy start) releases it — never serving against a
+  // `./muxos build` (a deploy start) releases it — never serving against a
   // database that is not there.
   const held =
     opts.replace === true && (await databaseExists(name))
@@ -132,7 +132,7 @@ const run: CliAction<[string | undefined], { replace?: boolean }> = async (
   console.log(
     outcome.kind === "already-present"
       ? `DB "${name}" already existed — nothing to do (--replace forks it afresh).`
-      : `DB "${name}" ready.${opts.replace === true ? " Run ./equin build to apply this branch's migrations to it." : ""}`,
+      : `DB "${name}" ready.${opts.replace === true ? " Run ./muxos build to apply this branch's migrations to it." : ""}`,
   );
 };
 

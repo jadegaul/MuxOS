@@ -2,7 +2,7 @@
 //
 // A NAMESPACE is the one name that a deployed app answers to. It is the
 // subdomain in `http://<ns>.localhost:<port>`, the spec-dir basename under
-// `~/.equin/worktrees/<ns>/`, the socket stem `<ns>.sock`, the Postgres
+// `~/.muxos/worktrees/<ns>/`, the socket stem `<ns>.sock`, the Postgres
 // database, the config dir, and the `--namespace` a backend is spawned with. All
 // of those are the SAME string, which is exactly why there must be
 // only one function that decides what it is.
@@ -256,15 +256,15 @@ export const MAIN_WORKTREE_NAME: Namespace = namespaceFor(MAIN_COMPOSITION_ID, {
 
 /**
  * The host label a namespace is HANDED OUT under, where that is not its own
- * name: main is `http://equin.localhost:<port>`.
+ * name: main is handed out under `PRODUCT_NAME`.
  *
  * Every address the app produces goes through `namespaceHost` / `namespaceUrl`,
  * which read this table — so build output, e2e and agent-browser targets,
- * agents' MCP URLs and in-app links all say `equin` without naming it. The
+ * agents' MCP URLs and in-app links all say the label without naming it. The
  * namespace itself stays what `namespaceFor` minted (`LEGACY_IDS.mainNamespace`): its spec
  * dir, socket and database are internal identifiers, and its own name keeps
  * resolving as a host (`namespaceFromHost`) only while agents launched before
- * `EQUIN_PARENT_URL` still dial it — then it goes (rename track, Step 9).
+ * the rename still dial it — then it goes (rename track, Step 9).
  *
  * Exists to move the app off its old name gradually. Every place a namespace
  * is SHOWN reads it through `namespaceLabel`, and every place one is TYPED
@@ -278,8 +278,21 @@ export const NAMESPACE_HOST_LABELS: Readonly<
 };
 
 /**
- * Extra host labels the gateway serves as an existing namespace — DERIVED from
- * `NAMESPACE_HOST_LABELS` (label → the namespace it is handed out for).
+ * The previous generation's public labels, kept resolving to the namespaces
+ * they served: `LEGACY_IDS.mainHostAlias` is the label main was handed out
+ * under before the rename, and the PARENT URLs, bookmarks and transcripts a
+ * pre-rename agent carries still dial it. It goes when nothing dials it
+ * (rename track, Step 9).
+ */
+export const LEGACY_HOST_ALIASES: Readonly<Record<string, Namespace>> = {
+  [LEGACY_IDS.mainHostAlias]: MAIN_WORKTREE_NAME,
+};
+
+/**
+ * Extra host labels the gateway serves as an existing namespace — the legacy
+ * labels first, then DERIVED from `NAMESPACE_HOST_LABELS` (label → the
+ * namespace it is handed out for), so a live label wins if it ever collided
+ * with an old alias.
  *
  * An alias is a HOST spelling only — it is never minted (`namespaceFor` cannot
  * yield one), never a spec dir, socket or database, and `namespaceFromHost`
@@ -291,13 +304,15 @@ export const NAMESPACE_HOST_LABELS: Readonly<
  * KEEP IN SYNC with `hostAliases` in gateway/proxy.go — enforced by the
  * `namespace:grammar-in-sync` check.
  */
-export const NAMESPACE_HOST_ALIASES: Readonly<Record<string, Namespace>> =
-  Object.fromEntries(
+export const NAMESPACE_HOST_ALIASES: Readonly<Record<string, Namespace>> = {
+  ...LEGACY_HOST_ALIASES,
+  ...Object.fromEntries(
     Object.entries(NAMESPACE_HOST_LABELS).map(([ns, label]) => [
       label!,
       ns as Namespace,
     ]),
-  );
+  ),
+};
 
 /** Whether `name` is a host alias rather than a namespace of its own. */
 export function isNamespaceHostAlias(name: string): boolean {
@@ -306,21 +321,21 @@ export function isNamespaceHostAlias(name: string): boolean {
 
 /**
  * How a namespace is SHOWN to a person or an agent: its public label
- * (`NAMESPACE_HOST_LABELS`) — main reads `equin` — or else its own name. The
- * same spelling its address uses, so what a picker or a row says is what the
- * user types back.
+ * (`NAMESPACE_HOST_LABELS`) — main reads `PRODUCT_NAME` — or else its own
+ * name. The same spelling its address uses, so what a picker or a row says is
+ * what the user types back.
  */
 export function namespaceLabel(ns: Namespace): string {
   return NAMESPACE_HOST_LABELS[ns] ?? ns;
 }
 
 /**
- * The namespace a TYPED name stands for: a label (`equin`) resolves to the
- * namespace it is handed out for, anything else is returned as given (still
- * unvalidated — pass it to `asNamespace` / `isNamespace`). Every input that
- * takes a namespace (an MCP tool's `database`, a CLI argument) reads it through
- * this, so the label `namespaceLabel` shows is accepted back, and the
- * namespace's own name keeps working.
+ * The namespace a TYPED name stands for: a label (main's, or one of the legacy
+ * aliases) resolves to the namespace it is handed out for, anything else is
+ * returned as given (still unvalidated — pass it to `asNamespace` /
+ * `isNamespace`). Every input that takes a namespace (an MCP tool's `database`,
+ * a CLI argument) reads it through this, so the label `namespaceLabel` shows
+ * is accepted back, and the namespace's own name keeps working.
  */
 export function resolveNamespaceAlias(name: string): string {
   return isNamespaceHostAlias(name) ? NAMESPACE_HOST_ALIASES[name]! : name;
@@ -351,7 +366,7 @@ export function isNamespace(raw: string): boolean {
 
 /**
  * The ports an account's gateway may listen on: the first free one of
- * 8700…8709, chosen once by `./equin start` and kept by that account
+ * 8700…8709, chosen once by `./muxos start` and kept by that account
  * (`infra/launcher/gateway-port`), so separate macOS accounts run side by side.
  * 8700–8709 are unassigned in IANA and almost never open on a developer
  * machine; 9000 (PHP-FPM, MinIO, Portainer, ClickHouse, SonarQube) was not.
@@ -414,7 +429,7 @@ export function namespaceUrl(
 
 /**
  * The content host's label: `http://<item>.content.localhost:<port>/<ns>/…` is
- * where equin serves CONTENT — pages that run script but are not reviewed app
+ * where muxos serves CONTENT — pages that run script but are not reviewed app
  * code (an agent-written prototype) — off every app origin. `<item>` is one
  * origin per piece of content; the first path segment routes to a namespace's
  * backend. Trust boundaries, Phase 3:
@@ -438,7 +453,7 @@ export function isContentReservedNamespace(ns: string): boolean {
 
 /**
  * The URL a piece of content is served at: `http://<item>.content.localhost:<port>/<label><path>`,
- * where `<label>` is the namespace's host label (main reads `equin`). `path`
+ * where `<label>` is the namespace's host label (main reads `muxos`). `path`
  * must start with `/api/` — the content host serves nothing else.
  */
 export function contentUrl(
@@ -530,7 +545,7 @@ export function namespaceFromHost(host: string): Namespace | null {
 
 /**
  * The origin a namespace URL handed over as text names (an agent's
- * `EQUIN_PARENT_URL`, written by `namespaceUrl`): validated as an http origin
+ * `MUXOS_PARENT_URL`, written by `namespaceUrl`): validated as an http origin
  * on a namespace host with nothing after it, and returned as that origin.
  * Throws on anything else — a hook must not dial an address it cannot vouch for.
  */

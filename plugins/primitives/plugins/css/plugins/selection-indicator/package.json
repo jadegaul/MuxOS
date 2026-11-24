@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-css-selection-indicator",
+  "name": "@muxos/plugin-primitives-css-selection-indicator",
   "description": "Presentational checkbox / radio indicator boxes with the correct preset-independent fixed shape baked in.",
   "private": true,
   "version": "0.0.1"

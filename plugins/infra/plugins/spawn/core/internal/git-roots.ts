@@ -21,7 +21,7 @@ const mainRepoRootMemo = new Map<string, Promise<AppPath>>();
  * bounded by the p99 of an idle box. `infra/worktree`'s `worktree.ts` carries
  * the measurement this is copied from, including the finding that a 10 s bound
  * on the same class of command still false-fired during a real
- * `./equin check`, where every parallel type-check worker calls in at once.
+ * `./muxos check`, where every parallel type-check worker calls in at once.
  *
  * The extra reason to be generous HERE: the memo caches rejections on purpose,
  * so a spurious timeout would not fail one caller, it would fail every caller
@@ -66,7 +66,7 @@ export function getWorktreeRoot(cwd?: string): Promise<AppPath> {
  * `cwd` is inside a linked worktree — `dirname(resolve(git rev-parse
  * --git-common-dir))`. THROWS outside a git repo, like `getWorktreeRoot`.
  *
- * This is the git STORE — refs, worktrees, the human's checkout `./equin
+ * This is the git STORE — refs, worktrees, the human's checkout `./muxos
  * push` fast-forwards — never "the code main runs": main is built and served
  * from per-commit slots, linked worktrees of this repo. Ask
  * `servedMainRoot()` (`infra/git/main-slots`) for the served code.

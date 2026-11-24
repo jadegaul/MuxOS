@@ -6,8 +6,8 @@
  * in place (never moved), and the regression filed as a NEW row on top, in the kind's own variant.
  * Ancestry is real git, in a throwaway repo.
  *
- * Run: `./equin test plugins/reports/plugins/engine`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/reports/plugins/engine`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { describe, test, expect, beforeAll, afterAll } from "bun:test";

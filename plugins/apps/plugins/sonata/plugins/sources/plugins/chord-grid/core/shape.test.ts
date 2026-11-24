@@ -3,7 +3,7 @@
  * exposure: `chordText`, labelled "Chords", reading null for a song with no
  * grid row.
  *
- * Run: `./equin test plugins/apps/plugins/sonata/plugins/sources/plugins/chord-grid`.
+ * Run: `./muxos test plugins/apps/plugins/sonata/plugins/sources/plugins/chord-grid`.
  */
 
 import { describe, expect, test } from "bun:test";

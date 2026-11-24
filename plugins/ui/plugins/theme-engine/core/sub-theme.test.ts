@@ -74,7 +74,7 @@ describe("defineSubTheme", () => {
 
   it("refuses an id that cannot sit in a CSS selector and a style id", () => {
     expect(() =>
-      defineSubTheme({ id: "Equin Doc", label: "x", fragments: [] }),
+      defineSubTheme({ id: "MuxOS Doc", label: "x", fragments: [] }),
     ).toThrow(/must be kebab-case/);
     expect(() =>
       defineSubTheme({ id: "tweakcn:x", label: "x", fragments: [] }),

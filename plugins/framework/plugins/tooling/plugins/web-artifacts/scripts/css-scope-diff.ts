@@ -3,7 +3,7 @@
 // compiled and optimized. Prints the classes only the old pass emits, and the
 // ones only the deployed sheet has.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/css-scope-diff.ts <deployed.css>
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/css-scope-diff.ts <deployed.css>
 
 import { REPO_ROOT } from "@plugins/infra/plugins/paths/plugins/repo-root/core";
 import { readFileSync } from "@plugins/packages/plugins/timed-fs/core";

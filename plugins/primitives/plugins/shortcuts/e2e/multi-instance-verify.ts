@@ -11,7 +11,7 @@
 // Creates one task in THIS worktree's database per run.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/shortcuts/e2e/multi-instance-verify.ts [--headed]
+//   ./muxos run plugins/primitives/plugins/shortcuts/e2e/multi-instance-verify.ts [--headed]
 
 import {
   pathUrl,

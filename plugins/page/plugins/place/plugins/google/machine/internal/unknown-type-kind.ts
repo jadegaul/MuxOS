@@ -37,7 +37,7 @@ export const unknownTypeKind = ReportKind({
         "Regenerate the copy:",
         "",
         "```",
-        "./equin run plugins/page/plugins/place/plugins/google/scripts/fetch-table-a.ts",
+        "./muxos run plugins/page/plugins/place/plugins/google/scripts/fetch-table-a.ts",
         "```",
         "",
         `**Occurrences:** ${row.count}`,

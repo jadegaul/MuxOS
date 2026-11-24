@@ -40,7 +40,7 @@ export function parseGatewayPortRecord(
   } catch (err) {
     throw new Error(
       `[gateway-port] ${file} is not JSON (${String(err)}). It records this account's gateway port; ` +
-        `run \`./equin start --port <${GATEWAY_PORT_RANGE.first}…${GATEWAY_PORT_RANGE.last}>\` to write it again.`,
+        `run \`./muxos start --port <${GATEWAY_PORT_RANGE.first}…${GATEWAY_PORT_RANGE.last}>\` to write it again.`,
     );
   }
   const parsed = GatewayPortRecordSchema.safeParse(raw);

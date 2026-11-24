@@ -90,7 +90,7 @@ export function assertServableCompositionNamespace(name: string): void {
  * Every composition must have a valid name. Every composition EXCEPT the
  * reserved rows must additionally own a servable namespace, because a serve
  * build will provision one for it. The exceptions are main's row — built by
- * `./equin build` into the checkout's own namespace, never served as a
+ * `./muxos build` into the checkout's own namespace, never served as a
  * composition — and the inherited exclusion sets (`base-exclusions`,
  * `all-exclusions`), which hold only negatives and therefore resolve to an
  * empty bundle. Each may carry a reserved id.

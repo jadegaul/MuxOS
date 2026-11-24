@@ -1,7 +1,7 @@
 import { defineDataDir } from "@plugins/infra/plugins/paths/core";
 
 /**
- * Where `./equin start` writes the step-by-step lines of the modules it drives
+ * Where `./muxos start` writes the step-by-step lines of the modules it drives
  * (the dependency installs, the app bundle, each login service's reconcile,
  * the gateway build and launch). Those lines name internal parts and paths, so
  * they never go to the terminal a person installing reads (the installer
@@ -13,7 +13,7 @@ export const startLogs = defineDataDir({
   name: "start",
   owner: "framework/cli/start",
   description:
-    "`./equin start`'s detailed progress: what each step it drives installed, kept, removed or bound — the last run only",
+    "`./muxos start`'s detailed progress: what each step it drives installed, kept, removed or bound — the last run only",
   // Observability output: the record of the last start, never anything the
   // running system reads.
   reclaim: { kind: "safe" },

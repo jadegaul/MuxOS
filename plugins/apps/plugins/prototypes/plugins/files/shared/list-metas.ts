@@ -1,7 +1,7 @@
 // Reading the whole prototypes tree into `PrototypeMeta[]` — THE one
 // implementation, for the two processes that need it.
 //
-// `shared/`, not `server/`, for the reason `read-folder.ts` is: `./equin
+// `shared/`, not `server/`, for the reason `read-folder.ts` is: `./muxos
 // prototype list` must answer with no backend running, and a CLI process
 // cannot import a server barrel's boot-time machinery to do it. Over a `Mount`:
 // the server hands it the `prototypesFiles` root (`server/internal/list.ts`,

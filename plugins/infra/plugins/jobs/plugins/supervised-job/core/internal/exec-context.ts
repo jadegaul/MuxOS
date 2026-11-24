@@ -7,8 +7,8 @@
  * produce one are the out-of-process contexts:
  *
  * - a supervised job's `run` body (`SupervisedRunContext.exec`), which runs in
- *   its own `./equin supervised-exec` child;
- * - a `./equin` CLI command (`cliExecContext`, exported from this
+ *   its own `./muxos supervised-exec` child;
+ * - a `./muxos` CLI command (`cliExecContext`, exported from this
  *   plugin's `cli` barrel — a `server/` file cannot import a `cli` barrel, so a
  *   request handler has no spelling of it).
  *

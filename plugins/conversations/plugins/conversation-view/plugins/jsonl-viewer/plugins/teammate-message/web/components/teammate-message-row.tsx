@@ -40,7 +40,7 @@ function statusLine(body: string): string | null {
 
 type PeerSession = NonNullable<TeammateMessageEvent["session"]>;
 
-/** The attempt an equin agent's session is named after: its session name is
+/** The attempt an muxos agent's session is named after: its session name is
  *  the attempt id, possibly with a suffix (`att-…-5k4w8f-da`). */
 function attemptOfSession(name: string | undefined): string | undefined {
   if (name === undefined) return undefined;

@@ -5,9 +5,9 @@
 // layer, a cursor click, a typing sequence with key ticks, a per-letter text
 // reveal, a clip-path wipe, SFX and a silence gap in the music.
 //
-//   ./equin run plugins/media/plugins/film/e2e/demo.ts --preview
-//   ./equin run plugins/media/plugins/film/e2e/demo.ts --stills 1,4,6,8.5,10.5
-//   ./equin run plugins/media/plugins/film/e2e/demo.ts            # 1080p60 → /tmp/film/demo.mp4
+//   ./muxos run plugins/media/plugins/film/e2e/demo.ts --preview
+//   ./muxos run plugins/media/plugins/film/e2e/demo.ts --stills 1,4,6,8.5,10.5
+//   ./muxos run plugins/media/plugins/film/e2e/demo.ts            # 1080p60 → /tmp/film/demo.mp4
 
 import { mkdirSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";

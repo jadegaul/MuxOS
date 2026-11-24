@@ -10,7 +10,7 @@
  * `userTurnSent` into the worktree's own database). The rules behind the
  * transitions are pure and pinned in transition.test.ts.
  *
- * Requires the running embedded cluster — `./equin build` first.
+ * Requires the running embedded cluster — `./muxos build` first.
  */
 
 import {

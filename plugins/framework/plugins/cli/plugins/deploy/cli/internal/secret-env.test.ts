@@ -68,7 +68,7 @@ describe("the converge script never carries a value", () => {
   test("it is generated from keys alone, and reads values from stdin", () => {
     const text = convergeScript({
       install: deriveInstall("website"),
-      hostnames: ["equin.ai"],
+      hostnames: ["MuxOS.app"],
       loopbackPort: 9100,
       sshPort: 22,
       sshUser: "root",

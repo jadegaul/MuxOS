@@ -120,7 +120,7 @@ test("taking the budget removes it from the environment descendants inherit", ()
   expect(takeReexecBudget(env).prior).toBe(1);
   expect(envName("DEPS_REEXEC") in env).toBe(false);
   expect(env.PATH).toBe("/usr/bin");
-  // A second read — what a nested `./equin` would see — starts fresh.
+  // A second read — what a nested `./muxos` would see — starts fresh.
   expect(takeReexecBudget(env).prior).toBe(0);
 });
 

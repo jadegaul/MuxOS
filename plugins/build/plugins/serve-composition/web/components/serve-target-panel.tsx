@@ -104,7 +104,7 @@ export function ServeTargetPanel({
   // The one permanent reason the control cannot work, and it is about the
   // COMPOSITION rather than the backend: a serve may never provision main's
   // namespace, because that namespace is where the checkout's own
-  // `./equin build` deploys. A live button whose only outcome is an error
+  // `./muxos build` deploys. A live button whose only outcome is an error
   // toast is the "upcoming step rendered inert" rule applied to a chip.
   //
   // There is no longer a second, backend-shaped reason. Serving used to run
@@ -122,7 +122,7 @@ export function ServeTargetPanel({
           disabled={!canServe}
           tooltip={
             !canServe
-              ? "The main app is built by ./equin build — it is not served as a composition."
+              ? "The main app is built by ./muxos build — it is not served as a composition."
               : served
                 ? `${serveModeLabel(item.serve)} — click to stop serving`
                 : host !== null
@@ -247,7 +247,7 @@ export function ServeTargetPanel({
       <Text as="p" variant="caption" tone="muted">
         {canServe ? (
           <>
-            Serving runs <code>./equin build --composition {item.id}</code> in
+            Serving runs <code>./muxos build --composition {item.id}</code> in
             THIS checkout: its own frontend dist and empty database, live at{" "}
             {host ?? `${item.id}.<this checkout>`}. Two checkouts serving the
             same composition get two namespaces and two databases.
@@ -255,7 +255,7 @@ export function ServeTargetPanel({
         ) : (
           <>
             This is the app this repo builds. It is deployed by{" "}
-            <code>./equin build</code> into this checkout’s own namespace, so
+            <code>./muxos build</code> into this checkout’s own namespace, so
             there is nothing here to switch on.
           </>
         )}

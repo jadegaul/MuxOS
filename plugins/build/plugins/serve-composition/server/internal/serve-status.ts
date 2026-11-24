@@ -42,7 +42,7 @@ export async function serveNamespaceOf(
  * worktree". The spec is written only at the build's commit point, after the
  * dist is published, so the pair is "this composition's build landed here".
  * (A failed REBUILD keeps both: the previous build is still served.) Both are
- * read off the shared `~/.equin/worktrees/` tree, so a backend can answer for
+ * read off the shared `~/.muxos/worktrees/` tree, so a backend can answer for
  * a namespace it does not itself serve.
  *
  * `head` is this checkout's HEAD: what a serve build started now would compose

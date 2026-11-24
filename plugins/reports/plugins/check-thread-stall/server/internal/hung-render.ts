@@ -23,7 +23,7 @@ export function renderCheckPassHungTask(
 ): { title: string; description: string } {
   const lines: string[] = [];
   lines.push(
-    `A \`./equin check\` pass in \`${d.worktree}\` (pid ${d.pid}) stopped making ` +
+    `A \`./muxos check\` pass in \`${d.worktree}\` (pid ${d.pid}) stopped making ` +
       `progress: its one JS thread held its core for **${formatSeconds(d.heldMs)}** ` +
       `of its own CPU time (over ${formatSeconds(d.silentMs)} of wall time) without ` +
       "running a single timer. A healthy pass yields within seconds; this one " +
@@ -42,7 +42,7 @@ export function renderCheckPassHungTask(
   );
   lines.push(
     "2. A loop in a check's own JS shows as JIT frames too: the checks in flight " +
-      "below are the suspects — run each alone (`./equin check <id>`).",
+      "below are the suspects — run each alone (`./muxos check <id>`).",
   );
   lines.push(
     "3. " +

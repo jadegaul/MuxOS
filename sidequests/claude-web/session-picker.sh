@@ -21,7 +21,7 @@ create_new() {
   # Create a new worktree with a fresh branch off main
   $GIT -C "$WORKDIR" worktree add -b "$branch" "$wt_path" main 2>/dev/null
 
-  # Fork the base DB so ./equin build works without the server.
+  # Fork the base DB so ./muxos build works without the server.
   # Only drop if the DB already exists but the fork is incomplete (interrupted
   # mid pg_restore); a fresh name won't exist at all so createdb runs clean.
   if ! psql -d "$name" -tAc "SELECT 1 FROM __singularity_migrations LIMIT 1" 2>/dev/null | grep -q 1; then
@@ -32,12 +32,12 @@ create_new() {
     pg_dump -Fc singularity | pg_restore -d "$name"
   fi
 
-  # Main's address on this account's gateway port (`./equin url`, run in the
+  # Main's address on this account's gateway port (`./muxos url`, run in the
   # main checkout: its dependencies are installed).
   local parent_url
-  parent_url="$(cd "$WORKDIR" && zsh -l -c './equin url')"
+  parent_url="$(cd "$WORKDIR" && zsh -l -c './muxos url')"
   $TMUX -u new-session -d -s "$name" -c "$wt_path" \
-    "zsh -l -c 'export EQUIN_CONVERSATION_ID=$name EQUIN_PARENT_URL=$parent_url; $CLAUDE'"
+    "zsh -l -c 'export MUXOS_CONVERSATION_ID=$name MUXOS_PARENT_URL=$parent_url; $CLAUDE'"
   exec $TMUX -u attach -t "$name"
 }
 

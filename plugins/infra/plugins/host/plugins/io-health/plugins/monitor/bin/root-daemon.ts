@@ -39,7 +39,7 @@ export function rootStdioLog(dir: string): string {
 
 export interface RootDaemonSpec {
   label: string;
-  /** The binary launchd runs: the one the login service installed into the equin app. */
+  /** The binary launchd runs: the one the login service installed into the muxos app. */
   executable: string;
   dir: string;
   intervalS: number;
@@ -211,7 +211,7 @@ export function installRoot(s: RootDaemonSpec): void {
   assertRoot("install-root");
   if (!/\.app\/Contents\/MacOS\/[^/]+$/.test(s.executable))
     throw new Error(
-      `run install-root from the binary inside the equin app (…/equin.app/Contents/MacOS/fs-latency-monitor), not ${s.executable}: the daemon runs the binary it was installed from, and only the app's copy follows main's builds`,
+      `run install-root from the binary inside the muxos app (…/muxos.app/Contents/MacOS/fs-latency-monitor), not ${s.executable}: the daemon runs the binary it was installed from, and only the app's copy follows main's builds`,
     );
   if (!statSync(s.dir).isDirectory())
     throw new Error(`${s.dir} is not a directory`);

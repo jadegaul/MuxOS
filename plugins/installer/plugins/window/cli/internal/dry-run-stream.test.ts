@@ -38,7 +38,7 @@ const BASHES = (await installShBashes()).map((b) => [b.label, b.path] as const);
 const SCRIPT = join(REPO_ROOT, "install.sh");
 
 /**
- * The dry run's HOME: its run dir (`~/.equin/logs/install/<run>/`, from the
+ * The dry run's HOME: its run dir (`~/.muxos/logs/install/<run>/`, from the
  * data root under HOME) lands here, never in the real data root.
  */
 const homes: string[] = [];
@@ -53,7 +53,7 @@ afterAll(() => {
 
 /** The run dir the dry run under `home` wrote (`latest` names it). */
 function runDir(home: string): string {
-  const root = join(home, ".equin", "logs", "install");
+  const root = join(home, ".muxos", "logs", "install");
   return join(root, readlinkSync(join(root, "latest")));
 }
 
@@ -206,7 +206,7 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
       expect(pause).toMatchObject({
         step: "clone",
         kind: "unknown",
-        title: "Downloading equin didn't finish",
+        title: "Downloading muxos didn't finish",
         blocking: true,
         optional: false,
         manual: null,
@@ -226,7 +226,7 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
       // What Fix with Claude and Report issue read, beside the log.
       const dir = runDir(home);
       const prompt = readFileSync(join(dir, "fix-prompt.md"), "utf8");
-      expect(prompt).toContain("**Downloading equin didn't finish**");
+      expect(prompt).toContain("**Downloading muxos didn't finish**");
       expect(prompt).toContain(
         "Never disable, remove or get around security software",
       );
@@ -236,11 +236,11 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
       );
       const url = new URL(readFileSync(join(dir, "report-url"), "utf8").trim());
       expect(url.origin + url.pathname).toBe(
-        "https://github.com/equinai/equin/issues/new",
+        "https://github.com/jadegaul/MuxOS/issues/new",
       );
       expect(url.searchParams.get("labels")).toBe("install");
       expect(url.searchParams.get("title")).toBe(
-        "Install: Downloading equin didn't finish",
+        "Install: Downloading muxos didn't finish",
       );
       expect(url.searchParams.get("body")).not.toContain(home);
       // Every byte encoded right, those above 127 too (the system line's ·).
@@ -290,12 +290,12 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
       expect(pause).toMatchObject({
         step: "start",
         kind: "unknown",
-        title: "equin couldn't add the equin icon in your menu bar",
+        title: "muxos couldn't add the muxos icon in your menu bar",
         optional: true,
       });
       expect(pause!.text).toContain("GTK and WebKitGTK");
       expect(pause!.evidence).toEqual([
-        "dev.equin.menu-bar (menu-bar-helper): missing libgtk-3-dev (dry run)",
+        "dev.muxos.menu-bar (menu-bar-helper): missing libgtk-3-dev (dry run)",
       ]);
       expect(events.find((e) => e.type === "resolved")).toMatchObject({
         how: "skip",
@@ -312,10 +312,10 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
       const resolvedAt = events.findIndex((e) => e.type === "resolved");
       expect(events[resolvedAt + 1]).toMatchObject({
         type: "notice",
-        id: "dev.equin.menu-bar",
+        id: "dev.muxos.menu-bar",
         state: "skipped",
-        title: "Installed without the equin icon in your menu bar",
-        without: "the equin icon in your menu bar",
+        title: "Installed without the muxos icon in your menu bar",
+        without: "the muxos icon in your menu bar",
       });
       expect(events.at(-1)).toMatchObject({ type: "exit", code: 0 });
       expect(
@@ -658,7 +658,7 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
   }
 
   describe("install.sh --dry-run, plain terminal view", () => {
-    test("timestamped [n/N] lines, then equin is ready", async () => {
+    test("timestamped [n/N] lines, then muxos is ready", async () => {
       const { out, code, home } = await plainDryRun();
       expect(code).toBe(0);
       const lines = out.split("\n").filter((l) => l !== "");
@@ -682,7 +682,7 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
       // A phase the step names itself (`say` inside it) gets its own line.
       expect(stamped).toContainEqual(
         expect.stringMatching(
-          /\] start equin's services: Installing the system libraries the Chromium browser runs on \(dry run: nothing is installed\)$/,
+          /\] start muxos's services: Installing the system libraries the Chromium browser runs on \(dry run: nothing is installed\)$/,
         ),
       );
       // A step says how long it usually takes only when it has a measured
@@ -703,14 +703,14 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
         stamped
           .find((l) => l.includes(`] ${label}: started`))
           ?.includes("(usually");
-      expect(saysUsually("download equin")).toBe(estimates.clone !== null);
-      expect(saysUsually("start equin's services")).toBe(
+      expect(saysUsually("download muxos")).toBe(estimates.clone !== null);
+      expect(saysUsually("start muxos's services")).toBe(
         estimates.start !== null,
       );
       if (Object.values(estimates).includes(null))
         expect(out).not.toContain("left");
       expect(stamped.at(-1)).toMatch(
-        /^\d\d:\d\d:\d\d equin is ready · installed in \d+s · http:\/\/equin\.localhost:9000$/,
+        /^\d\d:\d\d:\d\d muxos is ready · installed in \d+s · http:\/\/muxos\.localhost:9000$/,
       );
       // The same events were recorded.
       const recorded = parseAll(
@@ -730,7 +730,7 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
       );
       expect(out).toContain("  > toolchain: failed (dry run, first attempt)");
       expect(out).not.toContain("  > clone:");
-      expect(out).not.toContain("equin is ready");
+      expect(out).not.toContain("muxos is ready");
       expect(out).toContain(
         "FAILED: Installing Bun, Go and Rust didn't finish",
       );
@@ -749,7 +749,7 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
         INSTALL_STALL_S: "1",
       });
       expect(code).toBe(0);
-      expect(out).toMatch(/equin is ready · installed in \d+s/);
+      expect(out).toMatch(/muxos is ready · installed in \d+s/);
       const recorded = parseAll(
         readFileSync(join(runDir(home), "events.jsonl"), "utf8"),
       );
@@ -764,7 +764,7 @@ describe.each(BASHES)("install.sh under %s", (_label, BASH) => {
         { INSTALL_DRY_RUN_VIEW_EXIT: "toolchain" },
       );
       expect(code).toBe(143);
-      expect(out).not.toContain("equin is ready");
+      expect(out).not.toContain("muxos is ready");
       expect(err).toContain(
         "install.sh: the terminal view stopped (status 7) while the install was running",
       );

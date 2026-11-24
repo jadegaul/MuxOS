@@ -42,7 +42,7 @@
  *
  * Manual only — nothing runs this automatically.
  *
- *   ./equin run plugins/primitives/plugins/pane/e2e/pane-theme-scope.ts \
+ *   ./muxos run plugins/primitives/plugins/pane/e2e/pane-theme-scope.ts \
  *     [--base http://<worktree>.localhost:<port>] [--page <blockId>] [--headed]
  */
 import {

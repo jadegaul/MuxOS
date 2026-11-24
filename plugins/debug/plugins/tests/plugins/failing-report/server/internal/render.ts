@@ -30,7 +30,7 @@ export function renderTestFailingTask(
       "(main's checkout tests whatever main is at, so the range can span several pushes).",
     "",
     "**What to do:**",
-    `1. Reproduce from a worktree: \`./equin test ${d.path}\`.`,
+    `1. Reproduce from a worktree: \`./muxos test ${d.path}\`.`,
     "2. Find the change that broke it in the range above, and fix the code or " +
       "the test — whichever is wrong. Never skip or delete the test to make it pass.",
     "3. Push with `--fixes-report <this report's id>`, so a later failure of " +

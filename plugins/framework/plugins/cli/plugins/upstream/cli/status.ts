@@ -5,7 +5,7 @@ import { releaseVersion } from "@plugins/upstream/plugins/release/core";
 import { noUpstreamSentence } from "./internal/describe";
 
 /**
- * `./equin upstream status` — whether upstream has cut a release local `main`
+ * `./muxos upstream status` — whether upstream has cut a release local `main`
  * does not hold.
  *
  * Read-only: it fetches upstream's main and release tags (otherwise the answer
@@ -47,7 +47,7 @@ const run: CliAction<[], object> = async () => {
   console.log(
     `${status.remote} has released ${releaseVersion(status.latest)}; main is on ${status.current === null ? "no release" : releaseVersion(status.current)} (${status.url}).`,
   );
-  console.log(`\nRun \`./equin upstream merge\` in a worktree to bring it in.`);
+  console.log(`\nRun \`./muxos upstream merge\` in a worktree to bring it in.`);
 };
 
 export default run;

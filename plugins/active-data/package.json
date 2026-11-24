@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-active-data",
+  "name": "@muxos/plugin-active-data",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

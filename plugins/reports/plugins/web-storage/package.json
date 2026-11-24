@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-reports-web-storage",
+  "name": "@muxos/plugin-reports-web-storage",
   "private": true,
   "version": "0.0.1"
 }

@@ -3,18 +3,18 @@
  * gateway is replaced (a handover, a service restart, a host restart), and
  * says what a visitor saw.
  *
- *   ./equin run plugins/infra/plugins/launcher/scripts/gateway-load-probe.ts \
- *     --url https://equin.ai [--seconds 90] [--workers 6] [--rate 60] \
- *     [--websockets 2] [--out "$EQUIN_SCRATCH/probe.json"]
+ *   ./muxos run plugins/infra/plugins/launcher/scripts/gateway-load-probe.ts \
+ *     --url https://MuxOS.app [--seconds 90] [--workers 6] [--rate 60] \
+ *     [--websockets 2] [--out "$MUXOS_SCRATCH/probe.json"]
  *
  * The load is DECLARED, not discovered: `--rate` requests per second in total,
  * spread evenly over the workers, each worker starting its next request on its
  * own schedule (or as soon as the previous one ends, when it answers slower
  * than that). A closed loop — the next request the instant the previous answers
- * — sends `workers / latency` requests a second: ~60/s to equin.ai over the
+ * — sends `workers / latency` requests a second: ~60/s to MuxOS.app over the
  * internet, but ~3,500/s to the local gateway at ~1 ms, which is what a
  * 25-minute run against main did on 2026-11-15 (3.3M `GET /api/health` in an
- * hour, report-1794537600-wwhsz4). The default matches what the equin.ai runs
+ * hour, report-1794537600-wwhsz4). The default matches what the MuxOS.app runs
  * measured; a handover window of milliseconds is still seen at 60/s by the
  * WebSockets and by any request that spans it.
  *

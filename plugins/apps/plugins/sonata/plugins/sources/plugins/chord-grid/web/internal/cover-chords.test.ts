@@ -4,7 +4,7 @@
  * `key:` directive (the one in force at the chord) or, with none, against
  * the first chord's root. The Chords cell names the first chords.
  *
- * Run: `./equin test plugins/apps/plugins/sonata/plugins/sources/plugins/chord-grid`.
+ * Run: `./muxos test plugins/apps/plugins/sonata/plugins/sources/plugins/chord-grid`.
  */
 
 import { describe, expect, test } from "bun:test";

@@ -226,7 +226,7 @@ export interface OpIdentity {
   pid: number | null;
   /**
    * The op runs only because the host is idle and yields to any other work
-   * (`EQUIN_OP_OPPORTUNISTIC`, cli/op-runtime): background lane, low
+   * (`MUXOS_OP_OPPORTUNISTIC`, cli/op-runtime): background lane, low
    * priority, and not counted as work by the host idle signal.
    */
   opportunistic: boolean;

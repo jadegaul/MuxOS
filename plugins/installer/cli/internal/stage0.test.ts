@@ -142,7 +142,7 @@ const server = Bun.serve({
 
 let home = "";
 beforeAll(() => {
-  home = mkdtempSync(join(tmpdir(), "equin-stage0-"));
+  home = mkdtempSync(join(tmpdir(), "muxos-stage0-"));
 });
 afterAll(() => {
   void server.stop(true);
@@ -201,7 +201,7 @@ describe.each(BASHES)("under %s", (_label, BASH) => {
     return { code, out };
   }
 
-  const bin = (tag: string) => join(home, ".equin/install/bin", tag);
+  const bin = (tag: string) => join(home, ".muxos/install/bin", tag);
 
   describe("install.sh stage 0", () => {
     test("the shipped default is the terminal: the window is never downloaded unless --window", async () => {
@@ -213,13 +213,13 @@ describe.each(BASHES)("under %s", (_label, BASH) => {
       const r = await stage0([]);
       expect(r.code).toBe(0);
       expect(r.out).toContain(
-        "  Installing equin 2026.12.01 in this terminal.\n",
+        "  Installing muxos 2026.12.01 in this terminal.\n",
       );
       expect(r.out).toContain("stage0: exec bash ");
       expect(
         requests.some(
           (p) =>
-            p.includes("equin-installer-") ||
+            p.includes("muxos-installer-") ||
             p.endsWith("INSTALLER-SHA256SUMS"),
         ),
       ).toBe(false);
@@ -267,7 +267,7 @@ describe.each(BASHES)("under %s", (_label, BASH) => {
       expect(r.code).toBe(0);
       expect(r.out).toMatch(
         new RegExp(
-          `stage0: exec ${bin("v2026.12.01")}/equin-installer-[a-z0-9-]+ --script ${bin("v2026.12.01")}/install.sh -- --release v2026.12.01 --checkout v2026.12.01$`,
+          `stage0: exec ${bin("v2026.12.01")}/muxos-installer-[a-z0-9-]+ --script ${bin("v2026.12.01")}/install.sh -- --release v2026.12.01 --checkout v2026.12.01$`,
           "m",
         ),
       );
@@ -299,7 +299,7 @@ describe.each(BASHES)("under %s", (_label, BASH) => {
       expect(ci.out).toContain("stage0: exec bash ");
       const r = await stage0(["--terminal"], {}, "auto");
       expect(r.out).toContain("you asked for it with --terminal");
-      expect(requests.some((p) => p.includes("equin-installer-"))).toBe(false);
+      expect(requests.some((p) => p.includes("muxos-installer-"))).toBe(false);
     });
 
     test("--ref main: the newest release's script, checking out main", async () => {
@@ -417,7 +417,7 @@ describe.each(BASHES)("under %s", (_label, BASH) => {
     });
     const windowExec = (tag: string) =>
       new RegExp(
-        `stage0: exec ${bin(tag)}/equin-installer-[a-z0-9-]+ --script ${bin(tag)}/install.sh -- --release ${tag} --checkout ${tag}$`,
+        `stage0: exec ${bin(tag)}/muxos-installer-[a-z0-9-]+ --script ${bin(tag)}/install.sh -- --release ${tag} --checkout ${tag}$`,
         "m",
       );
 
@@ -456,7 +456,7 @@ describe.each(BASHES)("under %s", (_label, BASH) => {
         "this release's installer window isn't published (yet)",
       );
       expect(r.out).toContain("stage0: exec bash ");
-      expect(requests.some((p) => p.includes("equin-installer-"))).toBe(false);
+      expect(requests.some((p) => p.includes("muxos-installer-"))).toBe(false);
       const forced = await stage0(["--window"]);
       expect(forced.code).toBe(1);
       expect(forced.out).toContain(

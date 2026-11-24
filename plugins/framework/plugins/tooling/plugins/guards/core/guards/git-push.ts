@@ -12,11 +12,11 @@ export const gitPushGuard = defineGuard<BashInput>({
     const cmd = input.command;
     if (!cmd) return null;
 
-    // Only a push INTO an equin checkout is refused: that repo lands work
-    // through `./equin push`. A push to a separate repo (a package an
+    // Only a push INTO an muxos checkout is refused: that repo lands work
+    // through `./muxos push`. A push to a separate repo (a package an
     // agent publishes on its own) has no CLI flow to bypass. Anything this
     // cannot place — an unfollowed --git-dir, a directory that is no repo —
-    // is treated as equin.
+    // is treated as muxos.
     const gitPush = findCall(
       cmd,
       (c) => {
@@ -34,9 +34,9 @@ export const gitPushGuard = defineGuard<BashInput>({
 
     return {
       blocked:
-        "`git push` into the equin repo is not allowed — agents must use the equin CLI.",
+        "`git push` into the muxos repo is not allowed — agents must use the muxos CLI.",
       why: "Raw git push bypasses validation checks, worktree-merge flow, and branch protection. A previous agent ran `git push origin main` directly and corrupted shared state.",
-      hint: 'Use `./equin push -m "commit message"` instead. It runs checks, commits, and pushes via the proper worktree-merge flow. (Pushes into a separate, non-equin repo are allowed — run them from that repo\'s directory, or with `git -C <dir> push`.)',
+      hint: 'Use `./muxos push -m "commit message"` instead. It runs checks, commits, and pushes via the proper worktree-merge flow. (Pushes into a separate, non-muxos repo are allowed — run them from that repo\'s directory, or with `git -C <dir> push`.)',
     };
   },
 });

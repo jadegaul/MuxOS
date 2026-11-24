@@ -7,7 +7,7 @@
 // main namespace") painted the frame on compositions and releases too.
 //
 // The producer stamps it instead: a dist is experimental only because
-// `./equin build` said so — the DEPLOY posture, and only from a non-main
+// `./muxos build` said so — the DEPLOY posture, and only from a non-main
 // worktree. Every other producer (`build --hermetic`, the
 // release/tauri bundles) is clean by DEFAULT rather than by exclusion, so a new
 // way of shipping a dist can never inherit the frame by accident.

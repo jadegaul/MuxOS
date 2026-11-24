@@ -1,7 +1,7 @@
 /**
  * The address root: the base path of the app a composition serves at `/`
  * (a composition whose `homeAtRoot` is set — the public website, `/about`,
- * served at `equin.ai/`). Inside the app every path keeps its base path (a
+ * served at `MuxOS.app/`). Inside the app every path keeps its base path (a
  * ROUTE path, `/about/vision`); only the address — what the browser shows,
  * what a link or a sitemap hands out — drops it (an ADDRESS path, `/vision`).
  *

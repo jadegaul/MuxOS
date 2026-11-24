@@ -4,7 +4,7 @@
  * automation filed. The launch decision is exposed as `approval`, NULL — not
  * approved — for a task no one decided on.
  *
- * Run: `./equin test plugins/tasks/plugins/automations`.
+ * Run: `./muxos test plugins/tasks/plugins/automations`.
  */
 
 import { expect, test } from "bun:test";

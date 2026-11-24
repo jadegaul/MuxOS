@@ -9,7 +9,7 @@
  * the first one: the first frame that shows transcript rows must already hold
  * (nearly) all of the transcript's text.
  *
- *   ./equin run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/e2e/open-whole.ts --conv <id>
+ *   ./muxos run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/e2e/open-whole.ts --conv <id>
  */
 import {
   boot,

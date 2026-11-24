@@ -3,7 +3,7 @@ import type { StepRegression } from "./detect";
 
 /**
  * The report kind, spelled once: the server registers its `ReportKind` under
- * it, the web dispatches its `Reports.KindView` on it, and `./equin build`
+ * it, the web dispatches its `Reports.KindView` on it, and `./muxos build`
  * files under it through the report outbox.
  */
 export const STEP_REGRESSION_KIND = "build-step-regression";
@@ -60,7 +60,7 @@ function count(n: number): string {
 
 /**
  * One line: `artifacts:detect took 171 s, its baseline 20 s (×8.5, 20 builds)`
- * or `… made 452k file calls, its baseline 2.4k (…) — +450k under ~/.equin/…`.
+ * or `… made 452k file calls, its baseline 2.4k (…) — +450k under ~/.muxos/…`.
  */
 export function stepRegressionLine(d: StepRegression): string {
   const ratio = d.baseline > 0 ? `×${(d.value / d.baseline).toFixed(1)}, ` : "";

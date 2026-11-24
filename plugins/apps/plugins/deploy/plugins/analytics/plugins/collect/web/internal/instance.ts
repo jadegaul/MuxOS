@@ -130,7 +130,7 @@ function readOwnerFragment(): void {
  */
 export function getTracker(): Tracker {
   if (instance) return instance;
-  // A mark link (`#equin-me`) is read before the first pageview, so that
+  // A mark link (`#muxos-me`) is read before the first pageview, so that
   // pageview is already the owner's.
   readOwnerFragment();
   window.addEventListener("hashchange", readOwnerFragment);

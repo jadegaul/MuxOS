@@ -56,7 +56,7 @@ export { WatchedDirGoneError } from "./dir-gone";
 // does fails loudly at the call site (not during an unrelated barrel's init).
 //
 // In a self-contained release `bun --compile` cannot embed the native addon, so
-// the launcher vendors it on disk and points `EQUIN_PARCEL_WATCHER_NODE`
+// the launcher vendors it on disk and points `MUXOS_PARCEL_WATCHER_NODE`
 // at the absolute path of the `watcher.node` binding. When that env var is set,
 // `getParcelWatcher()` dlopens the vendored binding directly and wraps it with
 // parcel's own `createWrapper`, yielding the identical public API. This single

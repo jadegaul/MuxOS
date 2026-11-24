@@ -6,7 +6,7 @@
  * out what is declared for developers), and agrees row for row with the
  * panel's in-memory `matchesFilter` over the same predicate.
  *
- * Run: `./equin test plugins/shell/plugins/notifications`
+ * Run: `./muxos test plugins/shell/plugins/notifications`
  */
 
 import {

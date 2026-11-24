@@ -38,7 +38,7 @@ async function lastRemindedAt(): Promise<Date | null> {
 
 /**
  * The update reminder, after a check found `latest` missing from local `main`:
- * one user notification "equin is out of date" whose action (`equin-update`,
+ * one user notification "muxos is out of date" whose action (`muxos-update`,
  * web) sends an agent or puts the reminder off — written only when
  * `reminderDecision` says it is due (at most every two weeks whichever release
  * it is about, or when the user's snooze ends; never while reminders are off, the release is

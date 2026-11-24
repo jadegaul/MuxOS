@@ -224,7 +224,7 @@ pub fn for_each_line(reader: impl io::Read, mut each: impl FnMut(String)) {
         match line {
             Ok(bytes) => each(String::from_utf8_lossy(&bytes).into_owned()),
             Err(e) => {
-                eprintln!("equin-installer: reading the install's output failed: {e}");
+                eprintln!("muxos-installer: reading the install's output failed: {e}");
                 return;
             }
         }

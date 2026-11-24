@@ -183,12 +183,12 @@ describe("processLabel", () => {
         "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Helper (Renderer).app/Contents/MacOS/Google Chrome Helper (Renderer) --type=renderer",
       ),
     ).toBe("Google Chrome Helper (Renderer)");
-    expect(processLabel("/x/bin/equin · server · main")).toBe(
-      "equin · server · main",
+    expect(processLabel("/x/bin/muxos · server · main")).toBe(
+      "muxos · server · main",
     );
     expect(
       processLabel(
-        "/u/.equin/state/macos-app/equin.app/Contents/MacOS/gateway -listen x",
+        "/u/.muxos/state/macos-app/muxos.app/Contents/MacOS/gateway -listen x",
       ),
     ).toBe("gateway");
     expect(
@@ -198,11 +198,11 @@ describe("processLabel", () => {
     ).toBe("bun cli/bin/index.ts check --scope tree");
     expect(
       processLabel(
-        "/u/state/sdk-agents/ns/conv-1/bin/equin · agent · conv-1 /repo/plugins/x/bin/agent.ts",
+        "/u/state/sdk-agents/ns/conv-1/bin/muxos · agent · conv-1 /repo/plugins/x/bin/agent.ts",
       ),
-    ).toBe("equin · agent · conv-1 x/bin/agent.ts");
-    expect(processLabel("postgres: equin main [local] idle")).toBe(
-      "postgres: equin main [local] idle",
+    ).toBe("muxos · agent · conv-1 x/bin/agent.ts");
+    expect(processLabel("postgres: muxos main [local] idle")).toBe(
+      "postgres: muxos main [local] idle",
     );
   });
 });

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { normalizeRepoUrl, remoteTransport, sameRepoUrl } from "./remote-url";
 
-const CANONICAL = "https://github.com/equinai/equin";
+const CANONICAL = "https://github.com/jadegaul/MuxOS";
 
 describe("normalizeRepoUrl", () => {
   test("reads scp-like syntax, which is not a URL", () => {
@@ -43,23 +43,23 @@ describe("normalizeRepoUrl", () => {
 describe("sameRepoUrl", () => {
   test("the four spellings of one repo are one repo", () => {
     for (const spelling of [
-      "https://github.com/equinai/equin.git",
-      "https://github.com/EquinAI/equin/",
-      "git@github.com:equinai/equin.git",
-      "ssh://git@github.com/equinai/equin",
+      "https://github.com/jadegaul/MuxOS.git",
+      "https://github.com/MuxOSAI/muxos/",
+      "git@github.com:jadegaul/MuxOS.git",
+      "ssh://git@github.com/jadegaul/MuxOS",
     ]) {
       expect(sameRepoUrl(spelling, CANONICAL)).toBe(true);
     }
   });
 
   test("a fork is not the canonical repo", () => {
-    expect(sameRepoUrl("git@github.com:someone/equin.git", CANONICAL)).toBe(
+    expect(sameRepoUrl("git@github.com:someone/muxos.git", CANONICAL)).toBe(
       false,
     );
   });
 
   test("a different host is a different repo", () => {
-    expect(sameRepoUrl("https://gitlab.com/equinai/equin", CANONICAL)).toBe(
+    expect(sameRepoUrl("https://gitlab.com/jadegaul/MuxOS", CANONICAL)).toBe(
       false,
     );
   });

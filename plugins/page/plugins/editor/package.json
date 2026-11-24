@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-page-editor",
-  "description": "Block-based document editor — tables, routes, and live state.",
+  "name": "@muxos/plugin-page-editor",
+  "description": "Block-based document editor \u2014 tables, routes, and live state.",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

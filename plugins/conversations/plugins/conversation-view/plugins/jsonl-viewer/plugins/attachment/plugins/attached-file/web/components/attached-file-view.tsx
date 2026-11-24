@@ -84,7 +84,7 @@ interface AttachedFilePayload {
 }
 
 /**
- * A file sent from equin's composer reaches the agent as `@<attachment disk
+ * A file sent from muxos's composer reaches the agent as `@<attachment disk
  * path>`, and the user's message already draws that ref as the file itself (a
  * thumbnail or chip). Its attachment event is then only the harness's record of
  * what it fed the model — context, folded after the prompt — not a second copy
@@ -123,7 +123,7 @@ function noteOf(parts: (string | null)[]): string | undefined {
  * everywhere else in this transcript (`user-image`), and a picture hidden
  * behind a chevron is a picture the reader never sees. The path is deliberately
  * absent from the image row: an attached image lives at
- * `~/.equin/state/attachments/<uuid>.png`, a name that identifies nothing
+ * `~/.muxos/state/attachments/<uuid>.png`, a name that identifies nothing
  * the reader can use — the image itself is the identity.
  */
 export function AttachedFileView({ event }: AttachmentRendererProps) {

@@ -137,7 +137,7 @@ export interface EvaluatedBarrels {
 }
 
 /** Stands for the checkout's root in a stored record. */
-const CHECKOUT_ROOT = "<equin:checkout-root>";
+const CHECKOUT_ROOT = "<muxos:checkout-root>";
 
 /**
  * A record's text with every spelling of the checkout's root (the whole root,

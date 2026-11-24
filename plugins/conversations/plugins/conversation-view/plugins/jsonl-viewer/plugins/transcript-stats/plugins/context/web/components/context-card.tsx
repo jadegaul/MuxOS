@@ -69,7 +69,7 @@ const MCP_TOOLS_ROW = "MCP tools";
 const SYSTEM_PROMPT_ROW = "System prompt";
 
 /**
- * What equin appended to the agent's system prompt at its last spawn, section
+ * What muxos appended to the agent's system prompt at its last spawn, section
  * by section (conversations/system-prompt) — `loading` until the read answers,
  * `error` when it failed, `unrecorded` for an agent spawned before sections
  * were recorded.
@@ -399,7 +399,7 @@ function SystemPromptStatus({
 }
 
 /**
- * The System prompt row's parts: each section equin appended (an estimate from
+ * The System prompt row's parts: each section muxos appended (an estimate from
  * its length — the harness measures the row, not its parts), then Claude Code's
  * own prompt as what is left of the measured total.
  */

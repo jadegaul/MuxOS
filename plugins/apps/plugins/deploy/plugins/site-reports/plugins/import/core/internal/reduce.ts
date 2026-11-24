@@ -295,7 +295,7 @@ function ownPath(url: string, own: ReadonlySet<string>): string | null {
 
 /**
  * One string of the payload as one plain line: a URL on the site's own origin
- * cut to its path (`at f (https://equin.ai/a.js:1:2)` → `at f (/a.js:1:2)`),
+ * cut to its path (`at f (https://MuxOS.app/a.js:1:2)` → `at f (/a.js:1:2)`),
  * then sanitised like the message — every other URL removed.
  */
 function payloadLine(raw: string, own: ReadonlySet<string>): string {

@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-tooling-test-layout",
+  "name": "@muxos/plugin-framework-tooling-test-layout",
   "version": "0.0.1",
   "private": true,
-  "description": "The canonical bun:test ⇄ vitest split as data (core), enforced as the test-layout:runner-split check."
+  "description": "The canonical bun:test \u21c4 vitest split as data (core), enforced as the test-layout:runner-split check."
 }

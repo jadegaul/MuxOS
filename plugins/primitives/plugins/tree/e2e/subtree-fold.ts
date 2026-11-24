@@ -26,8 +26,8 @@
  * The Pages sidebar is the reference surface: it is the tree that never had this
  * affordance, because it never wrote its own copy of it.
  *
- * Manual only. Run after `./equin build`:
- *   ./equin run plugins/primitives/plugins/tree/e2e/subtree-fold.ts \
+ * Manual only. Run after `./muxos build`:
+ *   ./muxos run plugins/primitives/plugins/tree/e2e/subtree-fold.ts \
  *     --url http://<worktree>.localhost:<port> [--headed]
  *
  * Pass `--url` explicitly: the harness derives its default from

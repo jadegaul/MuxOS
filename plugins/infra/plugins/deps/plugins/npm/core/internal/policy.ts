@@ -101,7 +101,7 @@ export const PolicySchema = z
     groups: z.array(GroupSchema).optional(),
     holds: z.array(HoldSchema).optional(),
     /**
-     * Root package.json only: the npm scopes we publish ourselves (`@equin`).
+     * Root package.json only: the npm scopes we publish ourselves (`@muxos`).
      * Every dependency in one must sit in a group that declares what it
      * `wraps` (`deps-npm:wrappers-declared`), or its upstream goes unseen.
      */

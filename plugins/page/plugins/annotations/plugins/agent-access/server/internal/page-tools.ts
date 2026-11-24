@@ -86,7 +86,7 @@ export interface PageToolCaller {
 }
 
 /**
- * Who is reading: a conversation, or `null` for a session equin did not launch
+ * Who is reading: a conversation, or `null` for a session muxos did not launch
  * (`read_page` is served to those too — reading needs no author).
  */
 export interface PageReadCaller {

@@ -48,7 +48,7 @@ const panicStackLines = crashTailLines
 // gatewayPanic is the `gateway-panic` payload.
 type gatewayPanic struct {
 	// Site is the function the panic was raised in (the frame below the
-	// runtime's panic machinery), e.g. "equin/gateway.(*backend).incHTTP" — the
+	// runtime's panic machinery), e.g. "muxos/gateway.(*backend).incHTTP" — the
 	// report's fingerprint.
 	Site string `json:"site"`
 	// Value is the recovered value, as text.

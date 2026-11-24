@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-deploy-site-messages",
+  "name": "@muxos/plugin-apps-deploy-site-messages",
   "description": "Umbrella for messages a deployed site's visitors send: the intake half that ships inside the site (table, public endpoint, abuse limits, notification email, the site_messages mirror set) and the inbox half in the local deploy app (a live window over this computer's copy of the site's messages).",
   "private": true,
   "version": "0.0.1"

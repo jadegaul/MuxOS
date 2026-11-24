@@ -1,7 +1,7 @@
 /**
  * What does metering every file call as it starts cost a fast one?
  *
- *   ./equin run plugins/infra/plugins/runtime-profiler/scripts/fs-meter-bench.ts
+ *   ./muxos run plugins/infra/plugins/runtime-profiler/scripts/fs-meter-bench.ts
  *
  * Runs N real calls (`stat` awaited, `statSync`) inside three nested entries,
  * under four meters: none, the deferred wait the server installs

@@ -63,7 +63,7 @@ const matcherCoversGuards: Check = {
     return {
       ok: false,
       message: `the guard hook's matcher "${entry.matcher}" leaves out tools guards match, so those guards never run:\n    ${lines.join("\n    ")}`,
-      hint: "Add each to the PreToolUse matcher in guards/plugins/agent-policy/core/agent-policy.ts (an MCP server `mcp__<server>__*` as `mcp__<server>__.*`), then `./equin build`.",
+      hint: "Add each to the PreToolUse matcher in guards/plugins/agent-policy/core/agent-policy.ts (an MCP server `mcp__<server>__*` as `mcp__<server>__.*`), then `./muxos build`.",
     };
   },
 };
@@ -85,7 +85,7 @@ const claudeSettingsInSync: Check = {
     return {
       ok: false,
       message: `${CLAUDE_SETTINGS_REL_PATH} is ${actual === null ? "missing" : "out of sync with the agent policy"}`,
-      hint: "Protections (hooks, deny rules) are declared in guards/plugins/agent-policy/core/agent-policy.ts so every app launch carries them too — edit there, then run `./equin build` and commit the file.",
+      hint: "Protections (hooks, deny rules) are declared in guards/plugins/agent-policy/core/agent-policy.ts so every app launch carries them too — edit there, then run `./muxos build` and commit the file.",
     };
   },
 };

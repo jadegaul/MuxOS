@@ -15,7 +15,7 @@ export default function WelcomeExhibit() {
         welcome: (
           <WelcomeCard
             icon={symbol("all-inclusive")}
-            title="Welcome to equin"
+            title="Welcome to muxos"
             body="An app that builds itself. You say what you want; agents build it in the background while you keep working."
             note="A few quick stops · about a minute"
             start={{ label: "Show me around", onClick: noop }}

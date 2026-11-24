@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: equin
+title: muxos
 message: >-
   If you use this software, please cite it using the metadata from this file.
 type: software
@@ -8,5 +8,5 @@ authors:
     family-names: Pot
     email: etiennefg.pot@gmail.com
     orcid: 'https://orcid.org/0009-0003-1982-6611'
-repository-code: 'https://github.com/equinai/equin'
+repository-code: 'https://github.com/jadegaul/MuxOS'
 license: Apache-2.0

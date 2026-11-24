@@ -4,7 +4,7 @@
  * beside `schema-layer.test.ts`, for the same reason (the throwaway-DB fixture
  * would close an import cycle from `server/`).
  *
- * Requires the running embedded cluster (`./equin build` first).
+ * Requires the running embedded cluster (`./muxos build` first).
  */
 
 import { testSchemaOwner } from "@plugins/framework/plugins/server-core/core/testing";

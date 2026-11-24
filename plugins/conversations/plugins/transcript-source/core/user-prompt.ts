@@ -6,7 +6,7 @@ import { unwrapPastedContent } from "./pasted-content";
  * The text of a transcript line the user typed, or null when the line is
  * anything else: a tool result, a harness-injected turn (`isMeta`), an
  * interrupt sentinel, a delivered background-task report, an `event` turn the
- * app delivered (the turn ledger's `<equin-event>` envelope), or the summary a
+ * app delivered (the turn ledger's `<muxos-event>` envelope), or the summary a
  * context compaction writes (`isCompactSummary`).
  *
  * One definition on purpose. The parser stamps a `user-text` row with its line

@@ -27,7 +27,7 @@
 # fix as the NEXT step instead, so the run stays a legible diff against
 # docs/setup.md.
 
-REPO_URL="https://github.com/equinai/equin"
+REPO_URL="https://github.com/jadegaul/MuxOS"
 
 step_01_baseline() {
   cat <<'CMD'
@@ -95,7 +95,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 brew --version
 CMD
 }
-step_06_install_homebrew_DOC="Not in docs/setup.md at all — this is the fix for step 3, found the way a new user would find it (Homebrew's own site), not from any equin doc."
+step_06_install_homebrew_DOC="Not in docs/setup.md at all — this is the fix for step 3, found the way a new user would find it (Homebrew's own site), not from any muxos doc."
 step_06_install_homebrew_TAG="undocumented-knowledge"
 
 step_07_bun() {
@@ -140,25 +140,25 @@ step_11_start() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin start
+./muxos start
 CMD
 }
-step_11_start_DOC="Root CLAUDE.md CLI section: \`./equin start\` brings up the gateway — a one-time, system-level step."
+step_11_start_DOC="Root CLAUDE.md CLI section: \`./muxos start\` brings up the gateway — a one-time, system-level step."
 step_11_start_TAG="from-docs"
 
 step_12_build() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin build --allow-main
+./muxos build --allow-main
 CMD
 }
-step_12_build_DOC="Root CLAUDE.md CLI section: \`./equin build\`, run once against main to deploy the app for the first time."
+step_12_build_DOC="Root CLAUDE.md CLI section: \`./muxos build\`, run once against main to deploy the app for the first time."
 step_12_build_TAG="from-docs"
 # Recorded finding (run 1): the first build of a fresh clone fails after 62s
 # with 'no database for "singularity" and no fork in flight after 60s'. The
 # base database the whole app runs on is never created by anything in
-# docs/setup.md. The error does name a fix (`./equin db fork`), which
+# docs/setup.md. The error does name a fix (`./muxos db fork`), which
 # is the next step.
 step_12_build_EXPECT_FAIL=1
 
@@ -166,7 +166,7 @@ step_13_db_fork() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin db fork
+./muxos db fork
 CMD
 }
 step_13_db_fork_DOC="Not in docs/setup.md. The build's own failure message names this command, so a new user can find it — but only after the build fails."
@@ -174,8 +174,8 @@ step_13_db_fork_TAG="documented-elsewhere"
 # Recorded finding (run 1): this is a dead end, and the wall a new user hits.
 # `db fork` asks a RUNNING backend which tables to leave out of the copy:
 #   "Could not read the fork exclusion set from any running backend:
-#    http://equin.localhost:<port>/api/db/fork-exclusions -> 404
-#    Start equin and retry ..."
+#    http://muxos.localhost:<port>/api/db/fork-exclusions -> 404
+#    Start muxos and retry ..."
 # No backend can run until the app is built, and the build is what is asking
 # for the database. The build's own advice therefore cannot be followed on a
 # fresh install.
@@ -197,8 +197,8 @@ step_15_createdb() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-createdb -h ~/.equin/postgres/socket -p 5433 -U singularity singularity
-./equin apply-migrations
+createdb -h ~/.muxos/postgres/socket -p 5433 -U singularity singularity
+./muxos apply-migrations
 CMD
 }
 step_15_createdb_DOC="Nowhere in any doc. Reconstructed from mise.toml's setup task, but pointed at the embedded cluster socket instead of a system Postgres on 5432."
@@ -206,7 +206,7 @@ step_15_createdb_TAG="undocumented-knowledge"
 # Recorded finding (run 1): `createdb` against the embedded cluster's socket
 # works, but the command that is supposed to seed it crashes:
 #   "[runtime-identity] this process has not declared a runtime namespace."
-# So ./equin apply-migrations — the CLI command that exists for exactly
+# So ./muxos apply-migrations — the CLI command that exists for exactly
 # this fresh-clone case — is broken on main today. The database is left
 # created but empty.
 step_15_createdb_EXPECT_FAIL=1
@@ -215,7 +215,7 @@ step_16_build_retry() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin build --allow-main
+./muxos build --allow-main
 CMD
 }
 step_16_build_retry_DOC="The build from step 12, retried now that a database exists."
@@ -231,9 +231,9 @@ step_17_gateway_restart() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin start --force
+./muxos start --force
 sleep 20
-psql -h ~/.equin/postgres/socket -p 5433 -U singularity -d singularity -tAc "select count(*) from information_schema.tables where table_schema = 'public'"
+psql -h ~/.muxos/postgres/socket -p 5433 -U singularity -d singularity -tAc "select count(*) from information_schema.tables where table_schema = 'public'"
 CMD
 }
 step_17_gateway_restart_DOC="Nowhere. A guess: a backend applies migrations when it boots, so restarting the gateway once the database exists might seed it."
@@ -243,7 +243,7 @@ step_18_build_retry2() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin build --allow-main
+./muxos build --allow-main
 CMD
 }
 step_18_build_retry2_DOC="The build again, after the gateway restart."
@@ -263,7 +263,7 @@ step_19_apply_migrations_by_hand() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-PSQL="psql -h $HOME/.equin/postgres/socket -p 5433 -U singularity -d singularity -v ON_ERROR_STOP=1 -q"
+PSQL="psql -h $HOME/.muxos/postgres/socket -p 5433 -U singularity -d singularity -v ON_ERROR_STOP=1 -q"
 n=0
 for f in plugins/database/plugins/migrations/data/*.sql; do
   base=$(basename "$f")
@@ -284,7 +284,7 @@ step_20_build_retry3() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin build --allow-main
+./muxos build --allow-main
 CMD
 }
 step_20_build_retry3_DOC="The build again, with a fully migrated database behind it."
@@ -302,7 +302,7 @@ step_22_build_retry4() {
   cat <<'CMD'
 eval "$(/opt/homebrew/bin/brew shellenv)"
 cd ~/singularity
-./equin build --allow-main
+./muxos build --allow-main
 CMD
 }
 step_22_build_retry4_DOC="The build again."
@@ -332,7 +332,7 @@ step_24_build_retry5() {
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 cd ~/singularity
-./equin build --allow-main
+./muxos build --allow-main
 CMD
 }
 step_24_build_retry5_DOC="The build again, with every pinned tool reachable."
@@ -340,10 +340,10 @@ step_24_build_retry5_TAG="from-docs"
 
 step_25_curl_check() {
   cat <<'CMD'
-curl -sS -o /dev/null -w '%{http_code}\n' "$(zsh -l -i -c 'cd ~/singularity && ./equin url')/"
+curl -sS -o /dev/null -w '%{http_code}\n' "$(zsh -l -i -c 'cd ~/singularity && ./muxos url')/"
 CMD
 }
-step_25_curl_check_DOC="Root CLAUDE.md Ports section: the main namespace is always served at equin.localhost:<port> (./equin url) — checks it actually answers."
+step_25_curl_check_DOC="Root CLAUDE.md Ports section: the main namespace is always served at muxos.localhost:<port> (./muxos url) — checks it actually answers."
 step_25_curl_check_TAG="from-docs"
 
 step_26_screenshot() {
@@ -351,7 +351,7 @@ step_26_screenshot() {
 eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 cd ~/singularity
-./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts --out /tmp/clean-install-shot
+./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts --out /tmp/clean-install-shot
 ls -la /tmp/clean-install-shot*
 CMD
 }

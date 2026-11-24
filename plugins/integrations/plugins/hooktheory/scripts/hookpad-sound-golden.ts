@@ -1,6 +1,6 @@
 // ─── hookpadChordSound against Sheet Sage, on the whole dump ──────────────────
 //
-//   ./equin run plugins/integrations/plugins/hooktheory/scripts/hookpad-sound-golden.ts \
+//   ./muxos run plugins/integrations/plugins/hooktheory/scripts/hookpad-sound-golden.ts \
 //     --raw <Hooktheory_Raw.json.gz> --processed <Hooktheory.json.gz> [--emit-fixtures]
 //
 // Sheet Sage published two files for the same 26k TheoryTab sections: the raw

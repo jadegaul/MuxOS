@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-queue-health",
+  "name": "@muxos/plugin-debug-queue-health",
   "private": true,
   "version": "0.0.1"
 }

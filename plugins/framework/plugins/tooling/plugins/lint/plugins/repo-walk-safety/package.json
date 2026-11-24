@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-tooling-lint-repo-walk-safety",
+  "name": "@muxos/plugin-framework-tooling-lint-repo-walk-safety",
   "version": "0.0.1",
   "private": true,
-  "description": "repo-walk-safety lint rules: no-adhoc-repo-walk (no hand-written build-output deny-list), no-adhoc-repo-listing (no working-tree listing — git ls-files, loadRepoFiles — outside a pass root: take the caller's file set)"
+  "description": "repo-walk-safety lint rules: no-adhoc-repo-walk (no hand-written build-output deny-list), no-adhoc-repo-listing (no working-tree listing \u2014 git ls-files, loadRepoFiles \u2014 outside a pass root: take the caller's file set)"
 }

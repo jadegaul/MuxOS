@@ -23,7 +23,7 @@
 //
 // Writes, so a worktree deploy only (`openDeployDb` refuses main).
 //
-//   ./equin run plugins/hints/e2e/first-launch.ts [--out /tmp/first-launch]
+//   ./muxos run plugins/hints/e2e/first-launch.ts [--out /tmp/first-launch]
 
 import type { Locator, Page } from "playwright";
 import {
@@ -167,7 +167,7 @@ async function wishRoundTrips(
   mode: string,
   floating: boolean,
 ): Promise<void> {
-  const wishCard = page.getByText("Ask equin for anything", {
+  const wishCard = page.getByText("Ask muxos for anything", {
     exact: true,
   });
   const askCard = page.getByText("See what an agent can do", { exact: true });
@@ -243,7 +243,7 @@ const passed = await withBrowser(async (h) => {
   // 1b. Docked: the bar sits open in the tab strip.
   await page.goto(pathUrl("/home"));
   if (
-    !(await visible("welcome card on /home", card("Welcome to equin"), 20_000))
+    !(await visible("welcome card on /home", card("Welcome to muxos"), 20_000))
   )
     return false;
   await button("I'll explore on my own").click();
@@ -255,7 +255,7 @@ const passed = await withBrowser(async (h) => {
   if (
     !(await visible(
       "docked: welcome card again",
-      card("Welcome to equin"),
+      card("Welcome to muxos"),
       20_000,
     ))
   )
@@ -263,9 +263,9 @@ const passed = await withBrowser(async (h) => {
   await button("Show me around").click();
   await visible("docked: apps step", card("Your apps"));
   await button("Next").click();
-  await visible("docked: bar step", card("Your way to talk to equin"));
+  await visible("docked: bar step", card("Your way to talk to muxos"));
   await button("Next").click();
-  if (!(await visible("docked: improve step", card("Ask equin for anything"))))
+  if (!(await visible("docked: improve step", card("Ask muxos for anything"))))
     return false;
   await wishRoundTrips(page, "docked", false);
   await page.keyboard.press("Escape");
@@ -282,7 +282,7 @@ const passed = await withBrowser(async (h) => {
   if (
     !(await visible(
       "welcome card again (solo)",
-      card("Welcome to equin"),
+      card("Welcome to muxos"),
       20_000,
     ))
   )
@@ -294,13 +294,13 @@ const passed = await withBrowser(async (h) => {
   await snap(page, out, "2-apps");
   await button("Next").click();
 
-  await visible("bar step", card("Your way to talk to equin"));
+  await visible("bar step", card("Your way to talk to muxos"));
   await snap(page, out, "3-bar");
   // Hovering the folded bar unfolds it, and moves the tour on.
   await hoverActionBar(page);
   await visible(
     "improve step (hover advanced)",
-    card("Ask equin for anything"),
+    card("Ask muxos for anything"),
   );
   // The step holds the bar unfolded with the pointer gone.
   await page.mouse.move(700, 850);
@@ -432,7 +432,7 @@ const passed = await withBrowser(async (h) => {
   await openHelpMenu(page);
   await button("Replay the tour").click();
   await page.waitForURL(/\/home/);
-  await visible("Replay restarts the tour on Home", card("Welcome to equin"));
+  await visible("Replay restarts the tour on Home", card("Welcome to muxos"));
   await snap(page, out, "11-replay");
   await button("I'll explore on my own").click();
 

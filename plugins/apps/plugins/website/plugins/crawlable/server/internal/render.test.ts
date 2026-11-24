@@ -14,13 +14,13 @@ describe("requestOrigin", () => {
 
   test("the scheme X-Forwarded-Proto reports (first hop of a chain)", () => {
     expect(
-      requestOrigin(req({ host: "equin.ai", "x-forwarded-proto": "https" })),
-    ).toBe("https://equin.ai");
+      requestOrigin(req({ host: "MuxOS.app", "x-forwarded-proto": "https" })),
+    ).toBe("https://MuxOS.app");
     expect(
       requestOrigin(
-        req({ host: "equin.ai", "x-forwarded-proto": "HTTPS, http" }),
+        req({ host: "MuxOS.app", "x-forwarded-proto": "HTTPS, http" }),
       ),
-    ).toBe("https://equin.ai");
+    ).toBe("https://MuxOS.app");
   });
 
   test("the visitor's host from X-Forwarded-Host wins over the proxied Host", () => {
@@ -28,11 +28,11 @@ describe("requestOrigin", () => {
       requestOrigin(
         req({
           host: "backend",
-          "x-forwarded-host": "equin.ai",
+          "x-forwarded-host": "MuxOS.app",
           "x-forwarded-proto": "https",
         }),
       ),
-    ).toBe("https://equin.ai");
+    ).toBe("https://MuxOS.app");
   });
 
   test("an empty X-Forwarded-Host falls back to Host", () => {
@@ -45,8 +45,8 @@ describe("requestOrigin", () => {
 
   test("an unknown scheme falls back to http", () => {
     expect(
-      requestOrigin(req({ host: "equin.ai", "x-forwarded-proto": "ftp" })),
-    ).toBe("http://equin.ai");
+      requestOrigin(req({ host: "MuxOS.app", "x-forwarded-proto": "ftp" })),
+    ).toBe("http://MuxOS.app");
   });
 
   test("throws with neither header", () => {
@@ -57,8 +57,8 @@ describe("requestOrigin", () => {
 
 describe("renderRobotsTxt", () => {
   test("allows everything and points at the sitemap", () => {
-    expect(renderRobotsTxt("https://equin.ai")).toBe(
-      "User-agent: *\nAllow: /\nSitemap: https://equin.ai/sitemap.xml\n",
+    expect(renderRobotsTxt("https://MuxOS.app")).toBe(
+      "User-agent: *\nAllow: /\nSitemap: https://MuxOS.app/sitemap.xml\n",
     );
   });
 });
@@ -70,15 +70,15 @@ describe("renderSitemapXml", () => {
   test("one <url><loc> per page, sorted by path", () => {
     expect(
       renderSitemapXml(
-        "https://equin.ai",
+        "https://MuxOS.app",
         [page("/about/download"), page("/about")],
         null,
       ),
     ).toBe(
       `<?xml version="1.0" encoding="UTF-8"?>\n` +
         `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-        `  <url><loc>https://equin.ai/about</loc></url>\n` +
-        `  <url><loc>https://equin.ai/about/download</loc></url>\n` +
+        `  <url><loc>https://MuxOS.app/about</loc></url>\n` +
+        `  <url><loc>https://MuxOS.app/about/download</loc></url>\n` +
         `</urlset>\n`,
     );
   });
@@ -91,12 +91,12 @@ describe("renderSitemapXml", () => {
 
   test("lists each page at its address under an address root", () => {
     const xml = renderSitemapXml(
-      "https://equin.ai",
+      "https://MuxOS.app",
       [page("/about/vision"), page("/about")],
       "/about",
     );
-    expect(xml).toContain("<loc>https://equin.ai/</loc>");
-    expect(xml).toContain("<loc>https://equin.ai/vision</loc>");
+    expect(xml).toContain("<loc>https://MuxOS.app/</loc>");
+    expect(xml).toContain("<loc>https://MuxOS.app/vision</loc>");
     expect(xml).not.toContain("/about");
   });
 });

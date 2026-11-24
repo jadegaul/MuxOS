@@ -9,7 +9,7 @@ import { createDbClient, receivedSoFar } from "./client";
 
 // `receivedSoFar` against the REAL cluster, over its Unix socket — the path
 // every backend's reply takes. Table-free statements on the `postgres`
-// maintenance database. Requires the running embedded cluster (./equin build).
+// maintenance database. Requires the running embedded cluster (./muxos build).
 
 const client = createDbClient({
   name: "events-test",

@@ -4,7 +4,7 @@
  * is left as written; the scan reads clean afterwards; and a trigger on the
  * table does not fire (the rewrite moves bytes, it does not change the row).
  *
- * Run: `./equin test plugins/infra/plugins/paths/plugins/root-migration`
+ * Run: `./muxos test plugins/infra/plugins/paths/plugins/root-migration`
  */
 import { afterAll, beforeAll, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";
@@ -15,7 +15,7 @@ import {
 import { readDatabaseConfigSync } from "@plugins/database/core";
 import { rewriteDatabase, scanDatabase } from "./databases";
 
-const MOVES = [{ from: "/home/u/.old", to: "/home/u/.equin" }];
+const MOVES = [{ from: "/home/u/.old", to: "/home/u/.muxos" }];
 
 let testDb: TestDb;
 let name: string;
@@ -67,10 +67,10 @@ test("rewrites stored paths, leaves prose, fires no trigger, scans clean", async
   expect(res.rows).toEqual([
     {
       id: 1,
-      path: "/home/u/.equin/apps/a.png",
-      short: "/home/u/.equin",
-      doc: '{"n": 1, "dir": "/home/u/.equin/x"}',
-      raw: '{"p":"/home/u/.equin"}',
+      path: "/home/u/.muxos/apps/a.png",
+      short: "/home/u/.muxos",
+      doc: '{"n": 1, "dir": "/home/u/.muxos/x"}',
+      raw: '{"p":"/home/u/.muxos"}',
       touched: 0,
     },
     {

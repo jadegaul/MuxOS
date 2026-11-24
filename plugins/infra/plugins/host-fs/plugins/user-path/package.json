@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-infra-host-fs-user-path",
-  "description": "Which host paths a synchronous fs call may touch: AppPath (a path the app owns — its data dirs, its checkout; the only kind a sync fs call in runtime code may take) and UserPath (one the user or their config chose), with the type-aware lint that refuses a sync fs call on any path not proven app-owned — so a macOS Files & Folders prompt can never freeze a backend's JS thread, whether or not anyone marked the user's path.",
+  "name": "@muxos/plugin-infra-host-fs-user-path",
+  "description": "Which host paths a synchronous fs call may touch: AppPath (a path the app owns \u2014 its data dirs, its checkout; the only kind a sync fs call in runtime code may take) and UserPath (one the user or their config chose), with the type-aware lint that refuses a sync fs call on any path not proven app-owned \u2014 so a macOS Files & Folders prompt can never freeze a backend's JS thread, whether or not anyone marked the user's path.",
   "private": true,
   "version": "0.0.1"
 }

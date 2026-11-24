@@ -18,8 +18,8 @@
  * transaction that last wrote a row): rows written by one patch share it, and a
  * transaction that wrote earlier holds a smaller one.
  *
- * Run: `./equin test plugins/page/plugins/block-text-write`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/page/plugins/block-text-write`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

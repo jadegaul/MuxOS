@@ -24,7 +24,7 @@ function DataViewFigure({ mode }: { mode: FigureMode }) {
 
 /**
  * A Notion-like database page — a reading list — drawn straight on the page
- * by the same data view as the equin Artifacts page: views as tabs, search,
+ * by the same data view as the muxos Artifacts page: views as tabs, search,
  * filter, sort, view settings (layout, group by) and New, in list, gallery or
  * table, loading more as it scrolls. Invented books; a picture of a data view,
  * not a live one.

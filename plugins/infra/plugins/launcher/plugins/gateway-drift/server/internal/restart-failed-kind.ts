@@ -39,9 +39,9 @@ function renderDescription(
   lines.push(`**${describeGatewayRestartFailed(d)}**`);
   lines.push("");
   lines.push(
-    "After every build, main's convergence run (`./equin build --allow-main --converge`) " +
+    "After every build, main's convergence run (`./muxos build --allow-main --converge`) " +
       "brings the machine's gateway onto main's: when the installed gateway differs from what " +
-      "`./equin start --force` would install, it installs main's, reloads the login service and " +
+      "`./muxos start --force` would install, it installs main's, reloads the login service and " +
       "waits for it to listen — and when it does not, it reinstalls the previous build and its " +
       "exact job definition. Nothing retries the same launch: the next push that changes the " +
       "gateway is the next try. The health report's Gateway row stays Out of date meanwhile.",
@@ -69,7 +69,7 @@ function renderDescription(
   lines.push("");
   lines.push(
     `**What to do:** read \`${gatewayLogs.file("gateway-stdio.log")}\` and \`${gatewayLogs.file("gateway.log")}\` for the ` +
-      "new gateway's own failure, fix it on main, and push; or run `./equin start --force` by " +
+      "new gateway's own failure, fix it on main, and push; or run `./muxos start --force` by " +
       `hand once fixed. The full run is in \`${gatewayLogs.file("deploy", "main.log")}\`.`,
   );
   lines.push("");

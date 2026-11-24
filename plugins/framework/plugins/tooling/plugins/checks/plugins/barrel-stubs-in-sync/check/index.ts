@@ -25,7 +25,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     let expected: string;
@@ -45,7 +45,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is out of sync with auto-stub-packages.ts or node_modules .d.ts files`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     return { ok: true };

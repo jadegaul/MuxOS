@@ -26,8 +26,8 @@
  * `attempt-workspaces:rows`, whose row grew `worktreePath` / `createdAt`: a
  * tab on a bundle that read `{ id, workspace }` still parses it.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/tasks/plugins/tasks-core`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/tasks/plugins/tasks-core`.
  */
 
 import {

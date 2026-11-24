@@ -1,5 +1,5 @@
 /**
- * The equin logo as data: one ¾ outer arc that folds, after a short straight
+ * The muxos logo as data: one ¾ outer arc that folds, after a short straight
  * rise, into bowls hanging just under the circle's centre — each starting where
  * the last one ended, on alternating centres. Everything that draws the logo
  * (the <Logo> component, every generated file) is built from this.

@@ -125,7 +125,7 @@ async function fileStamp(path: AppPath): Promise<string> {
 
 /**
  * The desktop's user layer: the namespace's config dir
- * (`~/.equin/state/config/<namespace>/`), one JSONC file per document
+ * (`~/.muxos/state/config/<namespace>/`), one JSONC file per document
  * file, watched by the config-files watcher, with every agent-origin write
  * ledgered.
  */

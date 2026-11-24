@@ -9,8 +9,8 @@
  * flight there, and the wait `jobs.resume` reads before resuming is absent — so
  * nothing in the fork can resume it. The source keeps all of it.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

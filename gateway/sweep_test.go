@@ -32,7 +32,7 @@ func TestSweepSparesThePublicNamespace(t *testing.T) {
 		publicHosts string
 		site        bool // whether the default namespace is swept
 	}{
-		{"deployed site", "equin.ai,www.equin.ai", false},
+		{"deployed site", "MuxOS.app,www.MuxOS.app", false},
 		{"no public hosts", "", true},
 		{"blank public hosts", " , ", true},
 	}
@@ -59,12 +59,12 @@ func TestSweepSparesThePublicNamespace(t *testing.T) {
 }
 
 func TestPublicHostsNeedADefaultNamespace(t *testing.T) {
-	cfg := &Config{PublicHosts: "equin.ai"}
+	cfg := &Config{PublicHosts: "MuxOS.app"}
 	err := cfg.validatePublicServing()
 	if err == nil || !strings.Contains(err.Error(), "-default-namespace") {
 		t.Fatalf("validatePublicServing = %v, want a refusal naming -default-namespace", err)
 	}
-	for _, ok := range []Config{{}, {DefaultNamespace: "website"}, {PublicHosts: "equin.ai", DefaultNamespace: "website"}} {
+	for _, ok := range []Config{{}, {DefaultNamespace: "website"}, {PublicHosts: "MuxOS.app", DefaultNamespace: "website"}} {
 		if err := ok.validatePublicServing(); err != nil {
 			t.Fatalf("validatePublicServing(%+v) = %v, want nil", ok, err)
 		}
@@ -76,7 +76,7 @@ func TestPublicHostsNeedADefaultNamespace(t *testing.T) {
 // yet it is not pinned, so a stop on request (the cold-start benchmark, a data
 // reset's hold) still reaches it.
 func TestSweepSparesMain(t *testing.T) {
-	for _, publicHosts := range []string{"", "equin.ai"} {
+	for _, publicHosts := range []string{"", "MuxOS.app"} {
 		cfg := &Config{
 			SocketsDir:       shortTempDir(t),
 			IdleTimeout:      10 * time.Minute,

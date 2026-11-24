@@ -89,7 +89,7 @@ describe("io-health detector", () => {
       i % 20 === 5
         ? {
             bg: { max_op: 1, rename_max: 300 + i },
-            uninterruptible: { "bun install": 2, "equin · server": 1 },
+            uninterruptible: { "bun install": 2, "muxos · server": 1 },
           }
         : {},
     );
@@ -97,7 +97,7 @@ describe("io-health detector", () => {
     const f = d.active().find((x) => x.rule === "rename-stall")!;
     expect(f.evidence).toContainEqual({
       label: "in uninterruptible wait then",
-      value: "bun install ×2, equin · server",
+      value: "bun install ×2, muxos · server",
     });
   });
 
@@ -233,9 +233,9 @@ describe("io-health detector", () => {
   test("a root daemon installed but silent is raised from the first tick that says so, and cleared by the next that does not", () => {
     const status = {
       problem: "empty" as const,
-      plist: "/Library/LaunchDaemons/dev.equin.fs-latency-monitor.plist",
+      plist: "/Library/LaunchDaemons/dev.muxos.fs-latency-monitor.plist",
       stdio: "/tmp/fs-latency-root-stdio.log",
-      fix: "sudo '/x/equin.app/Contents/MacOS/fs-latency-monitor' install-root …",
+      fix: "sudo '/x/muxos.app/Contents/MacOS/fs-latency-monitor' install-root …",
     };
     const { raised, cleared, d } = run(10, (i) =>
       i >= 2 && i < 6 ? { root_daemon: status } : {},

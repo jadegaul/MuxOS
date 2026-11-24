@@ -51,7 +51,7 @@ const check: Check = {
     // `ctx.mainBundle` and nothing else. This check compares the committed bytes
     // against exactly that one render — the generator's own inputs, taken from
     // the same shared context, so there is nothing for the two to disagree about
-    // beyond "was `./equin build` run and committed".
+    // beyond "was `./muxos build` run and committed".
     //
     // It used to assert something weaker, and now false: that filtering by main's
     // closure changed NOTHING (`render(bundle: mainBundle) === render(no
@@ -73,7 +73,7 @@ const check: Check = {
         return {
           ok: false,
           message: `${rel} is missing`,
-          hint: "Run `./equin build` to generate it.",
+          hint: "Run `./muxos build` to generate it.",
         };
       }
       const expected = await formatGenerated({
@@ -127,7 +127,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is out of sync with what the "${MAIN_COMPOSITION_ID}" composition renders${detail}`,
-        hint: `Run \`./equin build\` and commit the regenerated file. If a listed plugin is one you did NOT expect to move: the committed registries are exactly "${MAIN_COMPOSITION_ID}"'s closure, so a plugin leaves them by being negated out of a manifest — check the \`base-exclusions\` row (whose negatives every composition inherits) and "${MAIN_COMPOSITION_ID}"'s own entry points \`["**"]\` in plugins/plugin-meta/plugins/composition/core/config.ts — or by being a host provider (its \`server/index.ts\` calls \`<Service>.provide(…)\`), which no composition bundles.`,
+        hint: `Run \`./muxos build\` and commit the regenerated file. If a listed plugin is one you did NOT expect to move: the committed registries are exactly "${MAIN_COMPOSITION_ID}"'s closure, so a plugin leaves them by being negated out of a manifest — check the \`base-exclusions\` row (whose negatives every composition inherits) and "${MAIN_COMPOSITION_ID}"'s own entry points \`["**"]\` in plugins/plugin-meta/plugins/composition/core/config.ts — or by being a host provider (its \`server/index.ts\` calls \`<Service>.provide(…)\`), which no composition bundles.`,
       };
     }
 
@@ -146,7 +146,7 @@ const check: Check = {
         return {
           ok: false,
           message: `${host.scopeGenerated} is missing or out of sync with the "${graph.composition}" composition's web plugins (${host.declaration})`,
-          hint: "Run `./equin build` and commit the regenerated file.",
+          hint: "Run `./muxos build` and commit the regenerated file.",
         };
       }
       const expected = await formatGenerated({
@@ -158,7 +158,7 @@ const check: Check = {
         return {
           ok: false,
           message: `${host.generated} is missing`,
-          hint: "Run `./equin build` and commit the regenerated file.",
+          hint: "Run `./muxos build` and commit the regenerated file.",
         };
       }
       // Name the plugins that moved, as for the registries above.
@@ -179,7 +179,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${host.generated} is out of sync with the graph inferred from the "${graph.composition}" composition (${host.declaration})${moved.length > 0 ? `:\n    ${moved.join("\n    ")}` : " — the same plugins on both sides, so what differs is their `dependsOn` edges, the providers, or the formatting."}`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
 
@@ -195,7 +195,7 @@ const check: Check = {
         return {
           ok: false,
           message: `${staticHost.host.generated} is missing or out of sync with the graphs inferred from the crawlable compositions (${staticHost.host.entry})`,
-          hint: "Run `./equin build` and commit the regenerated file.",
+          hint: "Run `./muxos build` and commit the regenerated file.",
         };
       }
     }

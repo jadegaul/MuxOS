@@ -47,7 +47,7 @@ export function githubRunFailedFingerprint(d: GitHubRunFailedPayload): string {
   return `${GITHUB_RUN_FAILED_KIND}:${d.repo}:${d.workflow}:${d.head}`;
 }
 
-/** "equinai/equin · Installer release failed on v2026.11.18 — Linux (linux-arm64)". */
+/** "jadegaul/MuxOS · Installer release failed on v2026.11.18 — Linux (linux-arm64)". */
 export function githubRunFailedMessage(d: GitHubRunFailedPayload): string {
   const jobs = d.failedJobs.map((j) => j.name);
   const where =

@@ -7,7 +7,7 @@
  * what was imported survives a session's adoption by a conversation and a
  * whole-source recount, both of which take back only what was counted.
  *
- * Run: `./equin test plugins/conversations/plugins/usage`
+ * Run: `./muxos test plugins/conversations/plugins/usage`
  */
 import {
   afterAll,

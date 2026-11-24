@@ -7,7 +7,7 @@ type CheckResult = { ok: true } | { ok: false; message: string; hint?: string };
 type Check = { id: string; description: string; run(): Promise<CheckResult> };
 
 // A plugin-runtime specifier: contains `/plugins/`, or starts with the
-// workspace-name (`@equin/plugin-`) or `@plugins/` alias forms.
+// workspace-name (`@muxos/plugin-`) or `@plugins/` alias forms.
 const PLUGIN_IMPORT_SPEC_RE = new RegExp(
   `(?:/plugins/|^${PLUGIN_PACKAGE_PREFIX}|^@plugins/)`,
 );

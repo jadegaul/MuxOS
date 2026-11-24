@@ -76,7 +76,7 @@ describe("main's agent-write gate", () => {
     expect(body).toMatchObject({
       message: agentWriteRefusedMessage(write.route),
     });
-    expect(agentWriteRefusedMessage(write.route)).toContain("./equin build");
+    expect(agentWriteRefusedMessage(write.route)).toContain("./muxos build");
     expect(ran).toBe(false);
   });
 

@@ -19,7 +19,7 @@ fn socket_path(app_id: &str) -> PathBuf {
         .filter(|d| cfg!(target_os = "linux") && !d.is_empty())
         .map(PathBuf::from)
         .unwrap_or_else(std::env::temp_dir);
-    dir.join(format!("equin-app-{app_id}.sock"))
+    dir.join(format!("muxos-app-{app_id}.sock"))
 }
 
 /// Hand `url` to the app's running instance. `false` when none is running.
@@ -29,7 +29,7 @@ pub fn forward(app_id: &str, url: Option<&Url>) -> bool {
     match writeln!(stream, "{line}") {
         Ok(()) => true,
         Err(e) => {
-            eprintln!("equin-desktop: the running {app_id} window did not take the hand-off: {e}");
+            eprintln!("muxos-desktop: the running {app_id} window did not take the hand-off: {e}");
             false
         }
     }
@@ -54,13 +54,13 @@ pub fn claim(app_id: &str, url: Option<&Url>) -> Claim {
     // Nothing answered: a socket file left here is a dead instance's.
     if path.exists() {
         if let Err(e) = std::fs::remove_file(&path) {
-            eprintln!("equin-desktop: cannot remove the stale {}: {e}", path.display());
+            eprintln!("muxos-desktop: cannot remove the stale {}: {e}", path.display());
         }
     }
     match UnixListener::bind(&path) {
         Ok(listener) => Claim::Owner(Some(listener)),
         Err(e) => {
-            eprintln!("equin-desktop: cannot listen on {} ({e}); single-instance is off", path.display());
+            eprintln!("muxos-desktop: cannot listen on {} ({e}); single-instance is off", path.display());
             Claim::Owner(None)
         }
     }

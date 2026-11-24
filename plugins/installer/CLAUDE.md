@@ -1,6 +1,6 @@
 # installer
 
-The equin installer: `install.sh` (repo root — its URL is the documented
+The muxos installer: `install.sh` (repo root — its URL is the documented
 entry point) emits ONE structured event stream, and renderers draw it. Design:
 [`research/2026-11-17-global-installer-window.md`](../../research/2026-11-17-global-installer-window.md).
 User-facing summary: [`docs/setup.md`](../../docs/setup.md) § Quick install.
@@ -8,14 +8,14 @@ User-facing summary: [`docs/setup.md`](../../docs/setup.md) § Quick install.
 ## Running it
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/equinai/equin/main/install.sh | bash          # newest release
+curl -fsSL https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh | bash          # newest release
 curl -fsSL …/install.sh | bash -s -- --window --ref main                                     # piped: options after `bash -s --`
 ./install.sh                                                                                 # from a clone: installs THAT checkout
 ```
 
 | Flag | What it does |
 | --- | --- |
-| `--dir <path>` | Where the clone goes (default `~/equin`). |
+| `--dir <path>` | Where the clone goes (default `~/muxos`). |
 | `--repo <url>` | Clone a fork; checks out its `main` (forks have no releases). |
 | `--no-shell-rc` | Don't add mise's activation to the shell's rc file. |
 | `--ref <tag\|main>` | Install that release tag, or `main`'s tip; default the newest release. |
@@ -42,16 +42,16 @@ Internal (passed between the install's own processes, never typed):
 `--control-fd` (the window → its child), `--attach <run dir> --mode <view>`
 (an install → the checkout's own script, § The checkout's own steps),
 `--stage0-only` (the stage-0 test). `--release`, `--checkout`, `--attach`,
-`--mode` and `--since` travel in `EQUIN_INSTALL_INTERNAL_ARGS` (one per
+`--mode` and `--since` travel in `MUXOS_INSTALL_INTERNAL_ARGS` (one per
 line, read and unset at the script's start) to a script carrying `#
 installer-internal-args: env` (`internal_args`; an older one gets them on its
 command line): a terminal shows the running command line in its title bar.
-The interactive view also sets the title to "equin installer" and, when it
+The interactive view also sets the title to "muxos installer" and, when it
 ends, clears it and restores the terminal's own (xterm title stack, where the
 terminal keeps one).
 
 **The views.** The **interactive terminal** view (a redrawn status block) by
-default; the window (`equin-installer`, [`window`](plugins/window/CLAUDE.md))
+default; the window (`muxos-installer`, [`window`](plugins/window/CLAUDE.md))
 with `--window` (under `DEFAULT_VIEW=auto`: by default on a desktop, the
 terminal over SSH or where no window can open); the **plain** view
 (append-only lines) under `CI` or into a pipe. All three draw the same
@@ -66,8 +66,8 @@ pauses it or leaves something out — keeps the user's five rules (decided
 
 1. **No internal names** (gateway, menu-bar helper, crate, TCC, sandbox,
    build slot, launchd, PID, bundle…): say what the user gets — "an icon in
-   your menu bar", "equin's own database".
-2. **Say what equin was trying to do, and why it helps the user.**
+   your menu bar", "muxos's own database".
+2. **Say what muxos was trying to do, and why it helps the user.**
 3. **Say why it was blocked, in the user's terms.**
 4. **Say what the user can do now, and what happens if they skip or say no**
    — optional or not, what still works, how to add it later.
@@ -104,7 +104,7 @@ own (next section): fix wording in the step engine, and every view changes.
   toolchain, start, build, and the build's sub-steps `build.database`,
   `build.deps`, `build.codegen`, `build.interface`, `build.deploy`).
 - **Estimates are measured, never guessed**: `est_s` comes from install.sh's
-  generated `estimates` block (`./equin installer estimates`, from
+  generated `estimates` block (`./muxos installer estimates`, from
   `core/estimates.json`), the set of the platform and view the install runs
   in (§ Estimates); null means no number is shown for that step.
 - **Messages live in the events**: labels and text come from the step engine,
@@ -131,7 +131,7 @@ own (next section): fix wording in the step engine, and every view changes.
   release's window runs that release's `install.sh`, which hands the steps
   after the clone only to a checkout carrying the same `# installer-attach:
   <v>` line (§ The checkout's own steps) — so under `--ref main` the window
-  reads main's steps and `./equin`. Any change an older window can't read
+  reads main's steps and `./muxos`. Any change an older window can't read
   bumps `v` (and with it the attach marker: `ATTACH_MARKER` is derived
   from it, and `release-assets:asset-names` holds install.sh's spellings to it).
 - **Changing the stream**: edit `core/internal/events.ts`, the bash emitter
@@ -142,7 +142,7 @@ own (next section): fix wording in the step engine, and every view changes.
 
 ## install.sh: the hub and the run dir
 
-- **Every run has a dir**, `~/.equin/logs/install/<run-id>/` (`latest` links
+- **Every run has a dir**, `~/.muxos/logs/install/<run-id>/` (`latest` links
   to the newest): `events.fifo` while it runs, `events.jsonl` (every event, the
   install's record) and, after a success, `timing.json` (`InstallTiming`: each
   step that ran to done, with its `ms` — a build sub-step skipped inside a
@@ -151,9 +151,9 @@ own (next section): fix wording in the step engine, and every view changes.
 - **One hub**: a background `tee` reads the FIFO, appends to `events.jsonl`
   and hands each line on — to the window's `--events-fd`, else to the terminal
   view. install.sh keeps one write end open for its whole life (`ev`); the
-  `./equin` commands it runs as steps open the FIFO **by path** from
-  `EQUIN_INSTALL_EVENTS`, filing what they report (the build's sub-steps,
-  counts, waits) under `EQUIN_INSTALL_STEP` — both exported into the step's
+  `./muxos` commands it runs as steps open the FIFO **by path** from
+  `MUXOS_INSTALL_EVENTS`, filing what they report (the build's sub-steps,
+  counts, waits) under `MUXOS_INSTALL_STEP` — both exported into the step's
   subshell only. A step's commands inherit no fd of the stream, so a daemon
   never holds it open.
 - **Every event is one write under PIPE_BUF** (512 bytes): concurrent writers
@@ -220,7 +220,7 @@ as a blocking `read` starts, so `read_decision` reads a tick at a time.
 ## The checkout's own steps (`--attach`)
 
 An install of ref X runs X's own steps on X's code. The running script — a
-release's, or stage 0's own — runs only what needs nothing from equin's code
+release's, or stage 0's own — runs only what needs nothing from muxos's code
 (tools, mise, the clone); then `hand_to_checkout` runs the CHECKOUT's
 `install.sh --attach <run dir> --mode <view>` for the rest (toolchain, start,
 build, done) and exits with its status. So `--ref main` (and a fork) runs
@@ -264,7 +264,7 @@ and the plan's arrays (`plan_data`):
   the new block.
 - **plain** (CI, a pipe): append-only `HH:MM:SS [n/N] <step>: …` lines —
   started (usually …), every 25 %, waits, each `doing` the step names,
-  done in …, `equin is ready · …`.
+  done in …, `muxos is ready · …`.
   A failed step prints its last lines (`  > `).
 - **Time left** = Σ pending `est × pace` + the running one's `max(0, est ×
   pace − worked)`, waits not counted; pace = worked / estimated over the
@@ -278,29 +278,29 @@ and the plan's arrays (`plan_data`):
 event type: a skipped step, output that needs escaping (and a line too long
 for one event), git's CR progress, counted progress (`start`, the build's
 sub-steps), a wait with its holder, and the build's sub-steps written through
-the FIFO by path, as `./equin build` does. `EQUIN_INSTALL_DRY_RUN_FAIL=<step>`
-fails that step's first attempt; `EQUIN_INSTALL_DRY_RUN_PACE=<s>` slows it down
-for watching a renderer; `EQUIN_INSTALL_DRY_RUN_VIEW_EXIT=<step>` makes the
+the FIFO by path, as `./muxos build` does. `MUXOS_INSTALL_DRY_RUN_FAIL=<step>`
+fails that step's first attempt; `MUXOS_INSTALL_DRY_RUN_PACE=<s>` slows it down
+for watching a renderer; `MUXOS_INSTALL_DRY_RUN_VIEW_EXIT=<step>` makes the
 terminal view exit at that step's start. Held to the schema by
 `window/cli/internal/dry-run-stream.test.ts` (window mode, events.jsonl,
 timing.json, the plain view), with `HOME` a temp dir, under every bash (§
 Tests run under every bash).
 
-## Stage 0: which equin, and which view (`install.sh`, top)
+## Stage 0: which muxos, and which view (`install.sh`, top)
 
 `curl …/main/install.sh | bash` runs main's script, whose first job is to
 hand over to the release it installs (`stage0`):
 
 1. **Resolve**: `releases/latest/download/release.json` (a redirect, not the
    REST API: no rate limit), or `download/<tag>/…` for `--ref <tag>`.
-2. **Download** into `~/.equin/install/bin/<tag>/` — `SHA256SUMS`,
+2. **Download** into `~/.muxos/install/bin/<tag>/` — `SHA256SUMS`,
    `release.json`, the tag's `install.sh`, and this platform's window binary
    only when the view may be the window (`--window`, or `DEFAULT_VIEW=auto`
    without `--terminal`) — all from that one tag. The window: for a v2
    manifest (`installers: 1`) `INSTALLER-SHA256SUMS` first — attached after
    the Release is published, last; absent (404), the terminal view, "this
    release's installer window isn't published (yet)" — then
-   `equin-installer-<platform key>` if it lists one; for v1, the binary
+   `muxos-installer-<platform key>` if it lists one; for v1, the binary
    `release.json` names under the platform key.
 3. **Verify** each against `SHA256SUMS` (the v2 window: against
    `INSTALLER-SHA256SUMS`) (`shasum -a 256 -c`, else GNU
@@ -317,7 +317,7 @@ hand over to the release it installs (`stage0`):
    missing webkit2gtk fails before `main`) — the guesses apply to `auto`
    only. `--window` skips the guesses, not the probe, and stops loudly when
    it fails.
-5. **Exec** `equin-installer --script <install.sh@tag> -- --release <tag>
+5. **Exec** `muxos-installer --script <install.sh@tag> -- --release <tag>
    --checkout <ref> <install args>`, or `bash <install.sh@tag> --release …`.
 
 `--release` marks the script as a release's (stage 0 never runs twice);
@@ -333,7 +333,7 @@ hand-off (`release.json` `handoff: null`: its tag). Run from a checkout
 (`./install.sh`), stage 0 is skipped and that checkout is installed.
 `--stage0-only` prints the decision instead (the stage-0 test,
 `cli/internal/stage0.test.ts`, against a local fake release
-server via `EQUIN_RELEASES_URL`). Release side:
+server via `MUXOS_RELEASES_URL`). Release side:
 [`release-assets`](plugins/release-assets/CLAUDE.md).
 
 ## Failures: diagnosis, pause, decisions
@@ -341,7 +341,7 @@ server via `EQUIN_RELEASES_URL`). Release side:
 A failed step is never a bare error. `run_step` diagnoses it, pauses it (a
 `pause` event) and waits for a decision; every message follows the five
 installer message rules (`infra/launcher/installer-notice`): no internal
-names, what equin was doing and why, why it was blocked, what to do now and
+names, what muxos was doing and why, why it was blocked, what to do now and
 what skipping costs — raw lines only in `evidence` and the log.
 
 - **Diagnosis rules** (`diagnose`, install.sh): each is a symptom AND a fact
@@ -354,7 +354,7 @@ what skipping costs — raw lines only in `evidence` and the log.
     any step** (`sandbox_check`, with Claude Code's refused-write probe): a
     refused write can't be skipped, a protected shell may allow the install
     (Skip tries anyway). Manual: Continue in Terminal.
-  - **security** — a path under equin's folders "No such file or directory" /
+  - **security** — a path under muxos's folders "No such file or directory" /
     "Operation not permitted" in the last lines AND an endpoint-security
     product running (`security_agent`: Jamf Protect, CrowdStrike Falcon,
     SentinelOne, Microsoft Defender, Sophos, WithSecure — by process name; a
@@ -367,11 +367,11 @@ what skipping costs — raw lines only in `evidence` and the log.
     for 10 min — a deadline re-armed only when the holder moved.
   - **the step's own** — the failed command wrote its own diagnosis
     (installer/cli `reportInstallDiagnosis`, to the file
-    `EQUIN_INSTALL_DIAGNOSIS` names; `own_diagnosis` reads it): its title,
+    `MUXOS_INSTALL_DIAGNOSIS` names; `own_diagnosis` reads it): its title,
     text and evidence, in the person's terms. When it names `leave-out`
     parts, the pause is optional and **Skip runs the step again without
-    them** (`EQUIN_INSTALL_LEFT_OUT`, accumulated in `LEFT_OUT`) rather than
-    leaving the step out whole. `./equin start` writes one for a part it could
+    them** (`MUXOS_INSTALL_LEFT_OUT`, accumulated in `LEFT_OUT`) rather than
+    leaving the step out whole. `./muxos start` writes one for a part it could
     not prepare (§ One build of main per install). The Skip is recorded:
     right after its `resolved skip` install.sh sends a `notice` (`skipped`,
     the part's ids, "Installed without <part>", what that means — the
@@ -387,7 +387,7 @@ what skipping costs — raw lines only in `evidence` and the log.
   before each command, never touch security software, run the resume command
   once fixed), `fix.command` (Claude Code started with it — installed first
   with Anthropic's installer when missing), `report-url`, and `install.log`
-  (every log line, whole). `~/.equin/logs/install/resume` (a dry run: its run
+  (every log line, whole). `~/.muxos/logs/install/resume` (a dry run: its run
   dir's) writes `retry` to the waiting install, else runs the install again.
 - **Decisions arrive on ONE FIFO** (`control.fifo`, held read-write by the
   script so a writer by path never blocks): bash waits on one fd, and the
@@ -412,11 +412,11 @@ what skipping costs — raw lines only in `evidence` and the log.
   `buildIssueUrl` + `redactPaths`), the terminal with `report_url` (bash, the
   same fields); evidence is written with `$HOME` as `~` and the account and
   machine names removed. Nothing is sent until the person submits it.
-- **A part left out** (`notice`): `./equin start` reports the login services
+- **A part left out** (`notice`): `./muxos start` reports the login services
   macOS refused (App Management). The install goes on: a banner while it
   runs (Open App Management, Skip), "Installed without … Add it now" on the
   done screen — the script waits after `done` (window only): Add it now opens
-  the setting, then runs `./equin start --only <ids>`; closing the window is
+  the setting, then runs `./muxos start --only <ids>`; closing the window is
   `quit`, exit 0.
 - **First-time macOS setup in the window**: Apple's own dialog
   (`xcode-select --install`, waited out every 5 s — an OS dialog has no
@@ -429,20 +429,20 @@ what skipping costs — raw lines only in `evidence` and the log.
   for the user to dismiss, never clicked for them. **Linux in the window**: `sudo
   -A` with an askpass wrapper running the window's binary (`--askpass`), which
   asks the window over its socket for a password sheet.
-- **Reproducing each on purpose** (dry run): `EQUIN_INSTALL_DRY_RUN_FAIL=
+- **Reproducing each on purpose** (dry run): `MUXOS_INSTALL_DRY_RUN_FAIL=
   <step>[:sigkill|:vanish|:quiet]` — sigkill under `sandbox-exec -p '(version
   1)(allow default)'` is the sandbox rule, vanish (a program deleted right
   after it was made) with a process named `JamfProtect` running is the
   security rule (`cc` a sleeping C program named so), quiet with
-  `EQUIN_INSTALL_STALL_S=1` the watchdog, `<step>:part` an optional part of
+  `MUXOS_INSTALL_STALL_S=1` the watchdog, `<step>:part` an optional part of
   the step failing with the step's own diagnosis until a Skip leaves it out;
-  `EQUIN_INSTALL_DRY_RUN_OPTIONAL=<step>` offers Skip, `EQUIN_INSTALL_DRY_RUN_NOTICE=1` the part left out.
+  `MUXOS_INSTALL_DRY_RUN_OPTIONAL=<step>` offers Skip, `MUXOS_INSTALL_DRY_RUN_NOTICE=1` the part left out.
   The stream test runs all but security (it needs the fake product).
 
-## `./equin` as an install step (`cli/`, `bin/`)
+## `./muxos` as an install step (`cli/`, `bin/`)
 
 - **`emitInstallEvent`** (`cli` barrel) writes one typed event to the FIFO in
-  `EQUIN_INSTALL_EVENTS`, opened by path, close-on-exec, non-blocking (a hub
+  `MUXOS_INSTALL_EVENTS`, opened by path, close-on-exec, non-blocking (a hub
   that is gone fails the open loudly) and written whole under 512 bytes. Outside
   an install every function is a no-op.
 - **The build's sub-steps** are declared by its profiler spans:
@@ -454,7 +454,7 @@ what skipping costs — raw lines only in `evidence` and the log.
   `installer:build-sub-steps-declared` check fails when no span declares one.
 - **Progress**: cargo's crates (the deps `rust` kind forces cargo's own bar and
   reads it from the install log as it grows, `EnsureOptions.progress`, passed by
-  `./equin start`), the artifact builder's plugins (`onArtifactBuilt`), bun's
+  `./muxos start`), the artifact builder's plugins (`onArtifactBuilt`), bun's
   packages (`ensureDeps` pipes `bun install --verbose` through
   `bin/bun-install-progress.ts`, which counts `Extracted` lines against
   `bun.lock` and passes the rest through), git's and softwareupdate's
@@ -462,14 +462,14 @@ what skipping costs — raw lines only in `evidence` and the log.
 - **Waits name who holds them** ([`waits`](plugins/waits)): the build's op
   profiler (`withInstallWaits`, build's `cli/internal/install-waits.ts`)
   reports the build lock, the duress gate and the host CPU grant; every CLI
-  admission (`cliExecContext` — `./equin start`'s dependency installs) the
+  admission (`cliExecContext` — `./muxos start`'s dependency installs) the
   host CPU grant; a convergence run its deploy lock. Each as a `wait` event
   with the op holding it (the grant: the oldest admitted op in the op log; a
   lock: the oldest running op of its kind), and the stall rule armed on it.
 
 ## One build of main per install
 
-`./equin start` brings the background service up, and its first boot
+`./muxos start` brings the background service up, and its first boot
 deploys main at once (a convergence run, `build/converge`; a first deploy —
 nothing served yet — runs no validation at all, so the build step is codegen,
 the interface and the deploy). So `start` builds
@@ -487,15 +487,15 @@ and that it is optional) and as the start step's own diagnosis: Try again
 rebuilds it with nothing else on the machine (were the gateway up, its first
 boot's build of main would hold the build slot and the retry would queue
 behind it: 32 s to 5 min on the 2026-11-18 Linux VMs); Skip runs `start`
-again with the part left out (`--leave-out`, here `EQUIN_INSTALL_LEFT_OUT`).
+again with the part left out (`--leave-out`, here `MUXOS_INSTALL_LEFT_OUT`).
 
 **What the parts need from the OS** is declared by each part's dependency
 (`Dep.systemPackages`, apt names — the menu-bar icon's GTK / WebKitGTK), and
 by every dependency whose libraries each install prepares
 (`systemPackages.everyInstall` — Chromium's, which main's unattended deploy
 checks the layout in and cannot ask a password for); the start step's body
-(`start_services`) asks `./equin start --system-packages` and installs what is
-missing (one sudo) before `./equin start`. A failed install does not stop the
+(`start_services`) asks `./muxos start --system-packages` and installs what is
+missing (one sudo) before `./muxos start`. A failed install does not stop the
 step: `start` then fails on the part, with the packages named, and a
 dependency used later says what it lacks when it is installed.
 `--system-packages` answers on one `system-packages:` line (apt names, each
@@ -508,7 +508,7 @@ machine with no desktop (`hostDesktop`: no display outside SSH, no display
 manager, no desktop session installed) never builds or registers a
 `graphical` service — `start` says it left it out.
 
-The install's build step is the same convergence run (`./equin build
+The install's build step is the same convergence run (`./muxos build
 --allow-main --converge`): it waits on the deploy lock for the service's run
 and finds main deployed, or deploys it itself if it got there first. While it
 waits it **follows** the service's build (installer/cli `requestFollow` /
@@ -541,7 +541,7 @@ apt, so they share one. A run counts only in its own set; a set no run
 measured keeps its committed table. install.sh's block is `est_s <set>
 <step>`.
 
-`./equin installer estimates [--from <dir…>] [--only <step…>]` takes each
+`./muxos installer estimates [--from <dir…>] [--only <step…>]` takes each
 step's median over every finished real install run (this machine's run dirs,
 plus run dirs collected elsewhere — a VM's, say): its `timing.json`, else the
 `events.jsonl` it is read from (`timingFromEvents`: each step's last `done`
@@ -572,18 +572,18 @@ service's build (§ One build of main per install) covers the other order.
 
 ## Sub-plugins
 
-- `window` — the native installer window (`equin-installer`).
+- `window` — the native installer window (`muxos-installer`).
 - `release-assets` — what a release tag publishes (the GitHub Actions
   workflow: the Release first — `release.json`, `SHA256SUMS` — then the
   window's binaries and `INSTALLER-SHA256SUMS` attached) and its checks.
-- `waits` — a `./equin` step's waits, reported naming their holder, and the
+- `waits` — a `./muxos` step's waits, reported naming their holder, and the
   stall rule.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: The equin installer: install.sh's structured event stream (protocol v1 — plan, step, log, done and exit events, one zod schema in core) and the renderers that draw it. Its window sub-plugin is the native installer window.
+- Description: The muxos installer: install.sh's structured event stream (protocol v1 — plan, step, log, done and exit events, one zod schema in core) and the renderers that draw it. Its window sub-plugin is the native installer window.
 - Core:
   - Uses:
     - `framework/product-name.SOURCE_REPO_URL`
@@ -664,7 +664,7 @@ service's build (§ One build of main per install) covers the other order.
     - Types: `InstallShBash`
 - Sub-plugins:
   - **`release-assets`** — Watches the release workflow on GitHub (GitHubEvents.Watch: the product repo's installer-release.yml and its Releases), so a failed release run files a report naming the re-publish command, and the…
-  - **`waits`** — How a `./equin` command run as an install step reports a wait on another task, naming its holder from the op log: installGrantHooks (a host CPU grant wait — any CLI admission, a build's or a…
-  - **`window`** — The installer window: equin-installer, a small wry/tao Rust app (rust/) that runs install.sh as its child — events on fd 3, decisions on fd 4 — and draws the stream in a page bundled into the binary…
+  - **`waits`** — How a `./muxos` command run as an install step reports a wait on another task, naming its holder from the op log: installGrantHooks (a host CPU grant wait — any CLI admission, a build's or a…
+  - **`window`** — The installer window: muxos-installer, a small wry/tao Rust app (rust/) that runs install.sh as its child — events on fd 3, decisions on fd 4 — and draws the stream in a page bundled into the binary…
 
 <!-- AUTOGENERATED:END -->

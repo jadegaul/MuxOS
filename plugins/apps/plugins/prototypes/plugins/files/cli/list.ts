@@ -20,7 +20,7 @@ export type DeletedPrototypeIds =
   | { readonly kind: "unavailable"; readonly reason: string };
 
 /**
- * The body of `./equin prototype list` — every prototype on disk the user
+ * The body of `./muxos prototype list` — every prototype on disk the user
  * has not deleted, with the URL that opens it and, when the user has picked a
  * variant other than the defaults, which one. The verb itself is declared by
  * `apps/prototypes/commands`, which reads `deleted` and calls this.
@@ -55,7 +55,7 @@ export async function printPrototypeList(
       return;
     }
     console.log(`No prototypes yet in ${PROTOTYPES_DIR_DISPLAY}.`);
-    console.log(`Create one with: ./equin prototype new "My mock"`);
+    console.log(`Create one with: ./muxos prototype new "My mock"`);
     return;
   }
 

@@ -3,14 +3,14 @@
 // native window would show it at one instant, with no window and no install.
 // Optionally photographs the approved mockup's window beside it and diffs them.
 //
-//   ./equin run plugins/installer/plugins/window/e2e/replay.ts --url http://equin.localhost:<port> \
-//     --events <events.jsonl> --out "$EQUIN_SCRATCH/replay" [--now <iso>] [--scale 1] \
+//   ./muxos run plugins/installer/plugins/window/e2e/replay.ts --url http://muxos.localhost:<port> \
+//     --events <events.jsonl> --out "$MUXOS_SCRATCH/replay" [--now <iso>] [--scale 1] \
 //     [--mockup "<prototype url>?view=window&state=running"] [--threshold 0.1] [--mockup-own-font] \
 //     [--mockup-claude app|cli]
 //
 // `--url` names no deploy this script uses (it loads the bundled page itself);
 // it is the harness's way to say "not this checkout's build". `--events` is
-// any recorded stream (`~/.equin/install/<run>/events.jsonl`, or
+// any recorded stream (`~/.muxos/install/<run>/events.jsonl`, or
 // `moment.ts`'s fixtures). `--now` is the instant to draw it at
 // (default: the last event's); the page's clock is pinned to it.
 //
@@ -34,7 +34,7 @@ import {
 import { bundlePage } from "../deps";
 
 const USAGE =
-  "replay.ts --url http://equin.localhost:<port> --events <events.jsonl> --out <prefix> [--now <iso>] [--scale 1] [--mockup <url>] [--threshold 0.1] [--mockup-own-font]";
+  "replay.ts --url http://muxos.localhost:<port> --events <events.jsonl> --out <prefix> [--now <iso>] [--scale 1] [--mockup <url>] [--threshold 0.1] [--mockup-own-font]";
 const eventsPath = requireArg("events", USAGE);
 const out = requireArg("out", USAGE);
 const mockup = arg("mockup");

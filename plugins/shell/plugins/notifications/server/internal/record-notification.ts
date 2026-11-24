@@ -58,7 +58,7 @@ export interface NotificationWrite {
   muted?: boolean;
   /**
    * Who the notification is for: `developer` keeps it out of the bell of a user
-   * not in Developer mode (equin's own telemetry — reports, crashes). Defaults
+   * not in Developer mode (muxos's own telemetry — reports, crashes). Defaults
    * to `user` — for everyone, as a feature that declares no audience is.
    */
   audience?: Audience;

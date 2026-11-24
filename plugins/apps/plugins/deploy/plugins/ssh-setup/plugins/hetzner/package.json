@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-deploy-ssh-setup-hetzner",
+  "name": "@muxos/plugin-apps-deploy-ssh-setup-hetzner",
   "private": true,
   "version": "0.0.1"
 }

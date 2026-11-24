@@ -10,15 +10,15 @@ const PNG = Uint8Array.from(
 );
 
 test("a stamped PNG carries its text, readable from a lossy text decode", () => {
-  const stamped = withPngText(PNG, "equin-logo-source", "abc123");
+  const stamped = withPngText(PNG, "muxos-logo-source", "abc123");
   expect(stamped.length).toBe(
-    PNG.length + 12 + "equin-logo-source".length + 1 + 6,
+    PNG.length + 12 + "muxos-logo-source".length + 1 + 6,
   );
   const text = new TextDecoder().decode(stamped);
-  expect(hasPngText(text, "equin-logo-source", "abc123")).toBe(true);
-  expect(hasPngText(text, "equin-logo-source", "abc124")).toBe(false);
+  expect(hasPngText(text, "muxos-logo-source", "abc123")).toBe(true);
+  expect(hasPngText(text, "muxos-logo-source", "abc124")).toBe(false);
   expect(
-    hasPngText(new TextDecoder().decode(PNG), "equin-logo-source", "abc123"),
+    hasPngText(new TextDecoder().decode(PNG), "muxos-logo-source", "abc123"),
   ).toBe(false);
 });
 

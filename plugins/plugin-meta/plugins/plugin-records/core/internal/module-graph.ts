@@ -27,7 +27,7 @@ import { codeCheckoutOf } from "./code-checkout";
  * record is stored under: importing a barrel is a function of the code its
  * closure loads, and of nothing else that a key can see — what escapes it (a
  * module that reads a file at load, the process environment) is what
- * `./equin check --verify-records` (main's daily plugin-records.verify) catches.
+ * `./muxos check --verify-records` (main's daily plugin-records.verify) catches.
  */
 
 /** What scanning a module yields — stored under its blob, so it must be a function of the bytes. */

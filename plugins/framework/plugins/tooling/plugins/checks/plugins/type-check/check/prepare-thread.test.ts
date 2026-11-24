@@ -76,7 +76,7 @@ beforeAll(async () => {
   // lint result store — are the
   // REAL ones unless pointed
   // elsewhere. Left alone, the suite would score (and copy) every pooled
-  // multi-GB base of every checkout on this machine. `EQUIN_DIR` is the
+  // multi-GB base of every checkout on this machine. `MUXOS_DIR` is the
   // sanctioned redirect (every DataDir read resolves it per call), and it is
   // set before any worker is spawned so the thread inherits it too.
   dataRoot = mkdtempSync(join(tmpdir(), "type-check-prepare-thread-data-"));

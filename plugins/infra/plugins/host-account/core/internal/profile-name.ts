@@ -20,7 +20,7 @@ export const profileNameConfig = defineConfig({
     displayName: textField({
       label: "Your name",
       description:
-        "The name equin shows for you. Leave empty to use your account's name.",
+        "The name muxos shows for you. Leave empty to use your account's name.",
       default: "",
     }),
     showName: boolField({

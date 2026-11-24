@@ -171,7 +171,7 @@ func TestRestartBodyEnvReachesBackend(t *testing.T) {
 		"server":  pf.wt.Spec().Server,
 		"web":     newWeb,
 		"command": helperCommand(pf, "envout="+envout),
-		"env":     map[string]string{"EQUIN_TEST_SPEC_ENV": "from-spec", "HOME": "/from-spec-home"},
+		"env":     map[string]string{"MUXOS_TEST_SPEC_ENV": "from-spec", "HOME": "/from-spec-home"},
 	}))
 	if rec.Code != http.StatusOK {
 		t.Fatalf("restart = %d %q", rec.Code, rec.Body.String())
@@ -189,7 +189,7 @@ func TestRestartBodyEnvReachesBackend(t *testing.T) {
 		}
 		return false
 	}
-	if !has("EQUIN_TEST_SPEC_ENV=from-spec") || !has("HOME=/from-spec-home") {
+	if !has("MUXOS_TEST_SPEC_ENV=from-spec") || !has("HOME=/from-spec-home") {
 		t.Fatalf("backend env lacks the spec's entries:\n%s", got)
 	}
 	if n := strings.Count(string(got), "\nHOME=") + boolInt(strings.HasPrefix(string(got), "HOME=")); n != 1 {
@@ -198,10 +198,10 @@ func TestRestartBodyEnvReachesBackend(t *testing.T) {
 	if !has("PATH=" + os.Getenv("PATH")) {
 		t.Fatal("the declared child env is missing")
 	}
-	if pf.wt.Spec().Web != newWeb || pf.wt.Spec().Env["EQUIN_TEST_SPEC_ENV"] != "from-spec" {
+	if pf.wt.Spec().Web != newWeb || pf.wt.Spec().Env["MUXOS_TEST_SPEC_ENV"] != "from-spec" {
 		t.Fatal("the cold-started candidate was not committed in memory")
 	}
-	if onDisk, err := parseSpec(readSpecFile(t, pf)); err != nil || onDisk.Env["EQUIN_TEST_SPEC_ENV"] != "from-spec" {
+	if onDisk, err := parseSpec(readSpecFile(t, pf)); err != nil || onDisk.Env["MUXOS_TEST_SPEC_ENV"] != "from-spec" {
 		t.Fatalf("spec.json env not committed: %v", err)
 	}
 }

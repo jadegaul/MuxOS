@@ -49,7 +49,7 @@ export default defineCliCommand<
     },
     {
       flags: "--port <port>",
-      description: `Move this account's equin to another port of ${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last} (restarts it; open apps reload). Without it, the port chosen at the first start is kept — the first free one of that range`,
+      description: `Move this account's muxos to another port of ${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last} (restarts it; open apps reload). Without it, the port chosen at the first start is kept — the first free one of that range`,
     },
     {
       flags: "--verbose",

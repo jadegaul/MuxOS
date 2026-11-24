@@ -20,7 +20,7 @@ import type { HostTarget } from "../../shared/protocol";
 export async function resolveTarget(
   conversationId: string | null,
 ): Promise<HostTarget> {
-  // A session equin did not launch has no checkout of its own: its routes land
+  // A session muxos did not launch has no checkout of its own: its routes land
   // on main (read-only to agents, as for every agent session).
   if (conversationId === null) {
     return {

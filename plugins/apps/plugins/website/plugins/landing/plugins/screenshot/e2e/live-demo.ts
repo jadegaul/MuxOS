@@ -1,7 +1,7 @@
 /**
  * The homepage's live demo band and the demo page, from a first visit (a
  * fresh browser holds no demo data):
- *  1. it opens on the gate (Enter equin), and nothing of the demo's host —
+ *  1. it opens on the gate (Enter muxos), and nothing of the demo's host —
  *     its host module, its worker — is requested before the click;
  *  2. Enter grows the frame in place, out of the reading measure, and the
  *     boot screen's bar shows while the host starts;
@@ -12,18 +12,18 @@
  *  5. Maximize runs as a view transition onto the demo page
  *     (`/about/demo/at/pages`): the demo alone fills the tab, nothing of the
  *     homepage mounted, on the same server (no host restart), with the "Back
- *     to equin" pill at its top (draggable); Esc leaves the page alone; the
+ *     to muxos" pill at its top (draggable); Esc leaves the page alone; the
  *     pill goes back to the homepage's frame, also as a view transition, on
  *     Pages; Maximize again, then the browser's Back also returns;
  *  6. the homepage reloaded shows the gate again (its URL names no place);
  *  7. the demo page loaded fresh resumes with no gate, on Pages, loads
- *     nothing of the homepage (no hero film) and offers no "Back to equin"
+ *     nothing of the homepage (no hero film) and offers no "Back to muxos"
  *     pill (the visitor did not come from the homepage);
  *  8. a second tab opened at that URL joins the demo — no gate.
  * Screenshots of each step go to `--out`.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/live-demo.ts [--out /tmp/website-live-demo] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/live-demo.ts [--out /tmp/website-live-demo] [--headed]
  */
 import type { Page, Request } from "playwright";
 import {
@@ -97,7 +97,7 @@ await withBrowser(async (h) => {
   await page.goto(pathUrl("/about"), { waitUntil: "domcontentloaded" });
   const band = page.locator("figure.website-demo").first();
   const frame = band.locator(".website-demo-frame").first();
-  const gate = page.getByRole("button", { name: /Enter equin/ });
+  const gate = page.getByRole("button", { name: /Enter muxos/ });
   await gate.waitFor({ timeout: BOOT_TIMEOUT_MS });
   await band.scrollIntoViewIfNeeded();
   const before = (await frame.boundingBox())?.width ?? 0;
@@ -214,7 +214,7 @@ await withBrowser(async (h) => {
   );
   const pill = page.locator("[data-demo-back]");
   r.ok(
-    "Maximize: the demo page offers Back to equin",
+    "Maximize: the demo page offers Back to muxos",
     (await pill.count()) === 1 && (await pill.isVisible()),
   );
   await snap(page, OUT, "4-maximized");
@@ -262,12 +262,12 @@ await withBrowser(async (h) => {
     );
     r.ok(name, restored.ok, JSON.stringify(restored.value));
   };
-  await page.getByRole("button", { name: "Back to equin" }).click();
+  await page.getByRole("button", { name: "Back to muxos" }).click();
   await restoredInFrame(
-    "Back to equin returns to the homepage's frame, on Pages",
+    "Back to muxos returns to the homepage's frame, on Pages",
   );
   r.eq(
-    "Back to equin: run as a view transition",
+    "Back to muxos: run as a view transition",
     await viewTransitions(page),
     2,
   );
@@ -328,7 +328,7 @@ await withBrowser(async (h) => {
     { bands: 0, films: 0 },
   );
   r.eq(
-    "opened directly, the demo page offers no Back to equin",
+    "opened directly, the demo page offers no Back to muxos",
     await fresh.locator("[data-demo-back]").count(),
     0,
   );

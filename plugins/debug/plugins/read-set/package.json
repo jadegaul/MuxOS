@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-debug-read-set",
-  "description": "Read-set debug pane: the captured loader→table index and the read-set ceiling — every live-state resource under its change policy (routed, external, unrouted, unbound), with its full routes, relation reads and route drift.",
+  "name": "@muxos/plugin-debug-read-set",
+  "description": "Read-set debug pane: the captured loader\u2192table index and the read-set ceiling \u2014 every live-state resource under its change policy (routed, external, unrouted, unbound), with its full routes, relation reads and route drift.",
   "private": true,
   "version": "0.0.1"
 }

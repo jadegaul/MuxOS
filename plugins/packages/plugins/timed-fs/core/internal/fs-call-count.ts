@@ -180,7 +180,7 @@ const CWD = process.cwd();
 
 /**
  * The call's path, cut to its first directories: `./plugins/apps/plugins` under
- * the cwd, `~/.equin/cache/type-check` under home, `(fd)` for a descriptor.
+ * the cwd, `~/.muxos/cache/type-check` under home, `(fd)` for a descriptor.
  * The last segment (the file itself) is never kept.
  */
 export function fsCallPrefix(target: unknown): string {

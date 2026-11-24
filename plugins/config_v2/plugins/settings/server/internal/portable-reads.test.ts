@@ -13,7 +13,7 @@
  * registers its graph process-wide. Same shape as task-category's
  * portable-boot test.
  *
- * Run: `./equin test plugins/config_v2/plugins/settings`.
+ * Run: `./muxos test plugins/config_v2/plugins/settings`.
  *
  * It lives here, not in config_v2: test-host itself imports config_v2.
  */

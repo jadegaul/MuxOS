@@ -5,5 +5,5 @@ export const privacyPage = defineWebsitePage({
   path: "/about/privacy",
   title: "Privacy",
   description:
-    "What a visit to equin.ai records, how a return visit is recognised, how long it is kept, and the choice each browser makes.",
+    "What a visit to MuxOS.app records, how a return visit is recognised, how long it is kept, and the choice each browser makes.",
 });

@@ -136,7 +136,7 @@ export interface DatabaseDriverImpl {
    *
    * The desktop waits on its deploy lock (main's convergence run, from
    * before it decides until after its last build), the checkout's build lock
-   * (every `./equin build`) and — the direct signal — the namespace's
+   * (every `./muxos build`) and — the direct signal — the namespace's
    * schema-owner boot marker, held by a serving backend from its entry point
    * until its `onReady` recorded the stamp, however the build that restarted
    * it exited. On main's checkout it also does not settle while its HEAD is

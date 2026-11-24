@@ -14,7 +14,7 @@
  * Plain browser JavaScript serialised into the page: no imports, no closures
  * over host values.
  */
-export const ENGINE_BINDING = "__equinEngine";
+export const ENGINE_BINDING = "__muxosEngine";
 
 /** What the page script reports (the binding's one argument). */
 export type PageReport =
@@ -33,8 +33,8 @@ export type PageReport =
 
 /** The two globals the page script shares with the host (the binding, the open select). */
 interface EngineWindow {
-  __equinEngine?: (report: PageReport) => Promise<void>;
-  __equinEngineSelect?: HTMLSelectElement | null;
+  __muxosEngine?: (report: PageReport) => Promise<void>;
+  __muxosEngineSelect?: HTMLSelectElement | null;
 }
 
 /** Runs in the page (stringified by Playwright's `addInitScript`). */
@@ -42,7 +42,7 @@ export function pageScript(): void {
   if (window !== window.top) return;
   const w = window as unknown as EngineWindow;
   const report = (r: PageReport): void => {
-    const send = w.__equinEngine;
+    const send = w.__muxosEngine;
     if (send) void send(r);
   };
 
@@ -140,7 +140,7 @@ export function pageScript(): void {
       e.preventDefault();
       // A press does not scroll the page; neither does the focus it stood for.
       select.focus({ preventScroll: true });
-      w.__equinEngineSelect = select;
+      w.__muxosEngineSelect = select;
       const box = select.getBoundingClientRect();
       report({
         kind: "select",
@@ -160,8 +160,8 @@ export function pageScript(): void {
 /** Apply the value picked in the client's menu to the select it was opened on. */
 export function applySelect(value: string | null): void {
   const w = window as unknown as EngineWindow;
-  const select = w.__equinEngineSelect;
-  w.__equinEngineSelect = null;
+  const select = w.__muxosEngineSelect;
+  w.__muxosEngineSelect = null;
   if (!select || value === null || select.value === value) return;
   select.value = value;
   select.dispatchEvent(new Event("input", { bubbles: true }));

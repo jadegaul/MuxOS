@@ -22,7 +22,7 @@ func TestPrincipalOf(t *testing.T) {
 		{"origin null cross-site", "a.localhost:9000", map[string]string{"Origin": "null", "Sec-Fetch-Site": "cross-site"}, "anonymous"},
 		{"rebinding", "evil.com:9000", map[string]string{"Origin": "http://evil.com:9000", "Sec-Fetch-Site": "same-origin"}, "anonymous"},
 		{"local tool localhost", "localhost:9000", nil, "owner"},
-		{"local tool equin", "equin.localhost:9000", nil, "owner"},
+		{"local tool muxos", "muxos.localhost:9000", nil, "owner"},
 		{"typed url", "a.localhost:9000", map[string]string{"Sec-Fetch-Site": "none"}, "owner"},
 		{"same-origin", "a.localhost:9000", map[string]string{"Sec-Fetch-Site": "same-origin"}, "owner"},
 		{"old browser match", "a.localhost:9000", map[string]string{"Origin": "http://a.localhost:9000"}, "owner"},
@@ -32,7 +32,7 @@ func TestPrincipalOf(t *testing.T) {
 		{"bare [::1]", "[::1]:9000", map[string]string{"Sec-Fetch-Site": "same-origin"}, "owner"},
 		{"foreign host no headers", "evil.com", nil, "anonymous"},
 	}
-	publicHosts := parsePublicHosts("Equin.ai., other.example")
+	publicHosts := parsePublicHosts("MuxOS.ai., other.example")
 	cases = append(cases, []struct {
 		name string
 		host string
@@ -40,17 +40,17 @@ func TestPrincipalOf(t *testing.T) {
 		want string
 	}{
 		// Through the public edge: never the owner, whatever the headers say.
-		{"public host same-origin", "equin.ai", map[string]string{"Origin": "https://equin.ai", "Sec-Fetch-Site": "same-origin"}, "visitor"},
-		{"public host old browser https", "equin.ai", map[string]string{"Origin": "https://equin.ai"}, "visitor"},
-		{"public host no headers (curl)", "equin.ai", nil, "visitor"},
-		{"public host typed url", "equin.ai", map[string]string{"Sec-Fetch-Site": "none"}, "visitor"},
-		{"public host port and case", "EQUIN.AI.:443", nil, "visitor"},
-		{"public host via caddy", "equin.ai", map[string]string{"X-Forwarded-For": "203.0.113.9", "X-Forwarded-Proto": "https", "X-Forwarded-Host": "equin.ai"}, "visitor"},
-		{"public host cross-site", "equin.ai", map[string]string{"Origin": "https://evil.example", "Sec-Fetch-Site": "cross-site"}, "visitor"},
+		{"public host same-origin", "MuxOS.app", map[string]string{"Origin": "https://MuxOS.app", "Sec-Fetch-Site": "same-origin"}, "visitor"},
+		{"public host old browser https", "MuxOS.app", map[string]string{"Origin": "https://MuxOS.app"}, "visitor"},
+		{"public host no headers (curl)", "MuxOS.app", nil, "visitor"},
+		{"public host typed url", "MuxOS.app", map[string]string{"Sec-Fetch-Site": "none"}, "visitor"},
+		{"public host port and case", "MUXOS.AI.:443", nil, "visitor"},
+		{"public host via caddy", "MuxOS.app", map[string]string{"X-Forwarded-For": "203.0.113.9", "X-Forwarded-Proto": "https", "X-Forwarded-Host": "MuxOS.app"}, "visitor"},
+		{"public host cross-site", "MuxOS.app", map[string]string{"Origin": "https://evil.example", "Sec-Fetch-Site": "cross-site"}, "visitor"},
 		{"loopback via a proxy", "127.0.0.1:9100", map[string]string{"X-Forwarded-For": "203.0.113.9"}, "visitor"},
-		{"namespace via a proxy", "equin.localhost:9000", map[string]string{"X-Forwarded-Proto": "https"}, "visitor"},
+		{"namespace via a proxy", "muxos.localhost:9000", map[string]string{"X-Forwarded-Proto": "https"}, "visitor"},
 		{"loopback Forwarded", "localhost:9000", map[string]string{"Forwarded": "for=203.0.113.9"}, "visitor"},
-		{"loopback forwarded host only", "localhost:9000", map[string]string{"X-Forwarded-Host": "equin.ai"}, "visitor"},
+		{"loopback forwarded host only", "localhost:9000", map[string]string{"X-Forwarded-Host": "MuxOS.app"}, "visitor"},
 		{"box-local tool on loopback", "127.0.0.1:9100", nil, "owner"},
 		{"unlisted host", "evil.com", map[string]string{"Origin": "https://evil.com", "Sec-Fetch-Site": "same-origin"}, "anonymous"},
 	}...)
@@ -136,21 +136,21 @@ func gatewayAPIPaths(t *testing.T) []string {
 }
 
 // Nothing under /gateway/ answers anyone but the owner: not a visitor through
-// a deployed site's edge (a stranger's curl to equin.ai with no browser
+// a deployed site's edge (a stranger's curl to MuxOS.app with no browser
 // headers, or forging same-origin ones), not a foreign page — any method.
 func TestGatewayAPIRefusesEveryoneButTheOwner(t *testing.T) {
-	publicHosts := parsePublicHosts("equin.ai")
+	publicHosts := parsePublicHosts("MuxOS.app")
 	callers := map[string]func(method, path string) *http.Request{
 		"public curl": func(method, path string) *http.Request {
-			req := httptest.NewRequest(method, "http://equin.ai"+path, nil)
-			req.Host = "equin.ai"
+			req := httptest.NewRequest(method, "http://MuxOS.app"+path, nil)
+			req.Host = "MuxOS.app"
 			return req
 		},
 		"public forged same-origin": func(method, path string) *http.Request {
-			req := httptest.NewRequest(method, "http://equin.ai"+path, nil)
-			req.Host = "equin.ai"
+			req := httptest.NewRequest(method, "http://MuxOS.app"+path, nil)
+			req.Host = "MuxOS.app"
 			req.Header.Set("Sec-Fetch-Site", "same-origin")
-			req.Header.Set("Origin", "https://equin.ai")
+			req.Header.Set("Origin", "https://MuxOS.app")
 			return req
 		},
 		"through caddy on loopback": func(method, path string) *http.Request {
@@ -190,9 +190,9 @@ func TestProxyGateAllowsOwnerGatewayRead(t *testing.T) {
 // never what the visitor sent.
 func TestProxyStampsVisitor(t *testing.T) {
 	p := newTestProxy(t, "")
-	p.publicHosts = parsePublicHosts("equin.ai")
-	req := httptest.NewRequest(http.MethodGet, "http://equin.ai/api/x", nil)
-	req.Host = "equin.ai"
+	p.publicHosts = parsePublicHosts("MuxOS.app")
+	req := httptest.NewRequest(http.MethodGet, "http://MuxOS.app/api/x", nil)
+	req.Host = "MuxOS.app"
 	req.Header.Set(principalHeader, "owner")
 	p.ServeHTTP(httptest.NewRecorder(), req)
 	if got := req.Header.Get(principalHeader); got != "visitor" {

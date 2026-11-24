@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-auth-apple-signing-setup-wizard",
+  "name": "@muxos/plugin-auth-apple-signing-setup-wizard",
   "private": true,
   "version": "0.0.1"
 }

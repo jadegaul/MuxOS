@@ -337,7 +337,7 @@ export const e2ePool = defineHostPool({
   size: HOST_POOLS.e2e.size,
   // `inherit`: decided from measured waits, like `browser-fetch` — with two
   // slots for a 21 s median hold, the queue behind a holder is short. The
-  // script run itself is lifted by its caller (`./equin run` spawns it in the
+  // script run itself is lifted by its caller (`./muxos run` spawns it in the
   // foreground, so its Chromium measures the page rather than scheduler
   // waits); the browser MCP host's per-call drives need no lift.
   holder: "inherit",
@@ -348,7 +348,7 @@ export const e2ePool = defineHostPool({
  * `fn`, release. Same signature, so a direct op picks the pool without
  * changing shape. The grant it hands `fn` carries one unit for the holder's own
  * fan-out but its shares carry **no env**: it holds no `cpu` units, so a child must not inherit
- * a `EQUIN_HOST_GRANT` claiming some — a `./equin check` an e2e
+ * a `MUXOS_HOST_GRANT` claiming some — a `./muxos check` an e2e
  * script spawns acquires its own `cpu` grant like any top-level op.
  */
 export async function withE2eGrant<T>(
@@ -378,7 +378,7 @@ export async function withE2eGrant<T>(
 /**
  * The grant this process inherited from its parent via the environment, or
  * `undefined` if there is none (a fresh top-level invocation). Reads
- * `EQUIN_HOST_GRANT` (a positive int) and rebuilds an in-process semaphore
+ * `MUXOS_HOST_GRANT` (a positive int) and rebuilds an in-process semaphore
  * of that many units — it acquires NOTHING host-wide, because the parent already
  * holds the slots and this child is their only spender. An absent or invalid
  * value returns `undefined` so the caller falls back to `withHostGrant`.

@@ -9,7 +9,7 @@
 // Manual only — nothing runs this automatically.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-header-tight.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-header-tight.ts \
 //     [--name <prototype id>] [--from <px>] [--to <px>] [--out <prefix>] [--headed]
 
 import {

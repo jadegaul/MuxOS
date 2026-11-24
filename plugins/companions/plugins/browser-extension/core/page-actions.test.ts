@@ -6,7 +6,7 @@ const onHost = (label: string, host: string): PageActionSite => ({
   matches: (url) => url.host === host,
 });
 
-const site = onHost("equin.ai", "equin.ai");
+const site = onHost("MuxOS.app", "MuxOS.app");
 const tube = onHost("YouTube", "www.youtube.com");
 const openLocally = { id: "open-locally", site };
 const guide = { id: "guide", site };
@@ -20,8 +20,8 @@ const actions = [
 describe("groupPageActions", () => {
   test("keeps only the actions matching the page", () => {
     expect(
-      groupPageActions(actions, new URL("https://equin.ai/about")),
-    ).toEqual([{ label: "equin.ai", actions: [openLocally, guide] }]);
+      groupPageActions(actions, new URL("https://MuxOS.app/about")),
+    ).toEqual([{ label: "MuxOS.app", actions: [openLocally, guide] }]);
   });
 
   test("groups by site, in the order the actions come", () => {

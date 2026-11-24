@@ -54,7 +54,7 @@ test("the generated activate script parses", async () => {
   const script = activateScript({
     install: deriveInstall("website"),
     runId: "run-1",
-    binaryName: "equin-website",
+    binaryName: "muxos-website",
     loopbackPort: 9100,
   });
   const path = join(tmp, "activate.sh");

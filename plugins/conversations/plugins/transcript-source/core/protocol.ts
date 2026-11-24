@@ -19,11 +19,11 @@ export const PREPROMPT_TAG = "special_instructions";
 
 /**
  * The tag every contributed system-prompt section is wrapped in:
- * `<equin-context id="mandate" label="Mandate">…</equin-context>`. Written by
+ * `<muxos-context id="mandate" label="Mandate">…</muxos-context>`. Written by
  * system-prompt's composer, read back by the transcript parser, so the
  * transcript's Instructions card shows each section on its own.
  */
-export const CONTEXT_SECTION_TAG = "equin-context";
+export const CONTEXT_SECTION_TAG = "muxos-context";
 
 /** Wrap preprompt text as the block the agent's system prompt is given. */
 export function wrapPreprompt(text: string): string {
@@ -56,11 +56,11 @@ export function extractPreprompt(text: string): {
   return { preprompt: inner ? inner : null, rest };
 }
 
-/** One part of what equin appended to an agent's system prompt. */
+/** One part of what muxos appended to an agent's system prompt. */
 export const InstructionPartSchema = z.discriminatedUnion("kind", [
   // The task's preprompt (`<special_instructions>`).
   z.object({ kind: z.literal("preprompt"), text: z.string() }),
-  // A contributed section (`<equin-context>`). `label` is absent on
+  // A contributed section (`<muxos-context>`). `label` is absent on
   // transcripts written before the wrapper carried it.
   z.object({
     kind: z.literal("section"),
@@ -72,8 +72,8 @@ export const InstructionPartSchema = z.discriminatedUnion("kind", [
 export type InstructionPart = z.infer<typeof InstructionPartSchema>;
 
 /**
- * Every part of an equin system-prompt append, in order: its preprompt block
- * and each `<equin-context>` section. Empty when the text holds none.
+ * Every part of an muxos system-prompt append, in order: its preprompt block
+ * and each `<muxos-context>` section. Empty when the text holds none.
  */
 export function parseSystemPromptAppend(text: string): InstructionPart[] {
   const re = new RegExp(
@@ -365,7 +365,7 @@ export const JsonlEventSchema = z.discriminatedUnion("kind", [
     ),
   }),
   z.object({
-    // What equin appended to the agent's system prompt (its preprompt and
+    // What muxos appended to the agent's system prompt (its preprompt and
     // every contributed section), or a preprompt baked into the first turn.
     kind: z.literal("preprompt"),
     at: z.string(),
@@ -377,7 +377,7 @@ export const JsonlEventSchema = z.discriminatedUnion("kind", [
   z.object({
     // An `event` turn the app delivered to a watching agent
     // (tasks/orchestration/watch): a user-role line whose whole text is the
-    // turn ledger's `<equin-event>` envelope. Not something the user typed —
+    // turn ledger's `<muxos-event>` envelope. Not something the user typed —
     // it draws as a system card, and a rewind never cuts at it.
     kind: z.literal("event-turn"),
     at: z.string(),

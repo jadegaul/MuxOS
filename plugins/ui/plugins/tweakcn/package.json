@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-ui-tweakcn",
+  "name": "@muxos/plugin-ui-tweakcn",
   "private": true,
   "version": "0.0.1",
   "description": "Imports tweakcn themes and registers them as dynamic presets in all token groups."

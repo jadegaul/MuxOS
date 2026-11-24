@@ -189,7 +189,7 @@ interface SingleChildCommon<S extends z.ZodType> {
   runAttempts?: number;
   /**
    * Exit codes by which the child reports a VERDICT about its work rather
-   * than a failure of the run (`./equin test`'s "the tests ran and some
+   * than a failure of the run (`./muxos test`'s "the tests ran and some
    * failed"). Built-in ledger: such a run ends `done` — no retry, no
    * dead-letter, the row still records the exit code — so a verdict is never
    * filed as a broken job. A signalled death is never a verdict. An own
@@ -237,7 +237,7 @@ interface ArgvBody<S extends z.ZodType> {
 /** A child that runs in-process code — backup, the reaper, the fork. */
 interface RunBody<S extends z.ZodType> {
   /**
-   * The work, run in its own process: `./equin supervised-exec <name>`
+   * The work, run in its own process: `./muxos supervised-exec <name>`
    * boots the plugin graph in `exec` mode and calls this with the job's input.
    * Config and the database are present, as in the backend. `log` writes to
    * the transcript.

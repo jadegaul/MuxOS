@@ -12,7 +12,7 @@
  * - D6: `unroutedResourceKeys()`;
  * - D7: `seedRouteDrift()` and the persisted read-set fallback.
  *
- * Run with `./equin test plugins/network/plugins/live/plugins/resource-runtime`.
+ * Run with `./muxos test plugins/network/plugins/live/plugins/resource-runtime`.
  */
 
 import { describe, expect, spyOn, test } from "bun:test";

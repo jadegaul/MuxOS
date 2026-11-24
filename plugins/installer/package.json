@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-installer",
+  "name": "@muxos/plugin-installer",
   "private": true,
   "version": "0.0.1",
-  "description": "The equin installer: install.sh's structured event stream (protocol v1 — plan, step, log, done and exit events, one zod schema in core) and the renderers that draw it. Its window sub-plugin is the native installer window."
+  "description": "The muxos installer: install.sh's structured event stream (protocol v1 \u2014 plan, step, log, done and exit events, one zod schema in core) and the renderers that draw it. Its window sub-plugin is the native installer window."
 }

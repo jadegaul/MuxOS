@@ -72,7 +72,7 @@ const old: AttemptFacts = {
 const finished = { hasDir: true, hasDB: false, hasRegistry: false };
 
 describe("a reaped checkout's commits", () => {
-  // The case task-1793894005-zs3h8v asked about: `./equin push` committed on
+  // The case task-1793894005-zs3h8v asked about: `./muxos push` committed on
   // the attempt branch and the merge into main failed.
   test("commits on the branch, not on main: reapable, and they survive", async () => {
     const name = "att-1793894197-aaaaaa";

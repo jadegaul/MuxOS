@@ -84,7 +84,7 @@ export const _claudeUsageHours = pgTable(
 
 // One row per ledger source: what the readers need about it without reading
 // the transcript corpus — the encoded Claude project dir its transcripts live
-// in (`null` for a source with none, a `cli:` call), whether it is equin's own
+// in (`null` for a source with none, a `cli:` call), whether it is muxos's own
 // spend (Stats' repo scope) and a display title (`null`: the reader names it
 // from the source itself, a conversation's live title).
 export const _claudeUsageSources = pgTable("claude_usage_sources", {

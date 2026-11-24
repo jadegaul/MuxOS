@@ -5,8 +5,8 @@
 // the network and the server from stamps none of which its own main thread
 // takes (`primitives/networking`'s `requestTimingOf`).
 
-/** The metric name this router stamps (`Server-Timing: equin;dur=…;desc=…`). */
-export const SERVER_TIMING_METRIC = "equin";
+/** The metric name this router stamps (`Server-Timing: muxos;dur=…;desc=…`). */
+export const SERVER_TIMING_METRIC = "muxos";
 
 /**
  * What one stamp says: the handler's own time (`handlerMs`: the route handler
@@ -24,7 +24,7 @@ export function serverTimingValue(stamp: ServerTimingStamp): string {
   return `${SERVER_TIMING_METRIC};dur=${stamp.handlerMs.toFixed(1)};desc="${stamp.id}"`;
 }
 
-// Our own stamp only: a metric entry `equin;dur=<n>;desc="<id>"` among any
+// Our own stamp only: a metric entry `muxos;dur=<n>;desc="<id>"` among any
 // others a proxy may have joined to the header.
 const STAMP = new RegExp(
   `(?:^|,)\\s*${SERVER_TIMING_METRIC}\\s*;\\s*dur=([0-9.]+)\\s*;\\s*desc="([^"]+)"`,

@@ -1,10 +1,10 @@
 /**
- * The extension's popup: frames the equin page (`/home/browser-extension`)
+ * The extension's popup: frames the muxos page (`/home/browser-extension`)
  * and serves its bridge calls with what only an extension has — the tabs and
- * the popup itself. It never calls equin: everything equin does
+ * the popup itself. It never calls muxos: everything muxos does
  * runs inside the frame, same-origin with its server.
  *
- * Bundled by the build (`cli/internal/write-shell.ts`), which writes the equin
+ * Bundled by the build (`cli/internal/write-shell.ts`), which writes the muxos
  * origin and this shell's digest into `popup.html`. The contract is
  * `core/bridge.ts`.
  */
@@ -49,12 +49,12 @@ function meta(name: string): string {
   return value;
 }
 
-const origin = meta("equin-origin");
-const shellDigest = meta("equin-shell-digest");
+const origin = meta("muxos-origin");
+const shellDigest = meta("muxos-shell-digest");
 
 const frame = document.createElement("iframe");
 frame.src = `${origin}/home/browser-extension?embed=1`;
-frame.title = "equin";
+frame.title = "muxos";
 document.body.append(frame);
 
 /**
@@ -143,7 +143,7 @@ async function serve(port: MessagePort, data: unknown): Promise<void> {
 }
 
 // The page says hello once it listens (a reload says it again); each hello
-// from our own frame, at the equin origin, gets a fresh port.
+// from our own frame, at the muxos origin, gets a fresh port.
 window.addEventListener("message", (event) => {
   const target = frame.contentWindow;
   if (target === null || event.source !== target || event.origin !== origin)

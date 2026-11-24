@@ -31,7 +31,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     const expected = await formatGenerated({
@@ -42,7 +42,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is out of sync with the palette token groups`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     return { ok: true };

@@ -19,7 +19,7 @@ export function testFileBrief(
 ): string {
   const parts = [
     `The test file ${file.path} is ${file.status} on the current code (Debug → Tests).`,
-    `Run it with \`./equin test ${file.path}\`, find the cause and fix it.`,
+    `Run it with \`./muxos test ${file.path}\`, find the cause and fix it.`,
   ];
   if (file.status === "flaky")
     parts.push(
@@ -56,7 +56,7 @@ export const investigateFailedRuns = Investigate.Register<TestFileRunRow>({
   brief: (r, userText) =>
     [
       `The test file ${r.path} ${r.outcome === "not-loaded" ? "did not load" : `failed ${r.failedCases} of ${r.cases} cases`} in run ${r.opId} (by ${r.origin} in ${r.slug}; Debug → Tests).`,
-      `Run it with \`./equin test ${r.path}\`, find the cause and fix it.`,
+      `Run it with \`./muxos test ${r.path}\`, find the cause and fix it.`,
       ...(userText.trim() ? [`Additional context: ${userText.trim()}`] : []),
     ].join("\n\n"),
 });

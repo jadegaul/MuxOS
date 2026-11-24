@@ -1,7 +1,7 @@
 // ─── What does one REAL type-check batch cost, under which runtime settings? ─
 //
-//   EQUIN_TYPE_CHECK_KEEP_BATCHES=<dir> ./equin check type-check   # a batched run: <dir>/type-check-batches-*
-//   ./equin run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/batch-memory-bench.ts \
+//   MUXOS_TYPE_CHECK_KEEP_BATCHES=<dir> ./muxos check type-check   # a batched run: <dir>/type-check-batches-*
+//   ./muxos run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/batch-memory-bench.ts \
 //     --kept <dir>/type-check-batches-<id> --root <checkout at the run's tree> [--jobs 0,6] \
 //     [--variants default,smol,BUN_JSC_forceRAMSize=4000000000]
 //
@@ -12,7 +12,7 @@
 //
 // A variant is `+`-joined parts: `default` (nothing), `smol` (bun `--smol`) or
 // `NAME=value` (an environment variable, e.g. a `BUN_JSC_*` JSC option or
-// `MIMALLOC_*`). Under `./equin run` the environment is already heap-paced
+// `MIMALLOC_*`). Under `./muxos run` the environment is already heap-paced
 // (`packages/heap-pacing`), so the unpaced baseline is
 // `BUN_JSC_forceRAMSize=<the host's RAM>`.
 //

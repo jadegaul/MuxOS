@@ -76,8 +76,8 @@ function MissingFile({ path }: { path: string }) {
 }
 
 /**
- * "equin can't read this file", and why: macOS privacy protection (a folder
- * like ~/Downloads the equin app is not allowed into — Allow access opens its
+ * "muxos can't read this file", and why: macOS privacy protection (a folder
+ * like ~/Downloads the muxos app is not allowed into — Allow access opens its
  * switch in System Settings) or the file's own permissions. Check again
  * re-reads the stat: granting access changes no file, so no watch would.
  */
@@ -93,7 +93,7 @@ function UnreadableFile({
       <Stack direction="col" align="center" gap="md" className="max-w-md">
         <Icon icon={lockIcon} className="size-12 text-muted-foreground" />
         <Text as="p" variant="body" className="text-center">
-          equin can't read this file
+          muxos can't read this file
         </Text>
         <Text
           as="p"
@@ -102,7 +102,7 @@ function UnreadableFile({
           className="text-center text-pretty"
         >
           {read === "macos-privacy"
-            ? "macOS hasn't given equin access to the folder it is in. Turn on equin's switch for that folder in System Settings → Privacy & Security → Files & Folders, then check again."
+            ? "macOS hasn't given muxos access to the folder it is in. Turn on muxos's switch for that folder in System Settings → Privacy & Security → Files & Folders, then check again."
             : "Your user account isn't allowed to read this file (its permissions keep it out)."}
         </Text>
         <Inline gap="xs" align="center" justify="center">

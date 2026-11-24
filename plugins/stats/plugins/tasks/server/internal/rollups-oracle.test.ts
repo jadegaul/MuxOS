@@ -8,7 +8,7 @@
  * task between days, resolves, un-resolves or deletes it re-aggregates both
  * the day it left and the day it reached (the multi-column carry).
  *
- * Requires the running embedded cluster (`./equin build` first).
+ * Requires the running embedded cluster (`./muxos build` first).
  */
 import {
   afterAll,

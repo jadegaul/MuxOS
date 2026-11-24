@@ -16,7 +16,7 @@ describe("event envelope", () => {
   });
 
   test("a message that only mentions the tag is not an event", () => {
-    expect(unwrapEventTurn("see <equin-event>x</equin-event> above")).toBe(
+    expect(unwrapEventTurn("see <muxos-event>x</muxos-event> above")).toBe(
       null,
     );
     expect(unwrapEventTurn("hello")).toBe(null);

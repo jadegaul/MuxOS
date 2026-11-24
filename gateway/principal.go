@@ -10,7 +10,7 @@ import (
 // gateway deletes any client-sent value and stamps its own, on the HTTP proxy
 // and the WebSocket replay alike. The TS side (framework/principal) names the
 // same header in lowercase; a check keeps the two in sync.
-const principalHeader = "X-Equin-Principal"
+const principalHeader = "X-MuxOS-Principal"
 
 // principalStampedFlag is the bare argv flag backendLaunch hands every backend
 // (central included): this gateway stamps principalHeader on every request it
@@ -88,10 +88,10 @@ func isLoopbackLiteral(h string) bool {
 // site's public edge) or "anonymous" (a foreign page, a rebound DNS name).
 // Same-origin, not same-site.
 //
-//  1. Host is not an equin host -> anonymous. DNS rebinding: evil.com
+//  1. Host is not an muxos host -> anonymous. DNS rebinding: evil.com
 //     resolved to 127.0.0.1 is same-origin with itself. A deployed site's own
 //     public hostnames (-public-hosts, forwarded unchanged by Caddy) count as
-//     equin hosts.
+//     muxos hosts.
 //  2. Came through the edge (a public Host, or any forwarding header) ->
 //     visitor. The rules below read headers a browser cannot forge, but a
 //     stranger's curl can send any of them (or none: "a local tool"); only
@@ -140,6 +140,6 @@ func writeCrossSiteRefusal(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewEncoder(w).Encode(map[string]string{
 		"reason":  "cross-site-refused",
 		"route":   r.Method + " " + r.URL.Path,
-		"message": "A request from another site is not the owner; equin refused it before it ran.",
+		"message": "A request from another site is not the owner; muxos refused it before it ran.",
 	})
 }

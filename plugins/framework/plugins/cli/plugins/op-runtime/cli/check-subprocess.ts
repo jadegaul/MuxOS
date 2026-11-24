@@ -12,7 +12,7 @@ import {
 // Why a fresh process, and not a function call:
 //
 //   • A passing check writes a durable entry to the GLOBAL cache at
-//     `~/.equin/check-cache/`, keyed on the working-tree hash and carrying
+//     `~/.muxos/check-cache/`, keyed on the working-tree hash and carrying
 //     no provenance. A later push looks that hash up and returns ✓ without
 //     running anything — so a recorded PASS is a TRANSFERABLE claim, and it is
 //     only honest if the process that produced it did nothing but run checks.
@@ -30,8 +30,8 @@ import {
 // CHILD resolves against the registry. There is deliberately no `ids` field: an
 // id list computed here would be a registry read performed in the very module
 // cache the child exists to escape — the same mistake, one level up. Every
-// selection is therefore hand-reproducible (`./equin check --scope tree`,
-// `./equin check --always-run`) and its emptiness is noticed where it
+// selection is therefore hand-reproducible (`./muxos check --scope tree`,
+// `./muxos check --always-run`) and its emptiness is noticed where it
 // matters, inside `runChecks`.
 //
 // The three callers and what each asserts:
@@ -44,15 +44,15 @@ import {
 //     that *can* assert `deploy`, because it is the one producing the dist. It
 //     names both scopes rather than dropping the filter: "every scope" is not
 //     the claim it is making, and while it WAS spelled that way build silently
-//     took on `host` too — asserting the shared `~/.equin` data root, and
+//     took on `host` too — asserting the shared `~/.muxos` data root, and
 //     so failing a deploy over a directory another agent's unmerged branch had
 //     just declared.
 //   • `build --skip-checks` — `alwaysRun: true`, the cheap structural subset.
 //
 // Nobody asserts `host` from an op. Its subject is the machine, shared with
-// every checkout on the box; its home is a standalone `./equin check`.
+// every checkout on the box; its home is a standalone `./muxos check`.
 //
-// **`EQUIN_BUILD_IN_PROGRESS` must pass through untouched.** That marker
+// **`MUXOS_BUILD_IN_PROGRESS` must pass through untouched.** That marker
 // is how a dist-comparing check (`web-artifacts:map-in-sync`) learns to skip a
 // dist the build is about to replace; the child is the process actually running
 // those checks, so it is the one that has to see it.
@@ -219,7 +219,7 @@ export async function runCheckSubprocess(
       env,
       mergeStderr: true,
       peakFootprint: "report",
-      // This child IS `./equin check` — the full type-check/lint/codegen
+      // This child IS `./muxos check` — the full type-check/lint/codegen
       // sweep. Its duration is the duration of the work, and nothing above it
       // owns a shorter deadline: the human at the terminal is the deadline, and
       // killing a check that was still making progress would only make the
@@ -229,7 +229,7 @@ export async function runCheckSubprocess(
       // watch (checks' `core/hang-watch.ts`), judged on held CPU, never on a
       // deadline: it exits non-zero here like any failed pass.
       unbounded:
-        "this child is the whole `./equin check` run; its duration is the work's, and the CLI invocation above it owns no shorter deadline",
+        "this child is the whole `./muxos check` run; its duration is the work's, and the CLI invocation above it owns no shorter deadline",
     });
     exitCode = result.exitCode;
     signalCode = result.signalCode;
@@ -239,7 +239,7 @@ export async function runCheckSubprocess(
     }
   }
 
-  // The child is `./equin check`, whose codes are first-party: `128 + signo`
+  // The child is `./muxos check`, whose codes are first-party: `128 + signo`
   // is a signal it saw (its own, or its checks' processes'), never a choice.
   // One exception: a pass its own hang watch killed (checks' `hang-watch.ts`
   // SIGKILLs a thread that held its core for minutes) is a verdict — a

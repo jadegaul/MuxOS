@@ -14,8 +14,8 @@ dbus-run-session -- xvfb-run -a "$bin" --probe
 # It stays open on its done screen, so `timeout` stops it (SIGTERM:
 # the window exits with the script's code; xvfb-run then ends).
 set +e
-EQUIN_INSTALL_DRY_RUN_PACE=0 dbus-run-session -- xvfb-run -a timeout 60 "$bin" --script install.sh -- --dry-run | tee "$RUNNER_TEMP/window.out"
+MUXOS_INSTALL_DRY_RUN_PACE=0 dbus-run-session -- xvfb-run -a timeout 60 "$bin" --script install.sh -- --dry-run | tee "$RUNNER_TEMP/window.out"
 set -e
 # The last step's line: every event before it reached the window.
 # (A step with sub-steps prints as a bare heading, never a ✓ line.)
-grep -qE '✓ Start equin$' "$RUNNER_TEMP/window.out"
+grep -qE '✓ Start muxos$' "$RUNNER_TEMP/window.out"

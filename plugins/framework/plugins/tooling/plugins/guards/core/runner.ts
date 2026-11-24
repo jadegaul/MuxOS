@@ -73,7 +73,7 @@ export interface HookOptions {
    */
   workspaceRoot: string | null;
   /**
-   * The scratch directory the launch named (`EQUIN_SCRATCH`), `null` in a
+   * The scratch directory the launch named (`MUXOS_SCRATCH`), `null` in a
    * session no app launched — see `GuardContext.scratch`.
    */
   scratchDir: string | null;
@@ -108,7 +108,7 @@ type BypassStep =
   | { kind: "refused"; why: string };
 
 /**
- * A `./equin guard bypass <id> --reason …` call: recorded here, by the hook,
+ * A `./muxos guard bypass <id> --reason …` call: recorded here, by the hook,
  * because only the hook knows the session and agent it belongs to (the CLI
  * verb just confirms). It must be the whole command — chained into the call it
  * bypasses, it would be judged in the same hook run, too late.

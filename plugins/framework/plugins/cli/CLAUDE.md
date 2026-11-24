@@ -1,13 +1,13 @@
 # cli
 
-The `./equin` agent CLI. `bin/index.ts` is the bootstrap; `bin/cli.ts` is
+The `./muxos` agent CLI. `bin/index.ts` is the bootstrap; `bin/cli.ts` is
 the CLI proper.
 
 ## Contributing a command
 
 A plugin ships `plugins/<name>/cli/index.ts` default-exporting
 `defineCliCommand(…)` (from `@plugins/framework/plugins/cli/core`), and
-`./equin build` regenerates `core/cli.generated.ts` from the filesystem.
+`./muxos build` regenerates `core/cli.generated.ts` from the filesystem.
 Nothing here names it. `plugins/format/` is the reference shape.
 
 Deleting a command is just deleting its folder. Until the registry is
@@ -17,7 +17,7 @@ regenerated it still lists the command; `bin/cli.ts` skips an entry whose
 throws still fails startup loudly.
 
 The declaration is **data only** — commander needs names and flags before it
-parses, so every plugin's `cli/index.ts` loads on every `./equin`
+parses, so every plugin's `cli/index.ts` loads on every `./muxos`
 invocation, `build` included. The implementation sits behind the declaration's
 own `run: () => import("./run")` and loads only when that command runs.
 `cli:command-declarations-light` enforces the split (no npm package, no
@@ -63,7 +63,7 @@ build's eight-file pipeline is build-private, and `converge-script` is deploy's.
 | `regen-generated` / `regen-migrations` | The repo-tree codegen and migration-generation pipelines as standalone commands (used by the normalize pass). |
 | `normalize-generated` | Marker-gated repair of generated artifacts a merge driver auto-resolved. Invoked by the `post-rewrite` hook; rarely run by hand. |
 | `serve-app` | Runtime entrypoint a released bundle's launcher invokes. |
-| `install` | Install this checkout's `node_modules` and exit — the bootstrap's install, named. `infra/worktree` runs it in every checkout it creates, frozen through `EQUIN_FROZEN_LOCKFILE` (env, because the install runs before argv is parsed). |
+| `install` | Install this checkout's `node_modules` and exit — the bootstrap's install, named. `infra/worktree` runs it in every checkout it creates, frozen through `MUXOS_FROZEN_LOCKFILE` (env, because the install runs before argv is parsed). |
 | `db` / `start` / `stop` | DB fork/list/drop admin; the one-time gateway bring-up (a launchd service on macOS, so it comes back after a reboot) and its stop. |
 
 The **orphan guard** (`plugins/bootstrap/cli/orphan-guard.ts`) is armed by `bin/index.ts` for
@@ -78,7 +78,7 @@ work is the bootstrap's `ensureDeps()`) ends in the bootstrap, its name
 
 The opt-out is declared, not inferred: a command meant to outlive its shell sets
 `detachable: true` and the mapper disarms the guard as it starts. The spawner-set
-`EQUIN_BUILD_DETACHED` escape still covers the detached self-restart build,
+`MUXOS_BUILD_DETACHED` escape still covers the detached self-restart build,
 which is knowable pre-install because it is env.
 
 A **hermetic** build (`build --hermetic`) is therefore guarded like everything
@@ -106,7 +106,7 @@ is the other half: re-derive from the merged tree, amend, consume the marker.
 
 It is deliberately NOT push-owned. `.githooks/post-rewrite` runs it after any
 rebase (so a manual `git rebase origin/main` self-heals), `push` runs it around
-its own rebase with the hook suppressed (`EQUIN_SKIP_POST_REWRITE`, because
+its own rebase with the hook suppressed (`MUXOS_SKIP_POST_REWRITE`, because
 push installs the rebased lockfile first), and `build` reaches the same state by
 regenerating everything and clearing the markers itself. `core/` holds the marker
 names + conflict scan so the `generated-artifacts-normalized` check reads the
@@ -146,7 +146,7 @@ schema drift — main changing `schema.ts` without a migration is one-sided;
 
 `ensureDeps()` owns "this checkout's `node_modules` is correct for its inputs":
 freshness-gated on a `(mtimeMs,size)` signature stamped in
-`node_modules/.equin-deps` (so the common case is ~0.1 s and silent: the
+`node_modules/.muxos-deps` (so the common case is ~0.1 s and silent: the
 walk for its inputs re-lists only directories whose stat stamp moved,
 `plugins/bootstrap/cli/dir-listing.ts`),
 serialized on `.install.lock`, and **loud** — it runs `bun install` with output
@@ -154,8 +154,8 @@ passed through and throws a message naming the phase on failure. Every install
 site routes through it: the `bin/index.ts` bootstrap, `mise.toml`'s setup task,
 `app-artifacts.ts` stage 1, and `push`'s post-rebase install (`frozenLockfile:
 true`, so a mid-push tree is never re-resolved). The bootstrap's own call is
-frozen when the spawner sets `EQUIN_FROZEN_LOCKFILE=1` — what `infra/worktree`
-does for the `./equin install` it runs in a new checkout. No bare `bun install` remains:
+frozen when the spawner sets `MUXOS_FROZEN_LOCKFILE=1` — what `infra/worktree`
+does for the `./muxos install` it runs in a new checkout. No bare `bun install` remains:
 one skipping the lock races `clonefileat`, one skipping the stamp makes the next
 process reinstall from scratch.
 
@@ -170,7 +170,7 @@ irrelevant: waiting on `.install.lock` while another command installs
 fixes *when* resolution happens, the re-exec fixes *which process* does it; both
 are required, and `cli:bootstrap-package-free` measures only the first.
 
-**`./equin` is a bare `exec` — never add a step above it.** It used to run
+**`./muxos` is a bare `exec` — never add a step above it.** It used to run
 `bun install --silent` first; a failed install (bun 1.3.13 has no install mutex,
 so concurrent installs in one checkout race on `clonefileat`) aborted the wrapper
 under `set -e` before `exec`, printing nothing, so *every* subcommand read as
@@ -188,7 +188,7 @@ arms first, so an orphaned op can never sit on the install lock. Enforced by the
 Lock order is one-way: **`.build.lock` → `.install.lock`**, never the reverse
 (nothing takes the build lock while holding the install lock), so no deadlock.
 The install lock is not `.build.lock` itself on purpose — sharing them would make
-a `./equin check` block for an entire concurrent build.
+a `./muxos check` block for an entire concurrent build.
 
 ## Locks: the kernel owns them (`plugins/bootstrap/cli/checkout-lock.ts`)
 
@@ -207,12 +207,12 @@ Two rules that look wrong and are not:
   decide ownership. Do not reintroduce a `kill(pid, 0)` probe or a heartbeat: a
   heartbeat proves the event loop turns, not that the build is progressing, so a
   build wedged on a hung child looked healthy under the old scheme. "What is the
-  holder stuck in?" is answered instead from `~/.equin/logs/build-progress/build-progress.jsonl`,
+  holder stuck in?" is answered instead from `~/.muxos/logs/build-progress/build-progress.jsonl`,
   which records the actual span.
 
 ## The deploy receipt (`plugins/op-runtime/core/internal/build-receipt.ts`)
 
-`~/.equin/worktrees/<wt>/build-status.json` — `running` once the build lock
+`~/.muxos/worktrees/<wt>/build-status.json` — `running` once the build lock
 is granted, rewritten `ok` / `failed` / `superseded` in `finalizeBuild`. **One
 fixed path, deliberately with no `<buildId>` variant**: every other build artifact
 is per-run, so "did my build land?" could only be asked of them through
@@ -250,7 +250,7 @@ must be armed strictly after that loop or it is silently overwritten.
 ## The artifact / deploy seam
 
 `--composition` once meant "deploy this checkout, but filtered" — so cutting a
-release required a machine that was already an equin dev box, and the
+release required a machine that was already an muxos dev box, and the
 artifact was a function of the developer's environment rather than of the source.
 The flag is back, and the split it was missing is a **posture** of the one verb
 rather than a second command: `build --hermetic --composition <name…>` is the
@@ -352,7 +352,7 @@ Two consequences worth knowing before editing:
 - **Every filtered registry is per-composition**
   (`<dir>.composition.<id>.generated.ts`) and `plugins-active.ts` selects one
   only under a matching `composition` — the field the backend reads back off its
-  own `~/.equin/worktrees/<namespace>/spec.json`, the same file the gateway
+  own `~/.muxos/worktrees/<namespace>/spec.json`, the same file the gateway
   read to spawn it (`plugins/framework/plugins/server-core/bin/spec-composition.ts`; deliberately not an env var,
   because `build` does not rebuild the Go gateway and a dropped variable would
   boot the full app under a composition's namespace) — so a file on disk cannot
@@ -419,7 +419,7 @@ through it too). Two consequences that look wrong and are not:
   the same dist by construction.
 
 **No dist lives in a checkout.** Both arms resolve under
-`~/.equin/worktrees/` — served at `<name>/web`, release scratch at
+`~/.muxos/worktrees/` — served at `<name>/web`, release scratch at
 `<wt>/release-web/<id>` — so a checkout carries no build output. The backend-side
 twin is `webDistDir()` (`infra/paths`), which is per-NAMESPACE and must stay a
 function, not a const. The pre-S4 in-checkout tree is reclaimed by
@@ -444,11 +444,11 @@ worktree publishes carries the frame and main's publishes none. Every other dist
 producer is clean by default, not by exclusion. CSS rule in
 ui-kit's `theme/app.css` (JS-sets / CSS-styles split, as with `.dark`).
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: The `./equin` CLI (its old name is kept as a shim): the command declaration contract, the generated-artifact normalize contract, and every built-in command (build, push, check, test, run, release, deploy, and more).
+- Description: The `./muxos` CLI (its old name is kept as a shim): the command declaration contract, the generated-artifact normalize contract, and every built-in command (build, push, check, test, run, release, deploy, and more).
 - Core:
   - Uses:
     - `framework/product-name.LEGACY_IDS`
@@ -491,31 +491,31 @@ ui-kit's `theme/app.css` (JS-sets / CSS-styles split, as with `.dark`).
     - `cli:codegen-manifests-not-frozen:registry` — `core/cli.generated.ts` (sanctioned)
     - `blocking-fs/sync-named` — `core/internal/git-dir.ts`, `core/internal/merge-markers.ts`, `core/internal/registry-entry.ts` (sanctioned)
 - Sub-plugins:
-  - **`await`** — `./equin await` — block until this checkout's running op writes its verdict, and print it. Starts nothing; the wake-up becomes a tool result instead of a notification that may never arrive.
+  - **`await`** — `./muxos await` — block until this checkout's running op writes its verdict, and print it. Starts nothing; the wake-up becomes a tool result instead of a notification that may never arrive.
   - **`bootstrap`** [exempt] — CLI bootstrap — the npm-free half that must run with node_modules absent: ensureDeps, the post-install re-exec, the orphan guard, the build lock.
-  - **`build`** [exempt] [2 sub-plugins] — `./equin build` — the deploy command: codegen, migrations, web dist and backend restart for this checkout, or a composition's hermetic artifact set.
-  - **`check`** [exempt] — `./equin check` — run the repo validation checks (all, a named subset, or one scope). The only in-process caller of runChecks(): `build` and `push` each spawn it as a subprocess, so their `checks ✓`…
-  - **`cli-name`** — The CLI's own name, as data: CLI_NAME (`equin`, what agents type and the CLI calls itself), CLI_NAMES (every repo-root executable that runs it, the legacy shim included), isCliName and…
-  - **`db`** — `./equin db` — worktree database operations; today just `db fork`, which gives a hand-made `git worktree add` checkout the DB fork it never got.
-  - **`deploy`** — `./equin deploy converge|ship|restart` — converge a host to serve a composition (run user, dirs, env, Caddy, systemd, firewall), ship release bundles to it behind a health gate, and restart its…
+  - **`build`** [exempt] [2 sub-plugins] — `./muxos build` — the deploy command: codegen, migrations, web dist and backend restart for this checkout, or a composition's hermetic artifact set.
+  - **`check`** [exempt] — `./muxos check` — run the repo validation checks (all, a named subset, or one scope). The only in-process caller of runChecks(): `build` and `push` each spawn it as a subprocess, so their `checks ✓`…
+  - **`cli-name`** — The CLI's own name, as data: CLI_NAME (`muxos`, what agents type and the CLI calls itself), CLI_NAMES (every repo-root executable that runs it, the legacy shim included), isCliName and…
+  - **`db`** — `./muxos db` — worktree database operations; today just `db fork`, which gives a hand-made `git worktree add` checkout the DB fork it never got.
+  - **`deploy`** — `./muxos deploy converge|ship|restart` — converge a host to serve a composition (run user, dirs, env, Caddy, systemd, firewall), ship release bundles to it behind a health gate, and restart its…
   - **`doctor`** — The prerequisite doctor: doctor.sh names every missing prerequisite (Xcode CLT/git, mise active, the locked toolchain) in one run, with its fix, and advises on Claude Code (installed and signed in)…
   - **`foreground-handoff`** [exempt] — Foreground op hand-off: a `check` / `test` an agent runs in the foreground streams its output like any command, and if it would outlive the call's 600 s limit it hands itself off before the cap…
-  - **`format`** — `./equin format` — prettier over the .ts/.tsx changed on this branch; the same pass `build` runs, without paying for a build.
+  - **`format`** — `./muxos format` — prettier over the .ts/.tsx changed on this branch; the same pass `build` runs, without paying for a build.
   - **`git-artifacts`** — Generated-artifact merge handling that runs inside a CLI command: re-deriving after a merge driver took the cheap side, and installing the drivers.
-  - **`install`** — `./equin install` — install this checkout's node_modules from its own bun.lock and nothing else; what creating a worktree runs in the new checkout (frozen, through EQUIN_FROZEN_LOCKFILE), so every…
+  - **`install`** — `./muxos install` — install this checkout's node_modules from its own bun.lock and nothing else; what creating a worktree runs in the new checkout (frozen, through MUXOS_FROZEN_LOCKFILE), so every…
   - **`migrations`** [exempt] — Drizzle migration generation for the CLI: the generate/rename/journal pipeline and the interactive drizzle-kit prompt driver.
-  - **`normalize-generated`** — `./equin normalize-generated` — re-derive the generated artifacts a merge driver auto-resolved during a merge or rebase and amend the head commit; the `post-rewrite` git hook's entry point.
+  - **`normalize-generated`** — `./muxos normalize-generated` — re-derive the generated artifacts a merge driver auto-resolved during a merge or rebase and amend the head commit; the `post-rewrite` git hook's entry point.
   - **`op-runtime`** [exempt] — Shared machinery of the op commands (build / check / test / push / run): broadcasts, deploy receipt, fatal-signal exits, lane, op profiler, progress log, admission valve, nested check, build output…
-  - **`push`** — `./equin push` — the one path work reaches main: commit, rebase onto main, re-normalize generated artifacts, run the tree-scoped checks, fast-forward and push, all under the host-wide push mutex.
-  - **`regen-generated`** — `./equin regen-generated` — the repo-tree half of build's codegen standalone (registries, barrels, plugin docs, manifests, config origins), for the post-rebase normalize step in `push`.
-  - **`regen-migrations`** — `./equin regen-migrations` — discard branch-local migrations and re-generate them against the rebased schema, for the post-rebase normalize step in `push`; aborts on hand-edited SQL.
-  - **`release`** [exempt] — `./equin release` — stage a composition into a portable, self-contained artifact (compiled binaries + vendored native PG/PgBouncer/gateway/parcel-watcher) and pack it as a single-file web binary or…
-  - **`run`** — `./equin run <script.ts> [args…]` — run a repo script against THIS worktree's own dependencies; the correct spelling of `bun <file>`, which silently resolves another checkout's installed tree.
-  - **`serve-app`** [exempt] — `./equin serve-app` — boot a packaged app's full runtime (gateway + embedded Postgres + app DB) under an isolated EQUIN_DIR. The one detachable command: it is meant to outlive the shell that…
-  - **`start`** — `./equin start` — build the gateway and register it as a per-user OS service (launchd on macOS, a systemd user unit on Linux) so it comes back after a reboot, then wait for it to actually serve…
-  - **`stop`** — `./equin stop` — stop the gateway daemon (and with it every backend); `--disable` also stops it starting at login.
-  - **`test`** [exempt] [2 sub-plugins] — `./equin test` — the ONLY way to run tests: both runners (bun:test for co-located logic suites, vitest for jsdom suites), with a summary naming both buckets so a green-but-partial result is…
-  - **`upstream`** — `./equin upstream status|merge` — what the repo this checkout was cloned from has that local main does not, and the one sanctioned merge that brings it into a worktree branch.
-  - **`version`** — `./equin version status|cut` — which release local main is on and the newest upstream has, and cutting a release: an annotated `v<YYYY.MM.DD>` tag on a main that is published, deployed and whose…
+  - **`push`** — `./muxos push` — the one path work reaches main: commit, rebase onto main, re-normalize generated artifacts, run the tree-scoped checks, fast-forward and push, all under the host-wide push mutex.
+  - **`regen-generated`** — `./muxos regen-generated` — the repo-tree half of build's codegen standalone (registries, barrels, plugin docs, manifests, config origins), for the post-rebase normalize step in `push`.
+  - **`regen-migrations`** — `./muxos regen-migrations` — discard branch-local migrations and re-generate them against the rebased schema, for the post-rebase normalize step in `push`; aborts on hand-edited SQL.
+  - **`release`** [exempt] — `./muxos release` — stage a composition into a portable, self-contained artifact (compiled binaries + vendored native PG/PgBouncer/gateway/parcel-watcher) and pack it as a single-file web binary or…
+  - **`run`** — `./muxos run <script.ts> [args…]` — run a repo script against THIS worktree's own dependencies; the correct spelling of `bun <file>`, which silently resolves another checkout's installed tree.
+  - **`serve-app`** [exempt] — `./muxos serve-app` — boot a packaged app's full runtime (gateway + embedded Postgres + app DB) under an isolated MUXOS_DIR. The one detachable command: it is meant to outlive the shell that…
+  - **`start`** — `./muxos start` — build the gateway and register it as a per-user OS service (launchd on macOS, a systemd user unit on Linux) so it comes back after a reboot, then wait for it to actually serve…
+  - **`stop`** — `./muxos stop` — stop the gateway daemon (and with it every backend); `--disable` also stops it starting at login.
+  - **`test`** [exempt] [2 sub-plugins] — `./muxos test` — the ONLY way to run tests: both runners (bun:test for co-located logic suites, vitest for jsdom suites), with a summary naming both buckets so a green-but-partial result is…
+  - **`upstream`** — `./muxos upstream status|merge` — what the repo this checkout was cloned from has that local main does not, and the one sanctioned merge that brings it into a worktree branch.
+  - **`version`** — `./muxos version status|cut` — which release local main is on and the newest upstream has, and cutting a release: an annotated `v<YYYY.MM.DD>` tag on a main that is published, deployed and whose…
 
 <!-- AUTOGENERATED:END -->

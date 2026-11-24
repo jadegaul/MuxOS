@@ -1,4 +1,4 @@
-// Is an encoded Claude project dir an equin project (the main repo or one
+// Is an encoded Claude project dir an muxos project (the main repo or one
 // of its worktrees)? Claude encodes project paths by replacing `/`, `.`, and `_`
 // with `-`, so /Users/<user>/.../<repo> becomes `-Users-<user>-...-<repo>`
 // and a worktree under it becomes `-Users-<user>-...-<repo>--claude-worktrees-...`.

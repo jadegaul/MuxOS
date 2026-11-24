@@ -7,7 +7,7 @@
  * the payload is readable without clipboard permissions — the handler is a plain
  * document listener and cannot tell the difference.
  *
- *   ./equin run plugins/primitives/plugins/dom/plugins/copy-source-text/e2e/copy-verify.ts \
+ *   ./muxos run plugins/primitives/plugins/dom/plugins/copy-source-text/e2e/copy-verify.ts \
  *     --conv <id>
  *
  * FIXTURE: pass a conversation whose transcript renders an active-data chip

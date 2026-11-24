@@ -11,7 +11,7 @@
 // 4·(N−1), which is what the scrubber's aria-valuenow reports).
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/sonata/plugins/sources/plugins/midi/plugins/file-preview/e2e/open-in-sonata-verify.ts \
+//   ./muxos run plugins/apps/plugins/sonata/plugins/sources/plugins/midi/plugins/file-preview/e2e/open-in-sonata-verify.ts \
 //     [--file "~/Downloads/sunny-roberto-piano-notation-v2.mid"] [--play-ms 3500] [--out /tmp/midi-open] [--headed]
 
 import type { Page } from "playwright";

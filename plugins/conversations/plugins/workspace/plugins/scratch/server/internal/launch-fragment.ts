@@ -49,7 +49,7 @@ export function scratchLaunchFragment(opts: {
 }): LaunchFragment {
   return {
     settingSources: ["user", "project"],
-    mcpServers: { equin: { type: "http", url: opts.mcpUrl } },
+    mcpServers: { muxos: { type: "http", url: opts.mcpUrl } },
     strictMcpConfig: true,
     ...(opts.permissions ? { permissions: opts.permissions } : {}),
     guards: { from: "launch", root: opts.guardsRoot },

@@ -107,7 +107,7 @@ function useLaunchableApps(
 /**
  * The launcher button's face: the current app's own mark — its drawn logo when
  * it registers one (`mark`), else its rail glyph — so every app keeps its
- * identity at the top-left. Outside any app, the equin mark.
+ * identity at the top-left. Outside any app, the muxos mark.
  */
 /**
  * Which tip the launcher asks for, from the mode of the tab set it is drawn in:

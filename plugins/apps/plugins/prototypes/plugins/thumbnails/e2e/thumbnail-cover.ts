@@ -4,7 +4,7 @@
 // A transcript tool, not a gate: it logs.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/thumbnails/e2e/thumbnail-cover.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/thumbnails/e2e/thumbnail-cover.ts \
 //     [--url http://<worktree>.localhost:<port>]
 
 import {

@@ -18,7 +18,7 @@ const SCREENSHOT_SCRIPT =
   "plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts";
 
 /**
- * `./equin prototype options <id>` — which variant of a prototype the
+ * `./muxos prototype options <id>` — which variant of a prototype the
  * user is looking at: each option the live page declares, the value on screen
  * and whether the user picked it or it is the page's default, then the
  * document URL of exactly that variant and the command that screenshots it.
@@ -78,7 +78,7 @@ export const prototypeOptionsAction: CliAction<[string], object> = async (
   console.log(`  ${doc.url(id, picks)}`);
   console.log("Screenshot it:");
   console.log(
-    `  ./equin run ${SCREENSHOT_SCRIPT} --url "${doc.url(id, picks)}"`,
+    `  ./muxos run ${SCREENSHOT_SCRIPT} --url "${doc.url(id, picks)}"`,
   );
   if (meta.options.length > 0) {
     console.log(

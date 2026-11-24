@@ -32,7 +32,7 @@ function bytes(n: number): string {
   return `${shown} ${units[u]}`;
 }
 
-/** "6 d", "3 h", "12 min" — how long the box's equin has been up. */
+/** "6 d", "3 h", "12 min" — how long the box's muxos has been up. */
 function uptime(sec: number): string {
   if (sec >= 86_400) return `${Math.floor(sec / 86_400)} d`;
   if (sec >= 3_600) return `${Math.floor(sec / 3_600)} h`;

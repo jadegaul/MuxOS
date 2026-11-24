@@ -1,7 +1,7 @@
 // What a backend restart costs a corpus index's `lines` format: the first pass
 // of a NEW process over a file that grew while no process held its fold state.
 //
-//   ./equin run plugins/infra/plugins/corpus-index/scripts/bench-restart.ts \
+//   ./muxos run plugins/infra/plugins/corpus-index/scripts/bench-restart.ts \
 //     <file.jsonl> [--appends 40] [--restarts 5]
 //
 // The file is copied into a temp corpus minus its last `--appends` lines and

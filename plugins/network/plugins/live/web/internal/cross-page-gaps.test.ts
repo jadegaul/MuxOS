@@ -4,7 +4,7 @@
  * is one gap; the duplicate order, a flip in place, a delete, a page handing
  * its rows on and an unchanged rows array are not.
  *
- * Run: `./equin test plugins/network/plugins/live`.
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { describe, expect, test } from "bun:test";

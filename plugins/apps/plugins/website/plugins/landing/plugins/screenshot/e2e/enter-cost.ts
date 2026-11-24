@@ -1,11 +1,11 @@
 /**
- * What a first "Enter equin" costs a visitor: every byte the click downloads
+ * What a first "Enter muxos" costs a visitor: every byte the click downloads
  * (the page's and the demo host's SharedWorker's, per file, as sent on the
  * wire), and the time from the click to the Agent Manager shown, split by the
  * host's own boot stages.
  *
  * Each run is a fresh browser context (empty HTTP cache, no IndexedDB): the
- * homepage loads, then the script clicks Enter equin and waits until the demo
+ * homepage loads, then the script clicks Enter muxos and waits until the demo
  * is usable: its boot screen gone, then no loader left on the page. The network is shaped by a CONNECT proxy this script
  * runs (a token bucket per direction, shared by every connection, plus half
  * the RTT each way) — never DevTools throttling, which hangs these loads.
@@ -43,8 +43,8 @@
  * requests, sent before the tap attaches, are only in the proxy's count).
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/enter-cost.ts \
- *     --url https://equin.ai [--profile desktop|fast4g|slow4g] [--runs 1] [--visits 1] [--top 25]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/enter-cost.ts \
+ *     --url https://MuxOS.app [--profile desktop|fast4g|slow4g] [--runs 1] [--visits 1] [--top 25]
  *     [--click-after <ms>] [--window <KB>] [--out <prefix>] [--no-record]
  *
  * `--visits N` repeats the visit N times in the same page (about:blank, then

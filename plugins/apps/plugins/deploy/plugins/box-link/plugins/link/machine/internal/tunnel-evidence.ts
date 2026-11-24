@@ -2,7 +2,7 @@
  * What one tunnel's incarnation has shown about its own liveness, so a stream
  * that got no answer through it is classified on evidence, never on order of
  * arrival. A stream failing with no answer is ambiguous: the tunnel dying
- * and equin not listening behind it look the same from the socket. It becomes
+ * and muxos not listening behind it look the same from the socket. It becomes
  * `down` only once ssh shows it answered AFTER that attempt began (a forward's
  * target refused a connection: the session is up, nothing listens) — whether
  * ssh's line comes before the stream's failure or after it. The tunnel's

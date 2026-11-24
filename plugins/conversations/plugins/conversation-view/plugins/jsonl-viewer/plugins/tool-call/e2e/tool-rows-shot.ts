@@ -5,7 +5,7 @@
  * tool has no row, or when a row is the generic fallback (an investigate
  * action, which the strip shows only on unmatched rows).
  *
- *   ./equin run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/plugins/tool-call/e2e/tool-rows-shot.ts \
+ *   ./muxos run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/plugins/tool-call/e2e/tool-rows-shot.ts \
  *     --conv conv-1793801432-jfjxdv --tools query_db,get_timeline [--out /tmp/tool-rows]
  *
  * A tool is named as its badge reads without the server (`query_db`, `Bash`).

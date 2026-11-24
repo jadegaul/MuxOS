@@ -161,7 +161,7 @@ export function* descendants(fiber: Fiber): Generator<Fiber> {
  * the repo file it is defined in (this plugin's `vite/index.ts`, which spells
  * the same name — a test asserts they agree).
  */
-export const COMPONENT_SOURCE_PROP = "__equinSource";
+export const COMPONENT_SOURCE_PROP = "__muxosSource";
 
 function stampOf(type: unknown): string | undefined {
   if (typeof type !== "function" && (typeof type !== "object" || !type))

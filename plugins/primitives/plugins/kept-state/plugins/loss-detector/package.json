@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-kept-state-loss-detector",
+  "name": "@muxos/plugin-primitives-kept-state-loss-detector",
   "private": true,
   "version": "0.0.1",
   "devDependencies": {

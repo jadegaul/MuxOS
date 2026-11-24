@@ -16,7 +16,7 @@
  * the test sees the resume was attempted. A resume that runs is covered live
  * (the task's verification), not here.
  *
- * Requires the running embedded cluster — `./equin build` first.
+ * Requires the running embedded cluster — `./muxos build` first.
  */
 
 import { afterAll, beforeAll, expect, setDefaultTimeout, test } from "bun:test";

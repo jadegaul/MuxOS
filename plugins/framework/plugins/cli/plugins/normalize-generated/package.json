@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-cli-normalize-generated",
+  "name": "@muxos/plugin-framework-cli-normalize-generated",
   "private": true,
   "version": "0.0.1",
-  "description": "`./equin normalize-generated` — re-derive the generated artifacts a merge driver auto-resolved during a merge or rebase and amend the head commit; the `post-rewrite` git hook's entry point."
+  "description": "`./muxos normalize-generated` \u2014 re-derive the generated artifacts a merge driver auto-resolved during a merge or rebase and amend the head commit; the `post-rewrite` git hook's entry point."
 }

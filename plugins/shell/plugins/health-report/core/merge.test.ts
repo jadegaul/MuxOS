@@ -86,9 +86,9 @@ describe("info", () => {
     );
     expect(
       verdictOf([
-        { state: "info", title: "equin is out of date", summary: "a → b" },
+        { state: "info", title: "muxos is out of date", summary: "a → b" },
       ]),
-    ).toBe("equin is out of date");
+    ).toBe("muxos is out of date");
     expect(verdictOf([info(), info()])).toBe("2 things to know");
   });
 

@@ -40,7 +40,7 @@ export const PLUGINS_DIR = joinAppPath(REPO_ROOT, "plugins");
  * `@app/<id>` scopes). Read directly at runtime by config_v2's raw-diff panel and
  * per-app un-fork check. In a release `REPO_ROOT` resolves into the compiled
  * binary's virtual FS (un-shipped, unreachable), so `launch.ts` points this at the
- * vendored tree via `EQUIN_REPO_CONFIG_DIR`; in dev it falls back to the repo.
+ * vendored tree via `MUXOS_REPO_CONFIG_DIR`; in dev it falls back to the repo.
  *
  * A FUNCTION for the same reason as {@link resolveDataRoot} and
  * {@link worktreesDir}: `launch.ts` sets its env var, and a const would capture
@@ -60,7 +60,7 @@ export const WEB_CORE_RELATIVE = "plugins/framework/plugins/web-core";
 
 /**
  * A checkout's build lock: `.build.lock` beside its web-core dir, an exclusive
- * flock every `./equin build` holds for its whole process (the CLI's
+ * flock every `./muxos build` holds for its whole process (the CLI's
  * `acquireArtifactLock`) — across its backend's restart, until that backend's
  * boot settled or a deadline arm gave up on it. One of what an `exec` child
  * whose database is not set up for its code waits out (`database#machine`'s
@@ -109,7 +109,7 @@ export function backendEntryFor(composition: string): string {
 
 /**
  * True when this backend is running inside a compiled release artifact (the
- * `launch` binary sets `EQUIN_RELEASE=1` before bringing up the app; it
+ * `launch` binary sets `MUXOS_RELEASE=1` before bringing up the app; it
  * travels launch → gateway → backend as a forwarded name of the declared runtime
  * environment, `launcher/core`). A release runs exactly ONE backend
  * per host, so this is the release-side twin of `isMain()` for host-singleton
@@ -232,18 +232,18 @@ export function checkoutWorktreeName(root: string): string {
 /**
  * The data root, derived AT CALL TIME.
  *
- * THE single derivation of the root, and the ONLY read of `EQUIN_DIR` in
+ * THE single derivation of the root, and the ONLY read of `MUXOS_DIR` in
  * this plugin. Not exported from the barrel on purpose: `dataRoot()`
  * (`./data-dir.ts`) is its public spelling, so a consumer that wants the root
  * gets the lazy function, and a consumer that wants a directory under it gets a
  * `DataDir`.
  *
- * There is deliberately no eager `EQUIN_DIR` const beside this any more.
+ * There is deliberately no eager `MUXOS_DIR` const beside this any more.
  * A frozen snapshot of the root was both the second spelling that let the
- * registry be bypassed by hand (`join(EQUIN_DIR, "whatever")` minted an
+ * registry be bypassed by hand (`join(MUXOS_DIR, "whatever")` minted an
  * undeclared top-level entry that nothing failed on) and a value captured at
  * whatever the environment said when this module was FIRST imported — while the
- * release launcher sets `EQUIN_DIR` before importing anything
+ * release launcher sets `MUXOS_DIR` before importing anything
  * path-dependent. `paths:data-root-not-joined` now fails on either way back.
  *
  * A function for that second reason, the same one that makes `webDistDir()` a
@@ -261,7 +261,7 @@ export function resolveDataRoot(): AppPath {
  *
  * It follows the root's layout: an install not yet migrated keeps
  * `~/.backups/<LEGACY_IDS.backupsDirName>` (the migration moves it with the root), every other
- * install uses `~/.backups/equin`. A function for the same reason as
+ * install uses `~/.backups/muxos`. A function for the same reason as
  * {@link dataRootLayout}.
  */
 export function backupsDir(): AppPath {
@@ -280,7 +280,7 @@ export function backupsDirs(): { current: AppPath; legacy: AppPath } {
 // Everything else under the data root is a DECLARATION, not a constant here.
 // This module used to carry a second spelling of nine of those directories
 // (`SECRETS_DIR`, `ATTACHMENTS_DIR`, `PROTOTYPES_DIR`, …) as plain
-// `join(EQUIN_DIR, …)` consts. Two spellings of one directory is how the
+// `join(MUXOS_DIR, …)` consts. Two spellings of one directory is how the
 // registry gets quietly bypassed: the declaration moves and the const does not,
 // so half the code writes to the new home and half goes on writing to the old
 // one, with nothing to fail. Reach a directory through its owner's
@@ -300,7 +300,7 @@ export function backupsDirs(): { current: AppPath; legacy: AppPath } {
  *
  * A FUNCTION, not a const, for the reason in {@link resolveDataRoot} — a const
  * would freeze the root at whatever the environment said when this module was
- * first imported, which is precisely the bug the eager `EQUIN_DIR` used
+ * first imported, which is precisely the bug the eager `MUXOS_DIR` used
  * to carry.
  */
 export function worktreesDir(): AppPath {
@@ -425,7 +425,7 @@ export const worktreeArtifacts = {
     joinAppPath(worktreeDataDir(name), "document-head.json"),
   /**
    * The Bun the gateway starts this namespace's backend with, cloned under
-   * the process's name (`bin/equin · server · <name>`, packages/process-name) —
+   * the process's name (`bin/muxos · server · <name>`, packages/process-name) —
    * the spec's `command` points here, so the link lives and goes with it.
    */
   processNames: (name: Namespace): AppPath =>
@@ -451,7 +451,7 @@ export const worktreeArtifacts = {
     joinAppPath(worktreeDataDir(name), "build-status.json"),
   /**
    * The deploy lock: `deploy.lock`, an flock (never read or written for its
-   * bytes). A convergence run (`./equin build --converge`, main's deploy) holds
+   * bytes). A convergence run (`./muxos build --converge`, main's deploy) holds
    * it EXCLUSIVELY for its whole run — its builds and, on main, the gateway
    * follow after them, which can restart the gateway (and with it every
    * backend) well after the build's exit marker has landed. Something that
@@ -497,7 +497,7 @@ export const worktreeArtifacts = {
   schemaOwnerBootRecord: (name: Namespace): AppPath =>
     joinAppPath(worktreeDataDir(name), "schema-owner-boot.json"),
   /**
-   * One `./equin test` run's record: which runners ran and which test
+   * One `./muxos test` run's record: which runners ran and which test
    * cases failed. `test-status-<opId>.json`, written when the run STARTS
    * (`status: "running"`) and again with its verdict.
    *
@@ -521,7 +521,7 @@ export const worktreeArtifacts = {
   testReport: (name: Namespace, opId: string, runner: string): AppPath =>
     joinAppPath(worktreeDataDir(name), `test-${opId}-${runner}.xml`),
   /**
-   * This checkout's LAST `./equin deps upgrade <updater>` — one updater named (or its alias
+   * This checkout's LAST `./muxos deps upgrade <updater>` — one updater named (or its alias
    * `toolchain upgrade`, for `mise`): what it moved, the failures before and
    * after, and the verdict. One fixed path per updater, written at start, like
    * `buildStatus`.
@@ -529,7 +529,7 @@ export const worktreeArtifacts = {
   depsUpgrade: (name: Namespace, updaterId: string): AppPath =>
     joinAppPath(worktreeDataDir(name), `deps-upgrade-${updaterId}.json`),
   /**
-   * This checkout's LAST `./equin deps upgrade` with no updater named —
+   * This checkout's LAST `./muxos deps upgrade` with no updater named —
    * every updater moved together, behind one baseline and one candidate run.
    */
   depsUpgradeBatch: (name: Namespace): AppPath =>
@@ -596,7 +596,7 @@ export const worktreeArtifacts = {
     joinAppPath(runsDirFor(name), `${kindId}-${runId}${RUN_TERMINAL_SUFFIX}`),
   /**
    * One supervised run's recorded error: what the child said ended it, in its
-   * own words, written by the child (an `./equin` command's `runCli`) as it
+   * own words, written by the child (an `./muxos` command's `runCli`) as it
    * dies of an exception, at the path the shim's environment names. Absent
    * when the child exited cleanly, or was not one that records. Read by the
    * built-in ledger as the failed run's error — a transcript's last bytes are
@@ -635,7 +635,7 @@ export const worktreeArtifacts = {
    * variant: a namespace has exactly one declared set, and this file's whole job
    * is to be found at a fixed path by an audit running in a DIFFERENT checkout.
    *
-   * That cross-checkout read is the point. `~/.equin/` is host-global —
+   * That cross-checkout read is the point. `~/.muxos/` is host-global —
    * every namespace on this box writes into it — while a checkout's declarations
    * are one branch's view, so `paths:no-undeclared-data-dirs` used to report a
    * directory another live worktree had just declared as an orphan. Each
@@ -692,7 +692,7 @@ export const worktreeArtifacts = {
  * A FUNCTION, not a const, for two independent reasons — do not re-freeze it at
  * module eval:
  *
- * - `EQUIN_WEB_DIST` is set by the release launcher (`launch.ts`) before
+ * - `MUXOS_WEB_DIST` is set by the release launcher (`launch.ts`) before
  *   it imports anything path-dependent, but a const here would still capture
  *   whatever the env said when *this* module was first imported. In a release
  *   the alternative — deriving from `REPO_ROOT` — resolves into the compiled

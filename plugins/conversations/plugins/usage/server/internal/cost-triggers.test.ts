@@ -7,7 +7,7 @@
  * effective from the past — never touching its agent count, never naming a
  * conversation that no longer exists; and the repair heals a drifted row.
  *
- * Run: `./equin test plugins/conversations/plugins/usage`
+ * Run: `./muxos test plugins/conversations/plugins/usage`
  */
 import {
   afterAll,

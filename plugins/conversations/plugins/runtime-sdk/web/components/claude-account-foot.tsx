@@ -65,7 +65,7 @@ function WeekGlance({
   usage: ClaudeUsageRead;
   now: number;
 }) {
-  // An added account has no plan limits: its glance is what equin's agents
+  // An added account has no plan limits: its glance is what muxos's agents
   // spent on it (an endpoint's own models price at $0, so a live one reads
   // $0 — the ledger counted its tokens at zero, not "no data").
   if (account.kind !== "login")

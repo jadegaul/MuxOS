@@ -1,6 +1,6 @@
 // ─── What does opening and evicting a type-check store cost, by its size? ────
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/store-bench.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/store-bench.ts \
 //     [--sizes 25000,100000,200000,800000] [--dir <scratch parent>]
 //
 // Builds synthetic stores in a scratch directory (never the host's live

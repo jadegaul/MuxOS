@@ -81,7 +81,7 @@ pub fn hand_off(url: Url, sink: fn(Url)) {
         Admit::Collapsed => {
             let mut n = COLLAPSED.lock().unwrap();
             *n += 1;
-            eprintln!("equin-desktop: collapsed the hand-off of {url} ({} collapsed so far)", *n);
+            eprintln!("muxos-desktop: collapsed the hand-off of {url} ({} collapsed so far)", *n);
         }
     }
 }
@@ -101,13 +101,13 @@ mod tests {
 
     #[test]
     fn the_main_frame_keeps_to_the_namespace() {
-        let scope = u("http://equin.localhost:9000/");
-        assert!(admits_main_frame(&scope, &u("http://equin.localhost:9000/mail")));
+        let scope = u("http://muxos.localhost:9000/");
+        assert!(admits_main_frame(&scope, &u("http://muxos.localhost:9000/mail")));
         assert!(admits_main_frame(&scope, &u("about:blank")));
         // A file dropped on the page, unclaimed: never shown, never handed off.
         assert!(!admits_main_frame(&scope, &u("file:///Users/me/Downloads/a.mp4")));
         assert!(!admits_main_frame(&scope, &u("http://other.localhost:9000/mail")));
-        assert!(!admits_main_frame(&scope, &u("http://p1.content.localhost:9000/equin/x")));
+        assert!(!admits_main_frame(&scope, &u("http://p1.content.localhost:9000/muxos/x")));
         assert!(!admits_main_frame(&scope, &u("https://example.com/")));
     }
 

@@ -32,7 +32,7 @@ import "../internal/kit/kit.css";
 import "./iceberg.css";
 
 /**
- * The foundations page: what equin brings on top of Claude, as an iceberg —
+ * The foundations page: what muxos brings on top of Claude, as an iceberg —
  * ten layers from the apps at sea level down to the loop that built everything
  * above it. Every piece is a pill that opens in place into a card; most cards
  * carry a live drawing of what the piece does. The apps at sea level start as
@@ -148,7 +148,7 @@ const IcebergMarkup = memo(function IcebergMarkup({
         <div className="iceberg-berg" aria-hidden="true" />
         <header className="iceberg-hero">
           <h1>
-            What equin brings <em>on top of</em> Claude.
+            What muxos brings <em>on top of</em> Claude.
           </h1>
           <p>
             Server, database updates, auto-deploys, live previews, crash

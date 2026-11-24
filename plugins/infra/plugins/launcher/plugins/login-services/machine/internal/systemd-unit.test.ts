@@ -6,9 +6,9 @@ import { parseSystemdUserUnit, renderSystemdUserUnit } from "./systemd-unit";
 const job: LoginServiceSpec = {
   label: "dev.example.service",
   session: "background",
-  description: "equin gateway",
+  description: "muxos gateway",
   argv: [
-    "/h/me/.equin/cache/deps/gateway-binary/abc/env/gateway",
+    "/h/me/.muxos/cache/deps/gateway-binary/abc/env/gateway",
     "-listen",
     "127.0.0.1:9000",
     "-child-env",
@@ -81,14 +81,14 @@ describe("renderSystemdUserUnit — the gateway's unit, byte for byte", () => {
         label: "dev.example.service",
         session: "background",
         description:
-          "equin gateway (and through it Postgres, PgBouncer and every backend)",
+          "muxos gateway (and through it Postgres, PgBouncer and every backend)",
         argv: ["/bin/gw", "-x"],
         cwd: "/h/me/repo",
         env: { Z: "1", A: "2" },
         stdioLog: asAppPath("/h/me/logs/gateway-stdio.log"),
       }),
     ).toBe(`[Unit]
-Description=equin gateway (and through it Postgres, PgBouncer and every backend)
+Description=muxos gateway (and through it Postgres, PgBouncer and every backend)
 
 [Service]
 Type=simple
@@ -114,7 +114,7 @@ WantedBy=default.target
 describe("renderSystemdUserUnit — a graphical service", () => {
   const unit = renderSystemdUserUnit({
     ...job,
-    label: "dev.equin.menu-bar",
+    label: "dev.muxos.menu-bar",
     session: "graphical",
   });
 

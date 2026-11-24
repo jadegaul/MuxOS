@@ -4,6 +4,7 @@ import {
   type AppPath,
 } from "@plugins/infra/plugins/host-fs/plugins/user-path/core";
 import { envName } from "@plugins/infra/plugins/launcher/plugins/env-names/core";
+import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 import type { CliAction } from "@plugins/framework/plugins/cli/core";
 import {
   cpSync,
@@ -118,14 +119,14 @@ import {
 //     pg-client/bin/{pg_dump,pg_restore}  vendored Postgres client tools
 //     parcel-watcher/watcher.node   vendored @parcel/watcher native addon (darwin:
 //                                  the sealed patched build; linux: the prebuild)
-//     config/                      raw git-layer config tree (EQUIN_REPO_CONFIG_DIR)
+//     config/                      raw git-layer config tree (MUXOS_REPO_CONFIG_DIR)
 //     config-seed/config/<comp>/   resolved config defaults, seeded into <data>/config on first run
 //     web/                         filtered Vite dist (served statically)
 //     RELEASE.json                 { composition, target, platform, builtAt, port, runId, commitSha, commitDirty, activationProtocol }
 //     dist/<comp>-<target>-<platform>   web target: self-extracting binary (the shippable)
 //     bundle/<Name>.app, <Name>.dmg     tauri target: desktop bundle (the shippable)
 //
-// `launch` self-roots EQUIN_DIR under <out>/data and points the start
+// `launch` self-roots MUXOS_DIR under <out>/data and points the start
 // binaries at the vendored natives via env, so the bundle is fully isolated. A
 // sibling `<comp>-<target>/latest-<platform>` symlink points at the current
 // PACKED <run-id> — see @plugins/release/plugins/bundles for why it is claimed
@@ -141,14 +142,14 @@ import {
 // vendored parcel-watcher native addon).
 const VENDORED_WORKERS = [
   // The cluster sentinel: sampler + duress-latch lifecycle
-  // (EQUIN_SENTINEL_WORKER_JS, sentinel worker-host.ts).
+  // (MUXOS_SENTINEL_WORKER_JS, sentinel worker-host.ts).
   {
     label: "sentinel worker",
     entry: "plugins/debug/plugins/sentinel/server/internal/worker/entry.ts",
     file: "sentinel/worker.js",
   },
   // machine-usage's Postgres memory-map walk
-  // (EQUIN_FORK_MEMORY_WORKER_JS, machine-usage fork-memory/host.ts).
+  // (MUXOS_FORK_MEMORY_WORKER_JS, machine-usage fork-memory/host.ts).
   {
     label: "fork-memory worker",
     entry:
@@ -564,12 +565,12 @@ async function stageForeignNatives(opts: {
   const pgbouncerDir = join(
     root,
     "plugins/database/plugins/pgbouncer/node_modules",
-    `@equin/pgbouncer-${hostTag}`,
+    `${LEGACY_IDS.npmScope}/pgbouncer-${hostTag}`,
   );
   const pgClientDir = join(
     root,
     "plugins/database/plugins/client-tools/node_modules",
-    `@equin/pg-client-${hostTag}`,
+    `${LEGACY_IDS.npmScope}/pg-client-${hostTag}`,
   );
   const watcherDir = dirname(Bun.resolveSync("@parcel/watcher", root));
 
@@ -578,8 +579,14 @@ async function stageForeignNatives(opts: {
       embeddedDir,
       "embedded-postgres",
     ),
-    [`@equin/pgbouncer-${tag}`]: installedVersion(pgbouncerDir, "pgbouncer"),
-    [`@equin/pg-client-${tag}`]: installedVersion(pgClientDir, "pg-client"),
+    [`${LEGACY_IDS.npmScope}/pgbouncer-${tag}`]: installedVersion(
+      pgbouncerDir,
+      "pgbouncer",
+    ),
+    [`${LEGACY_IDS.npmScope}/pg-client-${tag}`]: installedVersion(
+      pgClientDir,
+      "pg-client",
+    ),
     [parcelWatcherPkg(tag)]: installedVersion(watcherDir, "@parcel/watcher"),
   };
 
@@ -589,7 +596,7 @@ async function stageForeignNatives(opts: {
   hasher.update(JSON.stringify(deps));
   const cacheDir = join(
     tmpdir(),
-    "equin-release-natives",
+    "muxos-release-natives",
     `${tag}-${hasher.digest("hex").slice(0, 12)}`,
   );
   if (stagedNativesComplete(root, tag, cacheDir)) {
@@ -625,7 +632,7 @@ async function stageForeignNatives(opts: {
     writeFileSync(
       join(staging, "package.json"),
       JSON.stringify(
-        { name: "equin-release-natives", private: true, dependencies: deps },
+        { name: "muxos-release-natives", private: true, dependencies: deps },
         null,
         2,
       ) + "\n",
@@ -725,7 +732,7 @@ function pgbouncerNativeBin(
   tag: PlatformTag,
   src: NativeSource,
 ): string {
-  const pkg = `@equin/pgbouncer-${tag}`;
+  const pkg = `${LEGACY_IDS.npmScope}/pgbouncer-${tag}`;
   const bin =
     src.kind === "repo"
       ? join(
@@ -750,7 +757,7 @@ function pgClientNativeBinDir(
   tag: PlatformTag,
   src: NativeSource,
 ): string {
-  const pkg = `@equin/pg-client-${tag}`;
+  const pkg = `${LEGACY_IDS.npmScope}/pg-client-${tag}`;
   const dir =
     src.kind === "repo"
       ? join(
@@ -1013,7 +1020,7 @@ const runRelease: CliAction<[], ReleaseOptions> = async (opts) => {
   }
 
   // ── 1. Composition artifact phase (hermetic) ─────────────────────────
-  // `build --hermetic` is the ARTIFACT posture of `./equin build`:
+  // `build --hermetic` is the ARTIFACT posture of `./muxos build`:
   // filtered composition registries, generated migration SQL and the web
   // dist — exactly the three outputs staged below — with the dev-cluster
   // DEPLOY half structurally absent (no Postgres readiness, no worktree DB
@@ -1267,7 +1274,7 @@ const runRelease: CliAction<[], ReleaseOptions> = async (opts) => {
   );
 
   // Postgres client tools: the backend spawns them for DB forks and backups
-  // (EQUIN_PG_CLIENT_BIN_DIR, set by launch.ts).
+  // (MUXOS_PG_CLIENT_BIN_DIR, set by launch.ts).
   console.log("  • pg client tools (pg_dump, pg_restore)");
   mkdirSync(join(out, "pg-client", "bin"), { recursive: true });
   const pgClientBinDir = pgClientNativeBinDir(root, platform, natives);
@@ -1276,7 +1283,7 @@ const runRelease: CliAction<[], ReleaseOptions> = async (opts) => {
   }
 
   // @parcel/watcher native addon: bun --compile can't embed .node addons, so the
-  // file-watcher loader dlopens this vendored copy at runtime (EQUIN_PARCEL_WATCHER_NODE).
+  // file-watcher loader dlopens this vendored copy at runtime (MUXOS_PARCEL_WATCHER_NODE).
   // Darwin's is the patched build sealed above — upstream's prebuild leaks a
   // kqueue descriptor per watched file that goes; a target the declaration
   // leaves out (linux: inotify, no leak) carries the prebuild.
@@ -1312,7 +1319,7 @@ const runRelease: CliAction<[], ReleaseOptions> = async (opts) => {
 
   // Migration SQL files: the runner reads them from disk at boot (they are
   // not bundled into the compiled backend). Vendor the data/ tree's `.sql`
-  // files; launch.ts points EQUIN_MIGRATIONS_DIR at it. `meta/` (the
+  // files; launch.ts points MUXOS_MIGRATIONS_DIR at it. `meta/` (the
   // journal, snapshots, answers) is generator input the runner never reads.
   console.log("  • migration data");
   const migrationsSrc = join(root, "plugins/database/plugins/migrations/data");
@@ -1442,7 +1449,7 @@ const runRelease: CliAction<[], ReleaseOptions> = async (opts) => {
   const compDir = dirname(out);
   await claimLatestPointer(asAppPath(compDir), runId, platform);
 
-  // A run dir is a whole staged app; `~/.equin/state/releases/` has no
+  // A run dir is a whole staged app; `~/.muxos/state/releases/` has no
   // other retention. Runs a pointer names are never swept.
   // The dir `out` sits in, never re-derived from `root`: in a pinned release
   // this process runs inside a private checkout whose name is the run id, while
@@ -1505,7 +1512,7 @@ async function wrapTauri(opts: {
     composition.charAt(0).toUpperCase() + composition.slice(1);
   const override = {
     productName,
-    identifier: `ai.equin.${safeId}`,
+    identifier: `ai.muxos.${safeId}`,
     app: { windows: [{ title: productName }] },
   };
   const overridePath = join(srcTauri, "tauri.conf.override.json");
@@ -1686,7 +1693,7 @@ async function packageMacDmg(opts: {
   const keyId = process.env.APPLE_API_KEY_ID;
   const issuerId = process.env.APPLE_API_ISSUER_ID;
   if (keyPem && keyId && issuerId) {
-    const tmpDir = mkdtempSync(join(tmpdir(), "equin-notary-"));
+    const tmpDir = mkdtempSync(join(tmpdir(), "muxos-notary-"));
     const keyPath = join(tmpDir, "AuthKey.p8");
     try {
       writeFileSync(keyPath, keyPem, { mode: 0o600 });
@@ -1725,7 +1732,7 @@ async function packageMacDmg(opts: {
  * Mechanism: tar the staged tree (host `tar`), then generate a tiny bootstrap
  * `.ts` that embeds the tarball as a `bun --compile` embedded asset. On first
  * run the bootstrap extracts the tarball to a content-addressed cache dir
- * (`<cache>/equin-release/<hash>/`), restores exec bits on the binaries (tar
+ * (`<cache>/muxos-release/<hash>/`), restores exec bits on the binaries (tar
  * preserves modes), then exec's the extracted `launch`. Subsequent runs skip
  * extraction if the dir is already populated.
  *
@@ -1792,7 +1799,7 @@ const baseCache =
   process.env.${envName("RELEASE_DIR")} ??
   process.env.XDG_CACHE_HOME ??
   tmpdir();
-const extractDir = join(baseCache, "equin-release", ${JSON.stringify(
+const extractDir = join(baseCache, "muxos-release", ${JSON.stringify(
     composition,
   )} + "-" + HASH);
 const launchBin = join(extractDir, "launch");

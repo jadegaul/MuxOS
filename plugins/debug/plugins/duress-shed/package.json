@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-debug-duress-shed",
-  "description": "The duress-shed report kind: per-episode accounting of observability writes (traces, slow-ops, reports) shed by the duress engine, filed on flush after each episode clears. Includes the one-line Debug → Reports summary renderer.",
+  "name": "@muxos/plugin-debug-duress-shed",
+  "description": "The duress-shed report kind: per-episode accounting of observability writes (traces, slow-ops, reports) shed by the duress engine, filed on flush after each episode clears. Includes the one-line Debug \u2192 Reports summary renderer.",
   "private": true,
   "version": "0.0.1"
 }

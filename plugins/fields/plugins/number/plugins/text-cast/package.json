@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-number-text-cast",
+  "name": "@muxos/plugin-fields-number-text-cast",
   "version": "0.0.1",
   "private": true,
-  "description": "Number field type: server text→typed SQL cast capability — presents the raw TEXT storage column as ::numeric for server-delegated DataView filter/sort."
+  "description": "Number field type: server text\u2192typed SQL cast capability \u2014 presents the raw TEXT storage column as ::numeric for server-delegated DataView filter/sort."
 }

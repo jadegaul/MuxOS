@@ -2,9 +2,9 @@ import { describe, expect, test } from "bun:test";
 import { workflowRefusal } from "./workflow-refusal";
 
 // Verbatim per-ref lines GitHub sends back, as git prints them.
-const OAUTH = `To https://github.com/someone/equin.git
+const OAUTH = `To https://github.com/someone/muxos.git
  ! [remote rejected]     update -> update (refusing to allow an OAuth App to create or update workflow \`.github/workflows/installer-release.yml\` without \`workflow\` scope)
-error: failed to push some refs to 'https://github.com/someone/equin.git'`;
+error: failed to push some refs to 'https://github.com/someone/muxos.git'`;
 
 const PAT = ` ! [remote rejected] main -> main (refusing to allow a Personal Access Token to create or update workflow \`.github/workflows/a.yml\` without \`workflow\` scope)`;
 

@@ -186,7 +186,7 @@ export function registerBarrelStubs(_repoRoot: string): void {
 
       // ── Auto-generated stubs for npm packages ─────────────────────
       // Reads .d.ts entry points to discover named exports at build time.
-      // To add a package: edit auto-stub-packages.ts and run ./equin build.
+      // To add a package: edit auto-stub-packages.ts and run ./muxos build.
       registerAutoStubs(build);
 
       // ── The load guard's wrapper and span modules ────────────────
@@ -234,7 +234,7 @@ export function setPreBarrelImportGuard(fn: () => void | Promise<void>): void {
  * (`tooling/plugins/checks/core/runner.ts`), and ~7 call sites run a barrel
  * import loop of their own — the two scoped declaration passes, the docs tree,
  * `token-group-vars`, `config-origin`, `registrations-paired`, the page checks.
- * Any two of them selected together is the hazard; `./equin check
+ * Any two of them selected together is the hazard; `./muxos check
  * list-catalog-in-sync facets:render-complete` is one live pair.
  *
  * DO NOT REMOVE AS REDUNDANT. Before the declaration pass was scoped per

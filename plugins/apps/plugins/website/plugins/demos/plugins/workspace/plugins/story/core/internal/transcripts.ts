@@ -42,7 +42,7 @@ import {
 // review, at work, pushed). The page tools ran for real in the seed, so their
 // inputs and results are the run's (`PageSession`); every other tool call is
 // written in the real tool's input and result shapes — `Read` as `cat -n`,
-// `Grep` as its file list, `./equin` as the CLI prints it.
+// `Grep` as its file list, `./muxos` as the CLI prints it.
 
 /** One step of a story's session. */
 type Turn =
@@ -106,7 +106,7 @@ export interface SessionContext {
 
 /**
  * The gateway port the demo's transcripts show: the port a fresh install
- * takes. Text in a transcript, never dialled — Demo's equin is an invented
+ * takes. Text in a transcript, never dialled — Demo's muxos is an invented
  * install, so it gets the default.
  */
 const DEMO_GATEWAY_PORT = GATEWAY_PORT_RANGE.first;
@@ -117,7 +117,7 @@ const previewUrl = (story: Story, path = "") =>
 
 /**
  * One variant of a prototype as a document on the story's preview — what
- * `./equin prototype options` prints and `screenshot.ts --url` takes.
+ * `./muxos prototype options` prints and `screenshot.ts --url` takes.
  */
 function prototypeVariantUrl(
   story: Story,
@@ -134,7 +134,7 @@ function prototypeVariantUrl(
 }
 
 /** The page tools as Claude Code names an MCP tool: `mcp__<server>__<tool>`. */
-const PAGE_TOOL_PREFIX = "mcp__equin__";
+const PAGE_TOOL_PREFIX = "mcp__muxos__";
 
 /**
  * A story's session as Claude Code JSONL, its clock ending `story.updatedAgo`
@@ -312,7 +312,7 @@ const bash = (
 /** Demo's reply, once they had looked: the session waited on them. */
 const reply = (text: string): Turn => ({ kind: "user", text, waited: 8 });
 
-/** A background `./equin` op, as Claude Code reports starting one. */
+/** A background `./muxos` op, as Claude Code reports starting one. */
 const background = (
   command: string,
   description: string,
@@ -324,20 +324,20 @@ const background = (
   result: `Command running in background with ID: ${id}. Output is being written to: /tmp/claude/tasks/${id}.output. You will be notified when it completes. To check interim output, use Read on that file path.`,
 });
 
-/** One test file of a `./equin test` run: its tests, and which of them failed. */
+/** One test file of a `./muxos test` run: its tests, and which of them failed. */
 interface TestFile {
   file: string;
   tests: readonly string[];
   failed?: { test: string; error: readonly string[] };
 }
 
-/** `./equin test <path>` as the CLI prints a bun:test run. */
+/** `./muxos test <path>` as the CLI prints a bun:test run. */
 function testRun(path: string, files: readonly TestFile[], ms: number): Turn {
   const total = files.reduce((n, f) => n + f.tests.length, 0);
   const failed = files.filter((f) => f.failed !== undefined).length;
   const plural = (n: number, w: string) => `${n} ${w}${n === 1 ? "" : "s"}`;
   return bash(
-    `./equin test ${path}`,
+    `./muxos test ${path}`,
     "Run the tests",
     [
       "── bun:test ──",
@@ -363,10 +363,10 @@ function testRun(path: string, files: readonly TestFile[], ms: number): Turn {
   );
 }
 
-/** `./equin await build` once the build succeeded, as the CLI prints it. */
+/** `./muxos await build` once the build succeeded, as the CLI prints it. */
 const buildDone = (story: Story, n: number): Turn =>
   bash(
-    "./equin await build",
+    "./muxos await build",
     "Wait for the build",
     [
       `Awaiting build in ${attemptId(story)} (up to 480s).`,
@@ -374,13 +374,13 @@ const buildDone = (story: Story, n: number): Turn =>
       "build: success",
       `  receipt: ok  buildId build-1792900000-demo${n}  commit ${pushSha(story)}`,
       `  ${previewUrl(story)}`,
-      `  log: /home/demo/.equin/worktrees/${attemptId(story)}/runs/build-build-1792900000-demo${n}.log`,
+      `  log: /home/demo/.muxos/worktrees/${attemptId(story)}/runs/build-build-1792900000-demo${n}.log`,
     ].join("\n"),
   );
 
 const pushDone = (story: Story): Turn =>
   bash(
-    "./equin await push",
+    "./muxos await push",
     "Wait for the push",
     [
       `Awaiting push in ${attemptId(story)} (up to 480s).`,
@@ -395,7 +395,7 @@ const shortSha = (story: Story) => pushSha(story).slice(0, 10);
 // ── The sessions ───────────────────────────────────────────────────────────
 //
 // Every file a session reads is the real file in this repo (an excerpt, at its
-// real line numbers), as Demo's equin held it before the agent's change.
+// real line numbers), as Demo's muxos held it before the agent's change.
 
 const SONATA = "plugins/apps/plugins/sonata/plugins";
 
@@ -581,13 +581,13 @@ function practiceTimer(
       131,
     ),
     say("All four pass. Building the preview."),
-    background("./equin build", "Build and deploy the preview", "bq7m2xk"),
+    background("./muxos build", "Build and deploy the preview", "bq7m2xk"),
     buildDone(story, 1),
     say(
       `Checking it in the preview on a real song: your ii–V–I warm-up (${DEMO_SONG_ID}), played with a pause in the middle.`,
     ),
     bash(
-      `./equin run ${pkg}/e2e/practice-time.ts --song ${DEMO_SONG_ID}`,
+      `./muxos run ${pkg}/e2e/practice-time.ts --song ${DEMO_SONG_ID}`,
       "Play a song in the preview and read the library",
       [
         `target: ${previewUrl(story)}  (this checkout's deploy, build-1792900000-demo1, built 1m ago)`,
@@ -636,7 +636,7 @@ const PHOTOS_FILE = "photos.js";
  */
 function recipes(story: Story, _s: PageSession, ctx: SessionContext): Turn[] {
   const id = DEMO_FEATURED_PROTOTYPE;
-  const dir = `/home/demo/.equin/apps/prototypes/${id}`;
+  const dir = `/home/demo/.muxos/apps/prototypes/${id}`;
   const folder = ctx.prototypes.prototypes.find((p) => p.id === id);
   if (folder === undefined)
     throw new Error(
@@ -663,7 +663,7 @@ function recipes(story: Story, _s: PageSession, ctx: SessionContext): Turn[] {
       "",
       `The photo cards you had, next to the new overlay ones: ${RECIPES_BEFORE_AFTER.id}`,
       "",
-      "Tell me what to change, or say *build it* and I'll turn it into a real app in your equin.",
+      "Tell me what to change, or say *build it* and I'll turn it into a real app in your muxos.",
     ].join("\n"),
   ];
   if (answers.length !== steps.length)
@@ -684,7 +684,7 @@ function recipes(story: Story, _s: PageSession, ctx: SessionContext): Turn[] {
       "A new app starts as a prototype, so you can see it before anything is built. I'll do the whole loop in one page: the recipes as photo cards, a recipe's detail with servings you can scale, and the shopping list built from the week's picks — merged, scaled and grouped by aisle.",
     ),
     bash(
-      './equin prototype new "Family Recipes"',
+      './muxos prototype new "Family Recipes"',
       "Create the prototype",
       [
         id,
@@ -765,7 +765,7 @@ function cardsBeforeAfter(
       throw new Error(
         `[demo] the recipes prototype's last version declares no cards=${side.picks.cards} (cards: ${values.join(" | ") || "none"})`,
       );
-  const scratch = `/tmp/equin-scratch/${conversationId(story)}`;
+  const scratch = `/tmp/muxos-scratch/${conversationId(story)}`;
   const { width, height } = pair.viewport;
   const shots = [pair.before, pair.after].map((side) => ({
     url: prototypeVariantUrl(story, pair.prototype, side.picks),
@@ -776,7 +776,7 @@ function cardsBeforeAfter(
       shots
         .map(
           (s) =>
-            `./equin run ${SCREENSHOT_SCRIPT} --url "${s.url}" --viewport ${width}x${height} --color-scheme light --out ${s.out}`,
+            `./muxos run ${SCREENSHOT_SCRIPT} --url "${s.url}" --viewport ${width}x${height} --color-scheme light --out ${s.out}`,
         )
         .join(" && \\\n"),
       "Screenshot the photo and overlay cards",
@@ -834,7 +834,7 @@ function registerPair(
  */
 function libraryBeforeAfter(story: Story, ctx: SessionContext): Turn[] {
   const pair = PRACTICE_TIMER_BEFORE_AFTER;
-  const scratch = `/tmp/equin-scratch/${conversationId(story)}`;
+  const scratch = `/tmp/muxos-scratch/${conversationId(story)}`;
   const { width, height } = pair.viewport;
   const shots = [
     {
@@ -848,7 +848,7 @@ function libraryBeforeAfter(story: Story, ctx: SessionContext): Turn[] {
       shots
         .map(
           (s) =>
-            `./equin run ${SCREENSHOT_SCRIPT} --url "${s.url}" --click "Recent" --viewport ${width}x${height} --color-scheme dark --out ${s.out}`,
+            `./muxos run ${SCREENSHOT_SCRIPT} --url "${s.url}" --click "Recent" --viewport ${width}x${height} --color-scheme dark --out ${s.out}`,
         )
         .join(" && \\\n"),
       "Screenshot the library's Recent view on main and on the preview",
@@ -1110,7 +1110,7 @@ function pinSongs(story: Story): Turn[] {
       ],
       88,
     ),
-    background("./equin build", "Build and deploy the preview", "bf3k8wd"),
+    background("./muxos build", "Build and deploy the preview", "bf3k8wd"),
     buildDone(story, 2),
     end(
       "Ready: each song has a pin, and the library lists pinned songs first. The test passes.",
@@ -1119,12 +1119,12 @@ function pinSongs(story: Story): Turn[] {
     ),
     reply("Looks good, push it"),
     background(
-      `./equin push -m "${story.title}"`,
+      `./muxos push -m "${story.title}"`,
       "Merge into main",
       "bp1w6zr",
     ),
     pushDone(story),
-    end("Pushed: pinned songs are in your equin."),
+    end("Pushed: pinned songs are in your muxos."),
   ];
 }
 
@@ -1167,7 +1167,7 @@ function wishShortcut(story: Story): Turn[] {
       "      component: WishButton,\n    }),",
       '      component: WishButton,\n    }),\n    defineShortcut({\n      id: "wish.open",\n      keys: "mod+shift+w",\n      label: "Make a wish",\n      group: "Wish",\n      handler: () => openWish(),\n    }),',
     ),
-    background("./equin build", "Build and deploy the preview", "bw9d4tn"),
+    background("./muxos build", "Build and deploy the preview", "bw9d4tn"),
     buildDone(story, 3),
     end(
       "Ready: ⌘⇧W opens the Wish popover from any app, with the page you are on attached. It is listed under Wish in the shortcuts sheet.",
@@ -1176,7 +1176,7 @@ function wishShortcut(story: Story): Turn[] {
     ),
     reply("Ship it"),
     background(
-      `./equin push -m "${story.title}"`,
+      `./muxos push -m "${story.title}"`,
       "Merge into main",
       "bs5h2qc",
     ),

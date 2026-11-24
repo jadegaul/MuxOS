@@ -37,7 +37,7 @@
 //               "Good, implement it" → Create task; during the time-lapse
 //               Circle is un-hidden → the launcher's All apps → Home,
 //               Circle's tile.
-//   desktop     equin's desktop mode at a higher resolution with ONE window:
+//   desktop     muxos's desktop mode at a higher resolution with ONE window:
 //               Home's gallery; then every app opening in a window of its
 //               own at the size its layout is comfortable at, each landing
 //               on top of the earlier ones (the montage); then Home's window

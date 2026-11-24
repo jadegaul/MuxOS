@@ -68,13 +68,13 @@ describe("counterDelta", () => {
 describe("countBuildProcesses", () => {
   test("counts CLI build/check/push invocations, ignores noise", () => {
     const ps = [
-      "/bin/zsh ./equin build",
-      `/bin/zsh ./${LEGACY_IDS.cliShim} build`, // the legacy name, still a shim
-      `bun /repo/${LEGACY_IDS.cliShim} check type-check`,
-      `${LEGACY_IDS.cliShim} push -m msg`,
-      `vim ${LEGACY_IDS.cliShim}-notes.md`, // not a CLI invocation
-      `vite serve dev/${LEGACY_IDS.cliShim}/web`, // path mention only, no CLI verb after the name
-      `grep ${LEGACY_IDS.cliShim} build.log`, // the shim name is a grep arg... matches shape
+      "/bin/zsh ./muxos build",
+      `/bin/zsh ./${LEGACY_IDS.cliShims[0]} build`, // the legacy name, still a shim
+      `bun /repo/${LEGACY_IDS.cliShims[0]} check type-check`,
+      `${LEGACY_IDS.cliShims[0]} push -m msg`,
+      `vim ${LEGACY_IDS.cliShims[0]}-notes.md`, // not a CLI invocation
+      `vite serve dev/${LEGACY_IDS.cliShims[0]}/web`, // path mention only, no CLI verb after the name
+      `grep ${LEGACY_IDS.cliShims[0]} build.log`, // the shim name is a grep arg... matches shape
     ].join("\n");
     // The grep line legitimately matches the loose shape — the count is a
     // pressure gauge, not an exact census; one-off false positives are noise

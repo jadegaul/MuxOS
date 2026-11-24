@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-identifier-storage",
+  "name": "@muxos/plugin-fields-identifier-storage",
   "version": "0.0.1",
   "private": true,
-  "description": "Identifier field type: DB storage capability — a Postgres text column."
+  "description": "Identifier field type: DB storage capability \u2014 a Postgres text column."
 }

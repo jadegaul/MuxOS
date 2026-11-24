@@ -15,10 +15,10 @@ The closed list is `AUTH_PROVIDER_KINDS` in `core/internal/lib.ts`; everything t
 ## Topology
 
 - **Auth runs on the central runtime.** The OAuth flow handlers, token store, refresh loop, provider registry, and `authStateServed` (the central `serveValue` of `core`'s `authState` live value, declared `origin: "central"`) all live under `plugins/auth/central/`. There is one auth process for the user, shared across every worktree.
-- **Tokens persist via the central secrets store.** Encrypted blob at `~/.equin/state/secrets/secrets.json.enc`, keyed `{ namespace: "auth-tokens", key: "blob-v1" }`. Auth/central calls into secrets/central directly (same process; no HTTP round-trip). See [`plugins/infra/plugins/secrets/CLAUDE.md`](../infra/plugins/secrets/CLAUDE.md).
-- **Browsers reach auth through the gateway's central-routes manifest.** `/api/auth/*` and the live-state WebSocket `/ws/central-notifications` are listed in `~/.equin/state/gateway/central-routes.json` and forwarded to the central backend regardless of which subdomain the request arrived on. The popup opens `/api/auth/start/<provider>` on the page's own origin (`connect.ts`), so the gateway reads it as the owner (same-origin) — `oauthStart` is owner-only like every route. The OAuth redirect URI stays at bare `http://localhost:<port>/api/auth/callback/<provider>` (host-independent; the manifest covers it); the provider's redirect there is a cross-site navigation, so `oauthCallback` declares `access: { public }` — it acts only on a state nonce an owner request minted — and is served through `rawEndpointHandler` so the declaration rides on its handler (`framework/principal`).
+- **Tokens persist via the central secrets store.** Encrypted blob at `~/.muxos/state/secrets/secrets.json.enc`, keyed `{ namespace: "auth-tokens", key: "blob-v1" }`. Auth/central calls into secrets/central directly (same process; no HTTP round-trip). See [`plugins/infra/plugins/secrets/CLAUDE.md`](../infra/plugins/secrets/CLAUDE.md).
+- **Browsers reach auth through the gateway's central-routes manifest.** `/api/auth/*` and the live-state WebSocket `/ws/central-notifications` are listed in `~/.muxos/state/gateway/central-routes.json` and forwarded to the central backend regardless of which subdomain the request arrived on. The popup opens `/api/auth/start/<provider>` on the page's own origin (`connect.ts`), so the gateway reads it as the owner (same-origin) — `oauthStart` is owner-only like every route. The OAuth redirect URI stays at bare `http://localhost:<port>/api/auth/callback/<provider>` (host-independent; the manifest covers it); the provider's redirect there is a cross-site navigation, so `oauthCallback` declares `access: { public }` — it acts only on a state nonce an owner request minted — and is served through `rawEndpointHandler` so the declaration rides on its handler (`framework/principal`).
 - **A provider added on a branch reads "Unavailable" in its own worktree's Accounts pane.** Central runs main's code, so it knows the provider only once the branch is merged; the row says so instead of offering a Connect that central would reject.
-- **Cross-worktree sync is automatic.** When central mutates auth state (connect, disconnect, refresh) it calls `authStateServed.notify()` and central pushes updates to every browser tab subscribed to `/ws/central-notifications`. No fanout, no `~/.equin/worktrees/*.json` enumeration.
+- **Cross-worktree sync is automatic.** When central mutates auth state (connect, disconnect, refresh) it calls `authStateServed.notify()` and central pushes updates to every browser tab subscribed to `/ws/central-notifications`. No fanout, no `~/.muxos/worktrees/*.json` enumeration.
 
 ## The Accounts pane
 
@@ -84,8 +84,8 @@ The provider's `central/internal/register.ts` runs at module init and calls `reg
 OAuth client credentials (`clientId`, `clientSecret`) are user-supplied in the provider's Accounts pane (its setup writes the config fields; Settings → Config shows them too). Both use `secretField()` from config_v2, which stores values in the central secrets store under `{ namespace: "config-fields", key: "auth-<provider>.<field>" }`. Provider descriptors read them via `readSecretConfig()` from `@plugins/fields/plugins/secret/plugins/config/central`.
 
 Env-var overrides for developers:
-- `EQUIN_AUTH_<PROVIDER>_CLIENT_ID`
-- `EQUIN_AUTH_<PROVIDER>_CLIENT_SECRET` (where applicable)
+- `MUXOS_AUTH_<PROVIDER>_CLIENT_ID`
+- `MUXOS_AUTH_<PROVIDER>_CLIENT_SECRET` (where applicable)
 
 Google uses Desktop-app + PKCE, but the token endpoint **still requires** `client_secret` (Google's implementation of RFC 8252 §8.6). Notion uses web-integration and also requires both. Shipping our own verified Google credentials is deferred — see [research/2026-04-24-global-auth-plugin.md](../../research/2026-04-24-global-auth-plugin.md) §I.
 
@@ -108,7 +108,7 @@ The callback REPLACES an account's stored scopes with what the grant returned (t
 
 See the Phase 3 plan in [research/2026-04-28-global-phase-3-auth-to-central.md](../../research/2026-04-28-global-phase-3-auth-to-central.md) for the manual smoke test.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 

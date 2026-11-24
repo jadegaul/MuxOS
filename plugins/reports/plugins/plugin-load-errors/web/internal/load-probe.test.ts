@@ -6,7 +6,7 @@ import {
   type LoadProbeIo,
 } from "./load-probe";
 
-const ORIGIN = "http://equin.localhost:9000";
+const ORIGIN = "http://muxos.localhost:9000";
 
 // A served fleet: path → status (or unreachable), and per-artifact metadata.
 function io(opts: {
@@ -133,9 +133,9 @@ describe("failedModuleUrlOf", () => {
   test("Chromium names the module it failed to fetch", () => {
     expect(
       failedModuleUrlOf(
-        "Failed to fetch dynamically imported module: https://equin.ai/artifacts/chunk.5a206f14d1ab4fee/index.js",
+        "Failed to fetch dynamically imported module: https://MuxOS.app/artifacts/chunk.5a206f14d1ab4fee/index.js",
       ),
-    ).toBe("https://equin.ai/artifacts/chunk.5a206f14d1ab4fee/index.js");
+    ).toBe("https://MuxOS.app/artifacts/chunk.5a206f14d1ab4fee/index.js");
   });
 
   test("WebKit names none", () => {

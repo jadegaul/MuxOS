@@ -20,7 +20,7 @@ export type PromoFilmSeedReport = z.infer<typeof PromoFilmSeedReportSchema>;
 /**
  * Write the film's whole story into this instance. Answered only by the
  * `promo-film` composition's backend, and only on a first-launch database
- * (`./equin promo-film seed` resets it just before): anything else is refused
+ * (`./muxos promo-film seed` resets it just before): anything else is refused
  * before a row is written.
  */
 export const seedPromoFilm = defineEndpoint({

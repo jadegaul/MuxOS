@@ -38,7 +38,7 @@ const check: Check = {
       return {
         ok: false,
         message: "docs/plugins-compact.md is missing",
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     const detailsFile = pluginDetailsDocPath(root);
@@ -46,7 +46,7 @@ const check: Check = {
       return {
         ok: false,
         message: "docs/plugins-details.md is missing",
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
 
@@ -60,7 +60,7 @@ const check: Check = {
       return {
         ok: false,
         message: "docs/plugins-compact.md is out of sync with plugin source",
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     if (
@@ -73,7 +73,7 @@ const check: Check = {
       return {
         ok: false,
         message: "docs/plugins-details.md is out of sync with plugin source",
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
 
@@ -92,7 +92,7 @@ const check: Check = {
       return {
         ok: false,
         message: stale.message,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
 

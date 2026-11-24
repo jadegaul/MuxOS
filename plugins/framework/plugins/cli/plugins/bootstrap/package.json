@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-cli-bootstrap",
+  "name": "@muxos/plugin-framework-cli-bootstrap",
   "private": true,
   "version": "0.0.1",
-  "description": "CLI bootstrap — the npm-free half that must run with node_modules absent: ensureDeps, the post-install re-exec, the orphan guard, the build lock."
+  "description": "CLI bootstrap \u2014 the npm-free half that must run with node_modules absent: ensureDeps, the post-install re-exec, the orphan guard, the build lock."
 }

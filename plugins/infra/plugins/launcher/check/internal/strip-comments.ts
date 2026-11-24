@@ -24,7 +24,7 @@ function blank(out: string[], start: number, end: number): void {
  * reading is what every text scan in the repo already relies on.
  *
  * A regex literal therefore counts as not-code, like a comment: a pattern that
- * spells a variable name (a check banning `process.env.EQUIN_DIR`) neither
+ * spells a variable name (a check banning `process.env.MUXOS_DIR`) neither
  * reads nor sets it — the same reason lint rules are not scanned.
  *
  * This used to parse each file into a TypeScript syntax tree and visit every

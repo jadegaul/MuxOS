@@ -48,27 +48,27 @@ export function AskPill({
         className={cn(fillClasses("x"), "cursor-grab touch-none")}
         onClick={onOpen}
         onPointerDown={drag}
-        aria-label="Show Ask equin"
+        aria-label="Show Ask muxos"
       >
         {working ? <Spinner /> : <Icon icon={askIcon} className="size-4" />}
         <Line as="span" className={fillClasses("x")}>
-        <Text variant="caption">
-          {p === null ? (
-            "Ask equin"
-          ) : p.state === "working" ? (
-            p.currentStep === null ? (
-              "Writing the answer…"
+          <Text variant="caption">
+            {p === null ? (
+              "Ask muxos"
+            ) : p.state === "working" ? (
+              p.currentStep === null ? (
+                "Writing the answer…"
+              ) : (
+                <StepLabel step={{ event: p.currentStep }} />
+              )
+            ) : p.state === "waiting" ? (
+              "Waiting for you"
+            ) : p.state === "failed" ? (
+              "Stopped"
             ) : (
-              <StepLabel step={{ event: p.currentStep }} />
-            )
-          ) : p.state === "waiting" ? (
-            "Waiting for you"
-          ) : p.state === "failed" ? (
-            "Stopped"
-          ) : (
-            (question ?? "Ask equin")
-          )}
-        </Text>
+              (question ?? "Ask muxos")
+            )}
+          </Text>
         </Line>
         {p !== null && p.unseen ? <StatusDot colorClass="bg-primary" /> : null}
       </Button>

@@ -27,7 +27,7 @@ import {
 // The picks store (`shared/picks.ts`, over a Mount) against a throwaway
 // prototypes tree on disk — the desktop's mount, so the lock files and the
 // atomic write are the real ones. Nothing here touches
-// `~/.equin/apps/prototypes`.
+// `~/.muxos/apps/prototypes`.
 
 const ID = "proto-1789000000-abcd";
 const writer = systemOrigin("picks test");

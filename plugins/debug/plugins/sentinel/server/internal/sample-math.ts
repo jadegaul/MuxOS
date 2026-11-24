@@ -68,7 +68,7 @@ const BUILD_PROCESS_RE = new RegExp(
 
 /**
  * Counts build/check/push CLI processes in a `ps -axo command=` listing.
- * Matches the CLI invocation shapes (`./equin build`, `equin check ...`, and
+ * Matches the CLI invocation shapes (`./muxos build`, `muxos check ...`, and
  * the legacy CLI shim name) while excluding this scan itself (`ps`) and
  * unrelated mentions (paths containing the word inside another token).
  */

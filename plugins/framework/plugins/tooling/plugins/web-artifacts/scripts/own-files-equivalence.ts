@@ -3,7 +3,7 @@
 // snapshot, against what the disk walks they replaced found. Prints every
 // difference; the only expected ones are gitignored files.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/own-files-equivalence.ts
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/own-files-equivalence.ts
 
 import { REPO_ROOT } from "@plugins/infra/plugins/paths/plugins/repo-root/core";
 import {

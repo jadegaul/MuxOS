@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps",
-  "description": "Container for the installed apps (agent-manager, pages, settings, …). The switcher infrastructure lives in apps-core.",
+  "name": "@muxos/plugin-apps",
+  "description": "Container for the installed apps (agent-manager, pages, settings, \u2026). The switcher infrastructure lives in apps-core.",
   "private": true,
   "version": "0.0.1"
 }

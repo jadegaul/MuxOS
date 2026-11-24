@@ -156,7 +156,7 @@ describe("createVisibleDeadlines", () => {
   });
 
   test("time before the page existed is not counted", () => {
-    // equin.ai 2026-11-19 03:56: a SharedWorker's handshake began 14.8 s
+    // MuxOS.app 2026-11-19 03:56: a SharedWorker's handshake began 14.8 s
     // before the page that received its stall was created.
     const h = harness(); // created at t=1_000
     h.advance(200);

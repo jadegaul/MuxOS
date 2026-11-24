@@ -8,7 +8,7 @@ import { Line } from "@plugins/primitives/plugins/css/plugins/line/web";
 import { Text } from "@plugins/primitives/plugins/css/plugins/text/web";
 
 // An API-key account's spend at a glance, in the sidebar foot's trigger:
-// `$4.12 today · $86 in Nov` — what equin's own agents spent on it, at API
+// `$4.12 today · $86 in Nov` — what muxos's own agents spent on it, at API
 // prices (the usage sync files each newly counted cost under the account its
 // agent ran on). Days are UTC, as the spend is filed.
 
@@ -79,7 +79,7 @@ export function AccountSpendGlance({
         variant="caption"
         tone="muted"
         className="tabular-nums"
-        title="What equin's agents spent on this account, at API prices (UTC days). Spend outside equin is not counted."
+        title="What muxos's agents spent on this account, at API prices (UTC days). Spend outside muxos is not counted."
       >
         {formatSpend(spent.today)} today · {formatSpend(spent.month)} in{" "}
         {monthName(month)}

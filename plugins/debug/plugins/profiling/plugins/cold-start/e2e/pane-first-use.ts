@@ -4,9 +4,9 @@
 // must be fetched and evaluated first. The cost a "load a plugin on first
 // use" design (stage 3) would add to every first visit of an app per page.
 //
-//   ./equin run plugins/debug/plugins/profiling/plugins/cold-start/e2e/pane-first-use.ts \
-//     --url http://equin.localhost:<port>/agents [--panes sonata,deploy,places] \
-//     [--iterations 5] [--out "$EQUIN_SCRATCH/pane-first-use.json"]
+//   ./muxos run plugins/debug/plugins/profiling/plugins/cold-start/e2e/pane-first-use.ts \
+//     --url http://muxos.localhost:<port>/agents [--panes sonata,deploy,places] \
+//     [--iterations 5] [--out "$MUXOS_SCRATCH/pane-first-use.json"]
 //
 // The page is loaded at `--url`'s path (the "from" app, /agents by default)
 // and the pane is reached by an in-app navigation (pushState + popstate, the
@@ -70,7 +70,7 @@
 //   - Content includes the pane's data subscriptions (same in both runs);
 //     "painted" is the next frame, not a paint timing entry.
 //   - Wall times move with the machine: the load average is printed per run.
-//     `./equin run` lifts an e2e script (and its Chromium) out of the macOS
+//     `./muxos run` lifts an e2e script (and its Chromium) out of the macOS
 //     background tier; the tier is printed so a run that was not lifted shows.
 
 import { loadavg } from "node:os";

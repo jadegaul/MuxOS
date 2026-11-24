@@ -1,11 +1,11 @@
 # Setup
 
-One-time environment setup for developing equin.
+One-time environment setup for developing muxos.
 
 ## Quick install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/equinai/equin/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh | bash
 ```
 
 It installs the **newest release** (a tag on `main`: the script, and with
@@ -38,7 +38,7 @@ Options (piped, pass them after `bash -s --`, e.g. `curl … | bash -s --
 
 | Option | |
 | --- | --- |
-| `--dir <path>` | Where equin goes (default `~/equin`). |
+| `--dir <path>` | Where muxos goes (default `~/muxos`). |
 | `--repo <url>` | Install your fork (its `main`). |
 | `--no-shell-rc` | Don't edit your shell's rc file. |
 | `--ref <tag\|main>` | Install that release, or the latest `main`. |
@@ -48,7 +48,7 @@ Options (piped, pass them after `bash -s --`, e.g. `curl … | bash -s --
 | `--fix [--yes]` | Start Claude Code on the problem the last install stopped on. |
 | `--report` | Print (and open) the issue link for that problem. |
 
-Every run keeps its record in `~/.equin/logs/install/<run>/` (`latest` is the
+Every run keeps its record in `~/.muxos/logs/install/<run>/` (`latest` is the
 newest): the full log, the events, and after a pause what Fix with Claude and
 Report issue use. How it works: [`plugins/installer`](../plugins/installer/CLAUDE.md).
 
@@ -74,8 +74,8 @@ git clone <repo url> <dir> && cd <dir>
 mise trust && mise install   # trust this checkout's mise.toml, then install
 
 # 4. The app.
-./equin start               # compiles and starts the gateway, and brings up Postgres
-./equin build --allow-main --skip-checks  # builds the app and deploys it
+./muxos start               # compiles and starts the gateway, and brings up Postgres
+./muxos build --allow-main --skip-checks  # builds the app and deploys it
 ```
 
 `mise install` also runs the repo's `setup` task (trusts every worktree's
@@ -85,45 +85,45 @@ Continue only once it says `all present`. Claude Code is not a prerequisite:
 the app runs the build the Agent SDK ships (installed with the dependencies),
 and you sign in to Claude from the app — the health report's Claude Code row
 shows **Sign in** until you do. Re-run it any time with
-`mise run doctor`. `./equin start` and `build` also run it first, so a
+`mise run doctor`. `./muxos start` and `build` also run it first, so a
 missing tool is reported before any long step rather than minutes into one.
 
 Don't install Bun or Go another way (Homebrew included): a copy outside mise
 bypasses `mise.lock`, and the build's `toolchain:resolved` check rejects a
 release other than the locked one.
 
-**Do not run as root.** Postgres' `initdb` refuses to run as the root OS user, so the embedded cluster — and therefore every backend behind it — cannot start. `./equin start` and a released bundle's `launch` both refuse outright rather than fail downstream. This bites on fresh servers in particular: the deploy plugin defaults `sshUser` to `root`, so create a non-root user and run as them (`adduser --disabled-password --gecos '' equin`, `chown -R` the install dir, then `su - equin`).
+**Do not run as root.** Postgres' `initdb` refuses to run as the root OS user, so the embedded cluster — and therefore every backend behind it — cannot start. `./muxos start` and a released bundle's `launch` both refuse outright rather than fail downstream. This bites on fresh servers in particular: the deploy plugin defaults `sshUser` to `root`, so create a non-root user and run as them (`adduser --disabled-password --gecos '' muxos`, `chown -R` the install dir, then `su - muxos`).
 
 Postgres needs no install. `bun install` brings the server (`embedded-postgres` ships `postgres` / `initdb` / `pg_ctl`) and the client tools the app uses to fork and back up databases (`pg_dump` / `pg_restore`, from [`client-tools`](../plugins/database/plugins/client-tools/CLAUDE.md)). Both come from the same Postgres release.
 
-The app is then at `http://equin.localhost:<port>` — `start` prints it, and
-`./equin url` prints it again. The port is this account's: 8700 by default,
+The app is then at `http://muxos.localhost:<port>` — `start` prints it, and
+`./muxos url` prints it again. The port is this account's: 8700 by default,
 the first free one of 8700–8709, chosen once by the first `start` and kept
-(`./equin start --port <n>` moves it by hand); installs from before 2026-11
+(`./muxos start --port <n>` moves it by hand); installs from before 2026-11
 also answer on 9000 for a while, redirecting navigations to the new port.
 `start` is a one-time,
 system-level step. On macOS it registers the gateway with launchd
 (`~/Library/LaunchAgents/<gateway-label>.plist`), so it comes back on
 its own at every login — after a reboot too — and is relaunched if it crashes;
-the gateway then brings Postgres and the app back up. `./equin stop` stops
-it until the next login, and `./equin stop --disable` also stops it
+the gateway then brings Postgres and the app back up. `./muxos stop` stops
+it until the next login, and `./muxos stop --disable` also stops it
 starting at login. On Linux it is a systemd user unit
 (`~/.config/systemd/user/<gateway-label>.service`) that starts at boot,
 nobody logged in — it needs lingering (`sudo loginctl enable-linger $USER`,
 which `install.sh` enables). The gateway listens on loopback only
-(`127.0.0.1` and `::1`); `EQUIN_LISTEN=:<port> ./equin start` opens it on
+(`127.0.0.1` and `::1`); `MUXOS_LISTEN=:<port> ./muxos start` opens it on
 every interface. Elsewhere (no launchd, no systemd)
-the gateway does not survive a reboot: run `./equin start` again after one.
+the gateway does not survive a reboot: run `./muxos start` again after one.
 
-(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.equin.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`; an install from before the rename keeps `LEGACY_IDS.launchdLabel` until it migrates, below).)
+(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.muxos.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`; an install from before the rename keeps `LEGACY_IDS.launchdLabel` until it migrates, below).)
 
 **An install from before the rename** keeps its data in the legacy home dir
 (`LEGACY_IDS.dataDirName`) and its gateway under the old label: everything
-keeps working on them, and a fresh install gets `~/.equin` and
-`dev.equin.gateway`. To move over, run `./equin data-dir migrate` from your
-checkout (a dry run that prints the plan), then `./equin data-dir migrate --apply`
+keeps working on them, and a fresh install gets `~/.muxos` and
+`dev.muxos.gateway`. To move over, run `./muxos data-dir migrate` from your
+checkout (a dry run that prints the plan), then `./muxos data-dir migrate --apply`
 while no build, push, test or agent is running. It stops the app, moves the
-data dir to `~/.equin` (and `~/.backups/<legacy>` to `~/.backups/equin`),
+data dir to `~/.muxos` (and `~/.backups/<legacy>` to `~/.backups/muxos`),
 rewrites every stored copy of the old path (every database, the files under
 the dir, Claude Code's transcript dirs), drops the cache entries that hold
 one (they are rebuilt on demand, so the next `start` takes a few minutes),
@@ -143,7 +143,7 @@ one root command that installs them (Playwright's own `install-deps chromium`).
 
 ## Postgres
 
-equin ships an embedded Postgres 18 cluster, supervised by the gateway — see [`plugins/database/`](../plugins/database/CLAUDE.md). Binaries come from `@embedded-postgres/<platform>` (installed via `bun install`); `initdb` runs on first start, the cluster lives in `~/.equin/postgres/data-pg18/`, and `postgres` listens on a Unix socket at `~/.equin/postgres/socket` on port `5433`.
+muxos ships an embedded Postgres 18 cluster, supervised by the gateway — see [`plugins/database/`](../plugins/database/CLAUDE.md). Binaries come from `@embedded-postgres/<platform>` (installed via `bun install`); `initdb` runs on first start, the cluster lives in `~/.muxos/postgres/data-pg18/`, and `postgres` listens on a Unix socket at `~/.muxos/postgres/socket` on port `5433`.
 
 The base database (`LEGACY_IDS.pgBaseDatabase`) is created by the script that starts the cluster — empty, on every start, so you never create it yourself and a deleted one comes back. The first backend to boot against it applies the migrations.
 
@@ -151,7 +151,7 @@ Each conversation (worktree) gets its own database inside the same cluster, fork
 
 ### Using system PG instead of embedded
 
-Edit `~/.equin/state/db-config/database.json` (auto-generated on first `./equin start`):
+Edit `~/.muxos/state/db-config/database.json` (auto-generated on first `./muxos start`):
 
 ```json
 {
@@ -164,7 +164,7 @@ Edit `~/.equin/state/db-config/database.json` (auto-generated on first `./equin 
 }
 ```
 
-An empty `services` array disables the gateway's embedded-PG supervisor. The `connection` block tells the server and CLI how to reach your system PG. Then restart the gateway with `./equin start --force`.
+An empty `services` array disables the gateway's embedded-PG supervisor. The `connection` block tells the server and CLI how to reach your system PG. Then restart the gateway with `./muxos start --force`.
 
 In this mode the cluster is yours, not the app's, so nothing provisions inside it: you install and run a Postgres 18 server yourself and create the base database (`LEGACY_IDS.pgBaseDatabase`) (on macOS, for example, `brew install postgresql@18 && brew services start postgresql@18 && createdb <base database>`). The app still forks and backs up with its own bundled client tools, which are Postgres 18.
 
@@ -174,6 +174,6 @@ In this mode the cluster is yours, not the app's, so nothing provisions inside i
 
 ## If you cloned someone else's repo
 
-Nothing extra to configure. The first `./equin push` asks the remote whether this checkout may write to it (a dry-run push, which writes nothing) and records the answer in `.git/config` beside `core.hooksPath`. With no write access, push commits, rebases, runs the checks and fast-forwards your **local** `main` — which is what main's auto-build watches — and pushes nothing. It also stops fetching the other repo's `main` into yours, which would otherwise pull in changes you never reviewed and eventually break push outright.
+Nothing extra to configure. The first `./muxos push` asks the remote whether this checkout may write to it (a dry-run push, which writes nothing) and records the answer in `.git/config` beside `core.hooksPath`. With no write access, push commits, rebases, runs the checks and fast-forwards your **local** `main` — which is what main's auto-build watches — and pushes nothing. It also stops fetching the other repo's `main` into yours, which would otherwise pull in changes you never reviewed and eventually break push outright.
 
-The repo you cloned from is then your **upstream**: a daily check records a report when it has new commits, and you update on your own terms with `./equin upstream status` and `./equin upstream merge` in a worktree. If you fork instead, point `origin` at your fork; push publishes there, and `upstream` is added for you.
+The repo you cloned from is then your **upstream**: a daily check records a report when it has new commits, and you update on your own terms with `./muxos upstream status` and `./muxos upstream merge` in a worktree. If you fork instead, point `origin` at your fork; push publishes there, and `upstream` is added for you.

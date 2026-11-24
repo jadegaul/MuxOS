@@ -8,17 +8,17 @@
     "spawnError": null,
     "causes": ["ref advanced"],
     "tail": [
-      "[converge 2026-11-10T12:00:00.000Z] building equin at 2baf0e2a3",
+      "[converge 2026-11-10T12:00:00.000Z] building muxos at 2baf0e2a3",
       "error: connect ECONNREFUSED /tmp/.s.PGSQL.6432"
     ],
-    "checkout": "/x/equin",
-    "log": "/x/.equin/logs/gateway/deploy/main.log",
+    "checkout": "/x/muxos",
+    "log": "/x/.muxos/logs/gateway/deploy/main.log",
     "startedAt": 1794312000000,
     "endedAt": 1794312004000
   },
   "occurredAt": 1794312004000,
   "writer": {
     "pid": 1234,
-    "checkout": "/x/equin"
+    "checkout": "/x/muxos"
   }
 }

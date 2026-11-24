@@ -7,9 +7,9 @@ const own = { scratchDir: ownDir, claudeSessionId: SID };
 
 describe("agentScratchDir", () => {
   test("one directory per owner under the scratch root", () => {
-    expect(ownDir).toBe("/tmp/equin-scratch/conv-1-abc");
+    expect(ownDir).toBe("/tmp/muxos-scratch/conv-1-abc");
     expect(agentScratchDir("615f223d-ac72-45b2-9bb8-6f7d361d78da")).toBe(
-      "/tmp/equin-scratch/615f223d-ac72-45b2-9bb8-6f7d361d78da",
+      "/tmp/muxos-scratch/615f223d-ac72-45b2-9bb8-6f7d361d78da",
     );
   });
   test("an owner that is not one path segment is refused", () => {
@@ -26,11 +26,11 @@ describe("foreignTempPath", () => {
     expect(foreignTempPath("/private/var/tmp/x", own)).toBe("/var/tmp/x");
   });
   test("another session's scratch is foreign", () => {
-    expect(foreignTempPath("/tmp/equin-scratch/conv-2/msg.txt", own)).toBe(
-      "/tmp/equin-scratch/conv-2/msg.txt",
+    expect(foreignTempPath("/tmp/muxos-scratch/conv-2/msg.txt", own)).toBe(
+      "/tmp/muxos-scratch/conv-2/msg.txt",
     );
-    expect(foreignTempPath("/tmp/equin-scratch", own)).toBe(
-      "/tmp/equin-scratch",
+    expect(foreignTempPath("/tmp/muxos-scratch", own)).toBe(
+      "/tmp/muxos-scratch",
     );
   });
   test("this session's scratch, the roots themselves and other places are not", () => {

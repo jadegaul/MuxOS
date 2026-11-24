@@ -3,7 +3,7 @@ import { splitUiContext, type UiContextSegment } from "./split";
 import { serializeUiContext, UI_CONTEXT_RE, type UiContextMeta } from "./token";
 
 const HEADLINE: UiContextMeta = {
-  url: "https://equin.ai/",
+  url: "https://MuxOS.app/",
   path: "apps/website/home#pane:home > apps/website/hero@Website.Section",
   element: "h1 — What will apps evolve into?",
   selector: "main>section>h1",

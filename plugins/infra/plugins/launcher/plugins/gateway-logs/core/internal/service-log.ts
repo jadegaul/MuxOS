@@ -14,7 +14,7 @@ export const SERVICE_LOG_FD_FLAG = "--log-fd";
 /**
  * Where the daemon's output goes: the relay's fd, or `absent` — the start
  * command was run by a gateway that predates the relay (the gateway binary is
- * only rebuilt by `./equin start`), so there is no relay to hand it.
+ * only rebuilt by `./muxos start`), so there is no relay to hand it.
  */
 export type ServiceLogTarget =
   { kind: "relay"; fd: number } | { kind: "absent" };

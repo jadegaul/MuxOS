@@ -33,7 +33,7 @@ const state = await depState(audioPython);               // absent | installing 
 onDepInstallSettled(audioPython, () => resync());        // server barrel: that request's install ended
 
 // from a check or an e2e script (host process, no ExecContext of its own):
-const ready = await ensureDepViaCli(audioPython, { stdio: "inherit", grant: null }); // `./equin deps install` child
+const ready = await ensureDepViaCli(audioPython, { stdio: "inherit", grant: null }); // `./muxos deps install` child
 // a check passes the grant its op holds: ensureDepViaCli(dep, { stdio: "capture", grant: ctx.grant })
 ```
 
@@ -46,7 +46,7 @@ const ready = await ensureDepViaCli(audioPython, { stdio: "inherit", grant: null
   (`defineCollectedDir("deps")`, `core/collected-dir.ts`), committed and held by
   `plugins-registry-in-sync`. `declaredDeps()` / `declaredDep(id)` (async: they
   load the declarations once) read it, so a CLI op, a check or
-  `./equin start` knows the set without booting a backend.
+  `./muxos start` knows the set without booting a backend.
 - **The engine is the `deps/` barrel** (`@plugins/infra/plugins/deps/deps`):
   `defineDep`, `ensureDep`, `readyNow`, `depState`, `removeDep`,
   `declaredDeps` / `declaredDep`, `ensureDepViaCli`, `sealDep`, `holdDep` and
@@ -72,7 +72,7 @@ const ready = await ensureDepViaCli(audioPython, { stdio: "inherit", grant: null
 - **`ensureDepViaCli(dep, { stdio })`** is for a host process that holds no
   `ExecContext` and must not mint one: a check (inside an op already holding
   its host grant, where an in-process `exec.admit` could wait on itself) and an
-  e2e script. One `readyNow`; if not ready, a `./equin deps install <id>`
+  e2e script. One `readyNow`; if not ready, a `./muxos deps install <id>`
   child (its own CLI process and admission, the same host flock), then
   `readyNow` again for the proof. `grant` (required) is the host grant the
   caller holds, or `null`: the child inherits it and its `exec.admit` spends one
@@ -82,7 +82,7 @@ const ready = await ensureDepViaCli(audioPython, { stdio: "inherit", grant: null
   installing Chromium that took 20 s alone. `"inherit"` streams the child's output,
   `"capture"` puts its tail in the error. Host code that cannot import the
   `deps/` barrel at all (a `web/`-row test driver) runs
-  `./equin deps install <id> --json` itself: one line
+  `./muxos deps install <id> --json` itself: one line
   `{ id, identity, dir }` on stdout, progress on stderr.
 - The Dependencies view, the CLI, the install job and the sweep read the
   generic declared set and name no dependency.
@@ -121,7 +121,7 @@ held), `failed.json`, `last-used`, `holds/`. The lock is `locks/deps/<id>-<ident
   every Linux install prepare them, not only one whose start adds a part using
   the dependency — for one installed on demand later by a process that cannot
   ask for a password (Chromium, first needed by main's unattended deploy).
-  `./equin start --system-packages` lists them for install.sh
+  `./muxos start --system-packages` lists them for install.sh
   (`systemPackagesToPrepare`), which installs them — no list of its own.
 - **`admission: { none: "<why>" }`** on a source skips `exec.admit`: for an
   install too small to be worth a grant that a caller awaits on the way INTO
@@ -141,7 +141,7 @@ held), `failed.json`, `last-used`, `holds/`. The lock is `locks/deps/<id>-<ident
   durable reference from outside any checkout — the launchd job naming the
   gateway binary by path, which relaunches it at the next login long after main's
   source moved on. One hold per holder per dependency: holding a new identity
-  releases the holder's old one to the sweep (`./equin start` holds
+  releases the holder's old one to the sweep (`./muxos start` holds
   `machine-gateway`). **`whileLocked: <lock path>`** makes it a running
   process's hold: it lasts while some process holds that kernel flock and is
   deleted as stale by the next read once nobody does (a daemon's bundle that
@@ -159,13 +159,13 @@ any checkout that must never change under it (the embedded Postgres, PgBouncer):
   checkout's install and pins it (adopting what would have run anyway). Its
   `drift` says whether the checkout now declares another identity, for the
   caller to log; it never follows it.
-- **`pinDep(dep, exec)`** — `./equin deps pin <id>` — is the explicit switch:
+- **`pinDep(dep, exec)`** — `./muxos deps pin <id>` — is the explicit switch:
   ensure the checkout's install, move the hold. Nothing restarts; it takes
   effect at the declaration's `appliesAt`.
 - **`holdRunningDep(ready)`**: a daemon's fresh start holds its install as
   `<holder>-running`, so a pin moved while the daemon runs never hands the
   bytes under it to the sweep.
-- `./equin deps list` prints the pinned identity.
+- `./muxos deps list` prints the pinned identity.
 - **Versions and blocked moves.** A source may read its version
   (`DepSource.version`: `declared(root)` from a checkout, `installed(dir)` from
   a payload — package-copy reads the lock's and the copy's own `package.json`).
@@ -181,7 +181,7 @@ any checkout that must never change under it (the embedded Postgres, PgBouncer):
   `state/deps-pins/<id>.json`, when a pin was first seen lagging what main
   declares (reset when the pinned install changes; dropped once it no longer
   lags). Past `PIN_LAG_MAX_DAYS` (30) a person must decide: switch it
-  (`./equin deps pin`) or record a **stay** — `./equin deps pin-stay <id>
+  (`./muxos deps pin`) or record a **stay** — `./muxos deps pin-stay <id>
   --reason "…" [--review-by DAY]` (`stayPin`): a `Hold` (`deps/hold`) on the
   declared version and up, `reviewBy` at most `HOLD_MAX_DAYS` (90) out; `--lift`
   removes it. A stay in force defers the decision; past its `reviewBy` it is
@@ -242,7 +242,7 @@ is `failed`, never `absent`.
 
 ## CLI
 
-`./equin deps list | install <id> [--json] | remove <id> | pin <id> | pin-stay <id> --reason "…" [--review-by DAY] [--lift] | upgrade [<updater>] [--only a,b] [--skip-cooldown]`.
+`./muxos deps list | install <id> [--json] | remove <id> | pin <id> | pin-stay <id> --reason "…" [--review-by DAY] [--lift] | upgrade [<updater>] [--only a,b] [--skip-cooldown]`.
 `list`, `install` and `remove` import the `deps/` barrel directly — the
 declarations are a generated registry and the engine is host-only code, so no
 backend is booted and nothing needs to have been built (`install` passes
@@ -279,7 +279,7 @@ module eval).
   nothing puts the files back and runs each updater's `sync` (npm: `bun
   install` + `regen-generated`), so the installs match the files again. Design:
   `research/2026-10-16-global-deps-upgrade-always-reaches-a-verdict.md`. The
-  runner takes a SELECTION of updaters: `./equin
+  runner takes a SELECTION of updaters: `./muxos
   deps upgrade` with no updater moves every one behind one baseline
   (receipt `deps-upgrade.json`); naming one moves only it
   (`deps-upgrade-<updater>.json`, `--only` allowed). **Holds** are one model
@@ -398,7 +398,7 @@ torch.
 - **`UV_NO_CONFIG` also ignores the project's own `pyproject.toml` `[tool.uv]`
   and `.python-version`** — never set it.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
@@ -560,7 +560,7 @@ torch.
   - **`build`** [exempt] — The build installer kind of infra/deps: build({ inputs, tool, output, run }) (its deps barrel) declares something built from this checkout's own source — identity = sha256 of every file the git…
   - **`download`** [exempt] [1 sub-plugin] — The download installer kind of infra/deps: download({ files: [{ name, url, sha256 }], derive? }) (its deps barrel) declares a dependency on pinned files — identity = every url + sha256 plus…
   - **`hold`** — The one hold model of infra/deps: a release not to land yet, with a reason and a review day at most 90 days out — shared by every updater and by a pinned dependency's decision to stay behind main.
-  - **`mise`** [exempt] — The mise toolchain as an updater: contributes `mise` to the updater registry, so the Dependency upgrades automation includes it in the batched upgrade task and `./equin deps upgrade mise` (alias…
+  - **`mise`** [exempt] — The mise toolchain as an updater: contributes `mise` to the updater registry, so the Dependency upgrades automation includes it in the batched upgrade task and `./muxos deps upgrade mise` (alias…
   - **`npm`** [exempt] [2 sub-plugins] — The `npm` updater: moves every npm package a workspace package.json declares (its range and bun.lock) to the newest release past a 3-day cooldown, lockstep groups together, honouring reviewed holds…
   - **`package-copy`** — The package-copy installer kind of infra/deps: npmPackageCopy({ workspace, package }) (its deps barrel) declares a copy of one npm package the checkout's bun install put in a workspace's…
   - **`pin-drift`** — The health report's Pinned binaries row: attention while a pinned dependency (a host daemon's binaries — Postgres, PgBouncer) lags what main's checkout declares, or its live daemon still runs a pin…

@@ -3,7 +3,7 @@
  * main file loaded only what it needs to DECLARE, with every implementation
  * behind a lazy reference (design check of 2026-11-20, task-1795208483-6ggeec).
  *
- *   ./equin run plugins/framework/plugins/tooling/plugins/import-closure/scripts/measure-definition-closure.ts \
+ *   ./muxos run plugins/framework/plugins/tooling/plugins/import-closure/scripts/measure-definition-closure.ts \
  *     --host server|web --state <scratch dir> [--policy B|A] [--step all|discover|strict|timed|baseline|bundle] [--runs 5]
  *
  * How: a Bun loader plugin rewrites every repo module so each import binding
@@ -682,7 +682,7 @@ async function child(): Promise<void> {
   const rid = (await import(
     `${REPO}/plugins/infra/plugins/runtime-identity/core/index.ts`
   )) as { declareRuntimeNamespace: (namespace: unknown) => void };
-  rid.declareRuntimeNamespace(ns.asNamespace("equin"));
+  rid.declareRuntimeNamespace(ns.asNamespace("muxos"));
   interface Entry {
     pluginPath: string;
     id: string;

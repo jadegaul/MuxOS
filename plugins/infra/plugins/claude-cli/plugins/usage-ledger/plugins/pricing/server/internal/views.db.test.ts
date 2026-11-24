@@ -7,7 +7,7 @@
  * effective from -infinity, an unchanged table records nothing, a changed one
  * is effective from now, and a model first seen is priced in every version.
  *
- * Run: `./equin test plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing`
+ * Run: `./muxos test plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing`
  */
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { asc, eq, sql } from "drizzle-orm";

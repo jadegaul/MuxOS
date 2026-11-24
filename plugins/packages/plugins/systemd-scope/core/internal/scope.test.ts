@@ -54,10 +54,10 @@ describe("userScopeHost", () => {
 describe("inOwnScope", () => {
   test("execs the command in a collected scope that survives a kernel kill of one process", () => {
     const scoped = inOwnScope(HOST, {
-      argv: ["./equin", "build"],
+      argv: ["./muxos", "build"],
       env: { PATH: "/usr/bin" },
       unit: UNIT,
-      description: "equin build",
+      description: "muxos build",
     });
     expect(scoped.unit).toBe(UNIT);
     expect(scoped.argv.slice(0, 4)).toEqual([
@@ -79,7 +79,7 @@ describe("inOwnScope", () => {
       "env",
       "-u",
       "XDG_RUNTIME_DIR",
-      "./equin",
+      "./muxos",
       "build",
     ]);
   });
@@ -222,9 +222,9 @@ describe("inAppScope", () => {
       env: {},
       kind: "daemon",
       label: "runtime-sdk.agent-c1-x",
-      description: "equin agent",
+      description: "muxos agent",
     });
-    expect(launch.unit).toBe("equin-daemon-runtime-sdk.agent-c1-x.scope");
+    expect(launch.unit).toBe("muxos-daemon-runtime-sdk.agent-c1-x.scope");
     expect(launch.argv[0]).toBe("systemd-run");
     expect(launch.argv.at(-1)).toBe("claude");
   });
@@ -251,23 +251,23 @@ describe("heavyCommandScope", () => {
     argv: ["bun", "bin/index.ts", "build"],
     env: { PATH: "/usr/bin" },
     label: "build-1-x",
-    description: "equin build",
+    description: "muxos build",
   };
   test("leaves the gateway's unit (a backend started it) for an op scope of its own", () => {
     const d = heavyCommandScope({
       ...base,
-      procSelfCgroup: leaf("dev.equin.gateway.service"),
+      procSelfCgroup: leaf("dev.muxos.gateway.service"),
     });
     expect(d.kind).toBe("enter");
     if (d.kind !== "enter") return;
-    expect(d.unit).toBe("equin-op-build-1-x.scope");
+    expect(d.unit).toBe("muxos-op-build-1-x.scope");
     expect(d.argv.slice(-3)).toEqual(base.argv);
   });
   test("leaves an agent's daemon scope too: the agent outlives its build", () => {
     expect(
       heavyCommandScope({
         ...base,
-        procSelfCgroup: leaf("equin-daemon-runtime-sdk.agent-c1.scope"),
+        procSelfCgroup: leaf("muxos-daemon-runtime-sdk.agent-c1.scope"),
       }).kind,
     ).toBe("enter");
   });
@@ -275,11 +275,11 @@ describe("heavyCommandScope", () => {
     expect(
       heavyCommandScope({
         ...base,
-        procSelfCgroup: leaf("equin-op-build-1795052000-abcdef.scope"),
+        procSelfCgroup: leaf("muxos-op-build-1795052000-abcdef.scope"),
       }),
     ).toEqual({
       kind: "stay",
-      why: "already in its op scope equin-op-build-1795052000-abcdef.scope",
+      why: "already in its op scope muxos-op-build-1795052000-abcdef.scope",
     });
   });
   test("re-executed but not in an op scope (cgroup v1): fails instead of looping", () => {
@@ -287,7 +287,7 @@ describe("heavyCommandScope", () => {
       heavyCommandScope({
         ...base,
         procSelfCgroup: () => "12:pids:/user.slice\n",
-        reexecuted: "equin-op-build-1-x.scope",
+        reexecuted: "muxos-op-build-1-x.scope",
       }),
     ).toThrow("not entering another");
   });
@@ -322,9 +322,9 @@ describe("inAppScope, the child looking for the user manager", () => {
     },
   );
   test("names the scope it starts where there is a manager", () => {
-    expect(launch.unit).toBe("equin-op-probe-1.scope");
+    expect(launch.unit).toBe("muxos-op-probe-1.scope");
     expect(launch.argv).toContain("systemd-run");
-    expect(launch.argv).toContain("--unit=equin-op-probe-1.scope");
+    expect(launch.argv).toContain("--unit=muxos-op-probe-1.scope");
   });
   test("with no manager's socket, runs the command itself, its environment as given", () => {
     const run = Bun.spawnSync(launch.argv, {

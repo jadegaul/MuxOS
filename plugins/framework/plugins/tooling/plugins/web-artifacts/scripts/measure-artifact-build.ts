@@ -11,7 +11,7 @@
 //   batch    ONE vite build of every sampled target as entries (with React), and
 //            the same without React
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-artifact-build.ts [--n 60] [--kind web]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-artifact-build.ts [--n 60] [--kind web]
 //
 // Plan: research/2026-10-30-global-build-pipeline-step3b-batched-artifacts-and-repo-snapshot.md (Phase 0).
 

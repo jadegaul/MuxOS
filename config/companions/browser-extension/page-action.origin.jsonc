@@ -1,4 +1,4 @@
-// @hash 46a3ce0b8ed0
+// @hash d1f1d3080127
 {
   // Item: "<key>" (terse; <key> is "<pluginId>:<id>")
   // Hide: { "item": "<key>", "hidden": true }
@@ -7,7 +7,7 @@
   // Group: { "type": "header", "label": "<title>", "collapsed": false, "items": [ "<key>", … ] }
   // Overflow (⋯ menu): { "type": "overflow", "id": "<unique-id>", "items": [ "<key>", … ] }
   "items": [
-    "companions.browser-extension.equin-site:open-locally",
-    "companions.browser-extension.equin-site:open-on-public-site"
+    "companions.browser-extension.muxos-site:open-locally",
+    "companions.browser-extension.muxos-site:open-on-public-site"
   ]
 }

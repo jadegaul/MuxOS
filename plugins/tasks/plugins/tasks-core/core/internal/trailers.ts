@@ -28,25 +28,25 @@ import { attemptIdKind } from "@plugins/tasks/plugins/task-ids/core";
  * enforced invariant rather than a convention.
  */
 
-/** Written by `.githooks/prepare-commit-msg` from `EQUIN_CONVERSATION_ID`. */
+/** Written by `.githooks/prepare-commit-msg` from `MUXOS_CONVERSATION_ID`. */
 export const CONVERSATION_TRAILER_KEY = LEGACY_IDS.conversationTrailer;
-/** Stamped per `./equin push` invocation by the rebase `--exec`. */
+/** Stamped per `./muxos push` invocation by the rebase `--exec`. */
 export const PUSH_TRAILER_KEY = LEGACY_IDS.pushTrailer;
 /**
- * Stamped by `./equin push` beside the push trailer when the branch is an
+ * Stamped by `./muxos push` beside the push trailer when the branch is an
  * attempt's (`claude-web/<attemptId>`): the attempt the push is credited to,
  * derived from the checkout itself rather than delivered by an env var — so a
- * session equin did not launch (no `EQUIN_CONVERSATION_ID`, e.g. while
+ * session muxos did not launch (no `MUXOS_CONVERSATION_ID`, e.g. while
  * recovering a broken main) still lands attributed. The conversation trailer,
  * when present, stays the authority.
  */
-export const ATTEMPT_TRAILER_KEY = "Equin-Attempt";
+export const ATTEMPT_TRAILER_KEY = "MuxOS-Attempt";
 /**
- * Stamped by `./equin push --unattributed "<reason>"`: a push that names no
+ * Stamped by `./muxos push --unattributed "<reason>"`: a push that names no
  * conversation and no attempt ON PURPOSE, with the reason. The ledger writes no
  * row for it (there is no attempt to hang one on); git history keeps why.
  */
-export const UNATTRIBUTED_TRAILER_KEY = "Equin-Unattributed";
+export const UNATTRIBUTED_TRAILER_KEY = "MuxOS-Unattributed";
 
 /**
  * The attempt a branch belongs to — the value of the attempt trailer push
@@ -71,7 +71,7 @@ export const TRAILER_LOG_FORMAT =
   "%s%x00";
 
 /**
- * One commit `./equin push` landed and attributed, as emitted by
+ * One commit `./muxos push` landed and attributed, as emitted by
  * {@link TRAILER_LOG_FORMAT}: it carries the push trailer and at least one of
  * the conversation and attempt trailers.
  */

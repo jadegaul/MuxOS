@@ -16,7 +16,7 @@
 // `<out>-solo-tall.png`, `<out>-solo-home.png`, `<out>-desktop.png`.
 //
 // Usage:
-//   ./equin run plugins/shell/plugins/global-action-bar/e2e/solo-safe-area.ts \
+//   ./muxos run plugins/shell/plugins/global-action-bar/e2e/solo-safe-area.ts \
 //     [--path /agents/c/<id>] [--out /tmp/solo-safe-area]
 
 import {

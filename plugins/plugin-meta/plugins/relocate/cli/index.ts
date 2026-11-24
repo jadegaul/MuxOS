@@ -1,12 +1,12 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * `./equin plugin move <from> <to>` — relocating or renaming a plugin as
+ * `./muxos plugin move <from> <to>` — relocating or renaming a plugin as
  * ONE tested step instead of a bespoke sed session per move.
  *
- * `plugin` is a GROUP: it routes and never runs, so bare `./equin plugin`
+ * `plugin` is a GROUP: it routes and never runs, so bare `./muxos plugin`
  * prints its subcommand help by construction. The declaration is data; the
- * body sits behind its own lazy `import()`, so every other `./equin`
+ * body sits behind its own lazy `import()`, so every other `./muxos`
  * invocation pays for this file alone (`cli:command-declarations-light`).
  */
 export default defineCliCommand({
@@ -27,7 +27,7 @@ export default defineCliCommand({
         "when <to> exists, sits inside <from>, or has a parent that is not a plugin. Records the " +
         "move in the plugin-move ledger, from which each namespace's next build moves its saved " +
         "settings. Registries and docs are left to " +
-        "`./equin build`; run `./equin check` after it.",
+        "`./muxos build`; run `./muxos check` after it.",
       arguments: [
         { name: "<from>", description: "the plugin to move: path or dot id" },
         { name: "<to>", description: "where it goes: path or dot id" },

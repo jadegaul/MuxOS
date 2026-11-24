@@ -5,10 +5,10 @@
  * into ONE turn — held while the watcher is busy or waiting on the user,
  * idempotent across a retry. The agent side (submit, digest) is a fake port.
  *
- * Needs this worktree's DB as `./equin build` leaves it (the task_watches /
+ * Needs this worktree's DB as `./muxos build` leaves it (the task_watches /
  * watch_inbox migration applied, the derived views built).
  *
- * Run: `./equin test plugins/tasks/plugins/orchestration/plugins/watch`.
+ * Run: `./muxos test plugins/tasks/plugins/orchestration/plugins/watch`.
  */
 import { describe, expect, test } from "bun:test";
 import { sql, eq } from "drizzle-orm";

@@ -4,7 +4,7 @@
 // context: iOS Lockdown Mode, some in-app webviews, an insecure or opaque
 // origin and some worker kinds have no `navigator.locks` at all, and a bare
 // `navigator.locks.request(…)` there throws "undefined is not an object"
-// (equin.ai's demo worker on Safari, report-1795088221-b1uksj). So locking is
+// (MuxOS.app's demo worker on Safari, report-1795088221-b1uksj). So locking is
 // reachable only through `webLocks()`: its `unsupported` arm carries no lock
 // manager, so a caller must branch — and decide what it does when no other
 // context can be coordinated with.

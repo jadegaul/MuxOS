@@ -68,7 +68,7 @@ test("a group left holding only zombies ends cleanly and reports nothing", async
   // to signal it: `kill(-pgid, 0)` on a group of zombies is EPERM, not ESRCH.
   // A descendant forks a child that exits at once, then leaves the group with
   // setsid and never reaps it: once the leader exits, the group's one member
-  // is that zombie (2026-11-15: `./equin test` exited 1 after 318 passes).
+  // is that zombie (2026-11-15: `./muxos test` exited 1 after 318 passes).
   const dir = mkdtempSync(join(tmpdir(), "process-group-"));
   const pidFile = join(dir, "escaper.pid");
   try {

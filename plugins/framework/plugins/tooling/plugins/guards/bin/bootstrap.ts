@@ -44,13 +44,13 @@ const MAX_ERROR_CHARS = 2000;
  * checkout root. A copy, because this file may import nothing from the repo;
  * `bootstrap.test.ts` asserts the two are equal.
  */
-export const INSTALL_STAMP_REL = join("node_modules", ".equin-deps");
+export const INSTALL_STAMP_REL = join("node_modules", ".muxos-deps");
 
 /** A checkout with no install stamp: its own guard would resolve npm packages from main's tree. */
 export class CheckoutNotInstalledError extends Error {
   constructor(root: string) {
     super(
-      `this checkout is not installed (no ${INSTALL_STAMP_REL} in ${root}) — run any ./equin command`,
+      `this checkout is not installed (no ${INSTALL_STAMP_REL} in ${root}) — run any ./muxos command`,
     );
     this.name = "CheckoutNotInstalledError";
   }

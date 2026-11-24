@@ -1,6 +1,6 @@
 // What counting costs per file call (`countFsCall`: the process tally, the
 // path prefix, no scope open) — it runs on every timed call of every process.
-//   ./equin run plugins/packages/plugins/timed-fs/scripts/count-bench.ts
+//   ./muxos run plugins/packages/plugins/timed-fs/scripts/count-bench.ts
 import { countFsCall } from "../core/internal/fs-call-count";
 
 const path = `${process.cwd()}/plugins/apps/plugins/x/web/index.ts`;

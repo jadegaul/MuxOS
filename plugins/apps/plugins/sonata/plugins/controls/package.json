@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-sonata-controls",
-  "description": "Sonata keyboard transport controls: Space play/pause, ←/→ seek, ↑/↓ tempo.",
+  "name": "@muxos/plugin-apps-sonata-controls",
+  "description": "Sonata keyboard transport controls: Space play/pause, \u2190/\u2192 seek, \u2191/\u2193 tempo.",
   "private": true,
   "version": "0.0.1"
 }

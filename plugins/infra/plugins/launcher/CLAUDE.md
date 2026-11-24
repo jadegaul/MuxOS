@@ -3,13 +3,13 @@
 Brings a packaged app's whole runtime up on a bare host: gateway binary,
 `database.json`, the gateway daemon, the app DB, the worktree spec. Consumed by
 the release bundle's `launch` binary (`bin/launch.ts`) and, for the gateway
-half only, by `./equin start` / `stop`.
+half only, by `./muxos start` / `stop`.
 
 ## One launch spec, two launchers
 
 `gatewayLaunchSpec` is the one derivation of how the gateway runs (argv, cwd,
 declared env, stdio log). `spawnGatewayDaemon` spawns it detached; where the host
-has a service manager `./equin start` instead registers it as a per-user
+has a service manager `./muxos start` instead registers it as a per-user
 login service: `GATEWAY_SERVICE` (`<gateway-label>`, session
 `background`) with the job `gatewayServiceJob(spec)`
 (`server/internal/gateway-service.ts`), written and loaded through the generic
@@ -23,7 +23,7 @@ writes it too, so a gateway that dies before getting that far still leaves its
 dead pid for a preview's reaper. Design:
 [`research/2026-09-25-global-gateway-survives-reboot.md`](../../../../research/2026-09-25-global-gateway-survives-reboot.md).
 
-(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.equin.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./equin data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
+(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.muxos.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./muxos data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
 
 ## Login services: the gateway's mechanism, for any plugin
 
@@ -54,11 +54,11 @@ restarting it restarts every backend, main's included: main's convergence run
 previous launch (`gateway-drift`'s `followMainGateway`, `gateway/CLAUDE.md` §
 "The gateway follows main"). A plain `start` still reports it stale
 (`LoginService.isCurrent`) with the command that swaps it by hand:
-`./equin start --only <gateway-label> --force`.
+`./muxos start --only <gateway-label> --force`.
 The health report says so too, without anyone running `start`: the
 `gateway-drift` sub-plugin's **Gateway** row compares the installed definition
 and the running gateway with main's launch (binary, flags, cwd, signature) and
-asks for `./equin start --force`. Both derive "main's launch" from the same
+asks for `./muxos start --force`. Both derive "main's launch" from the same
 `devGatewayLaunchOptions` + `gatewayLaunchFlags` (`server/internal/dev-launch.ts`,
 `boot.ts`) that `start` writes.
 
@@ -66,20 +66,20 @@ asks for `./equin start --force`. Both derive "main's launch" from the same
 
 `gateway-binary` (`deps/index.ts`) is an `infra/deps` `build` dependency: `go
 build` of `gateway/` (every `.go` file + `go.mod` / `go.sum`, `go version`, the
-target), cached at `~/.equin/cache/deps/gateway-binary/<identity>/env/gateway`.
+target), cached at `~/.muxos/cache/deps/gateway-binary/<identity>/env/gateway`.
 There is no `<repo>/gateway/gateway` any more. `bootSelfContainedApp({ gateway })`
 takes its `Ready`, so a launch that never ensured the binary does not compile;
 `GatewayLaunchOptions.executable` is the executable made from one: where the
 build sits (`unbundledExecutable(gatewayBuild(ready))` — a release, `serve-app`,
-Linux), or, for `./equin start` on macOS, inside the equin app bundle
+Linux), or, for `./muxos start` on macOS, inside the muxos app bundle
 (`GATEWAY_APP_COMPONENT`, installed by login-services' `installServiceExecutable`)
-so macOS charges the backends' file access to one app, "equin" (`dev.equin`), whose
-permissions can be reset on their own (`tccutil reset <Service> dev.equin`).
+so macOS charges the backends' file access to one app, "muxos" (`dev.muxos`), whose
+permissions can be reset on their own (`tccutil reset <Service> dev.muxos`).
 argv[0] is its path; a bundled one's build travels in the job's
-`EQUIN_APP_COMPONENT` (its path is stable). The cwd is the checkout (every path
+`MUXOS_APP_COMPONENT` (its path is stable). The cwd is the checkout (every path
 the gateway reads is a flag).
 
-- `./equin start` ensures it from the MAIN checkout and holds it
+- `./muxos start` ensures it from the MAIN checkout and holds it
   (`holdDep(…, "machine-gateway")`) so the deps sweep never deletes the binary
   a systemd unit names (on macOS the plist names the app bundle's copy);
   `serve-app` ensures it from its `--repo-root`.
@@ -222,15 +222,15 @@ backend in one spec commit; a swap that fails serves exactly what it served.
 The runtime tree is the gateway and everything it starts: every backend (main,
 central, each worktree) and Postgres / PgBouncer. It
 starts from a **declared** environment, never from whoever started it. (It used
-to inherit: `./equin start` from an agent shell put that shell's
-`EQUIN_CONVERSATION_ID` and `CLAUDE_*` into every backend on the
+to inherit: `./muxos start` from an agent shell put that shell's
+`MUXOS_CONVERSATION_ID` and `CLAUDE_*` into every backend on the
 host, so their builds' op-log records and commits named one agent's
 conversation.)
 
 The declaration is the `env-names` sub-plugin's `core/internal/env-keys.ts` (a
 leaf importing only `framework/product-name`, so the lowest-level packages can
 import it without a cycle through this plugin), by KEY — `DIR`, `CONVERSATION_ID`, never a full
-name: the `EQUIN_*` installation settings every backend must see
+name: the `MUXOS_*` installation settings every backend must see
 (`RUNTIME_FORWARDED_ENV`, each with a reason naming its reader), forwarded key
 prefixes (`AUTH_`), and the names that must **never** be inherited, each with
 who delivers it instead (`RUNTIME_WITHHELD_ENV`). Host facts
@@ -241,7 +241,7 @@ of bad names only catches the last leak found.
 
 ### One name per variable
 
-Each key's one name is `EQUIN_<key>` (`env-names` `core/internal/env.ts`):
+Each key's one name is `MUXOS_<key>` (`env-names` `core/internal/env.ts`):
 `readEnv(key, env?)` reads it; `envEntries({ KEY: v })` builds a child's env;
 `setEnv` / `setEnvDefault` (the `??=` form) / `unsetEnv` change it in-process;
 `envName(key)` spells it for a message or an allowlist. Mirrors that cannot
@@ -259,7 +259,7 @@ Two boundaries, one declaration:
    next restart — main's follow-main, or `start --force`). It filters the **live** `process.env`, so the
    release launcher's mutations (`launch.ts`'s host relocation variables:
    `DIR`, `PG_BIN_DIR`, `PGBOUNCER_BIN`, the socket dirs) still arrive — each
-   is a forwarded name. Every launch path (`./equin start`, the release `launch` binary,
+   is a forwarded name. Every launch path (`./muxos start`, the release `launch` binary,
    and through it the desktop app, the preview manager, systemd) goes through
    this one function.
 2. **Gateway → every child.** It also passes the required
@@ -307,7 +307,7 @@ spawns would run its boot-time Bun, so a `mise.lock` bump could never pass
 `bun-runtime` and restart it (2026-10-12). mise reads
 the global config and the `mise.lock` beside it only when the walk finds no
 local config, so inside a checkout nothing changes, and anything the backend
-spawns from `/tmp` or `~/.equin/…` gets that checkout's locked release. The
+spawns from `/tmp` or `~/.muxos/…` gets that checkout's locked release. The
 starter's own `MISE_*` never travels. A release has no checkout and pins nothing
 (it spawns no mise tool). `toolchain:resolved` re-measures the pin from a temp
 dir on every build, since it rests on mise's semantics rather than ours.
@@ -319,7 +319,7 @@ The yes case is the one that bites: a relocation variable set in `launch.ts` but
 not forwarded silently never reaches the backend, which reads its dev default in
 a release only. Then read it with `readEnv("KEY")`: an undeclared key is a type
 error. `launcher:env-names` holds what a type cannot see — no full
-`EQUIN_*` name spelled in TypeScript code (comments may name one),
+`MUXOS_*` name spelled in TypeScript code (comments may name one),
 every full name a mirror (Go, shell, Rust, JSON), a comment or a doc spells is a
 declared key (tests excepted), and every declared key is still used (a dead one
 is deleted). A third-party variable goes in `RUNTIME_FORWARDED_TOOL_ENV`; nothing
@@ -345,11 +345,11 @@ one-shot `claude --print` (`infra/claude-cli`) runs under it.
 
 Design: [`research/2026-09-15-global-declared-runtime-environment.md`](../../../../research/2026-09-15-global-declared-runtime-environment.md).
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: Boots and tears down the self-contained stack (Go gateway, embedded Postgres, PgBouncer) for ./equin start, serve-app and the release launcher, and keeps the gateway's launch spec in one place. In a running backend it attaches the gateway it runs behind as a long-lived process in Background activity.
+- Description: Boots and tears down the self-contained stack (Go gateway, embedded Postgres, PgBouncer) for ./muxos start, serve-app and the release launcher, and keeps the gateway's launch spec in one place. In a running backend it attaches the gateway it runs behind as a long-lived process in Background activity.
 - Server:
   - Uses:
     - `database/admin.ensureDatabase`
@@ -460,13 +460,13 @@ Design: [`research/2026-09-15-global-declared-runtime-environment.md`](../../../
     - `blocking-fs/no-sync-fs` — `server/internal/boot.ts` (sanctioned)
     - `source-read-safety/no-text-source-read` — `check/internal/strip-comments.ts` (debt)
 - Sub-plugins:
-  - **`agent-scratch`** — Where an agent session keeps its scratch files: agentScratchDir(owner) — one private directory per session (/tmp/equin-scratch/<conversation or Claude session id>), delivered to an app-launched…
+  - **`agent-scratch`** — Where an agent session keeps its scratch files: agentScratchDir(owner) — one private directory per session (/tmp/muxos-scratch/<conversation or Claude session id>), delivered to an app-launched…
   - **`env-names`** [test helpers] [exempt] — The app's own environment variables, declared by key (forwarded to the runtime tree or withheld from it, with why), and the one way to read and write them: readEnv / envEntries / setEnv /…
-  - **`gateway-drift`** — Gateway drift, shown: the health report's Gateway row — attention while the machine's login-service gateway (installed or running) differs from what ./equin start --force would install now from…
+  - **`gateway-drift`** — Gateway drift, shown: the health report's Gateway row — attention while the machine's login-service gateway (installed or running) differs from what ./muxos start --force would install now from…
   - **`gateway-logs`** — The gateway's log directory (logs/gateway: its slog sink, each namespace's channel, each supervised service's channel under services/) with the bound every channel rotates at, and the service log…
   - **`gateway-port`** — This account's gateway port — the first free one of 8700…8709, chosen once and kept (8700 by default; 9000 before), recorded in state/gateway-port/port.json once a gateway answers on it. Web half…
   - **`installer-notice`** — The installer's message shape: InstallerNotice ({ title, doing, blocked, now, ifSkipped, evidence }) — every message that stops the install, asks for a permission or leaves something out is built as…
-  - **`instance-owner`** — One equin per account, enforced: which checkout this account's equin runs from (the checkout main's deploy names, and the one the background service is registered to follow), and assertThisInstance…
+  - **`instance-owner`** — One muxos per account, enforced: which checkout this account's muxos runs from (the checkout main's deploy names, and the one the background service is registered to follow), and assertThisInstance…
   - **`login-services`** [exempt] — Per-user login services, generalized from the gateway's: a LoginService over a LoginServiceSpec (label, argv, cwd, env, stdio log, session background | graphical), rendered as a launchd LaunchAgent…
   - **`runtime-env`** — What environment the runtime tree starts from: the declared allowlist the launcher spawns the gateway with and the gateway forwards to its children (pickRuntimeEnv / runtimeEnvNames / pickHostEnv)…
 

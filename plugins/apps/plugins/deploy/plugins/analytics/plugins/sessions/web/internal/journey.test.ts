@@ -71,7 +71,7 @@ function session(
     startedAt: at(0),
     lastAt: hits.at(-1)!.ts,
     live: false,
-    host: "equin.ai",
+    host: "MuxOS.app",
     entryPath: hits[0]!.path,
     exitPath: hits.filter((h) => h.kind === "pageview").at(-1)!.path,
     exitAt: hits.filter((h) => h.kind === "pageview").at(-1)!.ts,

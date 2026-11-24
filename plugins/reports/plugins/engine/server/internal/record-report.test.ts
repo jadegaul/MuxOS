@@ -13,8 +13,8 @@
  * the id its statement returned — the rate-limited path included (its bell is
  * skipped; its row's change is not).
  *
- * Run: `./equin test plugins/reports/plugins/engine`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/reports/plugins/engine`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

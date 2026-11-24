@@ -5,12 +5,12 @@
 // must never inherit (withheld); `runtime-env.ts` says why the split exists and
 // how the gateway enforces it.
 //
-// A key's one name is `EQUIN_<key>` (`envName`). Code spells only the key
+// A key's one name is `MUXOS_<key>` (`envName`). Code spells only the key
 // (`env.ts`): an undeclared one is a type error, and `launcher:env-names`
 // rejects a full name in TypeScript code.
 //
-// Design: research/2026-10-25-global-equin-env-vars.md,
-// research/2026-10-28-global-equin-env-vars-drop-legacy.md
+// Design: research/2026-10-25-global-muxos-env-vars.md,
+// research/2026-10-28-global-muxos-env-vars-drop-legacy.md
 
 import { PRODUCT_NAME } from "@plugins/framework/plugins/product-name/core";
 
@@ -45,7 +45,7 @@ export const RUNTIME_FORWARDED_ENV = {
   HEAVY_READ_LOCAL_CONCURRENCY:
     "operator tuning for the per-backend heavy-read gate (infra/host/host-read-pool pool.ts)",
   CODESIGN_IDENTITY:
-    "operator-set keychain identity the gateway is code-signed with; a backend's deps.install job can build (and so sign) the gateway too, and must use the same signer as `./equin start` (infra/codesign identity.ts)",
+    "operator-set keychain identity the gateway is code-signed with; a backend's deps.install job can build (and so sign) the gateway too, and must use the same signer as `./muxos start` (infra/codesign identity.ts)",
 } as const satisfies Record<string, string>;
 
 /**
@@ -54,7 +54,7 @@ export const RUNTIME_FORWARDED_ENV = {
  */
 export const RUNTIME_FORWARDED_PREFIXES = {
   AUTH_:
-    "operator-set OAuth client credentials, EQUIN_AUTH_<PROVIDER>_CLIENT_ID / _CLIENT_SECRET, read by central (auth/google, auth/notion central descriptor.ts)",
+    "operator-set OAuth client credentials, MUXOS_AUTH_<PROVIDER>_CLIENT_ID / _CLIENT_SECRET, read by central (auth/google, auth/notion central descriptor.ts)",
 } as const satisfies Record<string, string>;
 
 /**
@@ -64,15 +64,15 @@ export const RUNTIME_FORWARDED_PREFIXES = {
  */
 export const RUNTIME_WITHHELD_ENV = {
   INSTALL_DRY_RUN_PACE:
-    "seconds between the lines of `install.sh --dry-run` (installer), set by `./equin installer window` for that one run",
+    "seconds between the lines of `install.sh --dry-run` (installer), set by `./muxos installer window` for that one run",
   INSTALL_DRY_RUN_FAIL:
-    "the step `install.sh --dry-run` fails once (installer), set by `./equin installer window --fail` and the stream test for that one run",
+    "the step `install.sh --dry-run` fails once (installer), set by `./muxos installer window --fail` and the stream test for that one run",
   INSTALL_DRY_RUN_OPTIONAL:
     "the step `install.sh --dry-run` treats as optional, so a pause on it offers Skip (installer), set by the stream test for that one run",
   INSTALL_DRY_RUN_VIEW_EXIT:
     "the step at whose start `install.sh --dry-run`'s terminal view exits (installer), set by the stream test to prove a view that dies stops the install loudly",
   INSTALL_DRY_RUN_NOTICE:
-    "makes `install.sh --dry-run`'s start step report a part left out (the login services macOS refused), as `./equin start` does (installer), set by the stream test and `./equin installer window` for that one run",
+    "makes `install.sh --dry-run`'s start step report a part left out (the login services macOS refused), as `./muxos start` does (installer), set by the stream test and `./muxos installer window` for that one run",
   INSTALL_STALL_S:
     "seconds without output or progress before install.sh's watchdog says a step is stuck (installer; default 10 minutes, or 3 × the step's median), set by the stream test to reproduce a stall",
   INSTALLER_ASKPASS:
@@ -82,7 +82,7 @@ export const RUNTIME_WITHHELD_ENV = {
   RELEASES_URL:
     "where install.sh's stage 0 and the installer window's self-bootstrap download releases from (installer/release-assets; default the canonical repo's GitHub Releases), set by the stage-0 test to a local server for that one run",
   INSTALL_EVENTS:
-    "the FIFO an install's events go to (installer), set by install.sh for the `./equin` commands it runs as steps, which report their sub-steps, progress and waits through it (installer/cli emitInstallEvent)",
+    "the FIFO an install's events go to (installer), set by install.sh for the `./muxos` commands it runs as steps, which report their sub-steps, progress and waits through it (installer/cli emitInstallEvent)",
   INSTALL_STEP:
     "the install step a command runs as (installer: tools, start, build…), set by install.sh beside INSTALL_EVENTS so what the command reports is filed under that step",
   INSTALL_DIAGNOSIS:
@@ -90,7 +90,7 @@ export const RUNTIME_WITHHELD_ENV = {
   INSTALL_INTERNAL_ARGS:
     "the install's internal arguments (--release, --checkout, --attach, --mode, --since, one per line), set by install.sh for the next install.sh it starts (stage 0 → a release's script, an install → the checkout's) so they stay off the command line a terminal shows in its title; read and unset at that script's start",
   INSTALL_LEFT_OUT:
-    "the optional parts (login service ids, comma-separated) the person chose to Skip during an install, set by install.sh for the start step so `./equin start` runs without them",
+    "the optional parts (login service ids, comma-separated) the person chose to Skip during an install, set by install.sh for the start step so `./muxos start` runs without them",
   INSTALLER_PAGE:
     "the bundled installer page the installer window's crate compiles in (installer/window rust/build.rs), set by its dependency build for that one cargo run",
   PEAK_FOOTPRINT_REPORT:
@@ -108,13 +108,13 @@ export const RUNTIME_WITHHELD_ENV = {
   PARENT_URL:
     "the origin (namespaceUrl) an agent's MCP client and hooks dial back to; delivered into that agent's own process environment by the agent launcher",
   PARENT_HOST:
-    "TEMPORARY, two readers: (1) a checkout branched before EQUIN_PARENT_URL (dfa921078f, 2026-10-31) whose .mcp.json builds its MCP host from EQUIN_PARENT_HOST — the launcher still delivers it, as the host LABEL (namespaceLabel); (2) the stop-gate and compaction-context hooks' fallback for an agent launched before EQUIN_PARENT_URL. Delete it, the launcher's value and the hooks' fallback once no checkout's .mcp.json names it and no running agent lacks EQUIN_PARENT_URL (rename track, Step 9)",
+    "TEMPORARY, two readers: (1) a checkout branched before the rename (dfa921078f, 2026-10-31) whose .mcp.json builds its MCP host from the pre-rename spelling of the PARENT_HOST variable — the launcher still delivers it, as the host LABEL (namespaceLabel); (2) the stop-gate and compaction-context hooks' fallback for an agent launched before the rename. Delete it, the launcher's value and the hooks' fallback once no checkout's .mcp.json names it and no running agent lacks the current variable (rename track, Step 9)",
   GUARDS_ROOT:
     "the checkout one agent's policy hooks run their guards from (guards/agent-policy); delivered into that agent's own process environment by the agent launcher",
   WORKSPACE_ROOT:
     "the workspace one agent runs in, its write guards' boundary (guards/agent-policy); delivered into that agent's own process environment by the agent launcher",
   SCRATCH:
-    "one agent session's private scratch directory (/tmp/equin-scratch/<conversation id>, launcher/agent-scratch), so a fixed scratch name is that session's alone; delivered into that agent's own process environment by the agent launcher, and read by its guard hook",
+    "one agent session's private scratch directory (/tmp/muxos-scratch/<conversation id>, launcher/agent-scratch), so a fixed scratch name is that session's alone; delivered into that agent's own process environment by the agent launcher, and read by its guard hook",
   PARENT_LIFELINE:
     "the lock file one spawn holds for the child it starts, set by infra/spawn for that child only (packages/flock lifeline.ts)",
   HOST_GRANT:
@@ -135,11 +135,11 @@ export const RUNTIME_WITHHELD_ENV = {
   FOREGROUND_DEADLINE:
     "the instant (epoch ms) an agent's foreground Bash call is cut off; a PreToolUse guard exports it into that one command, and the op hand-off takes it out of the env of the op it detaches (cli/op-runtime foreground-handoff.ts)",
   TEST_HEARTBEAT:
-    "the file a bun:test process stamps with its awake clock every 30 s, set by `./equin test` for the runner it spawns so it can tell a run whose event loop stopped (cli/test run.ts, test/bun-preload.ts)",
+    "the file a bun:test process stamps with its awake clock every 30 s, set by `./muxos test` for the runner it spawns so it can tell a run whose event loop stopped (cli/test run.ts, test/bun-preload.ts)",
   TEST_DOM_FILES:
-    "the list file naming exactly the jsdom test files one vitest run executes, set by `./equin test` for the vitest it spawns and read by vitest.config.ts as its `include` — vitest has no exact-path argument (cli/test run.ts, test-layout core)",
+    "the list file naming exactly the jsdom test files one vitest run executes, set by `./muxos test` for the vitest it spawns and read by vitest.config.ts as its `include` — vitest has no exact-path argument (cli/test run.ts, test-layout core)",
   TEST_ORIGIN:
-    "who started one `./equin test` run (agent | run-now | idle), stamped into the run's harvest record; set by the backend for the run it supervises (debug/tests), read by cli/test run.ts — unset means an agent typed it",
+    "who started one `./muxos test` run (agent | run-now | idle), stamped into the run's harvest record; set by the backend for the run it supervises (debug/tests), read by cli/test run.ts — unset means an agent typed it",
   OP_OPPORTUNISTIC:
     "marks an op that runs only because the host is idle and yields to any other work (`1`): it acquires its grant on the background lane at low priority and is stamped opportunistic on its marker and op-log record, so the idle signal does not count it as work; set by the backend for the idle test batch it supervises (debug/tests/idle-runner), read by cli/op-runtime direct-op.ts",
   OP_HANDED_OFF:
@@ -157,7 +157,7 @@ export const RUNTIME_WITHHELD_ENV = {
   DEPS_REEXEC:
     "re-exec budget the CLI carries across its own dependency-install re-exec; taken out of the env by the bootstrap, so it never reaches a descendant (cli/bootstrap reexec.ts)",
   FROZEN_LOCKFILE:
-    "asks the CLI bootstrap's dependency install for `bun install --frozen-lockfile`, set by infra/worktree for the `./equin install` it runs in a checkout it just created (worktree/server install-checkout.ts, cli/bin/index.ts), and by `push` for its land phase, whose tree is mid-push (cli/push handoff.ts)",
+    "asks the CLI bootstrap's dependency install for `bun install --frozen-lockfile`, set by infra/worktree for the `./muxos install` it runs in a checkout it just created (worktree/server install-checkout.ts, cli/bin/index.ts), and by `push` for its land phase, whose tree is mid-push (cli/push handoff.ts)",
   PUSH_LAND:
     "the hand-off a `push` gives the land phase it runs on the rebased code, under its mutex and grant; set by that push for that one child, and taken out of the env by the child, so it never reaches a descendant (cli/push handoff.ts)",
   HEAP_PACED:
@@ -222,7 +222,7 @@ export type EnvKey = ForwardedKey | WithheldKey | `${PrefixKey}${string}`;
 /** What every name of the app's own variables starts with. */
 export const ENV_PREFIX = `${PRODUCT_NAME.toUpperCase()}_`;
 
-/** The name of a key: `EQUIN_<key>`. */
+/** The name of a key: `${ENV_PREFIX}<key>`. */
 export function envName(key: EnvKey): string {
   return `${ENV_PREFIX}${key}`;
 }

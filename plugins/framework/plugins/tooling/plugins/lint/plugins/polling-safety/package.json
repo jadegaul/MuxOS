@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-lint-polling-safety",
+  "name": "@muxos/plugin-framework-tooling-lint-polling-safety",
   "version": "0.0.1",
   "private": true,
   "description": "polling-safety lint rule: no-refetch-interval"

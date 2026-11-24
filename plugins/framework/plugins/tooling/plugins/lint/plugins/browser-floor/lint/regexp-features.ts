@@ -8,7 +8,7 @@
  * literal with a flag the engine lacks is a parse error of the whole module,
  * and the build lowers such a literal to `new RegExp(…)`, which throws at
  * module evaluation ("Invalid flags supplied to RegExp constructor") — either
- * way every importer of the module fails to load (equin.ai's page editor did,
+ * way every importer of the module fails to load (MuxOS.app's page editor did,
  * 2026-11-19, on emoji's `\p{RGI_Emoji}` with `v`).
  */
 import {

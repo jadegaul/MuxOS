@@ -1,4 +1,4 @@
-// Code signing for the code this machine builds (the gateway, the equin app
+// Code signing for the code this machine builds (the gateway, the muxos app
 // bundle), so macOS keys their permission grants to a stable signer instead of
 // a per-build hash, and the bundle's registration with LaunchServices.
 // Host-only, like every `deps/` barrel. `rcodesign` is collected into infra/deps'

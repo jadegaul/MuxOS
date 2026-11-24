@@ -50,7 +50,7 @@ interface FrameBoxProps {
  * moves, presses, scrolls or types inside it — pointer and key events inside
  * a frame never reach its parent document.
  */
-export const FRAME_ACTIVITY_EVENT = "equin-frame-activity";
+export const FRAME_ACTIVITY_EVENT = "muxos-frame-activity";
 
 /** The sandbox a content document runs in: its own origin, never `top`'s. */
 const CONTENT_SANDBOX =
@@ -114,7 +114,7 @@ export function ContentFrame({
 /**
  * A page of ANOTHER SITE someone pasted (a video, a map): framed as that
  * site, on its own origin — which is why it may keep `allow-same-origin` (its
- * player needs its own storage). A URL that is not another site — an equin
+ * player needs its own storage). A URL that is not another site — an muxos
  * page, the content host, this computer, a non-web scheme — is never framed:
  * `refused(reason)` renders instead (`classifyFrameUrl`).
  */
@@ -193,7 +193,7 @@ export function PdfFrame({
  * The APP ITSELF — reviewed code — at an in-app path: on this page's own
  * origin, or on another namespace's (a worktree's preview). Unsandboxed: it is
  * the app, and a same-origin sandbox would add nothing. Takes a namespace and a
- * path, never a URL, so it cannot frame anything but an equin app.
+ * path, never a URL, so it cannot frame anything but an muxos app.
  */
 export function AppFrame({
   namespace,

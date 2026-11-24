@@ -1,4 +1,4 @@
-//! equin desktop shell.
+//! muxos desktop shell.
 //!
 //! Generic over composition — it holds **no app-specific knowledge**. It reads
 //! the app name + port from the bundled `RELEASE.json`, brings up the
@@ -42,7 +42,7 @@ struct StackCtx {
 /// release it). The embedded Postgres binds no TCP listener, but its port still
 /// names its Unix socket file (`.s.PGSQL.<port>`) and defaults to 5433, the dev
 /// cluster's, so each desktop instance still gets its own. This mirrors how the web
-/// preview path hands each instance its own `EQUIN_PG_PORT`.
+/// preview path hands each instance its own `MUXOS_PG_PORT`.
 fn pick_free_port() -> Option<u16> {
     std::net::TcpListener::bind("127.0.0.1:0")
         .ok()
@@ -53,8 +53,8 @@ fn pick_free_port() -> Option<u16> {
 fn read_manifest(bundle_dir: &std::path::Path) -> ReleaseManifest {
     let path = bundle_dir.join("RELEASE.json");
     let raw = std::fs::read_to_string(&path)
-        .unwrap_or_else(|e| panic!("equin: failed to read {}: {e}", path.display()));
-    serde_json::from_str(&raw).expect("equin: invalid RELEASE.json")
+        .unwrap_or_else(|e| panic!("muxos: failed to read {}: {e}", path.display()));
+    serde_json::from_str(&raw).expect("muxos: invalid RELEASE.json")
 }
 
 /// Best-effort liveness probe. The launcher is idempotent and the daemons are
@@ -80,7 +80,7 @@ pub fn run() {
             // Free loopback port for the embedded Postgres TCP listener, picked
             // once and reused for teardown so we signal the stack we brought up.
             let pg_port =
-                pick_free_port().expect("equin: no free TCP port for embedded Postgres");
+                pick_free_port().expect("muxos: no free TCP port for embedded Postgres");
 
             // Data in the OS app-data dir (persistent across launches); PG/PgBouncer
             // sockets on a SHORT /tmp path so the Unix socket path stays under the
@@ -90,14 +90,14 @@ pub fn run() {
             // Socket dir must be SHORT: PG/PgBouncer Unix sockets have a 104-byte
             // sun_path limit, and macOS `$TMPDIR` (what `std::env::temp_dir()`
             // returns) is a long `/var/folders/…` path that erodes the budget.
-            // `/tmp` keeps `<dir>/equin-<app>/.s.PGSQL.<port>` comfortably under it.
+            // `/tmp` keeps `<dir>/muxos-<app>/.s.PGSQL.<port>` comfortably under it.
             // Only the ephemeral sockets live here; the cluster data stays in app-data.
             let socket_base = if cfg!(unix) {
                 PathBuf::from("/tmp")
             } else {
                 std::env::temp_dir()
             };
-            let socket_dir = socket_base.join(format!("equin-{}", manifest.composition));
+            let socket_dir = socket_base.join(format!("muxos-{}", manifest.composition));
             std::fs::create_dir_all(&socket_dir).ok();
 
             app.manage(StackCtx {
@@ -119,15 +119,15 @@ pub fn run() {
             std::thread::spawn(move || {
                 if !gateway_up(port) {
                     let status = Command::new(bundle_dir.join("launch"))
-                        .env("EQUIN_DIR", &data_dir)
-                        .env("EQUIN_PG_SOCKET_DIR", &socket_dir)
+                        .env("MUXOS_DIR", &data_dir)
+                        .env("MUXOS_PG_SOCKET_DIR", &socket_dir)
                         // `host:port`; `loopback` binds 127.0.0.1 and [::1]
                         // only — the webview is the one client, on this machine.
-                        .env("EQUIN_LISTEN", format!("loopback:{port}"))
-                        .env("EQUIN_PG_PORT", pg_port.to_string())
+                        .env("MUXOS_LISTEN", format!("loopback:{port}"))
+                        .env("MUXOS_PG_PORT", pg_port.to_string())
                         .status();
                     if !matches!(status, Ok(s) if s.success()) {
-                        eprintln!("equin: launch failed ({status:?}); app will not load");
+                        eprintln!("muxos: launch failed ({status:?}); app will not load");
                         return;
                     }
                 }
@@ -141,19 +141,19 @@ pub fn run() {
             Ok(())
         })
         .build(tauri::generate_context!())
-        .expect("equin: error while building the Tauri application")
+        .expect("muxos: error while building the Tauri application")
         .run(|app, event| {
             if let RunEvent::Exit = event {
                 if let Some(ctx) = app.try_state::<StackCtx>() {
                     // Synchronous: hold process exit until the daemons are signalled,
                     // else they outlive the app window.
                     let _ = Command::new(ctx.bundle_dir.join("teardown"))
-                        .env("EQUIN_DIR", &ctx.data_dir)
-                        .env("EQUIN_PG_SOCKET_DIR", &ctx.socket_dir)
+                        .env("MUXOS_DIR", &ctx.data_dir)
+                        .env("MUXOS_PG_SOCKET_DIR", &ctx.socket_dir)
                         // Same address launch was given, so teardown resolves the
                         // same gateway.
-                        .env("EQUIN_LISTEN", format!("loopback:{}", ctx.port))
-                        .env("EQUIN_PG_PORT", ctx.pg_port.to_string())
+                        .env("MUXOS_LISTEN", format!("loopback:{}", ctx.port))
+                        .env("MUXOS_PG_PORT", ctx.pg_port.to_string())
                         .status();
                 }
             }

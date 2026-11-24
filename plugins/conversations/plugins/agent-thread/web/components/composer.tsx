@@ -40,7 +40,7 @@ const sendIcon = symbol("arrow-upward");
 /**
  * The host's hook on every turn the user sends from the thread (Enter, a
  * `<go>`'s ▶): handed the words typed, it returns the text sent — the words
- * plus what the agent should hear with them (Ask equin appends the page the
+ * plus what the agent should hear with them (Ask muxos appends the page the
  * user is on when it changed). The draft, and a failed send's restore, keep
  * the words alone.
  */

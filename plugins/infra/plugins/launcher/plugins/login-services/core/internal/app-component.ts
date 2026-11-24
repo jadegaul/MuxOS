@@ -1,13 +1,13 @@
 import type { AppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core";
 import { envEntries } from "@plugins/infra/plugins/launcher/plugins/env-names/core";
 /**
- * One program of the equin app — on macOS an executable inside the ONE
- * `equin.app` bundle every login service runs from (`machine/internal/macos-app.ts`),
+ * One program of the muxos app — on macOS an executable inside the ONE
+ * `muxos.app` bundle every login service runs from (`machine/internal/macos-app.ts`),
  * so each service's permission prompts, Settings rows and `tccutil` resets
- * name the app, "equin", not the program file; on Linux the build as it is.
+ * name the app, "muxos", not the program file; on Linux the build as it is.
  */
 export interface AppComponent {
-  /** The executable's file name in `Contents/MacOS` (and so its process name): `gateway`, `equin-desktop`. */
+  /** The executable's file name in `Contents/MacOS` (and so its process name): `gateway`, `muxos-desktop`. */
   readonly name: string;
   /**
    * The bundle's main executable (`CFBundleExecutable`): what `Bundle.main`
@@ -19,7 +19,7 @@ export interface AppComponent {
    * The URL schemes whose links the OS hands this component (macOS:
    * `CFBundleURLTypes` in the bundle's `Info.plist`; LaunchServices delivers
    * a link to the bundle's running main executable, so only the main
-   * component should declare one). The menu-bar helper's `equin`.
+   * component should declare one). The menu-bar helper's `muxos`.
    */
   readonly urlSchemes?: readonly string[];
 }

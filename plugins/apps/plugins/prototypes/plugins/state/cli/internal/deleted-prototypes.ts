@@ -8,7 +8,7 @@ import type { Namespace } from "@plugins/infra/plugins/namespace/core";
 
 // Which prototypes the user deleted, read by a CLI process — which has no
 // backend, no drizzle `db` and no runtime namespace of its own, only a
-// checkout. `./equin prototype list` asks it, so the terminal leaves out what
+// checkout. `./muxos prototype list` asks it, so the terminal leaves out what
 // the checkout's gallery has in its Trash.
 //
 // Read from the CHECKOUT'S database — the one its own app serves, whose gallery
@@ -84,7 +84,7 @@ export async function readDeletedPrototypes(
       if (err instanceof Error && pgCode(err) === NO_TABLE) {
         return {
           kind: "unavailable",
-          reason: `database "${namespace}" has no ${t.name} table yet (./equin build migrates it)`,
+          reason: `database "${namespace}" has no ${t.name} table yet (./muxos build migrates it)`,
         };
       }
       throw err;

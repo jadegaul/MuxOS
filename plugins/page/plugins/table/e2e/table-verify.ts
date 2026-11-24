@@ -25,7 +25,7 @@
 //      run of "above" + the table is two touching bands: the column-wide one
 //      above, the widened one under it.
 //
-// Usage: ./equin run plugins/page/plugins/table/e2e/table-verify.ts [--url <deploy>]
+// Usage: ./muxos run plugins/page/plugins/table/e2e/table-verify.ts [--url <deploy>]
 import type { Page } from "playwright";
 import {
   arg,

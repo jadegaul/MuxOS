@@ -38,12 +38,12 @@ let rec: string | undefined;
 
 /**
  * Every recording (frames + input log) and the stills, one dir: the film's
- * asset dir — `--rec-dir <dir>` (pass `"$EQUIN_SCRATCH/equin-film"` to keep
+ * asset dir — `--rec-dir <dir>` (pass `"$MUXOS_SCRATCH/muxos-film"` to keep
  * one across runs: segments re-record into it, film.ts renders from it), else
  * a fresh dir for this run.
  */
 export function recDir(): string {
-  rec ??= arg("rec-dir") ?? freshDir("equin-film");
+  rec ??= arg("rec-dir") ?? freshDir("muxos-film");
   return rec;
 }
 
@@ -70,7 +70,7 @@ export function filmDate(): number {
   const file = promoFilmWorkspaceDir.file(FILM_CLOCK_FILE);
   if (!existsSync(file))
     throw new Error(
-      `promo-film: no film clock at ${file} — run ./equin promo-film seed first`,
+      `promo-film: no film clock at ${file} — run ./muxos promo-film seed first`,
     );
   return FilmClockSchema.parse(JSON.parse(readFileSync(file, "utf8"))).now;
 }

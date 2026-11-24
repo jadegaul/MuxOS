@@ -206,7 +206,7 @@ function isFeatureTested(
  *
  * TypeScript's lib declares the newest built-ins whatever the browsers in the
  * wild run, so `tsc` never catches one: on 2026-11-19 a visitor on an older
- * Safari crashed equin.ai's home page on `URL.canParse` (Safari 17). The rule
+ * Safari crashed MuxOS.app's home page on `URL.canParse` (Safari 17). The rule
  * resolves what a member access (`URL.canParse`, `set.union`) or a global
  * (`structuredClone`, `new URLPattern`) names in the type environment, and
  * when that is a built-in — declared globally by a package's types — whose
@@ -255,11 +255,11 @@ export default createRule({
     ],
     messages: {
       regexpAboveFloor:
-        'This regular expression uses {{what}}, newer than equin\'s browser floor — missing in {{needs}} ({{key}}). Browser code runs on {{floor}} (browser-floor\'s BROWSER_FLOOR): an older browser throws where the regex is created — a literal is a parse error of the whole module, a `new RegExp(…)` throws "Invalid flags supplied to RegExp constructor" — so every importer of the module fails to load (equin.ai\'s page editor did, on emoji\'s `v` flag, 2026-11-19). Spell it without the feature, or build it behind a feature test of its flag (`"unicodeSets" in RegExp.prototype ? new RegExp(…, "v") : fallback`).',
+        'This regular expression uses {{what}}, newer than muxos\'s browser floor — missing in {{needs}} ({{key}}). Browser code runs on {{floor}} (browser-floor\'s BROWSER_FLOOR): an older browser throws where the regex is created — a literal is a parse error of the whole module, a `new RegExp(…)` throws "Invalid flags supplied to RegExp constructor" — so every importer of the module fails to load (MuxOS.app\'s page editor did, on emoji\'s `v` flag, 2026-11-19). Spell it without the feature, or build it behind a feature test of its flag (`"unicodeSets" in RegExp.prototype ? new RegExp(…, "v") : fallback`).',
       regexpInvalid:
-        "This regular expression does not parse at ES2025 ({{error}}): it is invalid, or uses syntax newer than any browser equin supports (browser floor: {{floor}}).",
+        "This regular expression does not parse at ES2025 ({{error}}): it is invalid, or uses syntax newer than any browser muxos supports (browser floor: {{floor}}).",
       aboveFloor:
-        '`{{name}}` is newer than equin\'s browser floor — missing in {{needs}} ({{key}}). Browser code runs on {{floor}} (browser-floor\'s BROWSER_FLOOR): a visitor on an older browser crashes on it (equin.ai\'s home page did on `URL.canParse`, 2026-11-19). Use its floor-safe spelling from `@plugins/packages/plugins/floor-compat/core` when it has one (`canParseUrl`, `parseUrl`, `jsonResponse`, `promiseWithResolvers`), else feature-test it (`typeof X === "function"`, `"name" in obj`) and keep a fallback — a use behind the test passes.',
+        '`{{name}}` is newer than muxos\'s browser floor — missing in {{needs}} ({{key}}). Browser code runs on {{floor}} (browser-floor\'s BROWSER_FLOOR): a visitor on an older browser crashes on it (MuxOS.app\'s home page did on `URL.canParse`, 2026-11-19). Use its floor-safe spelling from `@plugins/packages/plugins/floor-compat/core` when it has one (`canParseUrl`, `parseUrl`, `jsonResponse`, `promiseWithResolvers`), else feature-test it (`typeof X === "function"`, `"name" in obj`) and keep a fallback — a use behind the test passes.',
     },
   },
   defaultOptions: [{ shipsToBrowser: false }] as [{ shipsToBrowser?: boolean }],

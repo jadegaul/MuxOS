@@ -1,4 +1,4 @@
-// Pinned by `./equin run plugins/infra/plugins/asset-mirror/scripts/pin.ts`
+// Pinned by `./muxos run plugins/infra/plugins/asset-mirror/scripts/pin.ts`
 // from https://cdn.jsdelivr.net/npm/emojibase-data@17.0.0 — each file's sha256, checked before the mirror stores it.
 export const EMOJIBASE_PINS = {
   "en/data.json":

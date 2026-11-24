@@ -73,7 +73,7 @@ export function ShowTipsAgainEntry() {
   );
 }
 
-/** Opens the equin guide on the website, in a new browser tab. */
+/** Opens the muxos guide on the website, in a new browser tab. */
 export function ReadGuideEntry() {
   const close = useCloseHelpMenu();
   if (!GUIDE_READY) return null;

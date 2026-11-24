@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { stopGateHook, type StopGateHookEntry } from "../../core/hook";
 
 // The hook script in THIS code's checkout (main's newest, for a main slot) —
-// the one serving the endpoint it calls. A repo-relative literal, so `./equin plugin move` rewrites it.
+// the one serving the endpoint it calls. A repo-relative literal, so `./muxos plugin move` rewrites it.
 const HOOK_SCRIPT_REL =
   "plugins/conversations/plugins/stop-gate/bin/stop-gate.ts";
 

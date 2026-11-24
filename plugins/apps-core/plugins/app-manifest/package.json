@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-core-app-manifest",
+  "name": "@muxos/plugin-apps-core-app-manifest",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

@@ -3,7 +3,7 @@ import { z } from "zod";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
- * How often the user hears that equin is out of date: at most every two weeks,
+ * How often the user hears that muxos is out of date: at most every two weeks,
  * whichever release it is about. Counted across releases, not per release —
  * upstream may cut one a day, and each new tag must not toast again.
  */
@@ -16,7 +16,7 @@ const MONTH_MS = 30 * DAY_MS;
 export const REMINDER_NOTIFICATION_TYPE = "upstream-release-reminder";
 
 /** The notification action kind the reminder carries (web: `Notifications.Action`). */
-export const REMINDER_ACTION_KIND = "equin-update";
+export const REMINDER_ACTION_KIND = "muxos-update";
 
 /** The metadata key naming the release a reminder is about. */
 export const REMINDER_RELEASE_KEY = "upstreamRelease";
@@ -51,7 +51,7 @@ export interface ReminderInputs {
 }
 
 /**
- * Why a reminder is (not) written now. The user hears that equin is out of
+ * Why a reminder is (not) written now. The user hears that muxos is out of
  * date at most every `REMINDER_CADENCE_MS`, however many releases upstream cuts
  * meanwhile — unless they chose when ("Remind me later"): a snooze set after
  * the last reminder replaces the cadence, so "Tomorrow" really is tomorrow.

@@ -11,9 +11,9 @@
 //     events that took it (Paint, RasterTask, Layerize, UpdateLayerTree …).
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/keyboard-party/plugins/party/e2e/key-press-trace.ts \
-//     [--url https://equin.ai/demo/at/keyboard-party] [--viewport 1440x900] \
-//     [--keys "a,?,1,Space,ArrowUp,b"] [--gpu] [--out "$EQUIN_SCRATCH/kp-trace"]
+//   ./muxos run plugins/apps/plugins/keyboard-party/plugins/party/e2e/key-press-trace.ts \
+//     [--url https://MuxOS.app/demo/at/keyboard-party] [--viewport 1440x900] \
+//     [--keys "a,?,1,Space,ArrowUp,b"] [--gpu] [--out "$MUXOS_SCRATCH/kp-trace"]
 //
 // --open measures opening the party instead: the page (pass the demo's app
 // grid, --url …/demo) is loaded, then its "Tap Tap Party" tile clicked — the

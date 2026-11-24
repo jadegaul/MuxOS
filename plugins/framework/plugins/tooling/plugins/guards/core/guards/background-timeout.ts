@@ -7,7 +7,7 @@ import { CLI_NAME } from "@plugins/framework/plugins/cli/plugins/cli-name/core";
 export const MAX_BACKGROUND_TIMEOUT_MS = 7_200_000;
 
 /**
- * A backgrounded `./equin` command gets the longest life the harness
+ * A backgrounded `./muxos` command gets the longest life the harness
  * allows.
  *
  * `run_in_background` is not untimed: the harness stops a background task after
@@ -17,7 +17,7 @@ export const MAX_BACKGROUND_TIMEOUT_MS = 7_200_000;
  * real share of ops that were healthy. The kill leaves a build `running` with a
  * dead pid and no verdict.
  *
- * Every subcommand, not only the long ones: nothing about a `./equin`
+ * Every subcommand, not only the long ones: nothing about a `./muxos`
  * command is made better by being killed at 30 minutes, and a list would have
  * to guess which `run` script is an op. A rewrite, not a denial — the fix is
  * mechanical and changes nothing the agent meant. An explicit timeout the agent

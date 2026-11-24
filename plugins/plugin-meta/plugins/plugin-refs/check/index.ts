@@ -116,7 +116,7 @@ const compositionsSourceCoversOrigin: Check = {
       hint:
         "Write each id inside an `entryPoints: [...]` / `selectedContributors: [...]` array literal in the source " +
         "(pass helpers an object with that property, not a bare string or array) — the only spelling " +
-        "`./equin plugin move` rewrites there. If the source no longer names it, run `./equin build` to regenerate the origin.",
+        "`./muxos plugin move` rewrites there. If the source no longer names it, run `./muxos build` to regenerate the origin.",
     };
   },
 };

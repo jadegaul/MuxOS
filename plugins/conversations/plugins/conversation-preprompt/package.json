@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-conversation-preprompt",
+  "name": "@muxos/plugin-conversations-conversation-preprompt",
   "private": true,
   "version": "0.0.1"
 }

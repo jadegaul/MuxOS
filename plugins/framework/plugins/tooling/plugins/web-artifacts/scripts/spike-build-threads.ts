@@ -5,7 +5,7 @@
 // and reports the wall time per K. `--filter` skips Babel for `.ts` files that
 // cannot hold a component or hook (no `use[A-Z0-9]` token).
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/spike-build-threads.ts [--n 240] [--threads 1,3,6] [--filter]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/spike-build-threads.ts [--n 240] [--threads 1,3,6] [--filter]
 //
 // Plan: research/2026-10-30-global-build-pipeline-step3b-batched-artifacts-and-repo-snapshot.md (Phase 0).
 

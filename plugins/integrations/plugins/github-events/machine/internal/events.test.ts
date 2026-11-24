@@ -12,7 +12,7 @@ import {
 
 // Trimmed real payloads (GitHub's own field names and nesting; extra fields
 // kept to prove they are ignored).
-const repository = { id: 1, full_name: "equinai/equin", private: false };
+const repository = { id: 1, full_name: "jadegaul/MuxOS", private: false };
 const workflowRun = {
   id: 19456123987,
   name: "Installer release",
@@ -25,7 +25,7 @@ const workflowRun = {
   status: "completed",
   conclusion: "failure",
   workflow_id: 2001,
-  html_url: "https://github.com/equinai/equin/actions/runs/19456123987",
+  html_url: "https://github.com/jadegaul/MuxOS/actions/runs/19456123987",
   run_attempt: 1,
   created_at: "2026-11-18T09:00:00Z",
   run_started_at: "2026-11-18T09:00:04Z",
@@ -43,7 +43,7 @@ const workflowJob = {
   status: "completed",
   conclusion: "failure",
   html_url:
-    "https://github.com/equinai/equin/actions/runs/19456123987/job/55012",
+    "https://github.com/jadegaul/MuxOS/actions/runs/19456123987/job/55012",
   steps: [
     {
       name: "Set up job",
@@ -65,13 +65,13 @@ const release = {
   tag_name: "v2026.11.18",
   draft: false,
   prerelease: false,
-  html_url: "https://github.com/equinai/equin/releases/tag/v2026.11.18",
+  html_url: "https://github.com/jadegaul/MuxOS/releases/tag/v2026.11.18",
   created_at: "2026-11-18T09:00:30Z",
   published_at: "2026-11-18T09:01:00Z",
   assets: [
     { name: "install.sh", updated_at: "2026-11-18T09:00:50Z", size: 10 },
     {
-      name: "equin-installer-linux-x64",
+      name: "muxos-installer-linux-x64",
       updated_at: "2026-11-18T09:05:00Z",
       size: 99,
     },
@@ -86,8 +86,8 @@ describe("GitHub payloads", () => {
       repository,
     });
     expect(runFacts(workflow_run, { headIsRunName: true })).toEqual({
-      id: "equinai/equin#19456123987#1",
-      repo: "equinai/equin",
+      id: "jadegaul/MuxOS#19456123987#1",
+      repo: "jadegaul/MuxOS",
       runId: "19456123987",
       attempt: 1,
       workflowPath: ".github/workflows/installer-release.yml",
@@ -97,7 +97,7 @@ describe("GitHub payloads", () => {
       headSha: "a2559eaca1f00000000000000000000000000000",
       status: "completed",
       conclusion: "failure",
-      url: "https://github.com/equinai/equin/actions/runs/19456123987",
+      url: "https://github.com/jadegaul/MuxOS/actions/runs/19456123987",
       githubUpdatedAt: new Date("2026-11-18T09:06:12Z"),
       startedAt: new Date("2026-11-18T09:00:04Z"),
       finishedAt: new Date("2026-11-18T09:06:12Z"),
@@ -143,7 +143,7 @@ describe("GitHub payloads", () => {
     });
     expect(
       list.workflow_runs.map((r) => runFacts(r, { headIsRunName: false }).id),
-    ).toEqual(["equinai/equin#19456123987#1"]);
+    ).toEqual(["jadegaul/MuxOS#19456123987#1"]);
   });
 
   test("a failed job keeps its failed steps; a passing one is no failure", () => {
@@ -152,14 +152,14 @@ describe("GitHub payloads", () => {
       workflow_job: workflowJob,
       repository,
     });
-    expect(jobRunKey("equinai/equin", d.workflow_job)).toBe(
-      "equinai/equin#19456123987#1",
+    expect(jobRunKey("jadegaul/MuxOS", d.workflow_job)).toBe(
+      "jadegaul/MuxOS#19456123987#1",
     );
     expect(failedJobOf(d.workflow_job)).toEqual({
       id: "55012",
       name: "Linux (linux-arm64)",
       conclusion: "failure",
-      url: "https://github.com/equinai/equin/actions/runs/19456123987/job/55012",
+      url: "https://github.com/jadegaul/MuxOS/actions/runs/19456123987/job/55012",
       failedSteps: ["Smoke test"],
     });
     expect(
@@ -191,13 +191,13 @@ describe("GitHub payloads", () => {
       release,
       repository,
     });
-    expect(releaseFacts("equinai/equin", d.release)).toEqual({
-      id: "equinai/equin@v2026.11.18",
-      repo: "equinai/equin",
+    expect(releaseFacts("jadegaul/MuxOS", d.release)).toEqual({
+      id: "jadegaul/MuxOS@v2026.11.18",
+      repo: "jadegaul/MuxOS",
       tag: "v2026.11.18",
       draft: false,
-      assets: ["install.sh", "equin-installer-linux-x64"],
-      url: "https://github.com/equinai/equin/releases/tag/v2026.11.18",
+      assets: ["install.sh", "muxos-installer-linux-x64"],
+      url: "https://github.com/jadegaul/MuxOS/releases/tag/v2026.11.18",
       githubUpdatedAt: new Date("2026-11-18T09:05:00Z"),
     });
   });
@@ -209,7 +209,7 @@ describe("GitHub payloads", () => {
         hook_id: 3,
         repository,
       }).repository.full_name,
-    ).toBe("equinai/equin");
+    ).toBe("jadegaul/MuxOS");
   });
 });
 

@@ -99,14 +99,14 @@ export async function stageDrizzleOut(
     throw new UnjoinedSnapshotTipsError(
       `the migration snapshot DAG has ${dag.tips.length} tips — drizzle-kit has no single snapshot to diff against:\n` +
         dag.tips.map((t) => `  meta/${t.file}`).join("\n") +
-        "\nRun `./equin build` (it joins published tips with a merge node; a branch-local tip needs `--reset-migration`).",
+        "\nRun `./muxos build` (it joins published tips with a merge node; a branch-local tip needs `--reset-migration`).",
     );
   }
 
   const state = schemaSnapshotState(dataDir, dag);
   if (!state.ok)
     throw new Error(
-      `${state.message}\nRun \`./equin build\` (it rewrites the tip snapshot); drizzle-kit must diff against the tip.`,
+      `${state.message}\nRun \`./muxos build\` (it rewrites the tip snapshot); drizzle-kit must diff against the tip.`,
     );
 
   const stage = joinAppPath(

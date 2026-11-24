@@ -9,7 +9,7 @@ export const platformSourceConfig = defineConfig({
   fields: {
     enabled: boolField({
       default: true,
-      label: "Back up equin platform files",
+      label: "Back up muxos platform files",
     }),
   },
 });

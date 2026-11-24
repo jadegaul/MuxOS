@@ -26,7 +26,7 @@ function useRegistrationOrder(
  *
  * This is how such a host is ordered: never by a number on the contribution
  * (`defineSlot` rejects one). The order is the slot's reorder layout
- * (`config/<plugin>/<slotId>.jsonc`, seeded by `./equin build`), applied by the
+ * (`config/<plugin>/<slotId>.jsonc`, seeded by `./muxos build`), applied by the
  * `SlotRender.Order` contribution — reorder's, a companion of this plugin, so
  * it ships wherever slots render. Without one (a test fixture that leaves it
  * out) the contributions keep registration order, as `.Render` does without

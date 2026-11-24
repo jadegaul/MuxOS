@@ -1,4 +1,4 @@
-// The fs-latency monitor as a per-user login service: `./equin start`
+// The fs-latency monitor as a per-user login service: `./muxos start`
 // registers it next to the gateway (ensuring and holding the binary from the
 // main checkout), and main's boot moves it onto every new build. Periodic, not
 // kept alive: launchd runs one tick every 30 s.
@@ -18,11 +18,11 @@ export const fsLatencyMonitorService = defineLoginService({
   id: FS_LATENCY_MONITOR_LABEL,
   owner: "infra/host/io-health/monitor",
   description:
-    "equin fs-latency monitor (one tick of host file-I/O health every 30 s)",
+    "muxos fs-latency monitor (one tick of host file-I/O health every 30 s)",
   forUser: {
     name: "the disk-speed check",
     gives:
-      "equin notices when your disk slows your Mac down, and tells you why.",
+      "muxos notices when your disk slows your Mac down, and tells you why.",
   },
   session: "background",
   schedule: { everySeconds: MONITOR_INTERVAL_MS / 1000 },

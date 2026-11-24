@@ -1,7 +1,7 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * `./equin version status|cut` — releases: the checkpoints a clone is told
+ * `./muxos version status|cut` — releases: the checkpoints a clone is told
  * about and updates to, instead of every commit on upstream's main.
  *
  * A GROUP, like `upstream`: it routes and never runs, so bare `version` prints

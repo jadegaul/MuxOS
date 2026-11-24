@@ -1,8 +1,8 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * `./equin promo-film …` — the showcase film's data. `seed` resets this
- * checkout's `promo-film` composition (built with `./equin build --composition
+ * `./muxos promo-film …` — the showcase film's data. `seed` resets this
+ * checkout's `promo-film` composition (built with `./muxos build --composition
  * promo-film`) to first launch and writes the film's curated story into it.
  */
 export default defineCliCommand({
@@ -12,7 +12,7 @@ export default defineCliCommand({
     defineCliCommand({
       name: "seed",
       description:
-        "Reset this checkout's promo-film composition to first launch (its own database and config only — never main) and write the film's curated story into it. Build it first: ./equin build --composition promo-film",
+        "Reset this checkout's promo-film composition to first launch (its own database and config only — never main) and write the film's curated story into it. Build it first: ./muxos build --composition promo-film",
       run: () => import("./internal/seed"),
     }),
   ],

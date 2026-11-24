@@ -6,8 +6,8 @@
  * story's figures lay out every frame) and the reader is pulled back: the iOS
  * Safari "bounce".
  *
- *   ./equin run plugins/primitives/plugins/dom/plugins/auto-scroll/e2e/fragment-hold.ts \
- *     [--url https://equin.ai/story]
+ *   ./muxos run plugins/primitives/plugins/dom/plugins/auto-scroll/e2e/fragment-hold.ts \
+ *     [--url https://MuxOS.app/story]
  *
  * Runs Playwright's WebKit with an iPhone profile (not Chromium, which has no
  * such hold). The reader's scroll is written to the pane's scroller after a

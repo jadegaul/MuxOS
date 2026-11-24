@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-health",
+  "name": "@muxos/plugin-infra-health",
   "private": true,
   "version": "0.0.1"
 }

@@ -3,7 +3,7 @@
 // worker slot, and what is left (work), against their whole wall time; then the
 // CPU-grant wait of every background op kind, since the grant queue is shared.
 // Usage:
-//   ./equin run plugins/debug/plugins/profiling/plugins/op-log/scripts/build-wait.ts [days=7]
+//   ./muxos run plugins/debug/plugins/profiling/plugins/op-log/scripts/build-wait.ts [days=7]
 //
 // The before/after ruler for the "Track: build and push speed" page
 // (research/2026-10-28-global-duress-trip-on-real-trouble.md). Reads the whole

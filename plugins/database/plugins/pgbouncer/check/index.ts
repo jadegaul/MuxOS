@@ -4,6 +4,7 @@ import type {
   CheckResult,
 } from "@plugins/framework/plugins/tooling/core";
 import { spawnCaptured } from "@plugins/infra/plugins/spawn/core";
+import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 import { LOCAL_SOCKET_BUFFER_BYTES } from "@plugins/database/plugins/pgbouncer/core";
 
 const PROBE = resolve(import.meta.dir, "internal/socket-buffer-probe.ts");
@@ -18,14 +19,14 @@ const PLUGIN_DIR = resolve(import.meta.dir, "..");
  */
 const MAX_READS = process.platform === "darwin" ? 4 : 24;
 
-/** This platform's `@equin/pgbouncer-*` binary, as the checkout installed it. */
+/** This platform's pgbouncer binary package, as the checkout installed it. */
 function declaredBinary(): string | { missing: string } {
   const arch =
     process.arch === "arm64" ? "arm64" : process.arch === "x64" ? "x64" : null;
-  const name = `@equin/pgbouncer-${process.platform}-${arch}`;
+  const name = `${LEGACY_IDS.npmScope}/pgbouncer-${process.platform}-${arch}`;
   if (arch === null || !["darwin", "linux"].includes(process.platform))
     return {
-      missing: `no @equin/pgbouncer package is built for ${process.platform}-${process.arch}`,
+      missing: `no ${LEGACY_IDS.npmScope}/pgbouncer package is built for ${process.platform}-${process.arch}`,
     };
   try {
     const pkg = Bun.resolveSync(`${name}/package.json`, PLUGIN_DIR);
@@ -84,7 +85,7 @@ const unixSocketBuffer: Check = {
         "On macOS that is 8 KB, so a backend reads a large reply one 8 KB read per event-loop turn.",
       hint:
         "The binary lacks equinai/pgbouncer-embedded's Unix-socket-buffer patch (patches/), or renderPgbouncerConfig stopped rendering `tcp_socket_buffer`. " +
-        "Restore the patch there and publish a rebuild (README § Patch-only rebuilds), then upgrade @equin/pgbouncer-* here.",
+        `Restore the patch there and publish a rebuild (README § Patch-only rebuilds), then upgrade ${LEGACY_IDS.npmScope}/pgbouncer-* here.`,
     };
   },
 };

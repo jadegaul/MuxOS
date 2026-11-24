@@ -2,7 +2,7 @@
  * `ensureDeps()` — the ONE chokepoint for "this checkout's `node_modules` is
  * correct for its declared inputs".
  *
- * It replaces the `bun install --silent` that used to run in the `./equin`
+ * It replaces the `bun install --silent` that used to run in the `./muxos`
  * shell wrapper, which had three defects in one line: it was **unserialized**
  * (a `check`'s install could race a `build`'s and lose — bun 1.3.13 has no
  * install mutex of its own, and concurrent installs in one checkout race on
@@ -62,7 +62,7 @@ import { walkFilesWithListing } from "./dir-listing";
  * outlive the thing it describes, so `rm -rf node_modules` always forces a real
  * install. (Already gitignored, being under `node_modules/`.)
  */
-export const STAMP_REL = join("node_modules", ".equin-deps");
+export const STAMP_REL = join("node_modules", ".muxos-deps");
 
 /**
  * Bumped when the stamp's shape or the signature's inputs change; an older
@@ -72,7 +72,7 @@ const STAMP_VERSION = 1;
 
 /**
  * The install lock, a sibling of the build's `.build.lock` and deliberately NOT
- * the same file: sharing them would make a `./equin check` block for an
+ * the same file: sharing them would make a `./muxos check` block for an
  * entire concurrent build. Its span is equally load-bearing — see `ensureDeps`.
  */
 const INSTALL_LOCK_REL = ".install.lock";
@@ -98,7 +98,7 @@ const PROVISION_REGISTRY_REL = join(
  * stamp inside `node_modules` for the same reason: it cannot outlive what it
  * describes the inputs of.
  */
-const LISTING_REL = join("node_modules", ".equin-deps-dirs.json");
+const LISTING_REL = join("node_modules", ".muxos-deps-dirs.json");
 
 /** The only file names `isDepInput` can admit: all the walk records. */
 const INPUT_NAMES = new Set(["package.json", "index.ts"]);
@@ -124,8 +124,8 @@ const SKIP_DIRS = new Set(["node_modules", ".git"]);
  * stamp was fresh on the first look" and "the stamp was stale, so I waited on
  * `.install.lock` while ANOTHER command installed, and the re-check under the
  * lock found it fresh". The second is exactly as stale-cached as installing
- * yourself, but read as "nothing changed": `./equin build` launched beside
- * a `./equin test` in a fresh worktree skipped its re-exec and died on
+ * yourself, but read as "nothing changed": `./muxos build` launched beside
+ * a `./muxos test` in a fresh worktree skipped its re-exec and died on
  * `commander`. With the concurrent case its own kind, no caller can read it as
  * the untouched one.
  */
@@ -186,7 +186,7 @@ export interface EnsureDepsOptions {
   ) => Promise<InstallOutcome>;
 }
 
-/** What `node_modules/.equin-deps` holds. */
+/** What `node_modules/.muxos-deps` holds. */
 interface DepStamp {
   version: number;
   /** sha256 over the sorted `(relPath, mtimeMs, size)` fingerprint of every dep input. */
@@ -453,7 +453,7 @@ function runBunInstall(
     ? ["bun", "install", "--frozen-lockfile"]
     : ["bun", "install"];
   if (!installEventsOn()) return spawnPassthrough(argv, { cwd: root });
-  // Run by an install (its first `./equin` command installs the packages): bun
+  // Run by an install (its first `./muxos` command installs the packages): bun
   // prints no progress without a terminal, so its verbose output goes through
   // the installer's filter, which counts the packages it unpacks for the
   // install's window and passes the rest through. pipefail: bun's status is
@@ -526,7 +526,7 @@ export async function ensureDeps(
   // closure and holds `.build.lock` for its whole process. Holding this one that
   // long would reintroduce the very pathology `.install.lock` exists to avoid,
   // by another route: agent A edits a `package.json` and runs a 3-minute
-  // `./equin build`; agent B's `./equin check` sees the same stale
+  // `./muxos build`; agent B's `./muxos check` sees the same stale
   // inputs and would block on A's ENTIRE BUILD rather than on A's install — and
   // since `acquireCheckoutLock`'s cap is 10–30 min, a long enough holder converts a
   // waiter's wait into a thrown timeout.

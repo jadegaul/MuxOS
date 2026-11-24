@@ -62,8 +62,8 @@ import { memoryDataFiles } from "./memory-store";
 // The browser's file system (`{ fs: "browser" }`): this host's storage laid out
 // like a home folder, so a reader names a file by a path and never by which
 // app keeps it. `~` is its root. The apps' folders sit where the desktop keeps
-// them, under the hidden `~/.equin/` — each declared file root at its data dir
-// (`~/.equin/apps/prototypes/…`), the folders above a root implied by the
+// them, under the hidden `~/.muxos/` — each declared file root at its data dir
+// (`~/.muxos/apps/prototypes/…`), the folders above a root implied by the
 // roots there are. Everything else — `~/Documents`, whatever a person keeps —
 // is the home's own tree, which the provider keeps beside the roots' (same
 // store, same persistence). Served only by a browser host (this plugin is
@@ -134,7 +134,7 @@ function homeMount(): Mount {
 /** Where a path of the browser's file system lands. */
 type Located =
   | {
-      /** A folder above the roots (`~/.equin`, `~/.equin/apps`): its children are implied. */
+      /** A folder above the roots (`~/.muxos`, `~/.muxos/apps`): its children are implied. */
       kind: "implied";
       path: string;
       children: string[];
@@ -204,7 +204,7 @@ function locate(path: string): Located {
     return { kind: "mount", mount: homeMount(), path: toRel(segments) };
   }
   const below = segments.slice(1);
-  // A data dir is `${kind}/${name}`: the two segments under ~/.equin.
+  // A data dir is `${kind}/${name}`: the two segments under ~/.muxos.
   if (below.length < 2) {
     const children = impliedChildren(below.join("/"));
     if (children.length === 0) return { kind: "missing", path: spelled };
@@ -618,7 +618,7 @@ async function freeName(
 /**
  * Move paths of the browser's home into one of its folders, the Finder's
  * way (as the computer's move): never replacing unless asked, a folder never
- * into itself. The apps' folders under `~/.equin/` are the apps' to keep — a
+ * into itself. The apps' folders under `~/.muxos/` are the apps' to keep — a
  * source or destination there is refused (`archive`, "kept by the system").
  */
 export async function moveBrowserFiles(
@@ -768,7 +768,7 @@ export const handleBrowserFileMove = implement(
  * An entry of the home's own tree that may be changed: located on the home
  * mount, not its root. Anything else answers why not — no path of this
  * system (`missing`), or a folder the system keeps (the root, or the apps'
- * folders under `~/.equin/`: `archive`, as a move answers).
+ * folders under `~/.muxos/`: `archive`, as a move answers).
  */
 type Editable =
   | { kind: "ok"; store: StoreOps; path: RelPath; spelled: string }
@@ -792,7 +792,7 @@ function editable(raw: string, { root }: { root: boolean }): Editable {
   };
 }
 
-/** `name` in the home folder `dir`, located — `null` when it lands elsewhere (`~/.equin`). */
+/** `name` in the home folder `dir`, located — `null` when it lands elsewhere (`~/.muxos`). */
 function childOf(dir: Editable & { kind: "ok" }, name: string): RelPath | null {
   const child = joinRel(dir.path, name);
   const at = locateOrNull(spellIn(homeMount(), child));

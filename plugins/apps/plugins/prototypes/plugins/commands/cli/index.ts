@@ -3,7 +3,7 @@ import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 /**
  * `prototype` is a GROUP: it routes and never runs. The declaration union makes
  * that exclusive — a group carries `subcommands` and cannot also carry `run` —
- * so `./equin prototype` printing its own help is a property of the shape
+ * so `./muxos prototype` printing its own help is a property of the shape
  * rather than a runtime check.
  *
  * Declared here, not in `files` where five of the six bodies live, because
@@ -17,7 +17,7 @@ import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
  * so an agent can mint, enumerate, see which variant the user picked, and read
  * or rewind the history of mocks with nothing built.
  *
- * This file is reached on EVERY `./equin` invocation (commander needs the
+ * This file is reached on EVERY `./muxos` invocation (commander needs the
  * names and flags before it can parse argv), so it imports `defineCliCommand`
  * and nothing else; every body sits behind a dynamic `import(…)`.
  * `cli:command-declarations-light` measures that closure. The generics are

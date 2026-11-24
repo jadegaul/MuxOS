@@ -12,7 +12,7 @@ import { loadRepoSnapshot } from "@plugins/framework/plugins/tooling/core";
  * The derived inputs are gathered exactly as `migration-applies-clean` gathers
  * them (this process never boots either), which is why the suite sits here.
  *
- * Requires the running embedded cluster (`./equin build` first).
+ * Requires the running embedded cluster (`./muxos build` first).
  */
 
 import { afterAll, beforeAll, expect, test } from "bun:test";

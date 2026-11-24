@@ -7,7 +7,7 @@
  * running cluster. `now` is passed explicitly rather than mocked so the window
  * boundaries are stated in the test rather than in a timer.
  *
- * Run: `./equin test plugins/reports`
+ * Run: `./muxos test plugins/reports`
  */
 
 import { describe, test, expect } from "bun:test";

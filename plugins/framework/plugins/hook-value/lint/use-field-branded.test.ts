@@ -1,6 +1,6 @@
 /**
  * Tests for `hook-value/use-field-branded`. Run with
- * `./equin test plugins/framework/plugins/hook-value`.
+ * `./muxos test plugins/framework/plugins/hook-value`.
  *
  * A typed rule test: each case is a VIRTUAL `case.tsx` under an inferred
  * project (`createTypedRuleTester` in `tooling/lint/core/testing`).

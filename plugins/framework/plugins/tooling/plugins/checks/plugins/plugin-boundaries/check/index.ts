@@ -118,7 +118,7 @@ const check = defineFoldCheck({
     const violations: Violation[] = [];
 
     // Composition roots (the SPA bootstrap / CLI entry) self-declare via the
-    // package.json `equin.compositionRoot` marker. They are exempt from
+    // package.json `muxos.compositionRoot` marker. They are exempt from
     // structural conformance (R1 package naming, R3 required barrel, R11 unknown
     // dirs) but still subject to the per-file import grammar (R4–R10).
     const structural = context.plugins

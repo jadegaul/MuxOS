@@ -9,9 +9,9 @@
  * classes the Avatar primitive itself emits, so the measurement runs on the
  * app's own CSS and font.
  *
- * Manual only. After `./equin build`:
+ * Manual only. After `./muxos build`:
  *
- *   ./equin run plugins/primitives/plugins/avatar/e2e/glyph-centre.ts [--max-offset 0.5] [--out /tmp/glyphs]
+ *   ./muxos run plugins/primitives/plugins/avatar/e2e/glyph-centre.ts [--max-offset 0.5] [--out /tmp/glyphs]
  */
 import {
   arg,

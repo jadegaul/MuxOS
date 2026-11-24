@@ -83,7 +83,7 @@ describe("poll-loop guard", () => {
   describe("the loop from conv-1786116592-b70n", () => {
     const polls = [25, 30, 35, 40].map(
       (n) =>
-        `cat ${TASK} 2>/dev/null | tail -${n}; pgrep -f "equin push" >/dev/null && echo running || echo finished`,
+        `cat ${TASK} 2>/dev/null | tail -${n}; pgrep -f "muxos push" >/dev/null && echo running || echo finished`,
     );
 
     test("the first three looks are allowed", () => {
@@ -134,7 +134,7 @@ describe("poll-loop guard", () => {
       run(session, `cat ${TASK}`);
       run(session, `cat ${TASK}`);
       run(session, `cat ${TASK}`);
-      run(session, "./equin build");
+      run(session, "./muxos build");
       expect(run(session, `cat ${TASK}`).kind).toBe("allow");
     });
 
@@ -285,10 +285,10 @@ describe("poll-loop guard", () => {
       const reason = v.kind === "deny" ? v.reason : "";
       expect(reason).toContain("run_in_background: true");
       expect(reason).toContain("END YOUR TURN");
-      expect(reason).toContain("./equin await <op>");
+      expect(reason).toContain("./muxos await <op>");
     });
 
-    test("a subagent is pointed at ./equin await, never told to end its turn", () => {
+    test("a subagent is pointed at ./muxos await, never told to end its turn", () => {
       const missing = join(newDir(), "logs", "build.jsonl");
       const session = newSession();
       let last: Verdict = { kind: "allow" };
@@ -304,7 +304,7 @@ describe("poll-loop guard", () => {
       expect(last.kind).toBe("deny");
       const reason = last.kind === "deny" ? last.reason : "";
       expect(reason).toContain("You are a subagent");
-      expect(reason).toContain("./equin await <op>");
+      expect(reason).toContain("./muxos await <op>");
       expect(reason).not.toContain("END YOUR TURN");
     });
 

@@ -7,7 +7,7 @@
 // the composer holds the same text. Clears the draft at the end so the
 // throwaway browser leaves nothing behind (its storage dies with it anyway).
 //
-// Usage: ./equin run plugins/wish/e2e/reload-drill.ts [--no-record] [--headed] [--attach <ticket>]
+// Usage: ./muxos run plugins/wish/e2e/reload-drill.ts [--no-record] [--headed] [--attach <ticket>]
 import type { Page } from "playwright";
 import {
   arg,

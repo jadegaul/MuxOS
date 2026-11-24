@@ -1,19 +1,22 @@
-import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
+import {
+  LEGACY_IDS,
+  PRODUCT_NAME,
+} from "@plugins/framework/plugins/product-name/core";
 
-// The CLI's own name — what an agent types (`./equin build`) and what the CLI
+// The CLI's own name — what an agent types (`./muxos build`) and what the CLI
 // calls itself in its usage and error lines.
 //
-// The legacy name (`LEGACY_IDS.cliShim`) is kept as a shim at the repo root while
-// the app moves off it, so every older doc, hint and muscle memory still
-// works. Anything that RECOGNISES a CLI invocation (the guards' shell parser)
-// must accept both, which is why the set lives here rather than as a literal at
-// each match site.
+// The legacy names (`LEGACY_IDS.cliShims`) are kept as shims at the repo root
+// while the app moves off them, so every older doc, hint and muscle memory
+// still works. Anything that RECOGNISES a CLI invocation (the guards' shell
+// parser) must accept all of them, which is why the set lives here rather than
+// as a literal at each match site.
 
-/** The name the CLI answers to and calls itself: `./equin <verb>`. */
-export const CLI_NAME = "equin";
+/** The name the CLI answers to and calls itself: `./muxos <verb>`. */
+export const CLI_NAME = PRODUCT_NAME;
 
 /** Every repo-root executable that runs this CLI, the canonical one first. */
-export const CLI_NAMES: readonly string[] = [CLI_NAME, LEGACY_IDS.cliShim];
+export const CLI_NAMES: readonly string[] = [CLI_NAME, ...LEGACY_IDS.cliShims];
 
 /** Whether `name` (a command's basename) is this CLI under any of its names. */
 export function isCliName(name: string): boolean {

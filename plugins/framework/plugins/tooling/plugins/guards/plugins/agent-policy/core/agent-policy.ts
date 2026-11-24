@@ -4,7 +4,7 @@
 // never both:
 //   - the repo's `.claude/settings.json`, for any session in a checkout — a
 //     human's, or an app-launched worktree agent's (its `hooks` and
-//     `permissions.deny` are generated from here by `./equin build`;
+//     `permissions.deny` are generated from here by `./muxos build`;
 //     `guards:claude-settings-in-sync` fails on drift), so the hooks and the
 //     scripts they run come from the same commit, and
 //   - an app launch whose workspace has no project settings — a scratch dir

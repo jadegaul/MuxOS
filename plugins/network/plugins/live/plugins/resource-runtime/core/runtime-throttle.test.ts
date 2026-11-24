@@ -3,7 +3,7 @@
  * to) recomputes at most once per window, whatever else flushes — and an
  * isolated change (none drained within the last window) drains at once: the
  * throttle is leading-edge, so it bounds the rate without delaying every change
- * by a window. Run with `./equin test plugins/network/plugins/live/plugins/resource-runtime`.
+ * by a window. Run with `./muxos test plugins/network/plugins/live/plugins/resource-runtime`.
  *
  * Before: any flush another resource scheduled drained the throttled entry's
  * pending too (piggyback), so on a busy server a 30 s throttle rebuilt ~18×/min;

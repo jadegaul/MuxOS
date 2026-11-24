@@ -48,7 +48,7 @@ function waitWritable(fd: number): void {
  * `process.stdout` / `process.stderr` is touched (anything that logs does), and
  * the flag lives on the open file description, so it holds for every write to
  * that fd in the process. A bare `writeSync(1, …)` into a pipe whose reader is
- * slower than the writer (`./equin build | tail -40`) then throws `EAGAIN` once
+ * slower than the writer (`./muxos build | tail -40`) then throws `EAGAIN` once
  * the pipe's buffer is full — normal non-blocking semantics, not an error — or
  * writes only part of the buffer and returns the short count. This waits the
  * full pipe out in poll(2) and loops over short writes, so the call keeps the

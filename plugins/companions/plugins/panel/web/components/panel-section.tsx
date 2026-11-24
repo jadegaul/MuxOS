@@ -8,7 +8,7 @@ import { cn } from "@plugins/primitives/plugins/css/plugins/ui-kit/web";
 
 /**
  * One labelled block of a companion's panel: a caption-sized title ("Apps",
- * "Wish", "equin.ai") on the rows' rail, then its body. Every section with a
+ * "Wish", "MuxOS.app") on the rows' rail, then its body. Every section with a
  * title draws it through this, so titles look the same in every section and
  * every companion (the prototypes' `.sect`: small, semibold, muted).
  */

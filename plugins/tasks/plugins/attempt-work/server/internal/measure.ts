@@ -121,7 +121,7 @@ export async function readMainShaFromGit(cwd: string): Promise<string> {
 /**
  * Whether a checkout holds work no commit records yet: tracked edits, staged
  * changes or untracked files (`.gitignore`d ones excluded). Agents do not
- * commit — `./equin push` does — so an attempt that held its push for review
+ * commit — `./muxos push` does — so an attempt that held its push for review
  * has ALL its work here, and a branch measured `ahead: 0`. Throws
  * `WorktreeGoneError` once the checkout is gone, like every worktree read.
  */
@@ -237,7 +237,7 @@ export interface LandedOwner {
  *
  * A commit is the attempt's when it names one of its conversations OR the
  * attempt itself (the attempt trailer push stamps from the branch — the only
- * name a push from a session equin did not launch carries).
+ * name a push from a session muxos did not launch carries).
  *
  * `main` is only ever fast-forwarded, so its history is a complete, non-lagging
  * record of what landed. The read is bounded by `since` (the attempt's own
@@ -246,7 +246,7 @@ export interface LandedOwner {
  * `main` is the tip to read (a sha, or a ref name in a test) — the same one
  * the measurement's pending half counts against.
  *
- * Returns the distinct push ids alongside the shas: one `./equin push`
+ * Returns the distinct push ids alongside the shas: one `./muxos push`
  * stamps one push-trailer value across every commit it rebases, so the
  * distinct count is the true number of pushes.
  */

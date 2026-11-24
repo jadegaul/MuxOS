@@ -154,8 +154,8 @@ function toStatus(t: DaemonTransition): SentinelStatus {
  * Compiled release: `bun build --compile` does NOT trace/embed a
  * `new Worker(new URL(...))` entry (verified Bun 1.3.13), so release.ts vendors
  * the worker as a standalone bundled `.js` on disk and launch.ts points
- * `EQUIN_SENTINEL_WORKER_JS` at it — the same vendored-asset pattern as
- * `EQUIN_PARCEL_WATCHER_NODE`. When set, spawn from that file.
+ * `MUXOS_SENTINEL_WORKER_JS` at it — the same vendored-asset pattern as
+ * `MUXOS_PARCEL_WATCHER_NODE`. When set, spawn from that file.
  */
 function resolveWorkerUrl(): URL {
   const vendored = readEnv("SENTINEL_WORKER_JS");

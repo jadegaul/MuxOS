@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-request-origin-agent-write-ledger",
+  "name": "@muxos/plugin-infra-request-origin-agent-write-ledger",
   "private": true,
   "version": "0.0.1"
 }

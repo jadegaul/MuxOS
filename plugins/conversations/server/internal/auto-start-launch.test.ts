@@ -18,7 +18,7 @@ import { asPluginId } from "@plugins/framework/plugins/plugin-id/core";
  * registry, worktree root, attachment and preprompt lookups against the real
  * pool). The suite hands `launchArmedTask` a prepared launch directly.
  *
- * Requires the running embedded cluster — `./equin build` first.
+ * Requires the running embedded cluster — `./muxos build` first.
  */
 
 import {

@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-date-data-view-codec",
+  "name": "@muxos/plugin-fields-date-data-view-codec",
   "version": "0.0.1",
   "private": true,
-  "description": "Date field type: data-view custom-column value codec (native Date ↔ canonical ISO text)."
+  "description": "Date field type: data-view custom-column value codec (native Date \u2194 canonical ISO text)."
 }

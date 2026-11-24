@@ -155,7 +155,7 @@ describe("hookCommand", () => {
         PATH: "/usr/bin:/bin",
         MISE_DATA_DIR: dirname(shims),
       });
-      expect(result.stderr).not.toContain("equin hook:");
+      expect(result.stderr).not.toContain("muxos hook:");
       expect(result.exitCode).toBe(0);
     });
   });

@@ -2,16 +2,16 @@
 
 ## Native helper
 
-`rust/` is the Tauri 2 crate `equin-desktop`, built by `deps/` (`menu-bar-helper`,
-the rust deps kind: `./equin deps install menu-bar-helper`; macOS gets the
-binary beside the app icon, `macos/{equin-desktop,equin.icns}`, which the login
-service installs into the ONE equin app bundle — `equin.app`, `dev.equin`
+`rust/` is the Tauri 2 crate `muxos-desktop`, built by `deps/` (`menu-bar-helper`,
+the rust deps kind: `./muxos deps install menu-bar-helper`; macOS gets the
+binary beside the app icon, `macos/{muxos-desktop,muxos.icns}`, which the login
+service installs into the ONE muxos app bundle — `muxos.app`, `dev.muxos`
 (also the crate's Tauri `identifier`, which its notifications use),
 `LSUIElement`, signed with the machine's identity — so notifications and every
 other permission are the app's; Linux the bare binary). Generic: it knows
 namespaces and URLs, never an app.
 
-- `equin-desktop tray [--namespace <ns>]` (default the main namespace, the main
+- `muxos-desktop tray [--namespace <ns>]` (default the main namespace, the main
   checkout): the status icon — macOS an NSStatusItem (Tauri's tray, the mono
   spiral as a template image, accessory activation policy so no Dock icon);
   Linux a StatusNotifierItem through `ksni` (left click = `Activate` = the
@@ -23,13 +23,13 @@ namespaces and URLs, never an app.
   instead (told the port, `?port=<n>`, or the port file's error, `?error=…`;
   the page names no port of its own), whose Start runs `launchctl kickstart -k gui/$UID/<gateway-label>`
   / `systemctl --user start <gateway-label>.service` (the label its job carries in
-  `EQUIN_GATEWAY_LABEL`, written by `login-services/index.ts` from the bound
+  `MUXOS_GATEWAY_LABEL`, written by `login-services/index.ts` from the bound
   gateway service) and loads the panel once the port answers.
 - **The gateway's port** (`rust/src/gateway.rs`, `gateway::port()`): this
-  account's, read from the port file `~/.equin/state/gateway-port/port.json`
-  (`{"port": <u16>, "legacy": <u16|null>}`, written by `./equin start` once a
+  account's, read from the port file `~/.muxos/state/gateway-port/port.json`
+  (`{"port": <u16>, "legacy": <u16|null>}`, written by `./muxos start` once a
   gateway listens there) that the tray's job names in
-  `EQUIN_GATEWAY_PORT_FILE` (`login-services/index.ts`; TS owns the layout).
+  `MUXOS_GATEWAY_PORT_FILE` (`login-services/index.ts`; TS owns the layout).
   Read again at every probe and show — it moves under a running tray when an
   install migrates. `gateway::port()` is a `Port`: `Known(n)` (the file names
   it), `Unrecorded` (the variable names a file and there is none) or
@@ -54,16 +54,16 @@ namespaces and URLs, never an app.
   own bundle's URL and its `--url` — when it knows the port (`Known`); a
   window launched from its shim does not, and keeps the URL the tray baked.
 - **Window mode** — an installed app's process (`rust/src/window.rs`): on macOS
-  the binary inside a shim bundle whose Info.plist has `EquinAppId` (its
+  the binary inside a shim bundle whose Info.plist has `MuxOSAppId` (its
   arguments then only carry an optional in-scope `--url`, a hand-off); on
-  Linux `equin-desktop window --app <id> --url <url>` (the `.desktop` Exec),
-  which sets the glib prgname / gdk program class to `equin-<id>` (the
+  Linux `muxos-desktop window --app <id> --url <url>` (the `.desktop` Exec),
+  which sets the glib prgname / gdk program class to `muxos-<id>` (the
   `StartupWMClass`). A regular app (own Dock icon), its windows titled with the
   shim's name, the first on `<url>` (never `?embed=`: the window is the app's own
   document, not an embed — it keeps its tab set across a reload and the
   floating global action bar; a relaunch starts fresh), frame remembered per app
-  (`<app config dir of dev.equin.app.<id>>/window.json`). One process
-  per app: a per-user Unix socket `equin-app-<id>.sock` ($TMPDIR /
+  (`<app config dir of dev.muxos.app.<id>>/window.json`). One process
+  per app: a per-user Unix socket `muxos-app-<id>.sock` ($TMPDIR /
   $XDG_RUNTIME_DIR) — a later launch hands its URL over and exits; the
   running window comes forward and navigates when the URL is in scope.
   **Window scope** = the app URL's whole origin (its namespace), not its base
@@ -86,14 +86,14 @@ namespaces and URLs, never an app.
   per 3 s; the rest logged as collapsed). A main frame that still lands off the
   origin is a bug: logged, and the window goes home natively
   (`window.navigate`), never by script in that page. **Window probe**:
-  `equin-desktop probe-window --namespace <ns>` builds the real window hidden
+  `muxos-desktop probe-window --namespace <ns>` builds the real window hidden
   and judges a navigator script's rows (`rust/src/probe_window.{rs,js}`);
-  `./equin run plugins/companions/plugins/menu-bar/e2e/window-probe.ts` runs it. macOS bundles need an ATS exception for
+  `./muxos run plugins/companions/plugins/menu-bar/e2e/window-probe.ts` runs it. macOS bundles need an ATS exception for
   `localhost` + subdomains (`NSExceptionAllowsInsecureHTTPLoads`), else
-  WKWebView never loads `http://*.localhost` — the equin app bundle and every shim carry it.
+  WKWebView never loads `http://*.localhost` — the muxos app bundle and every shim carry it.
 - **App-window bridge** (`rust/src/window_bridge.js`, the contract
   `plugins/app-window/core` mirrors; `useNativeFileDrag()` reads it): the
-  window's one script, on its main frame, defines `window.equinWindow` on
+  window's one script, on its main frame, defines `window.muxosWindow` on
   pages of the window's origin only — `hostInfo()` (`{ version: 1, platform,
   capabilities: { fileDrag } }`) and `startFileDrag(paths)` (`rust/src/file_drag.rs`,
   macOS: an `NSDraggingSession` of file URLs from under the pointer, drawn
@@ -115,10 +115,10 @@ namespaces and URLs, never an app.
   over it are the page's HTML drag and drop, as in a browser — with it on,
   Tauri swallowed every drag, the page's own row drags included.
 - **Open link** (`rust/src/open_link.rs`; `openLink` / `OPEN_LINK_SCHEME` in
-  `core/` mirror its grammar): `equin://open?url=<page>` — a browser tab
+  `core/` mirror its grammar): `muxos://open?url=<page>` — a browser tab
   asking for its page in the installed app's own window (the
   `open-in-window` sub-plugin's view-options row). The login service declares
-  the scheme (`urlSchemes`), so on macOS `equin.app`'s `Info.plist` carries
+  the scheme (`urlSchemes`), so on macOS `muxos.app`'s `Info.plist` carries
   `CFBundleURLTypes` and the link reaches the running tray
   (`RunEvent::Opened`). The page goes to the installed app owning it
   (`shim::owner_of` + `shim::launch`) through the hand-off burst gate —
@@ -126,19 +126,19 @@ namespaces and URLs, never an app.
   opens only a page an installed app owns, and a page none owns is refused
   with a notification ("Cannot open in a window"). The page opens in a new
   window of its app (Window mode above). Linux: the keeper writes a hidden
-  `dev.equin.open-link.desktop` (`Exec=<stable helper> open-link %u`,
-  `MimeType=x-scheme-handler/equin;`) and makes it the scheme's default
+  `dev.muxos.open-link.desktop` (`Exec=<stable helper> open-link %u`,
+  `MimeType=x-scheme-handler/muxos;`) and makes it the scheme's default
   (`xdg-mime default`, only when it is (re)written), so each link runs
-  `equin-desktop open-link <link>` — no burst gate; a failure is a
+  `muxos-desktop open-link <link>` — no burst gate; a failure is a
   `notify-send`. On macOS that command is the same path from a shell. Plan:
   `research/2026-11-09-menu-bar-open-in-window-link.md`.
 - **Bridge** (`rust/src/bridge.js`, the contract `core/` mirrors): an
-  initialization script on the panel's main frame defines `window.equinNative`
+  initialization script on the panel's main frame defines `window.muxosNative`
   — `hostInfo()` (`{ version: 1, platform,
   capabilities: { notify, attention, launchApp: true, openUrl, apps, pin } }`),
   `setAttention(on)`, `notify({ title, body?, tag? })`, `openUrl(url)` (http(s),
   default browser), `launchApp(appId)` (the installed app's running window comes forward, else
-  its shim launches — macOS `open <bundle>`, Linux `gtk-launch equin-<id>`;
+  its shim launches — macOS `open <bundle>`, Linux `gtk-launch muxos-<id>`;
   rejects `"not-installed"` without a shim), `hidePanel()`,
   `setPanelHeight(px)` (clamped 200–720), `apps()` / `pinApp(appId)` (the
   device's installed apps, below — capabilities `apps` / `pin`).
@@ -168,10 +168,10 @@ namespaces and URLs, never an app.
   A new command = the Rust fn (in `generate_handler!`), its row in
   `command_table.rs` (which feeds `build.rs`'s ACL manifest and the runtime
   grant), the `bridge.js` method, and the web side's `core/` contract.
-  **Probe**: `equin-desktop probe --namespace <ns>` builds the real panel with
+  **Probe**: `muxos-desktop probe --namespace <ns>` builds the real panel with
   no tray icon, runs `rust/src/probe.js` natively in its main frame and judges
   the matrix (frames of every kind, another namespace, `pushState`,
-  `window.open`, a navigated panel); `./equin run
+  `window.open`, a navigated panel); `./muxos run
   plugins/companions/plugins/menu-bar/e2e/bridge-probe.ts` runs it on this checkout's helper and
   deploy.
 - Icons: `rust/icons/*.svg` are the source; `build.rs` renders them (resvg)
@@ -180,7 +180,7 @@ namespaces and URLs, never an app.
 - Iterate on the crate with `cargo build --release` in `rust/` (its own
   `target/`, gitignored); the deps install uses the shared cargo-target cache.
 
-(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.equin.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./equin data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
+(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.muxos.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./muxos data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
 
 ## Installed apps — the helper's device power (`rust/src/apps.rs`)
 
@@ -211,54 +211,54 @@ cannot be skipped.)
   or icon is. Nothing polls. It is marked pending before the page's scripts
   run, so the page's first `apps()` answers after it.
 - **Sync** — fetch the catalog; write a missing or stale shim (stale: another
-  `EquinShimHash`, `EquinHelperDigest` — a digest of the helper's own
+  `MuxOSShimHash`, `MuxOSHelperDigest` — a digest of the helper's own
   executable, so a new helper rewrites them all — or URL); remove shims of
   renamed apps (the old bundle name) and of apps no longer in the catalog.
-  Only equin's own shims are touched (read by their `EquinAppId`, `shim.rs`).
+  Only muxos's own shims are touched (read by their `MuxOSAppId`, `shim.rs`).
   A current shim runs no command and fetches no icon.
-- **macOS** — `~/Applications/equin <Name>.app`: `Contents/MacOS/equin-desktop`
+- **macOS** — `~/Applications/muxos <Name>.app`: `Contents/MacOS/muxos-desktop`
   (an APFS clone, `cp -c`, of the helper's OWN executable — the process must
   live in the shim's bundle to get its own Dock icon), `Info.plist`
-  (`CFBundleIdentifier dev.equin.app.<id>`, `CFBundleExecutable
-  equin-desktop`, `CFBundleIconFile app`, `EquinAppId`, `EquinUrl`,
-  `EquinNamespace`, `EquinShimHash`, `EquinHelperDigest`, the `localhost` ATS
+  (`CFBundleIdentifier dev.muxos.app.<id>`, `CFBundleExecutable
+  muxos-desktop`, `CFBundleIconFile app`, `MuxOSAppId`, `MuxOSUrl`,
+  `MuxOSNamespace`, `MuxOSShimHash`, `MuxOSHelperDigest`, the `localhost` ATS
   exception, the folder / volume usage descriptions; no `LSUIElement`),
   `Resources/app.icns` (each iconset size fetched from the icon route, packed
   by `iconutil`), **signed with this machine's code-signing identity** — the
-  one `equin.app` is signed with — and verified: macOS keys an app's folder
+  one `muxos.app` is signed with — and verified: macOS keys an app's folder
   grants to its designated requirement, which an ad-hoc signature ties to the
   binary's hash, so every new helper was a new app that asked again. The tray
   never resolves the identity: its login service hands it `infra/codesign`'s
-  `bundleSigner` as `EQUIN_SHIM_SIGNER` (JSON: the certificate's SHA-1 and the
+  `bundleSigner` as `MUXOS_SHIM_SIGNER` (JSON: the certificate's SHA-1 and the
   `sign` / `verify` commands, each run with the staged bundle's path
   appended); without it a macOS sync fails rather than sign ad hoc. The SHA-1
-  is folded into `EquinHelperDigest`, so a new identity re-signs every shim. A
+  is folded into `MuxOSHelperDigest`, so a new identity re-signs every shim. A
   configured keychain identity is used through `/usr/bin/codesign` from the
   tray's process: the keychain may ask once to let it use the key.
   Assembled in `<bundle>.staging` and swapped in whole, so a running app's
   executable is never overwritten in place.
-- **Linux** — `~/.local/share/applications/equin-<id>.desktop` (`Exec=<stable
-  helper> window --app <id> --url <url>`, `StartupWMClass=equin-<id>`,
-  `Icon=equin-<id>`, `X-Equin-AppId`, `X-Equin-ShimHash`,
-  `X-Equin-HelperDigest`), PNG at
-  `~/.local/share/icons/hicolor/512x512/apps/equin-<id>.png`. The stable
-  helper is the helper's own copy at `~/.local/share/equin/equin-desktop`
+- **Linux** — `~/.local/share/applications/muxos-<id>.desktop` (`Exec=<stable
+  helper> window --app <id> --url <url>`, `StartupWMClass=muxos-<id>`,
+  `Icon=muxos-<id>`, `X-MuxOS-AppId`, `X-MuxOS-ShimHash`,
+  `X-MuxOS-HelperDigest`), PNG at
+  `~/.local/share/icons/hicolor/512x512/apps/muxos-<id>.png`. The stable
+  helper is the helper's own copy at `~/.local/share/muxos/muxos-desktop`
   (the deps cache it is built into may be swept).
 - **Names** — a bundle is named from the app's name only when it is a safe
   path segment (no `/`, `:`, `\`, control character or leading dot, at most
   64 characters); otherwise from its id.
-- **Pin** — `equinNative.pinApp(appId)` (writing its shim first when it is not
+- **Pin** — `muxosNative.pinApp(appId)` (writing its shim first when it is not
   there yet): macOS appends a `persistent-apps` tile with `defaults write
   com.apple.dock`, then `killall Dock`; GNOME appends to `gsettings
   org.gnome.shell favorite-apps` (pin capability probed once: does `gsettings
   get` answer). Already pinned → nothing runs.
-- **Read** — `equinNative.apps()` → `{ installed, pinned }` (the shims on
+- **Read** — `muxosNative.apps()` → `{ installed, pinned }` (the shims on
   disk; the Dock's `persistent-apps` / the dash's favorites matched against
   them), after the sync in flight. A failed sync is its failure.
   `useNativeApps()` (web) reads it on mount, on each panel focus (so an app
   dragged out of the Dock offers its pin again on the next open) and after a
   pin; pins in flight / failed are its `requests`.
-- **Verify** — `HOME=$(mktemp -d) equin-desktop sync-apps --namespace <ns>`
+- **Verify** — `HOME=$(mktemp -d) muxos-desktop sync-apps --namespace <ns>`
   runs one sync against a scratch home (real `iconutil` / `codesign`, never
   the real `~/Applications` or Dock) and prints what it wrote and removed.
 - The `state/menu-bar` data dir is legacy (the server's old stable copy):
@@ -271,23 +271,23 @@ and draws the **Keep in Dock** pin as a hover item action on each tile
 (data-view's icons view corner), hidden once pinned or where the helper cannot
 pin.
 
-`login-services/` declares `dev.equin.menu-bar` (`graphical`): the helper run
-as `tray` — on macOS from the equin app bundle, as its main executable
-(`executable: { name: "equin-desktop", main: true }`; the bundle is the one
+`login-services/` declares `dev.muxos.menu-bar` (`graphical`): the helper run
+as `tray` — on macOS from the muxos app bundle, as its main executable
+(`executable: { name: "muxos-desktop", main: true }`; the bundle is the one
 every login service runs from, `infra/launcher/login-services`), on Linux the
 bare build — its stdio in
-`logs/menu-bar/helper-stdio.log`. Once a `./equin start` has registered it, the
+`logs/menu-bar/helper-stdio.log`. Once a `./muxos start` has registered it, the
 tray follows main by itself: main's backend (on the advance of a push
 changing `rust/`, whether or not its build restarts the backend) requests the
 helper build and reloads the tray onto it
-(`infra/launcher/login-services`, which names no service). `./equin start
---only dev.equin.menu-bar --force` restarts the tray alone.
+(`infra/launcher/login-services`, which names no service). `./muxos start
+--only dev.muxos.menu-bar --force` restarts the tray alone.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: The menu-bar panel the native helper opens: the menu-bar app (unlisted, colorMode system — light or dark with the OS, in the companions' `companion` theme) mounted at /home/menu-bar, whose whole layout is the companions' panel (no pane; chromeless under ?embed=1) over the MenuBar.Section slot, with the companions' header (whose Companion.Status attention lights the menu-bar icon's dot) and footer ('Running · <host>', opening equin in the default browser through the helper). useNativeHost() reads the helper's bridge (window.equinNative): pending, absent (a plain browser), or present with its platform, capabilities and methods — a capability the host lacks has no method. useNativeApps() reads the device's installed and pinned apps from the helper that keeps them (pending / unavailable / ready / error), re-read on panel focus and after a pin. MenuBar.Mount runs headless work while the panel page is alive; the panel reports its content height to the helper, shows no toasts, and — like every page, through build's update policy — reloads itself while hidden once main serves a newer web bundle.
+- Description: The menu-bar panel the native helper opens: the menu-bar app (unlisted, colorMode system — light or dark with the OS, in the companions' `companion` theme) mounted at /home/menu-bar, whose whole layout is the companions' panel (no pane; chromeless under ?embed=1) over the MenuBar.Section slot, with the companions' header (whose Companion.Status attention lights the menu-bar icon's dot) and footer ('Running · <host>', opening muxos in the default browser through the helper). useNativeHost() reads the helper's bridge (window.muxosNative): pending, absent (a plain browser), or present with its platform, capabilities and methods — a capability the host lacks has no method. useNativeApps() reads the device's installed and pinned apps from the helper that keeps them (pending / unavailable / ready / error), re-read on panel focus and after a pin. MenuBar.Mount runs headless work while the panel page is alive; the panel reports its content height to the helper, shows no toasts, and — like every page, through build's update policy — reloads itself while hidden once main serves a newer web bundle.
 - Web:
   - Slots:
     - `MenuBar.Section`
@@ -331,7 +331,7 @@ helper build and reloads the tray onto it
   - Exports (types):
     - `AppCatalog`
     - `CatalogApp`
-    - `EquinNativeBridge`
+    - `MuxOSNativeBridge`
     - `NativeApps`
     - `NativeCapabilities`
     - `NativeHostInfo`
@@ -367,8 +367,8 @@ helper build and reloads the tray onto it
   - Exempts itself from: `gateway-port:no-port-literal` — `rust/src/gateway.rs` (sanctioned)
 - Sub-plugins:
   - **`app-grid`** — The menu-bar panel's app grid (MenuBar.Section 'apps'): every Apps.App but the current app and the home app (the desktop included: its URL is its base path as a route prefix) — as the icons DataView…
-  - **`app-window`** — An installed app window's bridge to the native helper (window.equinWindow), read once per document: useNativeFileDrag() is the window's native file drag — drag host paths out as real files, the drag…
-  - **`open-in-window`** — Open in app window: a row in the action bar's view-options popover that hands this browser tab's page to the menu-bar helper as an equin://open link, which opens it in a new window of the installed…
+  - **`app-window`** — An installed app window's bridge to the native helper (window.muxosWindow), read once per document: useNativeFileDrag() is the window's native file drag — drag host paths out as real files, the drag…
+  - **`open-in-window`** — Open in app window: a row in the action bar's view-options popover that hands this browser tab's page to the menu-bar helper as an muxos://open link, which opens it in a new window of the installed…
   - **`wish`** — The menu-bar panel's Wish section (MenuBar.Section 'wish'): wish's WishField under a 'Wish' title — the task composer with its own ↑, filing one task under Wishes and confirming inline. The tray is…
 
 <!-- AUTOGENERATED:END -->

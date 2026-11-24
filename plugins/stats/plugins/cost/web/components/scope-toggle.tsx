@@ -9,11 +9,11 @@ export function ScopeToggle() {
       onClick={toggle}
       tooltip={
         repoOnly
-          ? "equin sessions only — click to include all Claude Code sessions on this machine"
-          : "Including all Claude Code sessions — click to filter to equin only"
+          ? "muxos sessions only — click to include all Claude Code sessions on this machine"
+          : "Including all Claude Code sessions — click to filter to muxos only"
       }
     >
-      equin only
+      muxos only
     </ToggleChip>
   );
 }

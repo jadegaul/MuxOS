@@ -90,7 +90,7 @@ export async function isMainSlotCheckout(root: AppPath): Promise<boolean> {
 
 /**
  * Is `root` a checkout no work may be done in — its repository's own main
- * checkout (where `./equin push` lands commits) or a main slot (what main is
+ * checkout (where `./muxos push` lands commits) or a main slot (what main is
  * built and served from)? The question a command that edits, commits or
  * upgrades asks before refusing to run on main. Unlike `checkoutRef`, it is
  * about the repository `root` belongs to, not about which repository serves

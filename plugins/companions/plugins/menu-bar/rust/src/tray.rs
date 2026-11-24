@@ -1,6 +1,6 @@
 //! Tray mode: the status icon (macOS NSStatusItem through Tauri's tray; Linux a
 //! StatusNotifierItem through ksni), the hidden panel, the bridge commands,
-//! and the `equin://open` links macOS hands the app (`open_link`).
+//! and the `muxos://open` links macOS hands the app (`open_link`).
 
 use tauri::{AppHandle, Manager};
 
@@ -35,10 +35,10 @@ mod platform {
     pub struct Icon(TrayIcon);
 
     pub fn install(app: &AppHandle) -> Result<Icon, String> {
-        let tray = TrayIconBuilder::with_id("equin")
+        let tray = TrayIconBuilder::with_id("muxos")
             .icon(super::image(false))
             .icon_as_template(true)
-            .tooltip("equin")
+            .tooltip("muxos")
             .show_menu_on_left_click(false)
             .on_tray_icon_event(|tray, event| {
                 if let TrayIconEvent::Click {
@@ -90,10 +90,10 @@ mod platform {
 
     impl ksni::Tray for Sni {
         fn id(&self) -> String {
-            "equin".into()
+            "muxos".into()
         }
         fn title(&self) -> String {
-            "equin".into()
+            "muxos".into()
         }
         fn category(&self) -> ksni::Category {
             ksni::Category::ApplicationStatus
@@ -135,7 +135,7 @@ mod platform {
 pub use platform::Icon;
 
 pub fn run(namespace: String) {
-    eprintln!("equin-desktop: tray mode, namespace {namespace}");
+    eprintln!("muxos-desktop: tray mode, namespace {namespace}");
     // The device's installed apps are the main instance's: a tray on another
     // namespace (a dev tray) never writes a shim.
     let keeper = (namespace == cli::MAIN_NAMESPACE).then(|| apps::Keeper::new(namespace.clone()));
@@ -143,7 +143,7 @@ pub fn run(namespace: String) {
     let builder = match keeper {
         Some(k) => builder.manage(k),
         None => {
-            eprintln!("equin-desktop: not the main instance; the installed apps are left alone");
+            eprintln!("muxos-desktop: not the main instance; the installed apps are left alone");
             builder
         }
     };
@@ -160,17 +160,17 @@ pub fn run(namespace: String) {
             let icon = match platform::install(&handle) {
                 Ok(icon) => icon,
                 Err(e) => {
-                    eprintln!("equin-desktop: {e}");
+                    eprintln!("muxos-desktop: {e}");
                     std::process::exit(1);
                 }
             };
             app.manage(icon);
             panel::create(&handle)?;
-            eprintln!("equin-desktop: tray ready");
+            eprintln!("muxos-desktop: tray ready");
             Ok(())
         })
         .build(crate::context())
-        .expect("equin-desktop: cannot build the Tauri app");
+        .expect("muxos-desktop: cannot build the Tauri app");
     app.run(|app, event| match event {
         // A show found the gateway's port moved and destroyed the panel: build
         // it again on the new origin (its label is free by now).
@@ -179,7 +179,7 @@ pub fn run(namespace: String) {
         }
         // The panel's hide keeps the app alive: no window is ever "the last".
         tauri::RunEvent::ExitRequested { api, code: None, .. } => api.prevent_exit(),
-        // A link to the app (`equin://open?url=…`, CFBundleURLTypes): a
+        // A link to the app (`muxos://open?url=…`, CFBundleURLTypes): a
         // browser tab asking for its page in the installed app's window.
         #[cfg(target_os = "macos")]
         tauri::RunEvent::Opened { urls } => urls.iter().for_each(links::open_link),
@@ -204,7 +204,7 @@ mod links {
     pub fn open_link(link: &Url) {
         match open_link::parse(link) {
             Ok(page) => scope_gate::hand_off(page, open_page),
-            Err(e) => eprintln!("equin-desktop: refused the link: {e}"),
+            Err(e) => eprintln!("muxos-desktop: refused the link: {e}"),
         }
     }
 
@@ -214,11 +214,11 @@ mod links {
     fn open_page(page: Url) {
         std::thread::spawn(move || {
             let outcome = open_link::open_in_owner(&page);
-            eprintln!("equin-desktop: link to {page}: {outcome:?}");
+            eprintln!("muxos-desktop: link to {page}: {outcome:?}");
             let Some(message) = outcome.failure(&page) else { return };
             let handle = TRAY.get().expect("the tray is set up before any link arrives");
             if let Err(e) = handle.notification().builder().title("Cannot open in a window").body(message).show() {
-                eprintln!("equin-desktop: cannot notify: {e}");
+                eprintln!("muxos-desktop: cannot notify: {e}");
             }
         });
     }

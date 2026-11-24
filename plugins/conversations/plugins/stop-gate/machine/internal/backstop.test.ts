@@ -5,7 +5,7 @@
  * flagged, a stopped agent with no process is flagged at once, and an allowed
  * stop or a busy agent is left alone.
  *
- * Needs this worktree's DB as `./equin build` leaves it (the
+ * Needs this worktree's DB as `./muxos build` leaves it (the
  * stop_gate_reminders migration applied).
  */
 import { describe, expect, test } from "bun:test";

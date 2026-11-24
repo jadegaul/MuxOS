@@ -29,7 +29,7 @@ const DOCK: readonly (readonly [LucideName, boolean])[] = [
 const DY = 158;
 
 /**
- * Mac & Linux integration: equin's icon in the menu bar (drawn as the Mac's) opens a panel over whatever is on
+ * Mac & Linux integration: muxos's icon in the menu bar (drawn as the Mac's) opens a panel over whatever is on
  * screen — a task field and every app — and an app picked there opens as a native app: its own window, and its own
  * icon in the Dock.
  * States: 0 closed (the icon pulses) · 1 panel open · 2 an app picked · 3 the app's own window and Dock icon, panel hidden.
@@ -38,13 +38,13 @@ export const trayCard = defineCard({
   states: 4,
   autoplay: { seq: [0, 1, 2, 3], every: [1600, 2200, 700, 2600] },
   render: (k) => {
-    // the menu bar: the clock and equin's icon among the status items on the right
+    // the menu bar: the clock and muxos's icon among the status items on the right
     let s =
       k.box(4, 4, 294, 22, { r: k.R.sm }) +
       k.text(292, 18.5, "9:41", "k-ts k-mute", "end");
     s += k.icon("bell", 228, 15, 11, "k-mute");
     s +=
-      `<g data-act="tray" role="button" tabindex="0" aria-label="equin"><rect x="245" y="7" width="20" height="16" rx="4" class="k-hit"/>` +
+      `<g data-act="tray" role="button" tabindex="0" aria-label="muxos"><rect x="245" y="7" width="20" height="16" rx="4" class="k-hit"/>` +
       `<rect x="245" y="7" width="20" height="16" rx="4" class="k-lit" data-in="1 2"/>` +
       `<circle cx="255" cy="15" r="5.5" class="k-ring" data-in="0"/>` +
       `<path d="M255 15 a1.4 1.4 0 0 1 2.8 0 a2.8 2.8 0 0 1 -5.6 0 a4.2 4.2 0 0 1 8.4 0" class="k-ink" fill="none"/></g>`;

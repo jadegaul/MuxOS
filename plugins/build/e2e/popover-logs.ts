@@ -19,11 +19,11 @@
  *     28px to 36px and slid the chevron and the label down with it. Only
  *     geometry read off the live layout can say the jump is gone.
  *
- * Manual only; nothing runs this automatically. Run it after `./equin
+ * Manual only; nothing runs this automatically. Run it after `./muxos
  * build` with:
  *
- *   ./equin run plugins/build/e2e/popover-logs.ts
- *   ./equin run plugins/build/e2e/popover-logs.ts --headed
+ *   ./muxos run plugins/build/e2e/popover-logs.ts
+ *   ./muxos run plugins/build/e2e/popover-logs.ts --headed
  */
 
 import type { Locator, Page } from "playwright";

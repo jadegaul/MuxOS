@@ -10,7 +10,7 @@ const GATEWAY_DEFAULT_ENTRY = "bin/index.ts";
 /**
  * The spec `command` that starts namespace `ns`'s backend as `bun <entry>`
  * (relative to the spec's `server` dir) through a clone of `bun` named for it
- * (`equin · server · <ns>`, `equin · central`), so Activity Monitor tells the
+ * (`muxos · server · <ns>`, `muxos · central`), so Activity Monitor tells the
  * backends apart. When the clone cannot be made — no `bun` to name, or a
  * filesystem refusing it (said so on the build's output) — the default entry is
  * left to the gateway's own convention (`bun bin/index.ts`), and any other runs

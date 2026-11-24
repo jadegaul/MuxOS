@@ -1,9 +1,9 @@
 // What the React Compiler's skipped components cost on a real interaction.
 //
 // Usage:
-//   ./equin run plugins/framework/plugins/tooling/plugins/react-compiler/plugins/skips/e2e/render-cost.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/react-compiler/plugins/skips/e2e/render-cost.ts \
 //     --path /agents --steps "type:Message:hello|click:Tasks|wheel:2000" \
-//     [--settle 6000] [--step-wait 1200] [--top 12] [--url http://equin.localhost:<port>]
+//     [--settle 6000] [--step-wait 1200] [--top 12] [--url http://muxos.localhost:<port>]
 //
 // Steps, separated by `|`, each run then waited out (--step-wait ms):
 //   type:<placeholder or accessible name>:<text>   click the field, type the text a key at a time
@@ -24,7 +24,7 @@
 //     (an upper bound: some of those props really changed).
 // Library components (Floating UI, dnd-kit …) are never compiled; the
 // skipped list names them too, so read it against the compiler's inventory
-// (`./equin check react-compiler:no-silent-skips` names every skipped
+// (`./muxos check react-compiler:no-silent-skips` names every skipped
 // component of this repo).
 
 import {

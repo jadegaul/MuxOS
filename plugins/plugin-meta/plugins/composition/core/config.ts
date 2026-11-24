@@ -142,7 +142,7 @@ const APP_ADAPTERS: ReadonlyArray<{
  * agent-manager profiles): a row seeding none would only gain dead negatives,
  * which `composition-closure` refuses. Takes `{ entryPoints: [...] }`, never a
  * bare array: that literal is where the plugin-refs locator reads the ids (and
- * `./equin plugin move` rewrites them).
+ * `./muxos plugin move` rewrites them).
  */
 function withAppAdapters(row: { entryPoints: readonly string[] }): string[] {
   const shipped = APP_ADAPTERS.filter(({ app }) =>
@@ -266,7 +266,7 @@ export const compositionsConfig = defineConfig({
         crawlable: boolField({ label: "Crawlable" }),
         // WHETHER this composition serves its `home` app at `/`: the home
         // app's base path is dropped from every address it hands out (the
-        // public site shows `equin.ai/vision` for the website's
+        // public site shows `MuxOS.app/vision` for the website's
         // `/about/vision`) while every route keeps it — the address root of
         // `primitives/pane/route-prefix`, put back by every URL read and
         // dropped by every write. Its old addresses (`/about/…`) answer with
@@ -301,7 +301,7 @@ export const compositionsConfig = defineConfig({
         // any future negative, for no gain.
         //
         // Main is not servable as a composition: the main namespace is a reserved
-        // namespace that belongs to the checkout's own `./equin build`, and
+        // namespace that belongs to the checkout's own `./muxos build`, and
         // `activatedCompositionIds` filters on servability, so `serve` on THIS
         // row is inert by construction — a stored mode from any config layer can
         // never name a namespace to provision. `composition-closure` still pins it
@@ -326,8 +326,8 @@ export const compositionsConfig = defineConfig({
 
         // ── The showcase film's instance ────────────────────────────────────────
         // The whole app (`**`, like main) on its OWN empty database, served at
-        // http://promo-film.<checkout>.localhost:<port> by `./equin build
-        // --composition promo-film`. `./equin promo-film seed` resets it to
+        // http://promo-film.<checkout>.localhost:<port> by `./muxos build
+        // --composition promo-film`. `./muxos promo-film seed` resets it to
         // first launch and writes the film's curated story into it
         // (`apps.website.promo-film.seed`, whose endpoint answers only on this
         // composition's namespace). The film is recorded here, never on main:
@@ -470,7 +470,7 @@ export const compositionsConfig = defineConfig({
         // `!apps.website.promo-film.seed`: the film's seed (its endpoint answers
         // only on the `promo-film` namespace; its `machine/` imports Circle, so
         // the cascade would take it anyway — written down so it is said). The
-        // `./equin promo-film seed` verb stays: it is the parent's `cli/`,
+        // `./muxos promo-film seed` verb stays: it is the parent's `cli/`,
         // which runs on no host, so its import of the seed's `core/` is no
         // edge of any bundle.
         {
@@ -642,7 +642,7 @@ export const compositionsConfig = defineConfig({
               "tasks.outcome-report.capability",
               // Files, whole: it browses the browser's own file system — its
               // Home, which the seed fills (Documents, Music, Pictures, a few
-              // loose files), with the apps' folders under the hidden ~/.equin/
+              // loose files), with the apps' folders under the hidden ~/.muxos/
               // — and leaves out the computer's disk, which this host does not
               // serve (its places are absent).
               // The file-peek pane every transcript path opens imports its
@@ -754,7 +754,7 @@ export const compositionsConfig = defineConfig({
         app("deploy", { entryPoints: ["apps.deploy.**"] }),
         app("file-explorer", { entryPoints: ["apps.file-explorer.**"] }),
 
-        // The public equin site: the whole `apps.website` subtree
+        // The public muxos site: the whole `apps.website` subtree
         // (`"apps.website.**"` seeds the `apps.website` node + its ENTIRE
         // subtree), and nothing subtracted from it — the site is two pages and
         // a homepage, with no branch that reaches outside itself.
@@ -830,7 +830,7 @@ export const compositionsConfig = defineConfig({
           excludes: ["agent-runtime", "auth"],
           // The public site: its build snapshots every page for robots.
           crawlable: true,
-          // …and serves the website at `/` (`equin.ai/vision`), not under
+          // …and serves the website at `/` (`MuxOS.app/vision`), not under
           // the `/about` it keeps on the desktop.
           homeAtRoot: true,
         }),
@@ -899,18 +899,18 @@ export const compositionsConfig = defineConfig({
         //   falls back to the browser's native bounce, which pulls the whole
         //   document off the top and shows the `html` loading floor (`Canvas`,
         //   near-black) above the page instead of the page's own top edge.
-        //   equin.ai shipped that way.
+        //   MuxOS.app shipped that way.
         // - the boot snapshot (network.live.boot-snapshot): every `boot-and-keep`
         //   read — config documents above all — hydrated before first paint.
         //   Left out, each config document arrives by its own request after
         //   the first render, so every slot's layout (and anything else a
-        //   config decides) is not known on the first frame: equin.ai painted
+        //   config decides) is not known on the first frame: MuxOS.app painted
         //   its header nav in raw order, then jumped to its layout.
         // - the active app's code preloads (apps-core.app-preload): its head
         //   fragment lists, per app base path, the modules that app's
         //   deferred plugins load, so they download from t0. Left out, the
         //   page fetches its app's code only once the eager tier has run —
-        //   equin.ai drew its header without its nav for ~1 s that way.
+        //   MuxOS.app drew its header without its nav for ~1 s that way.
         // - an open tab's bundle kept served (web-artifacts' served-addresses,
         //   its machine half): the backend touches the graph record of every
         //   graph a tab names, so the next deploy's address retention keeps
@@ -926,7 +926,7 @@ export const compositionsConfig = defineConfig({
         // style bridge with `ui.icons`, the Google Fonts loader with the
         // font-family group, reorder's layout middleware, its node types and the
         // error boundary with slot-render. Each of those used to be hand-listed
-        // here after equin.ai shipped without it (blank icons, slots ignoring
+        // here after MuxOS.app shipped without it (blank icons, slots ignoring
         // their committed layouts). The same holds server-side: a contribution
         // `companion: true` to a server kind opened with `companions: true`
         // ships with that kind's owner (live-state-snapshot, the changelog's
@@ -1037,7 +1037,7 @@ export const compositionsConfig = defineConfig({
 
 // Every plugin id below is written inside an `entryPoints:` /
 // `selectedContributors:` array literal — the one spelling the plugin-refs
-// locator reads in this file, so `./equin plugin move` rewrites it. An id passed
+// locator reads in this file, so `./muxos plugin move` rewrites it. An id passed
 // any other way (a bare helper argument, a const array) is invisible to it, and
 // `plugin-refs:compositions-source-covers-origin` fails.
 

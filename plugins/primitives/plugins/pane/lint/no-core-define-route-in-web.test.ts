@@ -1,6 +1,6 @@
 /**
  * Tests for the `no-core-define-route-in-web` lint rule. Run with
- * `./equin test plugins/primitives/plugins/pane`.
+ * `./muxos test plugins/primitives/plugins/pane`.
  *
  * The rule pins ONE import path for `defineRoute` per runtime: a `web/` file
  * takes it from the pane WEB barrel (which re-exports it), everything else from

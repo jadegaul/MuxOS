@@ -294,7 +294,7 @@ export const AgentLaunchOptionsSchema = z.preprocess(
      * The checkout whose guard scripts the agent's hooks run (the workspace's
      * `LaunchFragment.guards`: a checkout's own path, or a scratch launch's
      * named root), delivered to the agent's
-     * environment as `EQUIN_GUARDS_ROOT`. Defaulted to `cwd` for an
+     * environment as `MUXOS_GUARDS_ROOT`. Defaulted to `cwd` for an
      * options file written before launches named it (Oct 2026): its settings
      * carry no policy hooks, so the root only bounds the write guards, and its
      * cwd — the workspace itself — is that.
@@ -325,7 +325,7 @@ export const AgentLaunchOptionsSchema = z.preprocess(
      */
     namedClaudeBin: z.string().nullable().default(null),
     /**
-     * The Bun this agent process runs on, the machine-wide `equin · agent`
+     * The Bun this agent process runs on, the machine-wide `muxos · agent`
      * clone of this Bun version (packages/process-name `cloneSharedBun`) so
      * Activity Monitor names it; null when the clone was refused. Shared by
      * every agent, so a new conversation's first start skips macOS's

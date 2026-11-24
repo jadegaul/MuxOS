@@ -22,7 +22,7 @@
  * providers and registers its graph process-wide, which would leak into every
  * suite after it in the shared `bun test` process.
  *
- * Run: `./equin test plugins/apps/plugins/pages/plugins/fixtures`.
+ * Run: `./muxos test plugins/apps/plugins/pages/plugins/fixtures`.
  */
 
 import { beforeAll, describe, expect, setDefaultTimeout, test } from "bun:test";

@@ -1,5 +1,5 @@
 /**
- * The browser floor: the oldest browser of each engine equin's browser code
+ * The browser floor: the oldest browser of each engine muxos's browser code
  * runs on. Every built-in a browser-built file uses must exist in all of them
  * — `no-api-above-floor` holds it, against MDN's browser-compat-data.
  *

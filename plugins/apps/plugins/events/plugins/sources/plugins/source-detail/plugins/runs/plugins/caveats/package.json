@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-events-sources-source-detail-runs-caveats",
+  "name": "@muxos/plugin-apps-events-sources-source-detail-runs-caveats",
   "description": "Extraction caveats section of the run pane: what the extraction could not express.",
   "private": true,
   "version": "0.0.1"

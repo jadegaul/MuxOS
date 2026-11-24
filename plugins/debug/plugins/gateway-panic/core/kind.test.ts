@@ -23,7 +23,7 @@ describe("gateway-panic", () => {
 
   test("a single panic does not count itself", () => {
     const d = GatewayPanicPayloadSchema.parse({
-      site: "equin/gateway.(*Proxy).handleWebSocket",
+      site: "muxos/gateway.(*Proxy).handleWebSocket",
       value: "boom",
       stack: [],
       method: "GET",

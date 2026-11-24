@@ -18,9 +18,9 @@ const TYPED = [
 ] as const;
 
 /**
- * Isolated agent sessions: the agents' sessions run beside equin, not inside it. When equin goes
+ * Isolated agent sessions: the agents' sessions run beside muxos, not inside it. When muxos goes
  * down, its window dims and its links to the sessions drop, but every session keeps typing; when it comes back, it
- * reconnects to them. States: 0 equin up, linked to the sessions · 1 equin down, the sessions still working. Loops.
+ * reconnects to them. States: 0 muxos up, linked to the sessions · 1 muxos down, the sessions still working. Loops.
  * Every piece is drawn once and takes its look from data-on; the typing loops on its own in both states.
  */
 export const sessionsCard = defineCard({
@@ -31,8 +31,8 @@ export const sessionsCard = defineCard({
     let s =
       k.text(AX, 18, "the app", "k-cap", "start") +
       k.text(SX, 18, "agent sessions", "k-cap", "start");
-    // equin: its window, one row per running agent; dimmed while it is down
-    let eq = k.window(AX, AY, AW, AH, "equin");
+    // muxos: its window, one row per running agent; dimmed while it is down
+    let eq = k.window(AX, AY, AW, AH, "muxos");
     let links = "";
     [0, 1, 2].forEach((i) => {
       const ry = AY + 34 + i * 30;
@@ -49,7 +49,7 @@ export const sessionsCard = defineCard({
     s += `<g data-on="1" class="ss-eq">${eq}</g>`;
     // its links to the sessions: gone while it is down, drawn again as it reconnects
     s += links;
-    // the sessions: separate processes, each typing away on its own, whatever equin is doing
+    // the sessions: separate processes, each typing away on its own, whatever muxos is doing
     [0, 1, 2].forEach((i) => {
       const y = SY + i * SSTEP;
       const cy = y + SH / 2;

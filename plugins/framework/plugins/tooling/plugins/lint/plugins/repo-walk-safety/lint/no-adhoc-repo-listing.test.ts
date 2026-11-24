@@ -1,5 +1,5 @@
 /**
- * Tests for the `no-adhoc-repo-listing` lint rule. Run with `./equin test`.
+ * Tests for the `no-adhoc-repo-listing` lint rule. Run with `./muxos test`.
  *
  * The rule bans listing the working tree outside a pass root: a call to one of
  * the file-set loaders, or an argv that runs `git ls-files`.

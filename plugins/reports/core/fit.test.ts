@@ -12,12 +12,12 @@ function bootFailure(): ReportBody {
   const lines = Array.from(
     { length: 268 },
     (_, i) =>
-      `  plugin-${i}: Failed to fetch dynamically imported module: https://equin.ai/artifacts/plugin-${i}.server.0123456789abcdef/index.js`,
+      `  plugin-${i}: Failed to fetch dynamically imported module: https://MuxOS.app/artifacts/plugin-${i}.server.0123456789abcdef/index.js`,
   );
   const message = `in-browser server failed to boot:\n${lines.join("\n")}`;
   const frames = Array.from(
     { length: 10 },
-    (_, i) => `    at frame${i} (https://equin.ai/artifacts/host.js:${i}:1)`,
+    (_, i) => `    at frame${i} (https://MuxOS.app/artifacts/host.js:${i}:1)`,
   );
   return {
     kind: "crash",
@@ -27,7 +27,7 @@ function bootFailure(): ReportBody {
       errorType: "PortHostBootError",
       stack: `PortHostBootError: ${message}\n${frames.join("\n")}`,
     },
-    url: "https://equin.ai/about/demo",
+    url: "https://MuxOS.app/about/demo",
   };
 }
 
@@ -76,7 +76,7 @@ describe("trimText on a stack", () => {
   ).join("\n");
   const frames = Array.from(
     { length: 60 },
-    (_, i) => `    at frame${i} (https://equin.ai/artifacts/host.js:${i}:1)`,
+    (_, i) => `    at frame${i} (https://MuxOS.app/artifacts/host.js:${i}:1)`,
   );
   const stack = `PortHostBootError: ${message}\n${frames.join("\n")}`;
 

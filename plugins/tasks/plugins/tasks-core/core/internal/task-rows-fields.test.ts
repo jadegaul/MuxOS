@@ -6,7 +6,7 @@
  * keys, C39: `author` → `authorKind` / `authorConversationId` / `filedFrom`
  * moved `tasks.v2` → `tasks.v3`).
  *
- * Run: `./equin test plugins/tasks/plugins/tasks-core`.
+ * Run: `./muxos test plugins/tasks/plugins/tasks-core`.
  */
 
 import { describe, expect, test } from "bun:test";

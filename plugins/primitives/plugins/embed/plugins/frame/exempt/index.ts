@@ -13,6 +13,6 @@ export default [
     paths: ["core/classify-url.ts"],
     kind: "sanctioned",
     reason:
-      "Not namespace identity: an embed guard refusing every *.localhost host (any local server, equin's or not), after namespaceFromHost / isContentHost have refused equin's own.",
+      "Not namespace identity: an embed guard refusing every *.localhost host (any local server, muxos's or not), after namespaceFromHost / isContentHost have refused muxos's own.",
   },
 ] satisfies Exemptions;

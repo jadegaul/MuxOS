@@ -14,8 +14,9 @@ const NOW = new Date("2026-11-17T14:00:00.000Z");
 const SIX_HOURS_AGO = new Date(Date.now() - 6 * 3600_000).toISOString();
 const SERVED = "247f2541c0ffee0000000000000000000000beef";
 const BUILDING = "8c1e2f0aa000000000000000000000000000cafe";
-const RUN_URL = "https://github.com/equinai/equin/actions/runs/1";
-const RELEASE_URL = "https://github.com/equinai/equin/releases/tag/v2026.11.17";
+const RUN_URL = "https://github.com/jadegaul/MuxOS/actions/runs/1";
+const RELEASE_URL =
+  "https://github.com/jadegaul/MuxOS/releases/tag/v2026.11.17";
 const CORE_ASSETS = ["install.sh", "release.json", "SHA256SUMS"];
 const PASSED_RUN = { status: "completed", conclusion: "success", url: RUN_URL };
 const PUBLISHED = {

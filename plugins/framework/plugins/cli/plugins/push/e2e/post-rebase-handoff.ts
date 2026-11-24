@@ -26,7 +26,7 @@
  * Slow: the worktree's first CLI call installs its dependencies, and the push
  * runs the whole tree-scoped check pass.
  *
- * Run: ./equin run plugins/framework/plugins/cli/plugins/push/e2e/post-rebase-handoff.ts [--keep]
+ * Run: ./muxos run plugins/framework/plugins/cli/plugins/push/e2e/post-rebase-handoff.ts [--keep]
  */
 import {
   cpSync,

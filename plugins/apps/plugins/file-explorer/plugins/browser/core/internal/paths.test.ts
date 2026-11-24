@@ -30,7 +30,7 @@ describe("paths", () => {
   test("base names", () => {
     expect(baseName("~")).toBe("~");
     expect(baseName("/")).toBe("/");
-    expect(baseName("~/Projects/equin")).toBe("equin");
+    expect(baseName("~/Projects/muxos")).toBe("muxos");
   });
 
   test("parent keeps the form, and home's parent is absolute", () => {

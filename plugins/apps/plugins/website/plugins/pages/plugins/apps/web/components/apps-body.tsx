@@ -39,7 +39,7 @@ export function AppsBody() {
         kind="page"
         lead="The "
         accent="apps"
-        lede="Every app equin ships. Each one is a composition of plugins: install it as is, or ask an agent to reshape it for you."
+        lede="Every app muxos ships. Each one is a composition of plugins: install it as is, or ask an agent to reshape it for you."
       >
         <AppsSearch query={keptPart(queryKept)} />
       </WebsiteHero>

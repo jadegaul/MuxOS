@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-sonata-piano-roll",
+  "name": "@muxos/plugin-apps-sonata-piano-roll",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

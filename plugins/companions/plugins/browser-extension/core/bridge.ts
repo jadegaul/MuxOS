@@ -3,14 +3,14 @@ import { EXTENSION_ORIGIN } from "./extension-id";
 
 /**
  * The bridge between the extension's shell (`browser-extension/popup.ts`) and
- * the equin page it frames — the contract both halves parse, mirroring the
+ * the muxos page it frames — the contract both halves parse, mirroring the
  * menu bar's `native-bridge.ts`.
  *
  * Transport: the page, once it listens, says hello to its parent (posted to
  * the extension's origin only); the shell answers a hello from its own iframe
- * — pinned to the equin origin it framed — with a fresh `MessagePort`. Every
+ * — pinned to the muxos origin it framed — with a fresh `MessagePort`. Every
  * call then goes over that port. The page accepts a port only from the
- * extension's origin (`acceptBridgePort`), so a foreign page framing equin
+ * extension's origin (`acceptBridgePort`), so a foreign page framing muxos
  * gets no bridge.
  */
 
@@ -91,13 +91,13 @@ export const BridgeResponseSchema = z.discriminatedUnion("ok", [
 export type BridgeResponse = z.infer<typeof BridgeResponseSchema>;
 
 /** The page's hello to its parent, asking for the port. */
-export const BRIDGE_HELLO = { type: "equin-bridge-hello" } as const;
+export const BRIDGE_HELLO = { type: "muxos-bridge-hello" } as const;
 export const BridgeHelloSchema = z.object({
   type: z.literal(BRIDGE_HELLO.type),
 });
 
 /** The shell's answer to a hello, carrying the port. */
-export const BRIDGE_PORT = { type: "equin-bridge-port", version: 1 } as const;
+export const BRIDGE_PORT = { type: "muxos-bridge-port", version: 1 } as const;
 const BridgePortSchema = z.object({
   type: z.literal(BRIDGE_PORT.type),
   version: z.literal(1),
@@ -115,7 +115,7 @@ export interface BridgePortMessage<Port, Source> {
  * The bridge port a message hands the page, or `null` when it is not the
  * extension's: it must come from the page's own parent, from the extension's
  * origin, in the port message's shape, with exactly one port. Anything else —
- * a foreign page framing equin, another window posting — is not a bridge.
+ * a foreign page framing muxos, another window posting — is not a bridge.
  */
 export function acceptBridgePort<Port, Source>(
   event: BridgePortMessage<Port, Source>,

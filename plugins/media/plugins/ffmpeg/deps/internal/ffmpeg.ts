@@ -75,7 +75,7 @@ export function ffmpegPaths(ready: Ready<typeof ffmpeg.source>): FfmpegPaths {
   };
 }
 
-/** Installs the `ffmpeg` dep when missing (a child `./equin deps install`) and returns its binaries. */
+/** Installs the `ffmpeg` dep when missing (a child `./muxos deps install`) and returns its binaries. */
 export async function resolveFfmpeg(): Promise<FfmpegPaths> {
   return ffmpegPaths(
     await ensureDepViaCli(ffmpeg, { stdio: "inherit", grant: null }),

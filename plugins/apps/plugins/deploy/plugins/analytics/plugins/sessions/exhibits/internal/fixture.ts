@@ -5,7 +5,7 @@ import type {
 } from "@plugins/apps/plugins/deploy/plugins/analytics/plugins/collect/core";
 
 /**
- * Made-up visits of the equin website — the prototype's own
+ * Made-up visits of the muxos website — the prototype's own
  * (proto-1794248902-aof7vs), so the exhibit and the mock compare. Each page:
  * path, seconds on it, sections reached `[key, at]`, actions `[name, at, props]`,
  * and its stretches away `[from, to, kind]` (page seconds); each visit its
@@ -403,7 +403,7 @@ export function fixtureSessions(now: number): Session[] {
       startedAt: iso(0),
       lastAt: iso(at),
       live: v.minutesAgo < 30,
-      host: "equin.ai",
+      host: "MuxOS.app",
       entryPath: v.pages[0]![0],
       exitPath: last[0],
       exitAt,

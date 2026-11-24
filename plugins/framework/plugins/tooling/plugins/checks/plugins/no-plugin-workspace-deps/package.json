@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-checks-no-plugin-workspace-deps",
+  "name": "@muxos/plugin-framework-tooling-checks-no-plugin-workspace-deps",
   "version": "0.0.1",
   "private": true
 }

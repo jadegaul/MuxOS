@@ -70,7 +70,7 @@ describe("workspace paths", () => {
 
   test("resolvePath inverts pathFor for every registered kind", async () => {
     await register(fakeImpl("worktree", "/repo/.claude/worktrees"));
-    await register(fakeImpl("scratch", "/home/.equin/workspaces"));
+    await register(fakeImpl("scratch", "/home/.muxos/workspaces"));
     for (const kind of ["worktree", "scratch"] as const) {
       const path = await Workspace.pathFor(kind, "att-7");
       expect(await Workspace.resolvePath(path)).toEqual({

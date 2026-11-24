@@ -2,7 +2,7 @@
  * Measures the server-portability derivation (`core/portability.ts`) over the
  * repo, read-only:
  *
- *   ./equin run plugins/framework/plugins/tooling/plugins/boundaries/scripts/measure-derived-portability.ts
+ *   ./muxos run plugins/framework/plugins/tooling/plugins/boundaries/scripts/measure-derived-portability.ts
  *
  * Prints the union build's size and time, the derivation's own cost, how many
  * server barrels are portable, and the barrels made non-portable by rule 3

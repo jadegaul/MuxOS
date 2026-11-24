@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-tags",
+  "name": "@muxos/plugin-fields-tags",
   "version": "0.0.1",
   "private": true,
-  "description": "Tags (multi-value) field type: identity only — a set of string labels per row."
+  "description": "Tags (multi-value) field type: identity only \u2014 a set of string labels per row."
 }

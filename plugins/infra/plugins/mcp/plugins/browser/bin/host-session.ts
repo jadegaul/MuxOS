@@ -249,7 +249,7 @@ async function launch(): Promise<Browser> {
   const installed = await readyNow(chromium);
   if (installed.kind !== "ready") {
     throw new Error(
-      `Chromium is not installed (${installed.kind}). Run \`./equin deps install chromium\`.`,
+      `Chromium is not installed (${installed.kind}). Run \`./muxos deps install chromium\`.`,
     );
   }
   const launched = await launchChromium(installed.ready, {
@@ -337,7 +337,7 @@ function touch(session: Session): void {
  * read the agent-origin headers and keep a write ledger to revert; anything
  * else (a CDN, a public website) never sees the headers.
  *
- * The port is any an equin gateway listens on — the per-account range, or the
+ * The port is any an muxos gateway listens on — the per-account range, or the
  * legacy port a moved install still answers on — not one read port: the host
  * is one process per machine, started by whichever backend came first, and a
  * deploy origin is a property of the URL, not of who launched the host.

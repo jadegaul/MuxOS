@@ -92,15 +92,15 @@ import {
 } from "@plugins/infra/plugins/launcher/plugins/login-services/machine";
 
 // What this command prints follows the installer message rules
-// (`infra/launcher/installer-notice`): a person installing equin reads it, so
+// (`infra/launcher/installer-notice`): a person installing muxos reads it, so
 // every line says what they get, in their words, and the ids, PIDs and paths a
 // developer wants sit on a `details:` line under it — never in the sentence.
 
 /** The gateway, as the person installing knows it. */
 const GATEWAY_FOR_USER: ServiceForUser = {
-  name: "the part of equin that runs in the background",
+  name: "the part of muxos that runs in the background",
   gives:
-    "It is what opens equin in your browser, and it starts by itself every time you log in.",
+    "It is what opens muxos in your browser, and it starts by itself every time you log in.",
 };
 // Declarations are checked by defineLoginService; this one by hand, at load,
 // so a rule break never surfaces first inside the error path that prints it.
@@ -123,7 +123,7 @@ function details(...facts: string[]): void {
  * Where the step-by-step lines of the modules `start` drives go — the
  * dependency installs, the app bundle, each login service's reconcile, the
  * gateway's build and launch. They speak in internal names and paths ("Installed
- * gateway (<identity>) into …/equin.app"), so the terminal a person installing
+ * gateway (<identity>) into …/muxos.app"), so the terminal a person installing
  * reads never gets them: every one is appended to the last run's start log
  * (`startLogs`), named on the final `details:` line. `--verbose` also echoes
  * them, for a developer at the terminal. Every module hands its lines to the
@@ -135,7 +135,7 @@ const START_LOG = startLogs.file("start.log");
 const startLogSink = defineFileSink({
   id: "start-log",
   description:
-    "`./equin start`'s detailed steps (installs, the app bundle, each login service, the background server's build and launch) — the last run, emptied by the next",
+    "`./muxos start`'s detailed steps (installs, the app bundle, each login service, the background server's build and launch) — the last run, emptied by the next",
   path: START_LOG,
   maxBytes: 2 * 1024 * 1024,
   keep: 1,
@@ -199,7 +199,7 @@ const run: CliAction<[], Opts> = async (opts) => {
   const declared = await declaredLoginServices();
   const manager = loginServiceManager();
   // The label the gateway's service is bound to on this machine — the old one
-  // until `./equin data-dir migrate` relabels it (`installedAs`).
+  // until `./muxos data-dir migrate` relabels it (`installedAs`).
   const gatewayService = manager
     ? await manager.service(GATEWAY_SERVICE)
     : null;
@@ -232,9 +232,9 @@ const run: CliAction<[], Opts> = async (opts) => {
     }
     return;
   }
-  // One equin per account: a second checkout of the repo would share this
+  // One muxos per account: a second checkout of the repo would share this
   // account's database, address and background service, so starting it would
-  // take over the equin running from another one (`instance-owner`). Asked
+  // take over the muxos running from another one (`instance-owner`). Asked
   // before anything is installed, built or restarted.
   try {
     await assertThisInstance(await getMainRepoRoot(), "start");
@@ -249,7 +249,7 @@ const run: CliAction<[], Opts> = async (opts) => {
   const installed = await installLockedToolchain(await getWorktreeRoot());
   if (installed.length > 0) {
     console.log(
-      "Installed the exact Bun, Go and Rust versions equin is built with.",
+      "Installed the exact Bun, Go and Rust versions muxos is built with.",
     );
     details(`mise installed ${installed.join(", ")}`);
   }
@@ -268,7 +268,7 @@ const run: CliAction<[], Opts> = async (opts) => {
 
   // Opened after the host checks: a refused start writes nothing.
   const log = openStartLog(opts.verbose === true);
-  // The equin app bundle every service runs from on macOS (a no-op elsewhere).
+  // The muxos app bundle every service runs from on macOS (a no-op elsewhere).
   const steps: Steps = {
     app: machineMacosAppHost({ exec: cliExecContext() }, log),
     log,
@@ -313,8 +313,8 @@ async function startSelected(
   // before the gateway: fixed and tried again, the retry builds with nothing
   // else on the machine (started, the gateway's first boot deploys main, and
   // the retry's build would queue minutes behind it for the host's build
-  // slot — 2026-11-18, Linux VMs: 32 s to 5 min). Skip starts equin without
-  // it. Run by hand, equin itself comes first: the gateway starts (or
+  // slot — 2026-11-18, Linux VMs: 32 s to 5 min). Skip starts muxos without
+  // it. Run by hand, muxos itself comes first: the gateway starts (or
   // restarts, `--force`) and `start` fails on the part afterwards — an
   // optional part never holds the app.
   const failed = ensuredDeps?.failed ?? [];
@@ -330,12 +330,12 @@ async function startSelected(
       );
     } catch (err) {
       if (!(err instanceof BundleWriteRefusedError)) throw err;
-      // Not optional: without it there is no equin to open.
+      // Not optional: without it there is no muxos to open.
       console.error(
         renderNotice(
           appsBlockedNotice([err], [GATEWAY_FOR_USER], {
             optional: false,
-            because: "without it, equin cannot open in your browser.",
+            because: "without it, muxos cannot open in your browser.",
           }),
         ),
       );
@@ -382,7 +382,7 @@ function failParts(failed: readonly FailedPart[]): never {
  * `add` them, leave them out because this machine has no desktop to show a
  * `graphical` one on (nothing is built, registered or asked of the OS for
  * it), or leave them out because the person chose to (`--leave-out`, or an
- * install's Skip: `EQUIN_INSTALL_LEFT_OUT`).
+ * install's Skip: `MUXOS_INSTALL_LEFT_OUT`).
  */
 type PartsHere = {
   add: LoginServiceDeclaration[];
@@ -446,13 +446,13 @@ function sayLeftOut(parts: PartsHere): void {
   const { noDesktop, chosen } = parts;
   if (noDesktop.decls.length > 0) {
     console.log(
-      `Left out ${listNames(noDesktop.decls)}: ${noDesktop.why}. equin works without ${noDesktop.decls.length > 1 ? "them" : "it"}, in your browser.`,
+      `Left out ${listNames(noDesktop.decls)}: ${noDesktop.why}. muxos works without ${noDesktop.decls.length > 1 ? "them" : "it"}, in your browser.`,
     );
     details(noDesktop.decls.map((d) => d.id).join(", "), noDesktop.evidence);
   }
   if (chosen.length > 0) {
     console.log(
-      `Left out ${listNames(chosen)}, as you chose. To add ${chosen.length > 1 ? "them" : "it"} later, run \`./equin start\` again.`,
+      `Left out ${listNames(chosen)}, as you chose. To add ${chosen.length > 1 ? "them" : "it"} later, run \`./muxos start\` again.`,
     );
     details(`left out: ${chosen.map((d) => d.id).join(", ")}`);
   }
@@ -475,7 +475,7 @@ function partsFailedNotice(failed: readonly FailedPart[]): InstallerNotice {
   const commands = installCommands(missing);
   const them = failed.length > 1 ? "them" : "it";
   return defineNotice({
-    title: `equin couldn't add ${names}`,
+    title: `muxos couldn't add ${names}`,
     doing: `It was adding ${names}. ${decls.map((d) => d.forUser.gives).join(" ")}`,
     blocked:
       missing.length === failed.length
@@ -483,14 +483,14 @@ function partsFailedNotice(failed: readonly FailedPart[]): InstallerNotice {
         : `${failed.length > 1 ? "They are" : "It is"} built on this computer, and that build failed.`,
     now: [
       commands.length > 0
-        ? `Install what ${failed.length > 1 ? "they need" : "it needs"} with ${commands.map((c) => `\`sudo ${c}\``).join(" and ")}, then run \`./equin start\` again.`
-        : "Fix what stopped the build (its last lines are in the details), then run `./equin start` again.",
-      `Or start equin without ${them}: \`./equin start --leave-out ${decls.map((d) => d.id).join(",")}\`.`,
+        ? `Install what ${failed.length > 1 ? "they need" : "it needs"} with ${commands.map((c) => `\`sudo ${c}\``).join(" and ")}, then run \`./muxos start\` again.`
+        : "Fix what stopped the build (its last lines are in the details), then run `./muxos start` again.",
+      `Or start muxos without ${them}: \`./muxos start --leave-out ${decls.map((d) => d.id).join(",")}\`.`,
     ],
     ifSkipped: {
       optional: true,
-      stillWorks: `equin works without ${them}, in your browser.`,
-      addLater: `To add ${them} later, run \`./equin start\` again in equin's folder.`,
+      stillWorks: `muxos works without ${them}, in your browser.`,
+      addLater: `To add ${them} later, run \`./muxos start\` again in muxos's folder.`,
     },
     evidence: failed.flatMap((f) => [
       `${f.decl.id} (${f.decl.dep.id}):`,
@@ -516,7 +516,7 @@ function pauseText(
     commands.length > 0
       ? `Install ${them === "it" ? "what it needs" : "what they need"} with ${commands.map((c) => `\`sudo ${c}\``).join(" and ")}, then Try again.`
       : "Fix with Claude reads what went wrong first; Try again builds it again.";
-  return `${notice.doing} ${notice.blocked} ${act} It's optional: Skip starts equin without ${them}, and equin works in your browser. ${notice.ifSkipped.optional ? notice.ifSkipped.addLater : ""}`.trim();
+  return `${notice.doing} ${notice.blocked} ${act} It's optional: Skip starts muxos without ${them}, and muxos works in your browser. ${notice.ifSkipped.optional ? notice.ifSkipped.addLater : ""}`.trim();
 }
 
 /**
@@ -549,7 +549,7 @@ function errorTail(error: unknown): string[] {
  * `--only <ids>`: which services this `start` touches — the gateway by its
  * label, a declared one by its id; every one without the flag. An unknown id
  * throws, listing the known ones. With `--force` it is the per-service
- * restart (`--only dev.equin.menu-bar --force` leaves the gateway, and so every
+ * restart (`--only dev.muxos.menu-bar --force` leaves the gateway, and so every
  * backend, alone).
  */
 function selectServices(
@@ -601,7 +601,7 @@ async function startAsLoginService(
   const moving =
     opts.port !== undefined && steps.port.from !== steps.port.record.port;
   if (managedPid !== null && !opts.force && !moving) {
-    printRunning("equin is already running.", runningPort(steps.port), [
+    printRunning("muxos is already running.", runningPort(steps.port), [
       `${loginService.id.label} under ${manager}`,
       `PID ${managedPid}`,
     ]);
@@ -617,7 +617,7 @@ async function startAsLoginService(
   const launch = await adoptAndHold(prepared, steps);
   const spec = gatewayLaunchSpec(launch);
   const written = await loginService.write(gatewayServiceJob(spec));
-  console.log("Set equin to start by itself every time you log in.");
+  console.log("Set muxos to start by itself every time you log in.");
   details(`${loginService.id.label} registered with ${manager}`, written.path);
 
   if (legacyPid !== null) {
@@ -625,12 +625,12 @@ async function startAsLoginService(
       // Registering is enough for the next login/boot; swapping the live
       // gateway restarts every backend, which only an explicit --force asks for.
       console.log(
-        `equin keeps running as it is, and starts by itself from your next ${loginService.startsAt} on. To switch now (open apps reload), run \`./equin start --only ${loginService.id.label} --force\`.`,
+        `muxos keeps running as it is, and starts by itself from your next ${loginService.startsAt} on. To switch now (open apps reload), run \`./muxos start --only ${loginService.id.label} --force\`.`,
       );
       details(`running PID ${legacyPid} was started outside ${manager}`);
       return;
     }
-    console.log("Restarting equin (open apps reload)...");
+    console.log("Restarting muxos (open apps reload)...");
     details(`stopping PID ${legacyPid}, started outside ${manager}`);
     await terminateProcess(legacyPid);
   }
@@ -642,7 +642,7 @@ async function startAsLoginService(
     // Unload rather than restart in place: neither manager re-reads a job
     // definition while it is loaded, so a rewritten job takes effect only
     // through a reload — one that always loads once it has unloaded.
-    console.log("Restarting equin (open apps reload)...");
+    console.log("Restarting muxos (open apps reload)...");
     details(`reloading the ${manager} job`);
     pid = await reloadService(loginService, managedPid, truncateLog);
   } else {
@@ -655,7 +655,7 @@ async function startAsLoginService(
   await awaitGatewayReady({ pid, port: steps.port.record.port });
   await recordPort(steps.port);
   printRunning(
-    `equin is running, and starts by itself at every ${loginService.startsAt}.`,
+    `muxos is running, and starts by itself at every ${loginService.startsAt}.`,
     steps.port.record.port,
     [`${loginService.id.label} under ${manager}`, `PID ${pid}`],
   );
@@ -673,14 +673,14 @@ async function reportStaleGateway(
   opts: Opts,
   steps: Steps,
 ): Promise<void> {
-  console.log("Checking whether equin has an update ready...");
+  console.log("Checking whether muxos has an update ready...");
   const { gateway, launch } = await prepareGateway(opts, steps);
   if (
     await loginService.isCurrent(gatewayServiceJob(gatewayLaunchSpec(launch)))
   )
     return;
   console.log(
-    `An update to equin is ready. To install it now (open apps reload), run \`./equin start --only ${loginService.id.label} --force\`.`,
+    `An update to muxos is ready. To install it now (open apps reload), run \`./muxos start --only ${loginService.id.label} --force\`.`,
   );
   details(
     `the running gateway's job differs from main's`,
@@ -748,7 +748,7 @@ async function startDeclaredLoginServices(
   if (declared.length === 0) return;
   if (manager === null) {
     console.log(
-      `Left out ${listNames(declared)}: this system has no way to start programs when you log in. equin works without ${declared.length > 1 ? "them" : "it"}, in your browser.`,
+      `Left out ${listNames(declared)}: this system has no way to start programs when you log in. muxos works without ${declared.length > 1 ? "them" : "it"}, in your browser.`,
     );
     details(`no service manager for ${declared.map((d) => d.id).join(", ")}`);
     return;
@@ -777,7 +777,7 @@ async function startDeclaredLoginServices(
         ...startFacts(outcome),
       );
     } catch (err) {
-      // A declared service is optional: equin runs without it (the gateway,
+      // A declared service is optional: muxos runs without it (the gateway,
       // and so the app, is already up). A machine policy refusing the bundle
       // write is a state to report, never the end of the install.
       if (!(err instanceof BundleWriteRefusedError)) throw err;
@@ -794,7 +794,7 @@ async function startDeclaredLoginServices(
           {
             optional: true,
             appUrl: namespaceUrl(MAIN_WORKTREE_NAME, "", gatewayPortSync()),
-            addLater: `Once it is allowed, \`./equin start --only ${ids}\` adds ${skipped.length > 1 ? "them" : "it"}.`,
+            addLater: `Once it is allowed, \`./muxos start --only ${ids}\` adds ${skipped.length > 1 ? "them" : "it"}.`,
           },
         ),
       ),
@@ -804,8 +804,8 @@ async function startDeclaredLoginServices(
     reportInstallNotice({
       id: ids,
       state: "skipped",
-      title: "macOS blocked equin from adding its apps",
-      text: "With them, equin's apps open in their own windows and get a menu-bar icon. To allow it, turn on Terminal in Privacy & Security, App Management. It's optional: skip it and use equin in your browser.",
+      title: "macOS blocked muxos from adding its apps",
+      text: "With them, muxos's apps open in their own windows and get a menu-bar icon. To allow it, turn on Terminal in Privacy & Security, App Management. It's optional: skip it and use muxos in your browser.",
       without: "the menu-bar icon and app shortcuts",
     });
   }
@@ -850,14 +850,14 @@ function describeStart(
     case "unregistered":
     case "rewritten":
       throw new Error(
-        `reconcileLoginService answered ${outcome.kind} to ./equin start`,
+        `reconcileLoginService answered ${outcome.kind} to ./muxos start`,
       );
   }
 }
 
 /**
  * Hosts without a service manager: the detached spawn. It does not survive a reboot —
- * run `./equin start` again after one.
+ * run `./muxos start` again after one.
  */
 async function startDetached(opts: Opts, steps: Steps): Promise<void> {
   const existingPid = await readPid();
@@ -872,12 +872,12 @@ async function startDetached(opts: Opts, steps: Steps): Promise<void> {
     opts.port !== undefined && steps.port.from !== steps.port.record.port;
   if (pidAlive) {
     if (!opts.force && !moving) {
-      printRunning("equin is already running.", runningPort(steps.port), [
+      printRunning("muxos is already running.", runningPort(steps.port), [
         `PID ${existingPid}`,
       ]);
       return;
     }
-    console.log("Restarting equin (open apps reload)...");
+    console.log("Restarting muxos (open apps reload)...");
     details(`stopping PID ${existingPid}`);
     await terminateProcess(existingPid!);
   }
@@ -893,7 +893,7 @@ async function startDetached(opts: Opts, steps: Steps): Promise<void> {
   await awaitGatewayReady({ pid, port: steps.port.record.port });
   await recordPort(steps.port);
   printRunning(
-    "equin is running. This system cannot start it by itself when you log in: after a restart, run `./equin start` again.",
+    "muxos is running. This system cannot start it by itself when you log in: after a restart, run `./muxos start` again.",
     steps.port.record.port,
     [`PID ${pid}`, "no service manager"],
   );
@@ -948,7 +948,7 @@ async function planPort(
     const port = Number(opts.port);
     if (!isGatewayPort(port)) {
       throw new Error(
-        `--port ${opts.port}: equin uses one of ${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last}.`,
+        `--port ${opts.port}: muxos uses one of ${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last}.`,
       );
     }
     if (port !== from) {
@@ -962,7 +962,7 @@ async function planPort(
     return {
       record: { port, legacy },
       from,
-      said: port === from ? null : `equin moves to port ${port}.`,
+      said: port === from ? null : `muxos moves to port ${port}.`,
     };
   }
   if (read.kind === "set") return { record: read.record, from, said: null };
@@ -973,7 +973,7 @@ async function planPort(
     said:
       legacy === null
         ? describeChoice(choice)
-        : `equin moves off port ${LEGACY_GATEWAY_PORT}, which other programs often use: ${describeChoice(choice)} Old addresses on ${LEGACY_GATEWAY_PORT} keep working for a while and open the new one.`,
+        : `muxos moves off port ${LEGACY_GATEWAY_PORT}, which other programs often use: ${describeChoice(choice)} Old addresses on ${LEGACY_GATEWAY_PORT} keep working for a while and open the new one.`,
   };
 }
 
@@ -988,9 +988,9 @@ function describeProbe(
 ): string {
   switch (probe.kind) {
     case "ours":
-      return "this account's equin";
-    case "other-equin":
-      return `the equin of another user account (uid ${probe.uid})`;
+      return "this account's muxos";
+    case "other-muxos":
+      return `the muxos of another user account (uid ${probe.uid})`;
     case "foreign":
       return probe.holder ?? "a program of another user account";
   }
@@ -1009,16 +1009,16 @@ async function answeredByOurs(port: number): Promise<boolean> {
       return false;
     case "ours":
       printRunning(
-        "equin is already running (started outside this command).",
+        "muxos is already running (started outside this command).",
         port,
         [`port ${port} answers`],
       );
       return true;
-    case "other-equin":
+    case "other-muxos":
     case "foreign":
       throw new Error(
-        `equin's port ${port} is taken by ${describeProbe(probe)}, so equin cannot start. ` +
-          `Stop that program, or move equin with \`./equin start --port <${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last}>\`.` +
+        `muxos's port ${port} is taken by ${describeProbe(probe)}, so muxos cannot start. ` +
+          `Stop that program, or move muxos with \`./muxos start --port <${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last}>\`.` +
           (probe.kind === "foreign"
             ? ""
             : ` (${(await portHolder(port)) ?? "no process of this account holds it"})`),

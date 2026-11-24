@@ -53,7 +53,7 @@ describe("Disk I/O row verdict", () => {
     expect(v.status.state).toBe("not-applicable");
     const summary = "summary" in v.status ? v.status.summary : "";
     expect(summary).toStartWith("Not measured on Linux: ");
-    expect(summary).not.toContain("./equin start");
+    expect(summary).not.toContain("./muxos start");
     expect(v.nextChangeAt).toBeNull();
   });
 

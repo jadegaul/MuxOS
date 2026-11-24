@@ -35,7 +35,7 @@
 // The script creates its OWN scratch page and deletes it on the way out.
 //
 // Usage:
-//   ./equin run plugins/page/plugins/url-paste/e2e/url-paste-link-verify.ts [--url <deploy>] [--headed]
+//   ./muxos run plugins/page/plugins/url-paste/e2e/url-paste-link-verify.ts [--url <deploy>] [--headed]
 import type { Locator, Page } from "playwright";
 import {
   pageFetch,

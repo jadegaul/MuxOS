@@ -7,7 +7,7 @@
  * to remember. Each "holds no slot" test below HANGS under the old semantics
  * (a slot held for the whole loader unless a wait opted out): six such reads
  * filled the gate and the unrelated reads never acked.
- * Run with `./equin test plugins/network/plugins/live/plugins/resource-runtime`.
+ * Run with `./muxos test plugins/network/plugins/live/plugins/resource-runtime`.
  *
  * Incidents: main 2026-11-03 (131 reads waited ~12 s on one transcript), and
  * 2026-11-18 (about half of the read-admit holder time was a worker reply, a

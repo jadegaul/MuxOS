@@ -14,7 +14,7 @@ const RENDER_SCRIPT =
 
 /** The command that re-renders the thumbnails of the fixture at `dir`. */
 export function renderFixtureThumbnailsCommand(dir: AppPath): string {
-  return `./equin run ${RENDER_SCRIPT} --fixture ${relative(REPO_ROOT, dir)}`;
+  return `./muxos run ${RENDER_SCRIPT} --fixture ${relative(REPO_ROOT, dir)}`;
 }
 
 /**

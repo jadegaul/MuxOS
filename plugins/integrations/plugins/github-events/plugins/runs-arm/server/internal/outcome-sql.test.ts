@@ -2,7 +2,7 @@
  * The GitHub arm's outcome mapping, on a real Postgres — evaluated over
  * parameters, so the suite needs no table.
  *
- * Run: `./equin test plugins/integrations/plugins/github-events/plugins/runs-arm`.
+ * Run: `./muxos test plugins/integrations/plugins/github-events/plugins/runs-arm`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

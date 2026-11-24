@@ -14,7 +14,7 @@
  * reopens, the longest task (the open's commit) split the same way, and with
  * `--cpu` a sampled CPU profile's JS self time by module and by function.
  *
- *   ./equin run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/e2e/open-split.ts \
+ *   ./muxos run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/e2e/open-split.ts \
  *     --conv <id> --from <id> [--runs 4] [--settle-ms 2500] [--cpu] [--no-record]
  */
 import {

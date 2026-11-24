@@ -16,11 +16,11 @@ export const MAX_FOREGROUND_TIMEOUT_MS = 600_000;
  * call will be cut off.
  *
  * The op hands itself off before that instant (`cli/foreground-handoff`): it
- * keeps running detached and the call ends with `./equin await <op>` as the
+ * keeps running detached and the call ends with `./muxos await <op>` as the
  * way to its verdict, instead of the harness killing it handle-less at the
  * limit. Only this hook knows the limit, so the command gets an `export` in
  * front — `export`, not a `VAR=… cmd` prefix, so every op of a chain shares the
- * one deadline (`./equin check a && ./equin test b`). The timeout is raised to
+ * one deadline (`./muxos check a && ./muxos test b`). The timeout is raised to
  * the ceiling first: no shorter limit serves an op, and the deadline is derived
  * from the limit actually in force.
  *

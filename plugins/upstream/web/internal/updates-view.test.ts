@@ -67,7 +67,7 @@ describe("the updates row", () => {
   test("out of date: being behind is worth knowing, not a problem", () => {
     expect(health({})).toEqual({
       state: "info",
-      title: "equin is out of date",
+      title: "muxos is out of date",
       summary: "2026.10.30 → 2026.11.14 · 312 commits",
     });
   });
@@ -130,7 +130,7 @@ describe("the updates row", () => {
   test("up to date once main serves it", () => {
     expect(health({ release: ready(current) })).toEqual({
       state: "ok",
-      title: "equin is up to date",
+      title: "muxos is up to date",
       summary: "2026.11.14",
     });
   });

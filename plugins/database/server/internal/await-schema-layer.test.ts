@@ -90,7 +90,7 @@ describe("waitForOwner", () => {
     expect(String(caught)).toContain(
       "no build, deploy or backend boot of this checkout is in flight",
     );
-    expect(String(caught)).toContain("./equin build");
+    expect(String(caught)).toContain("./muxos build");
     expect(Date.now() - started).toBeLessThan(1000);
     expect(host.closed()).toBe(true);
   });
@@ -111,7 +111,7 @@ describe("waitForOwner", () => {
     }
     expect(caught).toBeInstanceOf(SchemaNotReadyError);
     expect(String(caught)).toContain("main has moved past this slot");
-    expect(String(caught)).not.toContain("./equin build");
+    expect(String(caught)).not.toContain("./muxos build");
     expect(Date.now() - started).toBeLessThan(1000);
     expect(host.closed()).toBe(true);
   });
@@ -195,7 +195,7 @@ describe("waitForOwner", () => {
     );
     expect(message).toContain('relation "schema_layer_stamps" does not exist');
     expect(message).toContain("server error of database's onReady");
-    expect(message).not.toContain("./equin build");
+    expect(message).not.toContain("./muxos build");
   });
 
   test("the last backend exited before its stamp: refused naming the exit", async () => {
@@ -226,6 +226,6 @@ describe("waitForOwner", () => {
     } catch (err) {
       caught = err;
     }
-    expect(String(caught)).toContain("./equin build");
+    expect(String(caught)).toContain("./muxos build");
   });
 });

@@ -13,7 +13,7 @@ export function compactionContextPath(conversationId: string): string {
 
 /**
  * Where the hook reaches its backend: the origin the agent's .mcp.json dials
- * too (`EQUIN_PARENT_URL`). Throws on a value that is not one.
+ * too (`MUXOS_PARENT_URL`). Throws on a value that is not one.
  */
 export function backendBaseUrl(parentUrl: string): string {
   return asNamespaceOrigin(parentUrl);

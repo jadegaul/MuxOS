@@ -2,7 +2,7 @@
  * The MCP request path: no server instructions at initialize, live
  * descriptions on tools/list, `when` gates, the call context.
  *
- * Run: `./equin test plugins/infra/plugins/mcp`
+ * Run: `./muxos test plugins/infra/plugins/mcp`
  */
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
@@ -387,7 +387,7 @@ describe("a request the server fails to serve", () => {
       error: {
         code: -32603,
         message:
-          'MCP tool "echo" failed: the equin server could not serve it: the database system is shutting down',
+          'MCP tool "echo" failed: the muxos server could not serve it: the database system is shutting down',
       },
     });
     expect(logged).toEqual(["the database system is shutting down"]);

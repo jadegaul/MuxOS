@@ -5,7 +5,7 @@
 // the stat never appears.
 //
 // Usage:
-//   ./equin run plugins/conversations/plugins/conversation-view/plugins/running-agents/e2e/agents-stat-verify.ts \
+//   ./muxos run plugins/conversations/plugins/conversation-view/plugins/running-agents/e2e/agents-stat-verify.ts \
 //     --conv <conversationId with sub-agents> [--out /tmp/agents-stat] [--headed]
 
 import {

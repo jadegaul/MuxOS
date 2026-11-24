@@ -6,6 +6,6 @@ import type { ServerPluginDefinition } from "@plugins/framework/plugins/server-c
 export { _buildRuns } from "./internal/tables";
 export default {
   description:
-    "Build-runs ledger leaf: the build_runs entity, and (cli/) the hand-SQL build-run recorder the `./equin build` CLI imports without the table or the heavy build barrel.",
+    "Build-runs ledger leaf: the build_runs entity, and (cli/) the hand-SQL build-run recorder the `./muxos build` CLI imports without the table or the heavy build barrel.",
   contributions: [],
 } satisfies ServerPluginDefinition;

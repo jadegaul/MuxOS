@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-ordinal-storage",
+  "name": "@muxos/plugin-fields-ordinal-storage",
   "version": "0.0.1",
   "private": true,
-  "description": "Ordinal field type: DB storage capability — maps to a Postgres integer column."
+  "description": "Ordinal field type: DB storage capability \u2014 maps to a Postgres integer column."
 }

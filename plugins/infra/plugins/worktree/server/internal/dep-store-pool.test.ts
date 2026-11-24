@@ -56,7 +56,7 @@ function installedCheckout(name: string, pkg = "left-pad@1.0.0"): string {
   // Store entries predate the stamp, as a real install's do.
   const past = new Date(Date.now() - 60_000);
   for (const p of [file, join(file, ".."), store]) utimesSync(p, past, past);
-  writeFileSync(join(checkout, "node_modules", ".equin-deps"), "{}\n");
+  writeFileSync(join(checkout, "node_modules", ".muxos-deps"), "{}\n");
   return checkout;
 }
 
@@ -130,7 +130,7 @@ describe("harvestDepStore", () => {
 
   test("skips a checkout whose install never finished", async () => {
     const checkout = installedCheckout("att-1");
-    rmSync(join(checkout, "node_modules", ".equin-deps"));
+    rmSync(join(checkout, "node_modules", ".muxos-deps"));
     expect(await harvestAt(checkout, 1000)).toEqual({
       kind: "skipped",
       why: "no install stamp",
@@ -202,7 +202,7 @@ describe("adoptDepStore", () => {
       ),
     ).toBe("// c@1.0.0\n");
     // No stamp comes with it: the install still runs and re-links the store.
-    expect(existsSync(join(fresh, "node_modules", ".equin-deps"))).toBe(false);
+    expect(existsSync(join(fresh, "node_modules", ".muxos-deps"))).toBe(false);
     expect(poolNames()).toEqual(["2000-att-2", "seed"]);
   });
 
@@ -226,7 +226,7 @@ describe("adoptDepStore", () => {
     });
     const file = join(fresh, "node_modules", ".bun", "a@1.0.0", "index.js");
     expect(readFileSync(file, "utf8")).toBe("// a@1.0.0\n");
-    expect(existsSync(join(fresh, "node_modules", ".equin-deps"))).toBe(false);
+    expect(existsSync(join(fresh, "node_modules", ".muxos-deps"))).toBe(false);
     // The seed is untouched and still waits; no transient copy is left behind.
     expect(poolNames()).toEqual(["seed"]);
     // A copy, not a link: editing it leaves the seed as it was.

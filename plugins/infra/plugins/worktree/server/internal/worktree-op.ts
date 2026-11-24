@@ -36,7 +36,7 @@ import { liveOpsDir } from "../../data-dirs";
 // on this host" reads that one directory — O(live ops) — instead of the ops
 // dir of every worktree (~213 of them, all but a handful empty).
 //
-// Consumers: `./equin await`, the stop guard, and the op-store orphan
+// Consumers: `./muxos await`, the stop guard, and the op-store orphan
 // reconciler. Markers are keyed
 // on the checkout's namespace, which every writer (`build` / `push` / direct
 // ops) and reader agrees on.
@@ -58,7 +58,7 @@ export interface WorktreeOpInfo {
   startedAt: string;
   /**
    * The op runs only because the host is idle and yields to any other work
-   * (an idle test batch, `EQUIN_OP_OPPORTUNISTIC`). False on a marker an older
+   * (an idle test batch, `MUXOS_OP_OPPORTUNISTIC`). False on a marker an older
    * CLI wrote, which predates the flag.
    */
   opportunistic: boolean;
@@ -249,7 +249,7 @@ export async function probeWorktreeOp(
 //
 // The one scan, so the questions asked of these markers — "is anything running
 // here" (the status reconciler), "what is running everywhere" (the stop guard)
-// and "is MY op still running" (`./equin await`) — read the directory the
+// and "is MY op still running" (`./muxos await`) — read the directory the
 // same way and reap on the same rule.
 export async function listWorktreeOps(slug: string): Promise<WorktreeOpInfo[]> {
   const dir = opsDir(slug);

@@ -21,20 +21,20 @@ describe("extractBrowserRecordings", () => {
     } as const;
     expect(
       extractBrowserRecordings(
-        call("Bash", { command: "./equin run plugins/x/e2e/flow.ts" }),
+        call("Bash", { command: "./muxos run plugins/x/e2e/flow.ts" }),
       ),
     ).toEqual([hit]);
     expect(
-      extractBrowserRecordings(call("mcp__equin__browser_act", {})),
+      extractBrowserRecordings(call("mcp__muxos__browser_act", {})),
     ).toEqual([hit]);
   });
 
   test("other calls are not recordings", () => {
     expect(
-      extractBrowserRecordings(call("Bash", { command: "./equin build" })),
+      extractBrowserRecordings(call("Bash", { command: "./muxos build" })),
     ).toEqual([]);
     expect(
-      extractBrowserRecordings(call("mcp__equin__browser_read_page", {})),
+      extractBrowserRecordings(call("mcp__muxos__browser_read_page", {})),
     ).toEqual([]);
   });
 });

@@ -7,7 +7,7 @@ import {
 /**
  * The gateway as a per-user OS service — what makes the app come back after a
  * reboot and relaunches the gateway when it dies. One login service among
- * those `./equin start` brings up (`launcher/login-services`), but not a
+ * those `./muxos start` brings up (`launcher/login-services`), but not a
  * declared one: it is the service every other one needs, `start` gates on it
  * answering, hands over a gateway started outside the manager, and builds its
  * launch from flags (`--log-level`, the bind host). So `start` drives it by
@@ -21,9 +21,9 @@ import {
  * Start button kicks) is read from it too, and a login-services declaration
  * may not import `server`.
  *
- * Its label is `dev.equin.gateway`, but an install not yet migrated has it
- * under the old label, and the service stays bound to that one
- * (`installedAs`) until `./equin data-dir migrate` relabels it. Read the label
+ * Its label is `dev.${PRODUCT_NAME}.gateway`, but an install not yet migrated
+ * has it under the old label, and the service stays bound to that one
+ * (`installedAs`) until `./muxos data-dir migrate` relabels it. Read the label
  * a command acts on from the bound service (`service.id.label`), never from
  * here.
  */

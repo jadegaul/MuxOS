@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-location",
+  "name": "@muxos/plugin-fields-location",
   "version": "0.0.1",
   "private": true,
-  "description": "Location field type: identity only — a lat/lng point with an optional address. Cell, filter and storage live in sub-plugins."
+  "description": "Location field type: identity only \u2014 a lat/lng point with an optional address. Cell, filter and storage live in sub-plugins."
 }

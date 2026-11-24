@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-ordinal",
+  "name": "@muxos/plugin-fields-ordinal",
   "version": "0.0.1",
   "private": true,
-  "description": "Ordinal field type: identity only, extends int — a position, rank or version number, drawn faint and tabular with no thousands grouping; sort, filter and grouping inherited from int → number."
+  "description": "Ordinal field type: identity only, extends int \u2014 a position, rank or version number, drawn faint and tabular with no thousands grouping; sort, filter and grouping inherited from int \u2192 number."
 }

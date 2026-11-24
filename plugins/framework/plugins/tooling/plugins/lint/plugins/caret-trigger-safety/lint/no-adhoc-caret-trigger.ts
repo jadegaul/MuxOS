@@ -44,7 +44,7 @@ const FLOATING_SURFACE =
  *
  * Sources are exact specifiers, never patterns: plugin-meta/plugin-refs locates
  * a lint rule's `@plugins/…` string, so `plugin-refs-resolve` fails when the
- * barrel moves and `./equin plugin move` rewrites it. A regex here once kept
+ * barrel moves and `./muxos plugin move` rewrites it. A regex here once kept
  * matching `floating-surface`'s pre-move path and caught nothing for two months.
  */
 const SURFACE_SOURCES: {

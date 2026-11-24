@@ -6,7 +6,7 @@
  * `core/` import of such a module works only once that half has run, which
  * the closure cannot see from the import alone.
  *
- *   ./equin run plugins/plugin-meta/plugins/closure/scripts/find-core-couplings.ts [--json <out>]
+ *   ./muxos run plugins/plugin-meta/plugins/closure/scripts/find-core-couplings.ts [--json <out>]
  *
  * Heuristic and one-hop: a writer is an exported function/arrow whose own body
  * assigns or mutates a module binding (`x =`, `x.set/add/push/delete/clear(`,

@@ -53,11 +53,8 @@ func main() {
     println!("{:?}", v);
 }`,
   ],
-  ["json", `{ "name": "equin", "version": 1, "tags": ["a", "b"] }`],
-  [
-    "sql",
-    `SELECT id, name FROM users WHERE active = true ORDER BY name;`,
-  ],
+  ["json", `{ "name": "muxos", "version": 1, "tags": ["a", "b"] }`],
+  ["sql", `SELECT id, name FROM users WHERE active = true ORDER BY name;`],
   [
     "bash",
     `#!/bin/bash
@@ -100,7 +97,7 @@ jobs:
   [
     "toml",
     `[package]
-name = "equin"
+name = "muxos"
 version = "0.1.0"
 
 [dependencies]

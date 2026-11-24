@@ -31,7 +31,7 @@ describe("main-deploy-failed", () => {
     const d = MainDeployFailedPayloadSchema.parse({
       exitCode: null,
       signal: null,
-      spawnError: "fork/exec /x/equin: no such file or directory",
+      spawnError: "fork/exec /x/muxos: no such file or directory",
       causes: ["gateway boot"],
       tail: [],
       checkout: "/x",

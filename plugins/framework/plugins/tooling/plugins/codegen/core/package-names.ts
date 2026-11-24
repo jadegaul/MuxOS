@@ -20,7 +20,7 @@ import type { PluginNode } from "@plugins/plugin-meta/plugins/plugin-tree/core";
  * a file whose name is already right is not written.
  *
  * Skipped, exactly as R1 skips them: composition roots (they self-declare via
- * `equin.compositionRoot` and carry their own names). A plugin with NO
+ * `muxos.compositionRoot` and carry their own names). A plugin with NO
  * `package.json` but a barrel gets the minimal one ({@link newPackageJson}): with no
  * dependencies its content is the derived name alone, so writing it is a
  * derivation too — a plugin is its folder and its barrels (a host provider is

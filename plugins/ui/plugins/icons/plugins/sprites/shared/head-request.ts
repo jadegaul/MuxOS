@@ -15,7 +15,7 @@
  * {@link HEAD_REQUEST_GLOBAL}; the boot task takes them and provides them
  * before the first render.
  */
-export const HEAD_REQUEST_GLOBAL = "__equinIconSprites";
+export const HEAD_REQUEST_GLOBAL = "__muxosIconSprites";
 
 /**
  * The web-storage owner whose entries remember the glyph batches each page's

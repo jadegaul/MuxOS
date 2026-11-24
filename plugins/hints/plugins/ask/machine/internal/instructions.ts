@@ -11,7 +11,7 @@ function pageLine(input: AskInput): string {
 }
 
 /**
- * The Ask equin agent's CLAUDE.md: `template` (the Instructions setting) filled
+ * The Ask muxos agent's CLAUDE.md: `template` (the Instructions setting) filled
  * with where the user is and what is on their screen. A variable it names that
  * is not filled here fails the launch — never a prompt with a hole in it.
  */
@@ -32,7 +32,7 @@ export function askInstructions(
   });
   if (!rendered.ok) {
     throw new Error(
-      `[hints.ask] the Ask equin instructions (Settings → Config → Ask equin) name unknown variables: ${rendered.unknown.map((n) => `{{${n}}}`).join(", ")}`,
+      `[hints.ask] the Ask muxos instructions (Settings → Config → Ask muxos) name unknown variables: ${rendered.unknown.map((n) => `{{${n}}}`).join(", ")}`,
     );
   }
   return rendered.text;

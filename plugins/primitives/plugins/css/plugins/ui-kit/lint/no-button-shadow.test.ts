@@ -1,5 +1,5 @@
 /**
- * Tests for the `no-button-shadow` lint rule. Run with `./equin test`.
+ * Tests for the `no-button-shadow` lint rule. Run with `./muxos test`.
  *
  * The rule reports a `shadow-*` in the class names of a `<Button>` /
  * `<IconButton>` — a floating button must be `variant="floating"`, whose fill

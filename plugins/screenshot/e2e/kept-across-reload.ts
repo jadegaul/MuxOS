@@ -9,7 +9,7 @@
 // and reloads again: the edit is replayed over the capture, with no stroke
 // pending.
 //
-// Usage: ./equin run plugins/screenshot/e2e/kept-across-reload.ts [--out <dir>] [--headed] [--attach <ticket>]
+// Usage: ./muxos run plugins/screenshot/e2e/kept-across-reload.ts [--out <dir>] [--headed] [--attach <ticket>]
 import {
   arg,
   pathUrl,

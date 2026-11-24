@@ -49,7 +49,7 @@ export function writtenSessions(
  * and the parent session for a sub-agent's
  * `<dir>/<uuid>/subagents/…/agent-<id>.jsonl` (workflow agents included, one
  * level deeper under `workflows/wf_<run>/`) — `<dir>/<uuid>.jsonl` either way,
- * whether or not it exists yet. Whose the session is (an equin conversation's,
+ * whether or not it exists yet. Whose the session is (an muxos conversation's,
  * or none) is the listener's question.
  */
 export function writtenOwnerSessions(

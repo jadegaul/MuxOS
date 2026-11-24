@@ -39,9 +39,9 @@ export interface StreamEvents {
 /**
  * How one attempt failed. `answered`: the box itself answered (an HTTP
  * error, a stream it closed, a frame it sent wrong) — so the transport
- * carried the request and equin is what failed. Otherwise nothing came back
+ * carried the request and muxos is what failed. Otherwise nothing came back
  * (the request or the connection broke, or silence): through a tunnel, that
- * cannot tell the tunnel dying from equin not listening. `startedAt` is
+ * cannot tell the tunnel dying from muxos not listening. `startedAt` is
  * when the attempt began (epoch ms).
  */
 export interface StreamFailure {

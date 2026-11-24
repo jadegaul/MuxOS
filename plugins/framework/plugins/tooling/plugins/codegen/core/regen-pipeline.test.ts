@@ -2,7 +2,7 @@
  * Deleting a plugin and regenerating just works: the registry pipeline never
  * reads its own previous output as an input.
  *
- * The incident: after a plugin was deleted, `./equin regen-generated` (and
+ * The incident: after a plugin was deleted, `./muxos regen-generated` (and
  * push's post-rebase normalize step, which runs it) died with
  * "machine.generated.ts imports '@plugins/…/machine', which resolves to no
  * file of the checkout" — the registry steps read one snapshot listed before
@@ -114,7 +114,7 @@ test("a deleted plugin's registry entries regenerate away", async () => {
   mkdirSync(join(root, PLUGIN_DIR, "machine"), { recursive: true });
   writeFileSync(
     join(root, PLUGIN_DIR, "package.json"),
-    `${JSON.stringify({ name: `@equin/plugin-${PLUGIN}`, private: true, version: "0.0.1" }, null, 2)}\n`,
+    `${JSON.stringify({ name: `@muxos/plugin-${PLUGIN}`, private: true, version: "0.0.1" }, null, 2)}\n`,
   );
   writeFileSync(
     join(root, PLUGIN_DIR, "machine", "index.ts"),

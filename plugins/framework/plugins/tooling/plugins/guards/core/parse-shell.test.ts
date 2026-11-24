@@ -82,7 +82,7 @@ describe("parseShell reaches inside block structure", () => {
 
   describe("wrappers surface the command they wrap", () => {
     test("nohup", () => {
-      expect(names("nohup ./equin build")).toEqual(["nohup", "equin"]);
+      expect(names("nohup ./muxos build")).toEqual(["nohup", "muxos"]);
     });
 
     test("the repo CLI is named canonically under every one of its names", () => {
@@ -114,7 +114,7 @@ describe("parseShell reaches inside block structure", () => {
 
   describe("redirections are not commands", () => {
     test("2>&1 does not mint a call named 1", () => {
-      expect(names("./equin build 2>&1 | tail -15")).toEqual(["equin", "tail"]);
+      expect(names("./muxos build 2>&1 | tail -15")).toEqual(["muxos", "tail"]);
     });
   });
 
@@ -241,7 +241,7 @@ describe("parseShell reaches inside block structure", () => {
 });
 
 describe("heredoc bodies are data, not commands", () => {
-  const S = "./equin";
+  const S = "./muxos";
 
   describe("a document being written is not a script", () => {
     test("markdown inline code in the body mints no call", () => {
@@ -319,7 +319,7 @@ describe("heredoc bodies are data, not commands", () => {
 
     test("a commit message body is stripped, the push is still seen", () => {
       const cmd = message("fix(x): a thing\n\nRan `" + S + " build` first");
-      expect(names(cmd)).toEqual(["equin", "cat"]);
+      expect(names(cmd)).toEqual(["muxos", "cat"]);
     });
 
     test("… even when the message body holds an unpaired quote", () => {
@@ -328,7 +328,7 @@ describe("heredoc bodies are data, not commands", () => {
       const cmd = message(
         'He said "hi and ran `' + S + " build` then\nnext $(git push) here",
       );
-      expect(names(cmd)).toEqual(["equin", "cat"]);
+      expect(names(cmd)).toEqual(["muxos", "cat"]);
     });
 
     test("an interpreter executes its body whatever the delimiter quoting", () => {
@@ -601,11 +601,11 @@ describe("pipedIn marks the calls reading a pipe", () => {
 
 test("the repo CLI is named canonically under either of its names", () => {
   for (const cmd of [
-    "./equin build",
-    "./equin build",
-    `/r/repo/${LEGACY_IDS.cliShim} build`,
+    "./muxos build",
+    "./muxos build",
+    `/r/repo/${LEGACY_IDS.cliShims[0]} build`,
   ]) {
-    expect(parseShell(cmd).calls.map((c) => c.name)).toEqual(["equin"]);
+    expect(parseShell(cmd).calls.map((c) => c.name)).toEqual(["muxos"]);
   }
 });
 

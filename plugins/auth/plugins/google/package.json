@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-auth-google",
+  "name": "@muxos/plugin-auth-google",
   "private": true,
   "version": "0.0.1"
 }

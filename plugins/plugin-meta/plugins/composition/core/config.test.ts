@@ -31,7 +31,7 @@ const byName = (name: string): CompositionManifestItem => {
 };
 
 // Read from the seed, never re-typed here: a pinned copy of plugin ids in a test
-// is a site `./equin plugin move` does not rewrite (test code is not a ref site).
+// is a site `./muxos plugin move` does not rewrite (test code is not a ref site).
 const SELF_IMPROVEMENT = byName("self-improvement").selectedContributors;
 
 test("the seeded default parses against the descriptor schema", () => {
@@ -127,7 +127,7 @@ test("served-baseline lists only what BEING SERVED needs", () => {
   // below is a requirement of being served at all: the app surface, the
   // gateway's health probe (which brings the toast host by import), the runtime
   // theme engine, and the rubber-band that keeps the near-black `html` floor
-  // from showing above the page (equin.ai shipped that way), the boot
+  // from showing above the page (MuxOS.app shipped that way), the boot
   // snapshot that makes config (slot layouts) known on the first frame, and
   // the head's per-app code preloads (the app's code downloads from t0), and
   // the graph-record touch that keeps an open tab's bundle served.
@@ -163,7 +163,7 @@ test("every seed carries `serve` (default off) and the mapper drops it", () => {
     // a committed seed that named one would rebuild a namespace on a clean
     // checkout that never asked for one. The one served seed is the showcase
     // film's instance, `manual` — built only by an explicit
-    // `./equin build --composition promo-film`, and resettable (the reset
+    // `./muxos build --composition promo-film`, and resettable (the reset
     // guard refuses a composition whose mode is off).
     expect(s.serve).toBe(s.id === "promo-film" ? "manual" : "off");
     expect(autoRebuildIntervalMs(s.serve)).toBeNull();

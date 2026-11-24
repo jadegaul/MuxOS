@@ -7,7 +7,7 @@ import {
 } from "../../core";
 
 /** The binding the page's hook reports through. */
-const EMIT_BINDING = "__equinWsTestEmit";
+const EMIT_BINDING = "__muxosWsTestEmit";
 
 export interface SocketTapOptions {
   /** Socket URLs (`/ws/notifications`) whose worker must never connect — a page with no live socket. */

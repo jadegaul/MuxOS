@@ -26,14 +26,14 @@ import { declareExecAdmission, type ExecAdmission } from "../core/schema-role";
 // of release's recovery path
 // (research/2026-09-01-global-supervised-run-survives-restart.md).
 //
-// WHY THIS LIVES IN `cli/`: an exec process IS a `./equin` command process
+// WHY THIS LIVES IN `cli/`: an exec process IS a `./muxos` command process
 // — the future `supervised-exec` verb — and `cli/` is a runtime barrel, so
 // `@plugins/framework/plugins/server-core/cli` is a legal cross-plugin import
 // while `bin/` is not (R4 admits only runtime barrels, which is why nothing may
 // import into a `bin/` path). This barrel declares no command of its own, the
 // same shape the four shared-CLI-machinery barrels under `framework/cli/plugins`
 // already have, so it is not in `cli.generated.ts` and is not loaded on every
-// `./equin` invocation.
+// `./muxos` invocation.
 //
 // WHAT `exec` SKIPS, AND WHY EACH WOULD BE WRONG HERE:
 //
@@ -163,7 +163,7 @@ export async function runExec(
   let ordered;
   // The graph loads from the checkout this process runs from. On main that
   // is a SLOT (infra/git/main-slots), held shared for this process's whole
-  // life by the CLI bootstrap (an exec child is a `./equin` process —
+  // life by the CLI bootstrap (an exec child is a `./muxos` process —
   // `main-slots/boot-lease`), so no build checks it out while any module,
   // lazy import or spawned script may still be read from it; a worktree is
   // rewritten only by its own agent's commands. No push writes into either.
@@ -172,7 +172,7 @@ export async function runExec(
     // `cli:command-declarations-light`, which stops at dynamic-import edges — so
     // the future `supervised-exec` declaration that imports this barrel keeps a
     // trivial static closure, and neither the registry nor `spec.json` is read
-    // by a `./equin` invocation that is not this one.
+    // by a `./muxos` invocation that is not this one.
     // The declared data-dir moves, before the graph reads a path — inspected
     // only: an exec child never moves shared data (infra/paths CLAUDE.md,
     // § Moving a declared dir).

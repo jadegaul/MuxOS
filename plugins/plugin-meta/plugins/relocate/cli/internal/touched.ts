@@ -16,7 +16,7 @@ import { z } from "zod";
 import { pluginMoveKey, type PluginMove } from "../../core";
 
 /** File name, inside the checkout's git dir. */
-export const TOUCHED_FILE = "equin-plugin-moves-touched.json";
+export const TOUCHED_FILE = "muxos-plugin-moves-touched.json";
 
 const touchedSchema = z.record(z.string(), z.array(z.string()));
 type Touched = z.infer<typeof touchedSchema>;

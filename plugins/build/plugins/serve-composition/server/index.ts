@@ -8,7 +8,7 @@ import { handleReclaim } from "./internal/handle-reclaim";
 import { handleReset } from "./internal/handle-reset";
 import { handleServeStatus } from "./internal/handle-status";
 
-// The reset itself, for a `./equin` verb acting on this checkout (it passes
+// The reset itself, for a `./muxos` verb acting on this checkout (it passes
 // the checkout's namespace, having no runtime one): the same four guards and
 // recipe the Reset button's endpoint runs.
 export { resetServedComposition } from "./internal/reset-served-composition";

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-runtime-profiler",
+  "name": "@muxos/plugin-infra-runtime-profiler",
   "private": true,
   "version": "0.0.1"
 }

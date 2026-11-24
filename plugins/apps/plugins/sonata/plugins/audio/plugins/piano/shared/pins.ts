@@ -1,4 +1,4 @@
-// Pinned by `./equin run plugins/infra/plugins/asset-mirror/scripts/pin.ts`
+// Pinned by `./muxos run plugins/infra/plugins/asset-mirror/scripts/pin.ts`
 // from https://smpldsnds.github.io/sfzinstruments-splendid-grand-piano/samples — each file's sha256, checked before the mirror stores it.
 export const PIANO_PINS = {
   "FF A#2.m4a":

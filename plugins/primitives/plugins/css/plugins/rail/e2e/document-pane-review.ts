@@ -3,8 +3,8 @@
 // "Visual review deliverable"): one PNG per surface, same viewport, scheme and
 // settle, plus the px edges of the rightmost pane's body content.
 //
-//   ./equin run plugins/primitives/plugins/css/plugins/rail/e2e/document-pane-review.ts \
-//     --out "$EQUIN_SCRATCH/doc-review" --suffix before [--only a,b] \
+//   ./muxos run plugins/primitives/plugins/css/plugins/rail/e2e/document-pane-review.ts \
+//     --out "$MUXOS_SCRATCH/doc-review" --suffix before [--only a,b] \
 //     [--conv <conv id> --tool-use <a non-Workflow toolu id of that conversation>]
 //
 // Writes `<out>/<surface>-<suffix>.png`, prints `measure <surface> {…}` (the

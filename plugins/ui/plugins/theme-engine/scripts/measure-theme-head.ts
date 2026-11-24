@@ -5,7 +5,7 @@
 // process), `--themed` of them with a theme of their own (the rest follow the
 // desktop), and reports the bytes each entry adds to a page's head.
 //
-//   ./equin run plugins/ui/plugins/theme-engine/scripts/measure-theme-head.ts [--apps 20] [--themed 4] [--runs 10]
+//   ./muxos run plugins/ui/plugins/theme-engine/scripts/measure-theme-head.ts [--apps 20] [--themed 4] [--runs 10]
 //
 // Research: research/2026-11-08-infra-file-watcher-close-stall.md (§ theme)
 import { loadWebListEntries } from "@plugins/framework/plugins/server-core/cli";

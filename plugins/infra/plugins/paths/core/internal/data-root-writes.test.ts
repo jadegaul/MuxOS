@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { dataRootWriteViolationSync } from "./data-root-writes";
 import { legacyRootEntries } from "./legacy-layout";
 
-const ROOT = "/h/.equin";
+const ROOT = "/h/.muxos";
 const LEGACY = "/h/.legacy";
 const existing = new Set([`${ROOT}/apps/prototypes`, `${ROOT}/cache/check`]);
 const v = (p: string) =>
@@ -55,7 +55,7 @@ describe("dataRootWriteViolationSync", () => {
   test("the root itself and paths outside it are not asked about", () => {
     expect(v(`${ROOT}/`)).toBeNull();
     expect(v(ROOT)).toBeNull();
-    expect(v("/h/.equinx/a")).toBeNull();
+    expect(v("/h/.muxosx/a")).toBeNull();
     expect(v("/tmp/x")).toBeNull();
   });
 });

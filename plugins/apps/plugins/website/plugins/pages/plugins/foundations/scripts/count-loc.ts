@@ -2,7 +2,7 @@
  * Recounts the iceberg's lines of code per layer and rewrites
  * `core/layer-loc.ts`:
  *
- *   ./equin run plugins/apps/plugins/website/plugins/pages/plugins/foundations/scripts/count-loc.ts
+ *   ./muxos run plugins/apps/plugins/website/plugins/pages/plugins/foundations/scripts/count-loc.ts
  *
  * What counts: every git-tracked source file (`SOURCE_EXTENSIONS`) the repo's
  * own file-kind classifier calls code — tests, test support and generated

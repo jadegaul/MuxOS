@@ -10,15 +10,15 @@ import { parseLaunchAgentPlist, renderLaunchAgentPlist } from "./launchd-plist";
 const job: LoginServiceSpec = {
   label: "dev.example.service",
   session: "background",
-  description: "equin gateway",
+  description: "muxos gateway",
   argv: [
-    "/h/me/.equin/cache/deps/gateway-binary/abc/env/gateway",
+    "/h/me/.muxos/cache/deps/gateway-binary/abc/env/gateway",
     "-listen",
     ":9000",
     "-child-env",
     "A,B_*",
   ],
-  cwd: "/h/me/.equin/cache/deps/gateway-binary/abc/env",
+  cwd: "/h/me/.muxos/cache/deps/gateway-binary/abc/env",
   env: { PATH: "/shims:/usr/bin", HOME: "/h/me", Q: `a&b<c>"d"` },
   stdioLog: asAppPath("/h/me/logs/gateway-stdio.log"),
 };
@@ -33,7 +33,7 @@ describe("renderLaunchAgentPlist", () => {
     // strings[0] is the Label; the argv follows it.
     expect(strings.slice(1, 1 + job.argv.length)).toEqual([...job.argv]);
     expect(xml).toContain(
-      "<key>WorkingDirectory</key>\n\t<string>/h/me/.equin/cache/deps/gateway-binary/abc/env</string>",
+      "<key>WorkingDirectory</key>\n\t<string>/h/me/.muxos/cache/deps/gateway-binary/abc/env</string>",
     );
     expect(xml).toContain(
       `<key>StandardErrorPath</key>\n\t<string>${job.stdioLog}</string>`,
@@ -67,7 +67,7 @@ describe("renderLaunchAgentPlist — the gateway's job, byte for byte", () => {
       renderLaunchAgentPlist({
         label: "dev.example.service",
         session: "background",
-        description: "equin gateway",
+        description: "muxos gateway",
         argv: ["/bin/gw", "-x"],
         cwd: "/h/me/repo",
         env: { Z: "1", A: "2" },
@@ -117,20 +117,20 @@ describe("renderLaunchAgentPlist — the gateway's job, byte for byte", () => {
 describe("renderLaunchAgentPlist — a graphical service", () => {
   const xml = renderLaunchAgentPlist({
     ...job,
-    label: "dev.equin.menu-bar",
+    label: "dev.muxos.menu-bar",
     session: "graphical",
   });
 
   test("loads only into the Aqua (GUI) session", () => {
     expect(xml).toContain(
-      "<key>Label</key>\n\t<string>dev.equin.menu-bar</string>\n\t<key>LimitLoadToSessionType</key>\n\t<string>Aqua</string>\n\t<key>ProgramArguments</key>",
+      "<key>Label</key>\n\t<string>dev.muxos.menu-bar</string>\n\t<key>LimitLoadToSessionType</key>\n\t<string>Aqua</string>\n\t<key>ProgramArguments</key>",
     );
   });
 
   test("is the background plist plus that one key", () => {
     const background = renderLaunchAgentPlist({
       ...job,
-      label: "dev.equin.menu-bar",
+      label: "dev.muxos.menu-bar",
     });
     expect(
       xml.replace(
@@ -154,7 +154,7 @@ describe("renderLaunchAgentPlist — a graphical service", () => {
 describe("renderLaunchAgentPlist — a periodic service", () => {
   const xml = renderLaunchAgentPlist({
     ...job,
-    label: "dev.equin.fs-latency-monitor",
+    label: "dev.muxos.fs-latency-monitor",
     schedule: { everySeconds: 30 },
     interactive: true,
   });
@@ -196,25 +196,25 @@ describe("parseLaunchAgentPlist", () => {
   });
 });
 
-describe("renderLaunchAgentPlist — a program inside equin.app", () => {
+describe("renderLaunchAgentPlist — a program inside muxos.app", () => {
   const bundled = (program: string) =>
     renderLaunchAgentPlist({ ...job, argv: [program, "-x"] });
 
-  test("associates the job with the bundle, so macOS names it equin", () => {
-    for (const name of ["gateway", "equin-desktop"]) {
+  test("associates the job with the bundle, so macOS names it muxos", () => {
+    for (const name of ["gateway", "muxos-desktop"]) {
       expect(
-        bundled(`/h/me/.equin/state/app/equin.app/Contents/MacOS/${name}`),
+        bundled(`/h/me/.muxos/state/app/muxos.app/Contents/MacOS/${name}`),
       ).toContain(
-        `<key>Label</key>\n\t<string>dev.example.service</string>\n\t<key>AssociatedBundleIdentifiers</key>\n\t<array>\n\t\t<string>dev.equin</string>\n\t</array>\n\t<key>ProgramArguments</key>`,
+        `<key>Label</key>\n\t<string>dev.example.service</string>\n\t<key>AssociatedBundleIdentifiers</key>\n\t<array>\n\t\t<string>dev.muxos</string>\n\t</array>\n\t<key>ProgramArguments</key>`,
       );
     }
   });
 
   test("a program outside the bundle carries no association", () => {
     for (const program of [
-      "/h/me/.equin/cache/deps/gateway-binary/abc/env/gateway",
+      "/h/me/.muxos/cache/deps/gateway-binary/abc/env/gateway",
       "/Applications/Other.app/Contents/MacOS/gateway",
-      "/h/me/equin.app/Contents/Resources/gateway",
+      "/h/me/muxos.app/Contents/Resources/gateway",
     ]) {
       expect(bundled(program)).not.toContain("AssociatedBundleIdentifiers");
     }
@@ -222,7 +222,7 @@ describe("renderLaunchAgentPlist — a program inside equin.app", () => {
 
   test.skipIf(process.platform !== "darwin")("plutil accepts it", async () => {
     const path = join(mkdtempSync(join(tmpdir(), "plist-")), "job.plist");
-    writeFileSync(path, bundled("/h/me/equin.app/Contents/MacOS/gateway"));
+    writeFileSync(path, bundled("/h/me/muxos.app/Contents/MacOS/gateway"));
     const res = await spawnCaptured(["plutil", "-lint", path], {
       timeoutMs: 10_000,
     });

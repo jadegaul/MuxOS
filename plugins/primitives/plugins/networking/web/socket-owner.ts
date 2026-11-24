@@ -41,7 +41,7 @@ export const SILENCE_SLACK_MS = 5_000;
  * once. One that delivers nothing within this did not survive the sleep: its
  * packets died with the old network path, or wait out a TCP retransmission
  * backoff that grew through the sleep — 40–60 s of a tab sending its resync
- * into a socket that reads "open" (equin.ai, report-1794962221-4ztwpq). A fresh
+ * into a socket that reads "open" (MuxOS.app, report-1794962221-4ztwpq). A fresh
  * connection is answered in a round trip.
  */
 export const WAKE_SETTLE_MS = 3_000;

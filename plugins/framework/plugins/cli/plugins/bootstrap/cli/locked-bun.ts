@@ -1,12 +1,12 @@
 /**
- * `reexecUnderLockedBun()` — run every `./equin` command under the Bun
+ * `reexecUnderLockedBun()` — run every `./muxos` command under the Bun
  * `mise.lock` records, whatever Bun the caller's PATH happened to start it on.
  *
  * THE BUG THIS EXISTS FOR (main, 2026-10-12). A deps upgrade moved `mise.lock`
  * from bun 1.4.2 to 1.4.3 and landed on main. Main's backend had booted on
  * 1.4.2, and the mise shim that launched it had put
  * `…/mise/installs/bun/1.4.2/bin` at the front of its PATH. The auto-build it
- * spawned inherited that PATH, so `./equin build` ran on 1.4.2, the
+ * spawned inherited that PATH, so `./muxos build` ran on 1.4.2, the
  * `bun-runtime` check refused it — and the build it refused was the one that
  * would have restarted the backend onto 1.4.3. Nothing could get main out of it
  * but a person.
@@ -102,7 +102,7 @@ export interface LockedBunOptions {
   install?: (version: string, root: string) => Promise<number | null>;
   // The LOCKED_BUN_REEXEC variable, present ⇒ this process IS the locked-Bun
   // re-exec of its parent. Taken (read and removed) before anything spawns, like
-  // the deps re-exec budget, so a descendant `./equin` is judged on its own.
+  // the deps re-exec budget, so a descendant `./muxos` is judged on its own.
 
   /** @internal TEST SEAM, mirrors `reexecAfterInstall`'s. */
   spawn?: (

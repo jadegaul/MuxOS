@@ -17,7 +17,7 @@ import {
   inlineChip,
 } from "@plugins/primitives/plugins/text-editor/plugins/inline-chip/web";
 import { PAGE_CONTEXT_RE, askConfig } from "../core";
-import { AskEquinEntry } from "./components/ask-entry";
+import { AskMuxOSEntry } from "./components/ask-entry";
 import { AskFromWish } from "./components/ask-from-wish";
 import { AskHost } from "./components/ask-host";
 import { AskLayer } from "./internal/layer";
@@ -25,14 +25,14 @@ import { PageContextChip } from "./components/page-context-chip";
 
 export default {
   description:
-    "Ask equin, web half: the ? menu's entry (Ask equin how to… / Back to your question) and the same entry as an icon in the Wish popover's header, and the AskHost at Core.Root — a draggable card in the chrome's theme (a developer-only Agent instructions header action opening the Ask equin config) holding one threaded conversation with the help agent (AgentThread; a filed task shows as its live status and title, opening in the Agent Manager), above every tab so it follows the user across apps: suggested questions and a first-question box when empty (the first send attaches the focused app, route, tab title and the page outline), minimized to a pill with the step it is on and an unseen dot, its position kept edge-anchored and snapped only near a corner — the card the browser tab's own (a reload keeps it, another tab never takes its run back). A reply sent from another page carries that page (a <page-context> token after the words, drawn as a chip naming the page). Registers the Ask equin config with both model pickers.",
+    "Ask muxos, web half: the ? menu's entry (Ask muxos how to… / Back to your question) and the same entry as an icon in the Wish popover's header, and the AskHost at Core.Root — a draggable card in the chrome's theme (a developer-only Agent instructions header action opening the Ask muxos config) holding one threaded conversation with the help agent (AgentThread; a filed task shows as its live status and title, opening in the Agent Manager), above every tab so it follows the user across apps: suggested questions and a first-question box when empty (the first send attaches the focused app, route, tab title and the page outline), minimized to a pill with the step it is on and an unseen dot, its position kept edge-anchored and snapped only near a corner — the card the browser tab's own (a reload keeps it, another tab never takes its run back). A reply sent from another page carries that page (a <page-context> token after the words, drawn as a chip naming the page). Registers the Ask muxos config with both model pickers.",
   contributions: [
     Core.Root({ component: AskHost, scope: "page" }),
     AskLayer.contribution,
     HelpMenu.Entry({
       id: "ask",
-      label: "Ask equin how to…",
-      component: AskEquinEntry,
+      label: "Ask muxos how to…",
+      component: AskMuxOSEntry,
     }),
     WishSlots.HeaderAction({ id: "ask", component: AskFromWish }),
     // The page a reply was sent from, in the user's bubble (and the Agent

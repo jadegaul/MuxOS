@@ -12,7 +12,7 @@ import { z } from "zod";
  * So replies are parsed here, numbers are bounded, and nothing a reply says
  * may do more than lay a frame out.
  */
-export const FRAME_PROTOCOL = "equin-frame/1";
+export const FRAME_PROTOCOL = "muxos-frame/1";
 
 /** The window message the parent posts with the port (`ports[0]`). */
 export const FrameConnectSchema = z.object({

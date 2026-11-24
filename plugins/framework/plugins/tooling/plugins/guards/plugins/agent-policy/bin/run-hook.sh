@@ -14,7 +14,7 @@
 
 script=$1
 if [ -z "$script" ]; then
-  echo "equin hook: run-hook.sh needs the hook script's path" >&2
+  echo "muxos hook: run-hook.sh needs the hook script's path" >&2
   exit 1
 fi
 
@@ -23,7 +23,7 @@ fi
 # (a scratch workspace has none). A hook reads the agent's cwd from its payload.
 dir=$(dirname "$script")
 cd "$dir" || {
-  echo "equin hook: cannot enter $dir, so ${script##*/} cannot run (was the checkout removed?)" >&2
+  echo "muxos hook: cannot enter $dir, so ${script##*/} cannot run (was the checkout removed?)" >&2
   exit 1
 }
 
@@ -36,10 +36,10 @@ if [ -z "$bun" ] && [ -x "$shims/bun" ]; then
 fi
 
 if [ -z "$bun" ]; then
-  root=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null) || root="<the equin checkout>"
+  root=$(git -C "$dir" rev-parse --show-toplevel 2>/dev/null) || root="<the muxos checkout>"
   {
-    echo "equin hook: cannot run ${script##*/}: bun is not on PATH and mise has no bun shim ($shims/bun)."
-    echo "  equin's toolchain comes from mise. To fix it:"
+    echo "muxos hook: cannot run ${script##*/}: bun is not on PATH and mise has no bun shim ($shims/bun)."
+    echo "  muxos's toolchain comes from mise. To fix it:"
     echo "    1. Install mise if it is missing:  curl https://mise.run | sh"
     echo "    2. Install the toolchain:          cd \"$root\" && ~/.local/bin/mise install"
     echo "    3. Activate mise in your shell rc (zsh: echo 'eval \"\$(~/.local/bin/mise activate zsh)\"' >> ~/.zshrc)"

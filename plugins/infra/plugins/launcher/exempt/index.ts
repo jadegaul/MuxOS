@@ -27,7 +27,7 @@ export default [
     paths: ["server/internal/boot.ts"],
     kind: "sanctioned",
     reason:
-      "The gateway's launch, run by the CLI (`./equin start`), serve-app and the release launcher — never by a backend. The gateway outlives the call by design (it is the parent of every backend), and its stdio is a caller-owned log fd. Not a daemon: no backend starts it, so there is no catalog to list it in from here — each backend `attach`es it instead (launcher/server/internal/gateway-daemon.ts).",
+      "The gateway's launch, run by the CLI (`./muxos start`), serve-app and the release launcher — never by a backend. The gateway outlives the call by design (it is the parent of every backend), and its stdio is a caller-owned log fd. Not a daemon: no backend starts it, so there is no catalog to list it in from here — each backend `attach`es it instead (launcher/server/internal/gateway-daemon.ts).",
   },
   {
     rule: "boundaries/no-platform-api",
@@ -53,7 +53,7 @@ export default [
     paths: ["server/internal/boot.ts"],
     kind: "sanctioned",
     reason:
-      "killListenerOnPort's `lsof` and gatewayLaunchSpec's ensureSync of the gateway's dirs run only in the launcher's own process (`./equin start` / `stop`, the release `launch` binary) bringing the stack up or tearing it down \u2014 never on a serving backend.",
+      "killListenerOnPort's `lsof` and gatewayLaunchSpec's ensureSync of the gateway's dirs run only in the launcher's own process (`./muxos start` / `stop`, the release `launch` binary) bringing the stack up or tearing it down \u2014 never on a serving backend.",
   },
   {
     rule: "source-read-safety/no-text-source-read",

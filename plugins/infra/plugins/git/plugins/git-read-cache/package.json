@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-git-git-read-cache",
+  "name": "@muxos/plugin-infra-git-git-read-cache",
   "private": true,
   "version": "0.0.1"
 }

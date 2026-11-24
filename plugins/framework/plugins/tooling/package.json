@@ -1,12 +1,12 @@
 {
-  "name": "@equin/plugin-framework-tooling",
+  "name": "@muxos/plugin-framework-tooling",
   "description": "Umbrella for build-time tooling: boundary checker, lint rules, checks, guards, codegen",
   "private": true,
   "version": "0.0.1",
   "devDependencies": {
     "@types/bun": "^1.4.5"
   },
-  "equin": {
+  "muxos": {
     "expanded": true
   }
 }

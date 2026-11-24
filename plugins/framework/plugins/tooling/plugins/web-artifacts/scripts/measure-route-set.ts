@@ -5,7 +5,7 @@
 // count, the br / raw bytes, how they split between first-party code and the
 // vendor set, and the HTML and import-map sizes.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-route-set.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-route-set.ts \
 //     --url http://<namespace>.localhost:<port>/agents [--json out.json]
 //
 // Chromium gets gzip, not br, over plain http://localhost — the wire bytes a

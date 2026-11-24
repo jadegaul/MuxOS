@@ -12,29 +12,29 @@
 //!
 //! The shim contract is what src/shim.rs reads back:
 //!
-//! - macOS — `~/Applications/equin <Name>.app`: `Contents/MacOS/equin-desktop`
+//! - macOS — `~/Applications/muxos <Name>.app`: `Contents/MacOS/muxos-desktop`
 //!   (an APFS clone of this executable — the process must live in the shim's
-//!   bundle to get its own Dock icon), `Info.plist` (`dev.equin.app.<id>`,
-//!   `EquinAppId` / `EquinUrl` / `EquinNamespace` / `EquinShimHash` /
-//!   `EquinHelperDigest`, the `localhost` ATS exception, no `LSUIElement`),
+//!   bundle to get its own Dock icon), `Info.plist` (`dev.muxos.app.<id>`,
+//!   `MuxOSAppId` / `MuxOSUrl` / `MuxOSNamespace` / `MuxOSShimHash` /
+//!   `MuxOSHelperDigest`, the `localhost` ATS exception, no `LSUIElement`),
 //!   `Resources/app.icns` (every iconset size fetched from the instance's icon
 //!   route, packed by `iconutil`), signed with this machine's code-signing
-//!   identity (`Signer`) — the one `equin.app` is signed with — so macOS keys
+//!   identity (`Signer`) — the one `muxos.app` is signed with — so macOS keys
 //!   an app's permission grants (its Downloads folder, …) to a requirement
 //!   that a new helper keeps; ad-hoc, each new helper was a new app to it,
 //!   asking again. Assembled in
 //!   `<bundle>.staging` and swapped in whole, so a running app's executable is
 //!   never overwritten in place.
-//! - Linux — `~/.local/share/applications/equin-<id>.desktop` whose `Exec=`
-//!   runs the helper's own stable copy (`~/.local/share/equin/equin-desktop`:
+//! - Linux — `~/.local/share/applications/muxos-<id>.desktop` whose `Exec=`
+//!   runs the helper's own stable copy (`~/.local/share/muxos/muxos-desktop`:
 //!   the deps cache it is built into may be swept), and the 512 px icon under
 //!   the hicolor theme.
 //!
-//! Beside the shims, the handler of `equin:` links (a browser tab's "Open in
-//! app window", src/open_link.rs): macOS — `equin.app` declares the scheme
+//! Beside the shims, the handler of `muxos:` links (a browser tab's "Open in
+//! app window", src/open_link.rs): macOS — `muxos.app` declares the scheme
 //! (the login service's `urlSchemes`), nothing to write here; Linux — a hidden
-//! `dev.equin.open-link.desktop` (`Exec=<stable helper> open-link %u`,
-//! `MimeType=x-scheme-handler/equin;`), made the scheme's default handler
+//! `dev.muxos.open-link.desktop` (`Exec=<stable helper> open-link %u`,
+//! `MimeType=x-scheme-handler/muxos;`), made the scheme's default handler
 //! with `xdg-mime default` whenever it is (re)written.
 
 use std::path::{Path, PathBuf};
@@ -50,7 +50,7 @@ use crate::shim::{self, Roots, Shim};
 pub const CATALOG_PATH: &str = "/api/menu-bar/apps";
 
 /// The helper's executable name inside a shim bundle / its stable copy.
-const EXECUTABLE: &str = "equin-desktop";
+const EXECUTABLE: &str = "muxos-desktop";
 
 /// The `.iconset` members `iconutil` packs into `app.icns`, each with the
 /// pixel size it is fetched at (each its own render, never rescaled).
@@ -157,12 +157,12 @@ pub struct Helper {
 
 /// The variable the tray's login service hands the signer in
 /// (`menu-bar/login-services`, from infra/codesign's `bundleSigner`).
-pub const SIGNER_ENV: &str = "EQUIN_SHIM_SIGNER";
+pub const SIGNER_ENV: &str = "MUXOS_SHIM_SIGNER";
 
 /// How a shim is signed with this machine's code-signing identity, as
 /// commands each run with the bundle's path appended — the identity resolved
 /// by the instance's code (infra/codesign), never here, so the helper can sign
-/// with neither a different tool nor a different identity than `equin.app`.
+/// with neither a different tool nor a different identity than `muxos.app`.
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct Signer {
     /// The signing certificate's SHA-1.
@@ -185,7 +185,7 @@ impl Signer {
 }
 
 impl Helper {
-    /// This process's own executable, signing as `$EQUIN_SHIM_SIGNER` says.
+    /// This process's own executable, signing as `$MUXOS_SHIM_SIGNER` says.
     pub fn current() -> Result<Helper, String> {
         let exe = std::env::current_exe().map_err(|e| format!("this helper's executable: {e}"))?;
         let signer = match std::env::var(SIGNER_ENV) {
@@ -265,7 +265,7 @@ pub fn fetch_catalog(host: &dyn Host) -> Result<Vec<CatalogApp>, String> {
 ///   bundle is named after the app) is removed once the new one is written;
 /// - a shim whose app is not in the catalog is removed.
 ///
-/// Only equin's own shims are touched (src/shim.rs reads `EquinAppId`). A
+/// Only muxos's own shims are touched (src/shim.rs reads `MuxOSAppId`). A
 /// current shim is left alone, so a sync with nothing to do runs no command.
 pub fn sync(
     host: &dyn Host,
@@ -282,7 +282,7 @@ pub fn sync(
         if shim::valid_app_id(&app.id) {
             wanted.push(app);
         } else {
-            eprintln!("equin-desktop: skipped catalog app {:?}: not an app id", app.id);
+            eprintln!("muxos-desktop: skipped catalog app {:?}: not an app id", app.id);
         }
     }
     let mut report = Report::default();
@@ -484,13 +484,13 @@ mod platform {
         Ok(helper.exe.clone())
     }
 
-    /// Nothing to write: `equin.app` itself declares the `equin` scheme.
+    /// Nothing to write: `muxos.app` itself declares the `muxos` scheme.
     pub fn ensure_link_handler(_host: &dyn Host, _roots: &Roots, _runs: &Path) -> Result<(), String> {
         Ok(())
     }
 
     pub fn shim_path(roots: &Roots, app: &CatalogApp) -> PathBuf {
-        roots.mac_applications().join(format!("equin {}.app", safe_name(app)))
+        roots.mac_applications().join(format!("muxos {}.app", safe_name(app)))
     }
 
     pub fn info_plist(app: &CatalogApp, url: &Url, helper: &Helper) -> Value {
@@ -507,11 +507,11 @@ mod platform {
         d.insert("CFBundleInfoDictionaryVersion".into(), s("6.0"));
         d.insert("LSMinimumSystemVersion".into(), s("11.0"));
         d.insert("NSHighResolutionCapable".into(), Value::Boolean(true));
-        d.insert("EquinAppId".into(), s(&app.id));
-        d.insert("EquinUrl".into(), s(url.as_str()));
-        d.insert("EquinNamespace".into(), s(url.host_str().and_then(|h| h.strip_suffix(".localhost")).unwrap_or("")));
-        d.insert("EquinShimHash".into(), s(&app.hash));
-        d.insert("EquinHelperDigest".into(), s(&helper.digest));
+        d.insert("MuxOSAppId".into(), s(&app.id));
+        d.insert("MuxOSUrl".into(), s(url.as_str()));
+        d.insert("MuxOSNamespace".into(), s(url.host_str().and_then(|h| h.strip_suffix(".localhost")).unwrap_or("")));
+        d.insert("MuxOSShimHash".into(), s(&app.hash));
+        d.insert("MuxOSHelperDigest".into(), s(&helper.digest));
         // What macOS says when it asks for a protected folder: an app window
         // reads a file only to drag it out (src/file_drag.rs `readable`).
         let why = s("Lets you drag files from this folder out of the app — to Finder, Mail or a website — which macOS allows only for files the app can read.");
@@ -572,7 +572,7 @@ mod platform {
         let result = assemble();
         if result.is_err() && staging.exists() {
             if let Err(e) = std::fs::remove_dir_all(&staging) {
-                eprintln!("equin-desktop: cannot remove {}: {e}", staging.display());
+                eprintln!("muxos-desktop: cannot remove {}: {e}", staging.display());
             }
         }
         result
@@ -582,7 +582,7 @@ mod platform {
     fn sign(host: &dyn Host, helper: &Helper, staging: &Path) -> Result<(), String> {
         let signer = helper.signer.as_ref().ok_or_else(|| {
             format!(
-                "no code-signing identity to sign {} with: ${} is not set (the tray's login service sets it; run `./equin start --only dev.equin.menu-bar --force`)",
+                "no code-signing identity to sign {} with: ${} is not set (the tray's login service sets it; run `./muxos start --only dev.muxos.menu-bar --force`)",
                 staging.display(),
                 super::SIGNER_ENV
             )
@@ -602,7 +602,7 @@ mod platform {
         static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
         let n = NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
         let scratch =
-            std::env::temp_dir().join(format!("equin-shim-icon-{}-{}-{n}", app.id, std::process::id()));
+            std::env::temp_dir().join(format!("muxos-shim-icon-{}-{}-{n}", app.id, std::process::id()));
         let iconset = scratch.join("app.iconset");
         let io = |e: std::io::Error| format!("{}: {e}", scratch.display());
         std::fs::create_dir_all(&iconset).map_err(io)?;
@@ -615,7 +615,7 @@ mod platform {
                 .map(|_| ())
         })();
         if let Err(e) = std::fs::remove_dir_all(&scratch) {
-            eprintln!("equin-desktop: cannot remove {}: {e}", scratch.display());
+            eprintln!("muxos-desktop: cannot remove {}: {e}", scratch.display());
         }
         result
     }
@@ -656,7 +656,7 @@ mod platform {
     /// cache it was built into may be swept. Re-copied (beside, then renamed
     /// over — a running app keeps its old inode) when the digest differs.
     pub fn prepare_helper(roots: &Roots, helper: &Helper) -> Result<PathBuf, String> {
-        let dir = roots.xdg_data_home().join("equin");
+        let dir = roots.xdg_data_home().join("muxos");
         let binary = dir.join(EXECUTABLE);
         let digest_file = dir.join(format!("{EXECUTABLE}.digest"));
         let io = |e: std::io::Error| format!("{}: {e}", dir.display());
@@ -680,13 +680,13 @@ mod platform {
         roots.shim_dir().join(desktop_file_id(&app.id))
     }
 
-    /// The `equin:` link handler's desktop-file id. Not `equin-*`: that names
-    /// an app's shim (and carries no `X-Equin-AppId`, so it is never read as one).
-    pub const LINK_HANDLER: &str = "dev.equin.open-link.desktop";
+    /// The `muxos:` link handler's desktop-file id. Not `muxos-*`: that names
+    /// an app's shim (and carries no `X-MuxOS-AppId`, so it is never read as one).
+    pub const LINK_HANDLER: &str = "dev.muxos.open-link.desktop";
 
     pub fn link_handler_file(runs: &Path) -> String {
         format!(
-            "[Desktop Entry]\nType=Application\nVersion=1.0\nName=equin\nComment=Open an equin page in its app's own window\nExec={} open-link %u\nNoDisplay=true\nTerminal=false\nMimeType=x-scheme-handler/{};\n",
+            "[Desktop Entry]\nType=Application\nVersion=1.0\nName=muxos\nComment=Open an muxos page in its app's own window\nExec={} open-link %u\nNoDisplay=true\nTerminal=false\nMimeType=x-scheme-handler/{};\n",
             value(&exec_arg(&runs.display().to_string())),
             open_link::SCHEME,
         )
@@ -744,9 +744,9 @@ mod platform {
             .join(" ");
         let class = wm_class(&app.id);
         format!(
-            "[Desktop Entry]\nType=Application\nVersion=1.0\nName={}\nComment={}\nExec={}\nIcon={class}\nStartupWMClass={class}\nTerminal=false\nCategories=Utility;\nX-Equin-AppId={}\nX-Equin-Url={}\nX-Equin-ShimHash={}\nX-Equin-HelperDigest={}\n",
+            "[Desktop Entry]\nType=Application\nVersion=1.0\nName={}\nComment={}\nExec={}\nIcon={class}\nStartupWMClass={class}\nTerminal=false\nCategories=Utility;\nX-MuxOS-AppId={}\nX-MuxOS-Url={}\nX-MuxOS-ShimHash={}\nX-MuxOS-HelperDigest={}\n",
             value(name),
-            value(&format!("{name} — an equin app")),
+            value(&format!("{name} — an muxos app")),
             value(&exec),
             app.id,
             value(url.as_str()),
@@ -880,12 +880,12 @@ impl Keeper {
             match result {
                 Ok(r) => {
                     if !r.written.is_empty() || !r.removed.is_empty() {
-                        eprintln!("equin-desktop: apps synced — written {:?}, removed {:?}", r.written, r.removed);
+                        eprintln!("muxos-desktop: apps synced — written {:?}, removed {:?}", r.written, r.removed);
                     }
                     st.error = None;
                 }
                 Err(e) => {
-                    eprintln!("equin-desktop: syncing the installed apps failed: {e}");
+                    eprintln!("muxos-desktop: syncing the installed apps failed: {e}");
                     st.error = Some(e);
                 }
             }
@@ -921,7 +921,7 @@ impl Keeper {
         match self.host() {
             Ok(host) => can_pin(&host),
             Err(e) => {
-                eprintln!("equin-desktop: cannot probe pinning: {e}");
+                eprintln!("muxos-desktop: cannot probe pinning: {e}");
                 false
             }
         }
@@ -1027,7 +1027,7 @@ mod tests {
     fn home() -> (Roots, PathBuf) {
         static N: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
         let dir = std::env::temp_dir().join(format!(
-            "equin-apps-test-{}-{}",
+            "muxos-apps-test-{}-{}",
             std::process::id(),
             N.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
         ));
@@ -1057,17 +1057,17 @@ mod tests {
 
     #[cfg(target_os = "linux")]
     #[test]
-    fn handles_equin_links_once_written() {
+    fn handles_muxos_links_once_written() {
         let (roots, exe) = home();
         let host = Fake::new();
         sync(&host, &roots, &origin(), &helper(&exe, "d1"), &[]).unwrap();
         let file = std::fs::read_to_string(roots.shim_dir().join(platform::LINK_HANDLER)).unwrap();
         assert!(file.contains(" open-link %u\n"), "{file}");
-        assert!(file.contains("MimeType=x-scheme-handler/equin;\n"), "{file}");
+        assert!(file.contains("MimeType=x-scheme-handler/muxos;\n"), "{file}");
         assert!(file.contains("NoDisplay=true\n"), "{file}");
         assert_eq!(
             host.commands.borrow().last().unwrap(),
-            &["xdg-mime", "default", platform::LINK_HANDLER, "x-scheme-handler/equin"].map(String::from).to_vec()
+            &["xdg-mime", "default", platform::LINK_HANDLER, "x-scheme-handler/muxos"].map(String::from).to_vec()
         );
         assert!(ids(&roots).is_empty(), "the handler is not an app's shim");
         let before = host.commands.borrow().len();
@@ -1143,8 +1143,8 @@ mod tests {
         assert_eq!(ids(&roots), vec!["mail"]);
         if cfg!(target_os = "macos") {
             // The renamed app's old bundle is gone, the new one is there.
-            assert!(!roots.mac_applications().join("equin Mail.app").exists());
-            assert!(roots.mac_applications().join("equin Post.app").exists());
+            assert!(!roots.mac_applications().join("muxos Mail.app").exists());
+            assert!(roots.mac_applications().join("muxos Post.app").exists());
             assert_eq!(r.removed, vec!["mail", "pages"]);
         } else {
             assert_eq!(r.removed, vec!["pages"]);
@@ -1152,10 +1152,10 @@ mod tests {
     }
 
     #[test]
-    fn leaves_what_is_not_an_equin_shim() {
+    fn leaves_what_is_not_an_muxos_shim() {
         let (roots, exe) = home();
         let host = Fake::new();
-        let foreign = roots.shim_dir().join(if cfg!(target_os = "macos") { "equin Foreign.app" } else { "equin-x.desktop" });
+        let foreign = roots.shim_dir().join(if cfg!(target_os = "macos") { "muxos Foreign.app" } else { "muxos-x.desktop" });
         std::fs::create_dir_all(&foreign).unwrap();
         sync(&host, &roots, &origin(), &helper(&exe, "d1"), &[]).unwrap();
         assert!(foreign.exists());
@@ -1206,18 +1206,18 @@ mod tests {
         sync(&host, &roots, &origin(), &helper(&exe, "d1"), &[app("mail", "Mail", "h1")]).unwrap();
         assert_eq!(host.programs(), vec!["cp", "iconutil", "sign-tool", "verify-tool"]);
         // Each command is completed by the staged bundle, the one swapped in.
-        let staged = format!("{}.staging", roots.mac_applications().join("equin Mail.app").display());
+        let staged = format!("{}.staging", roots.mac_applications().join("muxos Mail.app").display());
         assert_eq!(host.commands.borrow()[2], vec!["sign-tool".to_string(), staged.clone()]);
         assert_eq!(host.commands.borrow()[3], vec!["verify-tool".to_string(), staged]);
         assert_eq!(host.commands.borrow()[0][2], exe.display().to_string());
         assert_eq!(host.fetched.borrow().len(), ICONSET.len());
-        let bundle = roots.mac_applications().join("equin Mail.app");
+        let bundle = roots.mac_applications().join("muxos Mail.app");
         let plist = plist::Value::from_file(bundle.join("Contents/Info.plist")).unwrap();
         let d = plist.as_dictionary().unwrap();
         let get = |k: &str| d.get(k).and_then(|v| v.as_string()).unwrap().to_string();
-        assert_eq!(get("CFBundleIdentifier"), "dev.equin.app.mail");
-        assert_eq!(get("CFBundleExecutable"), "equin-desktop");
-        assert_eq!(get("EquinNamespace"), "main");
+        assert_eq!(get("CFBundleIdentifier"), "dev.muxos.app.mail");
+        assert_eq!(get("CFBundleExecutable"), "muxos-desktop");
+        assert_eq!(get("MuxOSNamespace"), "main");
         assert!(d.get("LSUIElement").is_none());
         assert!(d.get("NSAppTransportSecurity").is_some());
         assert!(d.get("NSDownloadsFolderUsageDescription").is_some());
@@ -1262,13 +1262,13 @@ mod tests {
 
     #[test]
     fn dock_plan_appends_a_tile_then_restarts_the_dock() {
-        let bundle = Path::new("/Users/u/Applications/equin Mail.app");
-        assert_eq!(dock_file_url(bundle), "file:///Users/u/Applications/equin%20Mail.app/");
+        let bundle = Path::new("/Users/u/Applications/muxos Mail.app");
+        assert_eq!(dock_file_url(bundle), "file:///Users/u/Applications/muxos%20Mail.app/");
         let plan = dock_pin_plan("(\n)", bundle);
         assert_eq!(plan.len(), 2);
-        assert!(plan[0][5].contains("file:///Users/u/Applications/equin%20Mail.app/"));
+        assert!(plan[0][5].contains("file:///Users/u/Applications/muxos%20Mail.app/"));
         assert_eq!(plan[1], vec!["killall", "Dock"]);
-        assert!(dock_pin_plan("\"_CFURLString\" = \"file:///Users/u/Applications/equin%20Mail.app/\";", bundle).is_empty());
+        assert!(dock_pin_plan("\"_CFURLString\" = \"file:///Users/u/Applications/muxos%20Mail.app/\";", bundle).is_empty());
     }
 
     #[test]
@@ -1279,8 +1279,8 @@ mod tests {
         let items = vec!["a.desktop".to_string(), "it's.desktop".to_string()];
         assert_eq!(parse_strv(&render_strv(&items)).unwrap(), items);
         let plan = gnome_pin_plan("['a.desktop']", "mail").unwrap();
-        assert_eq!(plan[0][4], "['a.desktop', 'equin-mail.desktop']");
-        assert!(gnome_pin_plan("['equin-mail.desktop']", "mail").unwrap().is_empty());
+        assert_eq!(plan[0][4], "['a.desktop', 'muxos-mail.desktop']");
+        assert!(gnome_pin_plan("['muxos-mail.desktop']", "mail").unwrap().is_empty());
     }
 
     #[test]

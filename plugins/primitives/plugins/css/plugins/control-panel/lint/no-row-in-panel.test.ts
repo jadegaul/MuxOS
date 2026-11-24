@@ -1,5 +1,5 @@
 /**
- * Tests for the `no-row-in-panel` lint rule. Run with `./equin test
+ * Tests for the `no-row-in-panel` lint rule. Run with `./muxos test
  * plugins/primitives/plugins/css/plugins/control-panel`.
  */
 import rule from "./no-row-in-panel";

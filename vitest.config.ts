@@ -26,7 +26,7 @@ export default defineConfig(async () => {
       "plugins/framework/plugins/import-map-names/core/index.ts",
     ),
   );
-  // `./equin test` names its exact files: vitest reads every positional
+  // `./muxos test` names its exact files: vitest reads every positional
   // argument as a substring filter (`…/live-state` also runs
   // `…/live-state-snapshot`), so an exact selection can only be an `include`.
   // Unset — a bare `vitest` — the scope is the whole jsdom half of the split.

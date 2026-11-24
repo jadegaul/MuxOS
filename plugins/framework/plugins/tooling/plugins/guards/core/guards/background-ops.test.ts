@@ -65,8 +65,8 @@ describe("background-ops guard", () => {
     }
 
     test("with its flags and a 2>&1", () => {
-      expect(rewrites(`./equin build --skip-checks 2>&1`)).toBe(true);
-      expect(rewrites(`./equin push -m "fix(x): y" --fixes-report r-1`)).toBe(
+      expect(rewrites(`./muxos build --skip-checks 2>&1`)).toBe(true);
+      expect(rewrites(`./muxos push -m "fix(x): y" --fixes-report r-1`)).toBe(
         true,
       );
     });
@@ -74,18 +74,18 @@ describe("background-ops guard", () => {
     test("behind a cd into the checkout, and/or into a tail of its output", () => {
       // The 36 of 78 refused calls the audit found (2026-11-14): these shapes.
       for (const cmd of [
-        "cd /r/repo/.claude/worktrees/att-1 && ./equin build",
-        "cd /r/repo/.claude/worktrees/att-1; ./equin build",
-        "./equin push -m x 2>&1 | tail -15",
-        "./equin build 2>&1 | tail -n 40",
-        "cd /r/wt && ./equin push -m x 2>&1 | tail -15",
+        "cd /r/repo/.claude/worktrees/att-1 && ./muxos build",
+        "cd /r/repo/.claude/worktrees/att-1; ./muxos build",
+        "./muxos push -m x 2>&1 | tail -15",
+        "./muxos build 2>&1 | tail -n 40",
+        "cd /r/wt && ./muxos push -m x 2>&1 | tail -15",
       ])
         expect(rewrites(cmd)).toBe(true);
     });
 
     test("a push whose message is the heredoc idiom", () => {
       const cmd = [
-        "./equin push -m \"$(cat <<'EOF'",
+        "./muxos push -m \"$(cat <<'EOF'",
         "fix(x): a thing",
         "",
         "Co-Authored-By: someone",
@@ -97,7 +97,7 @@ describe("background-ops guard", () => {
     });
 
     test("the main conversation is told what happened and to end its turn", () => {
-      const v = verdict("./equin build");
+      const v = verdict("./muxos build");
       expect(v.kind === "rewrite" && v.note).toContain(
         "run_in_background: true",
       );
@@ -105,33 +105,33 @@ describe("background-ops guard", () => {
     });
 
     test("a subagent is told to await instead, and its op is recorded", () => {
-      const v = subagentVerdict("./equin push -m x");
+      const v = subagentVerdict("./muxos push -m x");
       expect(v.kind).toBe("rewrite");
-      expect(v.kind === "rewrite" && v.note).toContain("./equin await push");
+      expect(v.kind === "rewrite" && v.note).toContain("./muxos await push");
       expect(v.kind === "rewrite" && v.note).not.toContain("END YOUR TURN");
     });
   });
 
   describe("forms a background run would read differently stay refused", () => {
     for (const cmd of [
-      "time ./equin build 2>&1 | tail -15; git status",
-      "./equin build | head -30",
-      "./equin build | tail -f",
-      "./equin build | tail -15 | grep x",
-      "./equin build | tail -15; git status",
-      "git status --short && ./equin push -m x 2>&1 | tail -15",
-      "cd /r/wt && git status && ./equin push -m x",
-      'cd "$WT" && ./equin build',
-      "cd /r/wt && ./equin build && echo ok",
-      "./equin build; git status",
-      "./equin build && echo done",
-      "git fetch && ./equin push -m x",
-      "time ./equin build",
-      "FOO=1 ./equin build",
-      "./equin build > build.log",
-      "(./equin build)",
-      './equin push -m "$(git log -1 --format=%s)"',
-      "./equin release",
+      "time ./muxos build 2>&1 | tail -15; git status",
+      "./muxos build | head -30",
+      "./muxos build | tail -f",
+      "./muxos build | tail -15 | grep x",
+      "./muxos build | tail -15; git status",
+      "git status --short && ./muxos push -m x 2>&1 | tail -15",
+      "cd /r/wt && git status && ./muxos push -m x",
+      'cd "$WT" && ./muxos build',
+      "cd /r/wt && ./muxos build && echo ok",
+      "./muxos build; git status",
+      "./muxos build && echo done",
+      "git fetch && ./muxos push -m x",
+      "time ./muxos build",
+      "FOO=1 ./muxos build",
+      "./muxos build > build.log",
+      "(./muxos build)",
+      './muxos push -m "$(git log -1 --format=%s)"',
+      "./muxos release",
     ]) {
       test(cmd, () => {
         expect(verdict(cmd).kind).toBe("deny");
@@ -141,7 +141,7 @@ describe("background-ops guard", () => {
     test("the exact shape from conv-1786116592-b70n, with a time wrapper", () => {
       expect(
         blocks(
-          `time ./equin push -m "feat(data-view): properties" 2>&1 | tail -50`,
+          `time ./muxos push -m "feat(data-view): properties" 2>&1 | tail -50`,
         ),
       ).toBe(true);
     });
@@ -150,83 +150,83 @@ describe("background-ops guard", () => {
       expect(
         blocks(
           // Fake root, deliberately not under /Users — see `paths:no-hardcoded-paths`.
-          `cd /r/repo/.claude/worktrees/att-1 && git status --short; ./equin build`,
+          `cd /r/repo/.claude/worktrees/att-1 && git status --short; ./muxos build`,
         ),
       ).toBe(true);
     });
 
     test("hidden inside a loop body — the parseShell blind spot", () => {
-      expect(blocks(`until false; do ./equin build; done`)).toBe(true);
+      expect(blocks(`until false; do ./muxos build; done`)).toBe(true);
     });
 
     test("the denial names run_in_background", () => {
-      expect(reason("./equin build | head -5")).toContain("run_in_background");
+      expect(reason("./muxos build | head -5")).toContain("run_in_background");
     });
   });
 
   describe("backgrounded long ops are allowed", () => {
     test("build with the flag", () => {
-      expect(blocks("./equin build", true)).toBe(false);
+      expect(blocks("./muxos build", true)).toBe(false);
     });
 
     test("push with the flag and a pipe", () => {
-      expect(blocks(`./equin push -m "x" 2>&1 | tail -50`, true)).toBe(false);
+      expect(blocks(`./muxos push -m "x" 2>&1 | tail -50`, true)).toBe(false);
     });
   });
 
   describe("shell-level detach is not backgrounding", () => {
     test("trailing & in the foreground", () => {
-      expect(blocks("./equin build &")).toBe(true);
+      expect(blocks("./muxos build &")).toBe(true);
     });
 
     test("nohup", () => {
-      expect(blocks("nohup ./equin build")).toBe(true);
+      expect(blocks("nohup ./muxos build")).toBe(true);
     });
 
     test("trailing & even WITH run_in_background, because it fakes completion", () => {
-      expect(blocks("./equin build &", true)).toBe(true);
+      expect(blocks("./muxos build &", true)).toBe(true);
     });
 
     test("2>&1 is a redirection, not a detach", () => {
-      expect(blocks("./equin build 2>&1", true)).toBe(false);
+      expect(blocks("./muxos build 2>&1", true)).toBe(false);
     });
   });
 
   describe("a subagent is told to await, because nothing will wake it", () => {
     test("a backgrounded op is still allowed — the op itself is fine", () => {
-      const v = subagentVerdict("./equin build", true);
+      const v = subagentVerdict("./muxos build", true);
       expect(v.kind).not.toBe("deny");
     });
 
     test("… but it is told to await instead of ending its turn", () => {
-      const v = subagentVerdict("./equin build", true);
+      const v = subagentVerdict("./muxos build", true);
       expect(v.kind).toBe("inform");
-      expect(v.kind === "inform" && v.context).toContain("./equin await build");
+      expect(v.kind === "inform" && v.context).toContain("./muxos await build");
       expect(v.kind === "inform" && v.context).toContain("NOT reach you");
     });
 
     test("the main conversation is told nothing new — its notification works", () => {
-      expect(verdict("./equin build", true).kind).toBe("allow");
+      expect(verdict("./muxos build", true).kind).toBe("allow");
     });
 
     test("a foreground op still denies, but the hint names both steps", () => {
-      const v = subagentVerdict("./equin build | head -5");
+      const v = subagentVerdict("./muxos build | head -5");
       expect(v.kind).toBe("deny");
       expect(v.kind === "deny" && v.reason).toContain("run_in_background");
-      expect(v.kind === "deny" && v.reason).toContain("./equin await build");
+      expect(v.kind === "deny" && v.reason).toContain("./muxos await build");
     });
 
     test("the main conversation's foreground hint still says to end its turn", () => {
-      const v = verdict("./equin build | head -5");
+      const v = verdict("./muxos build | head -5");
       expect(v.kind === "deny" && v.reason).toContain("END YOUR TURN");
     });
 
     test("a subagent's foreground hand-off op goes through", () => {
-      expect(subagentVerdict("./equin test plugins/x").kind).toBe("allow");
+      expect(subagentVerdict("./muxos test plugins/x").kind).toBe("allow");
     });
 
     test("a subagent detaching with & is denied like anyone else", () => {
-      expect(subagentVerdict("./equin build &", true).kind).toBe("deny");
+      expect(subagentVerdict("./muxos build &", true).kind).toBe("deny");
     });
 
     test("a command that is not a long op says nothing to a subagent either", () => {
@@ -235,7 +235,7 @@ describe("background-ops guard", () => {
   });
 
   describe("documents are written, not run", () => {
-    const S = "./equin";
+    const S = "./muxos";
 
     test("the repro: a research doc mentioning the build in inline code", () => {
       const cmd = [
@@ -312,27 +312,27 @@ describe("background-ops guard", () => {
     }
 
     test("alongside other commands in one call", () => {
-      expect(blocks("./equin format && ./equin check type-check")).toBe(false);
+      expect(blocks("./muxos format && ./muxos check type-check")).toBe(false);
     });
 
     test("… but a chain with an op that cannot hand off is held back", () => {
-      const r = reason("./equin check && ./equin build");
-      expect(r).toContain("./equin build");
+      const r = reason("./muxos check && ./muxos build");
+      expect(r).toContain("./muxos build");
       expect(r).toContain("run_in_background");
     });
 
     test("a shell detach is still refused", () => {
-      expect(blocks("./equin test &")).toBe(true);
+      expect(blocks("./muxos test &")).toBe(true);
     });
   });
 
   describe("short commands stay allowed", () => {
     test("check --list", () => {
-      expect(blocks("./equin check --list")).toBe(false);
+      expect(blocks("./muxos check --list")).toBe(false);
     });
 
     test("--help", () => {
-      expect(blocks("./equin build --help")).toBe(false);
+      expect(blocks("./muxos build --help")).toBe(false);
     });
 
     test("an unrelated command", () => {
@@ -340,7 +340,7 @@ describe("background-ops guard", () => {
     });
 
     test("a different binary named similarly", () => {
-      expect(blocks("echo ./equin build")).toBe(false);
+      expect(blocks("echo ./muxos build")).toBe(false);
     });
   });
 });

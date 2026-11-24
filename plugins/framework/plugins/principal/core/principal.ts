@@ -9,7 +9,7 @@ import { jsonResponse } from "@plugins/packages/plugins/floor-compat/core";
  * `gateway/principal.go`) is pinned to it by the `principal:header-in-sync`
  * check.
  */
-export const PRINCIPAL_HEADER = "x-equin-principal";
+export const PRINCIPAL_HEADER = "x-muxos-principal";
 
 /**
  * The values the gateway stamps under {@link PRINCIPAL_HEADER}, one per
@@ -108,7 +108,7 @@ const refusedBody = z.object({
 
 /** The sentence a refused caller reads — the gateway's own, word for word. */
 export const CROSS_SITE_REFUSED_MESSAGE =
-  "A request from another site is not the owner; equin refused it before it ran.";
+  "A request from another site is not the owner; muxos refused it before it ran.";
 
 /**
  * `403 { reason: "cross-site-refused", route, message }` — the same body the

@@ -5,7 +5,7 @@
  * on use and the build predicted the set per starting route — against what
  * the page sends today, by the same byte accounting.
  *
- *   ./equin run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-predicted-set.ts \
+ *   ./muxos run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-predicted-set.ts \
  *     [--main-dist <dir>] [--website-dist <dir>] [--records-root <checkout>] [--top 10] [--list] [--why <plugin id>]…
  *     [--website-used <json>] [--main-used <json>] [--missing]
  *
@@ -16,17 +16,17 @@
  * tier loaded it (registration-time calls; see used-at's header). Produce
  * them with `debug/profiling/cold-start/e2e/used-at.ts`:
  *
- *   ./equin run plugins/debug/plugins/profiling/plugins/cold-start/e2e/used-at.ts \
- *     --url http://<website namespace>.localhost:<port> --path / --at fcp --dump "$EQUIN_SCRATCH/used-website.json"
- *   ./equin run plugins/debug/plugins/profiling/plugins/cold-start/e2e/used-at.ts \
- *     --url http://equin.localhost:<port> --path /agents --at content --dump "$EQUIN_SCRATCH/used-agents.json"
+ *   ./muxos run plugins/debug/plugins/profiling/plugins/cold-start/e2e/used-at.ts \
+ *     --url http://<website namespace>.localhost:<port> --path / --at fcp --dump "$MUXOS_SCRATCH/used-website.json"
+ *   ./muxos run plugins/debug/plugins/profiling/plugins/cold-start/e2e/used-at.ts \
+ *     --url http://muxos.localhost:<port> --path /agents --at content --dump "$MUXOS_SCRATCH/used-agents.json"
  *
  * Inputs (read, never written): the evaluated web barrels of this checkout,
  * or of `--records-root` (the
  * declared slots, their `meta.kind`, every contribution and its plugin) and
- * two deployed dists — main's (`~/.equin/worktrees/<main>/web`, started at
+ * two deployed dists — main's (`~/.muxos/worktrees/<main>/web`, started at
  * `/agents`) and this checkout's `website` composition build
- * (`~/.equin/worktrees/website.<checkout>/web`, started at `/`, the landing
+ * (`~/.muxos/worktrees/website.<checkout>/web`, started at `/`, the landing
  * page = the website app's index pane). Each dist gives the artifact import
  * graph (`.web-artifacts-edges.json`: every built file's static imports), the
  * import map (vendors), the link record (`modules.json`: module → route
@@ -40,7 +40,7 @@
  * plugins with main's own code (matching main's dist), run a copy of this
  * script whose `../core` import is spelled
  * `@plugins/framework/plugins/tooling/plugins/codegen/core` from main's
- * checkout: `./equin run` resolves a scratch script's aliases against the
+ * checkout: `./muxos run` resolves a scratch script's aliases against the
  * checkout it runs in.
  *
  * The website's dist also carries its live demo's page scope (the link's

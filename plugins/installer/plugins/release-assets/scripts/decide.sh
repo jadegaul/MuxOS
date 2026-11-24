@@ -31,7 +31,7 @@ if [ "$release" = false ]; then
   fi
 fi
 if [ "$release" = true ] && [ "$(git cat-file -t "refs/tags/$REF" 2>/dev/null)" != tag ]; then
-  echo "::error::$REF is not an annotated tag: ./equin version cut writes every release tag annotated, and the Release's notes are its message."
+  echo "::error::$REF is not an annotated tag: ./muxos version cut writes every release tag annotated, and the Release's notes are its message."
   exit 1
 fi
 window=false

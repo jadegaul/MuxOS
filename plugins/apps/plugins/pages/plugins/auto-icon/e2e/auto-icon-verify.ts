@@ -11,7 +11,7 @@
 // The page is trashed at the end, whatever happened.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/pages/plugins/auto-icon/e2e/auto-icon-verify.ts \
+//   ./muxos run plugins/apps/plugins/pages/plugins/auto-icon/e2e/auto-icon-verify.ts \
 //     [--settle 60000] [--headed]
 
 import type { Page } from "playwright";

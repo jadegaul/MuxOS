@@ -23,7 +23,7 @@ const outAt = process.argv.indexOf("--out");
 const out = outAt === -1 ? undefined : process.argv[outAt + 1];
 if (namespace === undefined || out === undefined) {
   throw new Error(
-    "declared-exclusions-probe: usage: --namespace <ns> --out <file> (spawned by `./equin db fork`).",
+    "declared-exclusions-probe: usage: --namespace <ns> --out <file> (spawned by `./muxos db fork`).",
   );
 }
 await installDeclaredListEntries(namespace);

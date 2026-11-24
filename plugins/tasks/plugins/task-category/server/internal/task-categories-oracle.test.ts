@@ -16,8 +16,8 @@
  * - a category write to a task outside the point set, and every other tree
  *   write (tasks, edges, attempts, conversations, pushes), loads nothing.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/tasks/plugins/task-category`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/tasks/plugins/task-category`.
  */
 
 import {

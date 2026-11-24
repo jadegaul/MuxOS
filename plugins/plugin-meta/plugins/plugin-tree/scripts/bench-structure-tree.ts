@@ -1,6 +1,6 @@
 // Structure tree, cold and per edit: the whole-repo rebuild every watcher batch
 // used to cost, against the structure index's cold build and its refreshes.
-// `./equin run plugins/plugin-meta/plugins/plugin-tree/scripts/bench-structure-tree.ts`
+// `./muxos run plugins/plugin-meta/plugins/plugin-tree/scripts/bench-structure-tree.ts`
 import { relative } from "node:path";
 import {
   buildPluginTree,

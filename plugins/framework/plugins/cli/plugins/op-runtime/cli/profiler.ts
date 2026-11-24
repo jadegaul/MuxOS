@@ -64,7 +64,7 @@ export interface SpanOptions {
   wait?: boolean;
   /**
    * The install sub-step this span begins (installer/core `BuildSubStepId`):
-   * while `./equin build` runs as an install's build step, entering the span
+   * while `./muxos build` runs as an install's build step, entering the span
    * reports that sub-step as started (and the one before it as done) to the
    * install's window or terminal. The id is typed, never derived from the
    * span's name, so renaming a span keeps it; the
@@ -117,7 +117,7 @@ interface SpanCollector {
    * Writes `build-profile-<buildId>.json` under worktree `name`, accepting the
    * id-less (`undefined`) case so the module-default collector can still produce
    * the unsuffixed `build-profile.json` for a manual CLI build with no
-   * EQUIN_BUILD_ID.
+   * MUXOS_BUILD_ID.
    */
   writeProfile(name: Namespace, buildId: string | undefined): void;
 }

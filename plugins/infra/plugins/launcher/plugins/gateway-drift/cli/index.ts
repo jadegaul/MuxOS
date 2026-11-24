@@ -1,6 +1,6 @@
 // Shared CLI machinery, not a command (no default export): main's gateway as
-// `./equin start` installs it, and main's follow-main restart of it (run by
-// the convergence run, `./equin build --allow-main --converge`).
+// `./muxos start` installs it, and main's follow-main restart of it (run by
+// the convergence run, `./muxos build --allow-main --converge`).
 export {
   completeGatewaySwitch,
   followMainGateway,

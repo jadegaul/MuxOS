@@ -64,7 +64,7 @@ describe("attributeProcesses", () => {
     proc(200, 1, "bun bin/host.ts"),
     proc(201, 200, PLAYWRIGHT),
     proc(202, 201, `${PLAYWRIGHT} --type=gpu-process`),
-    proc(300, 1, `bun cli/${LEGACY_IDS.cliShim} build`),
+    proc(300, 1, `bun cli/${LEGACY_IDS.cliShims[0]} build`),
     proc(301, 300, "bun vite build"),
     proc(302, 301, CHROME), // an e2e run's own Chrome
     proc(400, 1, "claude --print"),
@@ -105,25 +105,25 @@ describe("attributeProcesses — named roots", () => {
     proc(
       10,
       1,
-      "/h/u/.equin/state/macos-app/equin.app/Contents/MacOS/gateway -listen x",
+      "/h/u/.muxos/state/macos-app/muxos.app/Contents/MacOS/gateway -listen x",
     ),
-    proc(11, 10, "/h/u/.equin/worktrees/main/bin/equin · server · main"),
+    proc(11, 10, "/h/u/.muxos/worktrees/main/bin/muxos · server · main"),
     proc(12, 11, "/opt/git/git status"),
     proc(
       20,
       1,
-      "/h/u/.equin/state/sdk-agents/ns/conv-1/bin/equin · agent · conv-1 /repo/agent.ts",
+      "/h/u/.muxos/state/sdk-agents/ns/conv-1/bin/muxos · agent · conv-1 /repo/agent.ts",
     ),
     proc(
       21,
       20,
-      "/h/u/.equin/state/sdk-agents/ns/conv-1/bin/equin · conv-1 · Fix it --print",
+      "/h/u/.muxos/state/sdk-agents/ns/conv-1/bin/muxos · conv-1 · Fix it --print",
     ),
     proc(22, 21, "/bin/zsh -c rg foo"),
     proc(
       23,
       21,
-      "node_modules/.cache/equin-bun/verbs/equin · build plugins/cli/bin/index.ts build",
+      "node_modules/.cache/muxos-bun/verbs/muxos · build plugins/cli/bin/index.ts build",
     ),
     proc(24, 23, "bun vite build"),
     proc(
@@ -131,7 +131,7 @@ describe("attributeProcesses — named roots", () => {
       1,
       "/repo/node_modules/@embedded-postgres/darwin-arm64/native/bin/postgres -D /x",
     ),
-    proc(31, 30, "postgres: equin main [local] idle"),
+    proc(31, 30, "postgres: muxos main [local] idle"),
     proc(32, 1, "/opt/bin/pgbouncer /x.ini"),
   ];
 

@@ -4,7 +4,7 @@ import { WEBSITE_BASE_PATH } from "@plugins/apps/plugins/website/plugins/crawlab
 
 export const websiteApp = defineApp({
   id: "website",
-  name: "equin",
+  name: "muxos",
   // The pages' address space (`crawlable`): a page path and the app it
   // renders in cannot disagree.
   basePath: WEBSITE_BASE_PATH,

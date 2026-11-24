@@ -26,7 +26,7 @@ import { installRunsDir } from "@plugins/installer/data-dirs";
 const ESTIMATES_JSON = "plugins/installer/core/estimates.json";
 
 /**
- * `./equin installer estimates` — the per-step medians every install shows
+ * `./muxos installer estimates` — the per-step medians every install shows
  * its time left from, one table per estimate set (`EstimateSet`: macOS in
  * the window, macOS in the terminal, Linux): read each real install's run
  * dir (this machine's install runs, plus `--from <dir>` for run dirs

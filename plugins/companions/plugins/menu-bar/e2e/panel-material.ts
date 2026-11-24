@@ -1,6 +1,6 @@
 /**
  * The panel page on a transparent helper window: with a stand-in
- * `window.equinNative` whose `hostInfo()` reports the macOS material
+ * `window.muxosNative` whose `hostInfo()` reports the macOS material
  * (`{ cornerRadius: 12 }`), the page must paint NOTHING outside its rounded
  * panel — every corner pixel transparent — and no fill inside it either: the
  * system material is the panel (a page fill over it stacks a second light
@@ -9,7 +9,7 @@
  * which is what the native window composites over the vibrancy material.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/companions/plugins/menu-bar/e2e/panel-material.ts [--out /tmp/panel-material]
+ *   ./muxos run plugins/companions/plugins/menu-bar/e2e/panel-material.ts [--out /tmp/panel-material]
  */
 import {
   arg,
@@ -50,7 +50,7 @@ await withBrowser(async (h) => {
           },
           material: { cornerRadius: radius },
         });
-      (window as { equinNative?: unknown }).equinNative = api;
+      (window as { muxosNative?: unknown }).muxosNative = api;
     },
     { methods: [...BRIDGE_METHODS], radius: RADIUS },
   );

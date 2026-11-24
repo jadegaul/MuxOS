@@ -206,7 +206,7 @@ const TOWN: readonly Resident[] = [
   ),
   building(
     "kit-website",
-    "equin",
+    "muxos",
     "life",
     ["square"],
     176,

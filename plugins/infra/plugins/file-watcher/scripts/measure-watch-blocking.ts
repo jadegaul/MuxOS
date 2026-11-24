@@ -7,7 +7,7 @@
 // meanwhile. `--churn` keeps a writer busy in another dir so fseventsd has
 // work, as on a loaded host.
 //
-//   ./equin run plugins/infra/plugins/file-watcher/scripts/measure-watch-blocking.ts \
+//   ./muxos run plugins/infra/plugins/file-watcher/scripts/measure-watch-blocking.ts \
 //     [--rounds 5] [--watches 20] [--churn]
 //
 // Research: research/2026-11-08-infra-file-watcher-close-stall.md

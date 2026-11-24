@@ -14,7 +14,7 @@
 //     their destination on hover.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/shell/e2e/site-chrome-verify.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/shell/e2e/site-chrome-verify.ts \
 //     [--out /tmp/site-chrome] [--headed]
 //
 // Manual only — nothing runs this automatically.
@@ -103,7 +103,7 @@ await withBrowser(async (h) => {
     colorScheme: "dark",
   });
   await boot(page, pathUrl("/about"), {
-    marker: "text=Curious how equin came to be?",
+    marker: "text=Curious how muxos came to be?",
     settleMs: 800,
   });
 
@@ -128,7 +128,7 @@ await withBrowser(async (h) => {
   // they share a baseline. The word's ELEMENT box is its line-height box, taller.
   const dot = await page.evaluate(() => {
     const stop = [...document.querySelectorAll("span")].find(
-      (s) => s.textContent === "." && s.parentElement?.textContent === "equin.",
+      (s) => s.textContent === "." && s.parentElement?.textContent === "muxos.",
     );
     const text = stop?.parentElement?.firstChild;
     if (!stop || !text) return null;
@@ -156,7 +156,7 @@ await withBrowser(async (h) => {
   r.ok("a quiet nav link paints no hover box", alphaOf(navBg) === 0, navBg);
 
   // --- the call to action's width comes from the theme -----------------------
-  // The pill is a small control: its height is the equin density preset's
+  // The pill is a small control: its height is the muxos density preset's
   // small-control height (38.4px), and its inline padding that size's 12px plus
   // the shape's 6px pill extra on each rounded end — 18px, not Button's own.
   // The app's own action bar has a "Wish" button too (a tooltip trigger);

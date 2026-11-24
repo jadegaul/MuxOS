@@ -52,7 +52,7 @@ const helper = defineDep({
 });
 
 const decl = defineLoginService({
-  id: "dev.equin.example",
+  id: "dev.muxos.example",
   owner: "example",
   description: "An example tray helper",
   forUser: { name: "an example icon", gives: "It shows an example." },
@@ -183,7 +183,7 @@ function fakeService(
 /** A host with no app bundle (Linux): the service runs its build where it is. */
 const unbundled: MacosAppHost = {
   platform: "linux",
-  bundle: asAppPath("/nowhere/equin.app"),
+  bundle: asAppPath("/nowhere/muxos.app"),
   withLock: () => {
     throw new Error("nothing is installed off macOS");
   },
@@ -291,7 +291,7 @@ describe("reconcileLoginService — start", () => {
 describe("reconcileLoginService — a periodic service", () => {
   const periodic = defineLoginService({
     ...decl,
-    id: "dev.equin.example-monitor",
+    id: "dev.muxos.example-monitor",
     schedule: { everySeconds: 30 },
   });
 
@@ -337,7 +337,7 @@ test("a (re)load truncates the stdio log, creating its folder", async () => {
   expect(readFileSync(join(dir, "logs", "example.log"), "utf-8")).toBe("");
 });
 
-describe("reconcileLoginService — macOS (the equin app bundle)", () => {
+describe("reconcileLoginService — macOS (the muxos app bundle)", () => {
   // Real build files, so the install copies something; signing is faked.
   const builds = joinAppPath(dir, "builds");
   const build = (identity: string) => {
@@ -346,7 +346,7 @@ describe("reconcileLoginService — macOS (the equin app bundle)", () => {
     writeFileSync(join(env, "bin"), `binary ${identity}`);
     return readyForTests(helper, env, identity);
   };
-  const bundle = joinAppPath(dir, "app", "equin.app");
+  const bundle = joinAppPath(dir, "app", "muxos.app");
   let signer: BundleSigner | null = null;
   const host: MacosAppHost = {
     platform: "darwin",

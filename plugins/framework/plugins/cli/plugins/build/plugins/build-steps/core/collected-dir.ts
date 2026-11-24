@@ -3,7 +3,7 @@ import { defineCollectedDir } from "@plugins/framework/plugins/tooling/plugins/c
 // Marks `build-step` as a collected dir: codegen scans core files for this
 // marker and emits `build-step.generated.ts`, registering every plugin's
 // `build-step/index.ts` (default export: `defineBuildStep` values). A plugin
-// contributing a build step needs no edit to `./equin build`.
+// contributing a build step needs no edit to `./muxos build`.
 //
 // Composition membership: a step belongs to the app the build deploys, so a
 // plugin the composition excludes contributes none.

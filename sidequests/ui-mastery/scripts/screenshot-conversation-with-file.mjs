@@ -1,13 +1,13 @@
-// Screenshot an equin conversation with the edited-files pane open
+// Screenshot an muxos conversation with the edited-files pane open
 // and one file selected in the right code pane.
 //
 // Usage:
-//   ./equin run sidequests/ui-mastery/scripts/screenshot-conversation-with-file.mjs \
+//   ./muxos run sidequests/ui-mastery/scripts/screenshot-conversation-with-file.mjs \
 //     <conversation-url> <output-path>
 //
 // Example:
-//   ./equin run sidequests/ui-mastery/scripts/screenshot-conversation-with-file.mjs \
-//     http://equin.localhost:<port>/c/claude-1776191308 /tmp/out.png   (<port>: ./equin url)
+//   ./muxos run sidequests/ui-mastery/scripts/screenshot-conversation-with-file.mjs \
+//     http://muxos.localhost:<port>/c/claude-1776191308 /tmp/out.png   (<port>: ./muxos url)
 
 import { chromium } from 'playwright';
 

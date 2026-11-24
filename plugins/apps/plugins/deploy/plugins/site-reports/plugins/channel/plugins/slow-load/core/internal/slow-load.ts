@@ -25,7 +25,7 @@ export const SLOW_PAGE_LOAD_KIND = "slow-page-load";
 
 /**
  * A load is slow once the page was not ready this long after the navigation
- * started — about the 85th percentile of equin.ai's own loads (2026-11-12 →
+ * started — about the 85th percentile of MuxOS.app's own loads (2026-11-12 →
  * 11-19: p50 1.5 s, p75 2.4 s, p90 3.7 s, 15 % at or past 3 s), so what is
  * reported is the slow tail, not every visit.
  */

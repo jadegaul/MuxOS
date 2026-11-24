@@ -68,7 +68,7 @@ export function agentOptionsPath(conversationId: string): AppPath {
 /**
  * Where the agent's conversation-named claude clone lives (see
  * `named-claude.ts`): `<agent dir>/bin/`. Its bun is the machine-wide
- * `equin · agent` (`startAgentProcess`); a per-conversation bun clone an older
+ * `muxos · agent` (`startAgentProcess`); a per-conversation bun clone an older
  * start left here is pruned by the daily reclaim once its agent stops.
  */
 export function agentBinDir(conversationId: string): AppPath {

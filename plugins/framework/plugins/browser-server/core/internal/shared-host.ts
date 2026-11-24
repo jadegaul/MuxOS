@@ -22,7 +22,7 @@ import type { FromHost, ToHost } from "./port";
 
 /** The Web Lock a SharedWorker host named `workerName` retires under. */
 export function retireLockName(workerName: string): string {
-  return `equin-host-retire:${workerName}`;
+  return `muxos-host-retire:${workerName}`;
 }
 
 /** This page's connection to a SharedWorker host. */
@@ -96,7 +96,7 @@ function connectUnlessRetiring(
           // Held until the host has taken this end in, or this page leaves
           // before it did (a head start never claimed).
           return new Promise<void>((release) => {
-            const presence = `equin-port:${globalThis.crypto.randomUUID()}`;
+            const presence = `muxos-port:${globalThis.crypto.randomUUID()}`;
             let gone!: () => void;
             const held = new Promise<void>((r) => (gone = r));
             void locks.request(presence, { mode: "exclusive" }, () => held);

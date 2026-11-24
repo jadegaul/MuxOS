@@ -6,7 +6,7 @@
 // columns.
 //
 // Usage:
-//   ./equin run plugins/debug/plugins/logs/e2e/open-log.ts [--log migrations] [--out /tmp/open-log]
+//   ./muxos run plugins/debug/plugins/logs/e2e/open-log.ts [--log migrations] [--out /tmp/open-log]
 
 import {
   arg,

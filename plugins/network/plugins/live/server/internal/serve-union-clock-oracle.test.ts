@@ -19,8 +19,8 @@
  * - Raw clock reads are refused where a union compiles: an arm `where` reading
  *   `now()`.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/network/plugins/live`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

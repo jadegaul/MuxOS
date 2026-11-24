@@ -5,7 +5,7 @@ import { BUILD_SUB_STEP_IDS } from "@plugins/installer/core";
 
 /**
  * Every build sub-step of the install (installer/core `BUILD_SUB_STEP_IDS`)
- * is begun by at least one profiler span of `./equin build`
+ * is begun by at least one profiler span of `./muxos build`
  * (`installStep: "<id>"` in its span options). The tag is typed, so a typo is
  * a tsc error; this catches the other way to lose one: the span carrying it
  * deleted or its options dropped — the install would then show the sub-step
@@ -15,7 +15,7 @@ const check: Check = {
   id: "build-sub-steps-declared",
   inputKeyed: true,
   description:
-    "Every install sub-step of the build is declared by a span of `./equin build` (installStep in its span options)",
+    "Every install sub-step of the build is declared by a span of `./muxos build` (installStep in its span options)",
   async run() {
     const root = await getWorktreeRoot();
     const matches = await grepCode({
@@ -33,7 +33,7 @@ const check: Check = {
     if (missing.length === 0) return { ok: true };
     return {
       ok: false,
-      message: `no span of \`./equin build\` begins the install sub-step(s) ${missing.join(", ")}`,
+      message: `no span of \`./muxos build\` begins the install sub-step(s) ${missing.join(", ")}`,
       hint: "Tag the span that begins it: `buildProfilerStart(id, phase, label, { installStep: \"<id>\" })` (or the `hooks.span` options). A sub-step the build no longer has is removed from installer/core's BUILD_SUB_STEP_IDS, install.sh's plan and estimates.json together.",
     };
   },

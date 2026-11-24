@@ -87,9 +87,9 @@ function RaillessFraming({ body }: Pick<RailFramingProps, "body">) {
 
 /**
  * Mirrors the focused tab's content title into the browser document title
- * (`<Entity> — <App> — equin`, each part once), reusing the same per-tab titles the tab
+ * (`<Entity> — <App> — muxos`, each part once), reusing the same per-tab titles the tab
  * bar shows. One global sync, so the browser tab name is never the stale static
- * "equin".
+ * "muxos".
  */
 function DocumentTitleSync() {
   const { tabs, focusedTabId, titles } = useTabs();

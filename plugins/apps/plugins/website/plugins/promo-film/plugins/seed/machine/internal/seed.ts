@@ -132,7 +132,7 @@ export class PromoFilmSeedRefused extends Error {
  *    worktree code, and the film must not show the red frame or the Wish banner.
  *
  * Refused unless this backend is the `promo-film` composition of its own
- * checkout and its database is at first launch — `./equin promo-film seed`
+ * checkout and its database is at first launch — `./muxos promo-film seed`
  * resets it just before. So a second seed is the first one again, by
  * construction.
  */
@@ -492,7 +492,7 @@ async function assertFilmInstance(): Promise<string> {
     .where(eq(liveBlocks.id, FILM_PAGE_IDS.piano));
   if ((tasks?.n ?? 0) > 0 || (pages?.n ?? 0) > 0)
     throw new PromoFilmSeedRefused(
-      `"${here}" is not at first launch (${tasks?.n ?? 0} tasks, film page ${pages?.n ? "present" : "absent"}) — run \`./equin promo-film seed\`, which resets it first`,
+      `"${here}" is not at first launch (${tasks?.n ?? 0} tasks, film page ${pages?.n ? "present" : "absent"}) — run \`./muxos promo-film seed\`, which resets it first`,
     );
   return here;
 }

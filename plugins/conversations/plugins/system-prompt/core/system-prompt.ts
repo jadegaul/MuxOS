@@ -7,7 +7,7 @@ import { wholeList } from "@plugins/packages/plugins/list-bound/core";
 /** The id the conversation's preprompt is recorded under (it is not contributed). */
 export const PREPROMPT_SECTION_ID = "preprompt";
 
-/** One part of what equin appended to an agent's system prompt, as composed. */
+/** One part of what muxos appended to an agent's system prompt, as composed. */
 export const SystemPromptSectionRecordSchema = z.object({
   id: z.string(),
   label: z.string(),
@@ -18,7 +18,7 @@ export type SystemPromptSectionRecord = z.infer<
   typeof SystemPromptSectionRecordSchema
 >;
 
-// The `conversations_ext_system_prompt` row: what equin appended to the
+// The `conversations_ext_system_prompt` row: what muxos appended to the
 // agent's system prompt at its LAST spawn (launch or resume), section by
 // section — written by the composer as it composes, read by the context card.
 export const conversationSystemPromptShape = defineExtensionShape({
@@ -48,7 +48,7 @@ export const conversationSystemPrompt = liveCollection(
 );
 
 /**
- * A rough token count for text equin wrote (about four characters a token).
+ * A rough token count for text muxos wrote (about four characters a token).
  * Only for showing a share of a measured total — never for a budget.
  */
 export function estimateTokens(chars: number): number {

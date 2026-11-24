@@ -7,9 +7,9 @@
  * refuses a trigger that does not carry it. The rollup table itself is in no
  * requirement (A1): it is feed-exempt, reached through its source.
  *
- * Requires a running Postgres cluster (started by ./equin build);
+ * Requires a running Postgres cluster (started by ./muxos build);
  * createTestDb() throws loudly when it is unreachable.
- * Run: `./equin test plugins/network/plugins/live/plugins/query-resource`.
+ * Run: `./muxos test plugins/network/plugins/live/plugins/query-resource`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

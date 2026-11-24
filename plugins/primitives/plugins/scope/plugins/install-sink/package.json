@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-primitives-scope-install-sink",
-  "description": "Installed-sink primitive: defineInstallSink — a module-level slot a higher layer installs into and a lower layer reads, with a subscribed render read and a peek-named imperative sample.",
+  "name": "@muxos/plugin-primitives-scope-install-sink",
+  "description": "Installed-sink primitive: defineInstallSink \u2014 a module-level slot a higher layer installs into and a lower layer reads, with a subscribed render read and a peek-named imperative sample.",
   "private": true,
   "version": "0.0.1"
 }

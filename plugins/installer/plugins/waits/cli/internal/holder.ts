@@ -10,11 +10,11 @@ import {
 } from "@plugins/installer/cli";
 
 /**
- * A `./equin` command run as an install step that waits on other work tells
+ * A `./muxos` command run as an install step that waits on other work tells
  * the install WHO it waits on: an install `wait` event carrying the holder
  * (installer/core `WaitHolder`), read from the op log — the one record of
  * every op on the machine. "No progress for 10 minutes" with nobody named is
- * the failure this module removes (2026-11-17 Tart VM installs: `./equin
+ * the failure this module removes (2026-11-17 Tart VM installs: `./muxos
  * start`'s dependency build sat 22 minutes behind main's first build on the
  * 1-slot floor, and the install said nothing about it).
  *
@@ -199,7 +199,7 @@ export function stallWords(
   const started = ago(now - Date.parse(record.grantedAt));
   return {
     title: "The install is waiting for an older task",
-    text: `equin builds one thing at a time. A ${record.kind} started ${started} holds the turn but stopped making progress ${ago(now - quietSince)}. Stopping it lets the install go on: Fix with Claude can, asking first.`,
+    text: `muxos builds one thing at a time. A ${record.kind} started ${started} holds the turn but stopped making progress ${ago(now - quietSince)}. Stopping it lets the install go on: Fix with Claude can, asking first.`,
     evidence: [
       `build slot held by ${record.opId} (${record.kind}, pid ${record.pid ?? "?"})`,
       `last progress ${new Date(quietSince).toISOString()}`,

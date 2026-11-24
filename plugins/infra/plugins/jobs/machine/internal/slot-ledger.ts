@@ -80,7 +80,7 @@ const INSERT_CHANNEL = "jobs:insert";
 // run's outcome is IN the database — the completion DELETE, or the failure
 // UPDATE that unlocks the row. `job:complete` fires before that write lands, so
 // activity a database read must see is announced here, not there.
-const OUTCOME_WRITTEN = "equin:outcomeWritten";
+const OUTCOME_WRITTEN = "muxos:outcomeWritten";
 interface OutcomeWritten {
   job: Job;
   failed: boolean;

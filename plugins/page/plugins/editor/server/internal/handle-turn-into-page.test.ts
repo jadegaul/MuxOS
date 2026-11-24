@@ -9,8 +9,8 @@
  * take its slot at the head of the page in order, every remaining row is
  * re-scoped into the new page, and an empty block is seeded.
  *
- * Run: `./equin test plugins/page/plugins/editor`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/page/plugins/editor`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

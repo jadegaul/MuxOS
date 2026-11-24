@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-page-embed",
-  "description": "Embed block type: render an external URL (YouTube, Vimeo, …) in a sandboxed iframe.",
+  "name": "@muxos/plugin-page-embed",
+  "description": "Embed block type: render an external URL (YouTube, Vimeo, \u2026) in a sandboxed iframe.",
   "private": true,
   "version": "0.0.1"
 }

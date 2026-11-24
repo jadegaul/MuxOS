@@ -31,7 +31,7 @@ export const DEPS_CATEGORY_ID = "dependencies";
 
 /**
  * The set of updaters: each lists `UpdaterDeclare({ updater })` in its server
- * `contributions`. The automation and `./equin deps upgrade` read only
+ * `contributions`. The automation and `./muxos deps upgrade` read only
  * this generic set.
  */
 export const UpdaterDeclare = defineServerContribution<{ updater: Updater }>(
@@ -82,7 +82,7 @@ async function legacyUpgradeTaskIds(): Promise<string[]> {
  * On the configured schedule (weekly by default): ask every included updater
  * what is newer than its lock records and, when anything is, file ONE
  * auto-started task covering all of it, whose agent runs
- * `./equin deps upgrade` (every updater at once) in its own worktree —
+ * `./muxos deps upgrade` (every updater at once) in its own worktree —
  * and pushes what landed on an `upgraded` or `partial` verdict as far as the
  * Push setting allows.
  *

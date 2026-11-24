@@ -3,7 +3,7 @@ import type { HostReach } from "./client";
 import { createSocketDownWatch } from "./socket-down-watch";
 import { createVisibleDeadlines } from "./visible-deadline";
 
-const URL = "wss://equin.ai/ws/notifications";
+const URL = "wss://MuxOS.app/ws/notifications";
 const DOWN_MS = 15_000;
 const RECOVERY_MS = 20_000;
 const ANSWERED: HostReach = {
@@ -85,7 +85,7 @@ describe("socket-down watch", () => {
     ]);
   });
 
-  // equin.ai 2026-11-19 05:13:18–05:13:38 UTC: a visitor's link dropped. The
+  // MuxOS.app 2026-11-19 05:13:18–05:13:38 UTC: a visitor's link dropped. The
   // health request hung and was answered the instant the link came back
   // (.281), 170 ms before the socket reopened (.450) — filed as socket-down.
   test("a socket that reopens once its host answers — the link came back — files nothing", async () => {
@@ -123,7 +123,7 @@ describe("socket-down watch", () => {
     expect(h.probes()).toBe(0);
   });
 
-  // equin.ai 2026-11-18 00:31:32–00:35:16 UTC: the visitor's link dropped,
+  // MuxOS.app 2026-11-18 00:31:32–00:35:16 UTC: the visitor's link dropped,
   // every handshake hung and every fetch failed for 3 m 44 s while the box
   // ran on; the socket reopened the moment the link came back.
   test("the visitor's network down (no answer from the host) files nothing", async () => {

@@ -16,7 +16,7 @@
 // key) and one deployment on it, both deleted at the end. Never point it at a
 // real deployment: a run the gate passes converges for real.
 //
-// Usage: ./equin run plugins/apps/plugins/deploy/plugins/deploy-secrets/plugins/approvals/e2e/gate-verify.ts \
+// Usage: ./muxos run plugins/apps/plugins/deploy/plugins/deploy-secrets/plugins/approvals/e2e/gate-verify.ts \
 //          [--composition website] [--expect needs-approval|failed]
 import {
   arg,

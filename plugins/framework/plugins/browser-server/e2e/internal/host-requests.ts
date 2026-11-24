@@ -20,7 +20,7 @@ interface HostRequestLog {
 
 declare global {
   interface Window {
-    __equinHostRequests?: HostRequestLog;
+    __muxosHostRequests?: HostRequestLog;
   }
 }
 
@@ -45,7 +45,7 @@ export async function recordHostRequests(page: Page): Promise<void> {
       unanswered: 0,
       onSettled: [],
     };
-    window.__equinHostRequests = log;
+    window.__muxosHostRequests = log;
     // Per port: the request ids the page posted, by id — ids are per requester.
     const sent = new WeakMap<
       MessagePort,
@@ -136,7 +136,7 @@ export async function hostRequestsAnswered<
   const pathname = endpointPath(endpoint, params);
   return page.evaluate(
     ([method, pathname]) => {
-      const log = window.__equinHostRequests;
+      const log = window.__muxosHostRequests;
       if (log === undefined)
         throw new Error(
           "host requests are not recorded on this page: call recordHostRequests before it loads",
@@ -156,7 +156,7 @@ export async function hostRequestsAnswered<
  */
 export async function hostRequestsUnanswered(page: Page): Promise<number> {
   return page.evaluate(() => {
-    const log = window.__equinHostRequests;
+    const log = window.__muxosHostRequests;
     if (log === undefined)
       throw new Error(
         "host requests are not recorded on this page: call recordHostRequests before it loads",
@@ -175,7 +175,7 @@ export async function hostRequestsUnanswered(page: Page): Promise<number> {
  */
 export async function armHostAnswers(page: Page): Promise<() => Promise<void>> {
   await page.evaluate(() => {
-    const log = window.__equinHostRequests;
+    const log = window.__muxosHostRequests;
     if (log === undefined)
       throw new Error(
         "host requests are not recorded on this page: call recordHostRequests before it loads",
@@ -189,6 +189,6 @@ export async function armHostAnswers(page: Page): Promise<() => Promise<void>> {
   });
   return () =>
     page.evaluate(async () => {
-      await window.__equinHostRequests!.armed;
+      await window.__muxosHostRequests!.armed;
     });
 }

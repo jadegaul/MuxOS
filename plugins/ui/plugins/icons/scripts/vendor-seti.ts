@@ -14,7 +14,7 @@ import { joinAppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/co
  * To upgrade: change `SETI_SOURCE.commit` and rerun. The `icons:seti-in-sync`
  * check fails until you do.
  *
- * Usage: ./equin run plugins/ui/plugins/icons/scripts/vendor-seti.ts
+ * Usage: ./muxos run plugins/ui/plugins/icons/scripts/vendor-seti.ts
  */
 import { mkdtemp, rm, writeFile, mkdir } from "fs/promises";
 import { readdir, readFile } from "@plugins/packages/plugins/timed-fs/core";

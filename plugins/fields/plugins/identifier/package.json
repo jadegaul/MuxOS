@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-identifier",
+  "name": "@muxos/plugin-fields-identifier",
   "version": "0.0.1",
   "private": true,
-  "description": "Identifier field type (a sha, run id, fingerprint, slug, tool name): extends text — text's sort, filter and editor via the extends chain, its own monospace cell."
+  "description": "Identifier field type (a sha, run id, fingerprint, slug, tool name): extends text \u2014 text's sort, filter and editor via the extends chain, its own monospace cell."
 }

@@ -59,7 +59,7 @@ const PATTERNS = [
   "/opt/" + "homebrew",
   "/usr/" + "bin/",
   "/" + "Users/",
-  "~/" + ".equin",
+  "~/" + ".muxos",
 ];
 
 const noHardcodedPathsCheck: Check = {
@@ -213,7 +213,7 @@ const noInlinedWorktreeArtifactsCheck: Check = {
     return {
       ok: false,
       message: `inlined worktree-artifact path found in ${offenders.length} place(s):\n    ${offenders.join("\n    ")}`,
-      hint: "Import `worktreeDataDir` / `worktreeArtifacts` / `WORKTREE_SPEC_FILE` from `@plugins/infra/plugins/paths/core` (or `/server`) instead of reconstructing the ~/.equin/worktrees/<name> dir or hardcoding a per-worktree filename (spec.json, build-profile*.json, build-logs*.json, build*.log, check*.log). Note: the git-checkout `.claude/worktrees` path (plugins/infra/plugins/worktree) is a different concept and intentionally out of scope.",
+      hint: "Import `worktreeDataDir` / `worktreeArtifacts` / `WORKTREE_SPEC_FILE` from `@plugins/infra/plugins/paths/core` (or `/server`) instead of reconstructing the ~/.muxos/worktrees/<name> dir or hardcoding a per-worktree filename (spec.json, build-profile*.json, build-logs*.json, build*.log, check*.log). Note: the git-checkout `.claude/worktrees` path (plugins/infra/plugins/worktree) is a different concept and intentionally out of scope.",
     };
   },
 };
@@ -221,7 +221,7 @@ const noInlinedWorktreeArtifactsCheck: Check = {
 // ── no-undeclared-data-dirs ─────────────────────────────────────────────────
 //
 // The check that reads the data root AS A WHOLE. Nothing ever did, which is why
-// `~/.equin/` accreted 60-odd top-level entries — nine of them orphans
+// `~/.muxos/` accreted 60-odd top-level entries — nine of them orphans
 // with zero references left in the repo, ~1 GB, discovered a year late by a
 // hand audit rather than by anything that runs.
 //
@@ -893,9 +893,9 @@ const noUndeclaredDataDirsCheck: Check = {
 //      that is unavoidable, since a child process has to be handed one — so the
 //      constraint cannot live in the type. `join(dataRoot(), "whatever")` is
 //      precisely what `defineDataDir` exists to replace.
-//   2. **Re-reading `EQUIN_DIR` from the environment.** A second
+//   2. **Re-reading `MUXOS_DIR` from the environment.** A second
 //      derivation of the root, in a plugin that owns none of it. This is the
-//      form the deleted `EQUIN_DIR` const would come back as: not an
+//      form the deleted `MUXOS_DIR` const would come back as: not an
 //      import (that is now a tsc error), but one `readEnv("DIR")` call.
 //
 // A WRITE to the env var is untouched — `setEnv`, `setEnvDefault` and an
@@ -921,7 +921,7 @@ const DATA_ROOT_PATTERNS: { pattern: RegExp; grepArg: string }[] = [
   // `setEnv` / `setEnvDefault` / `envEntries`, which this does not match.
   //
   // The inter-token whitespace lives INSIDE the lookahead deliberately. Written
-  // as `…EQUIN_DIR\s*(?!…)` it matches every write instead: `\s*` is free
+  // as `…MUXOS_DIR\s*(?!…)` it matches every write instead: `\s*` is free
   // to give back the space it consumed, so the lookahead re-runs hard against
   // the name and sees " ??=" rather than "??=", finds no assignment, and the
   // negative succeeds. Both writes in the co-located test failed exactly that
@@ -938,8 +938,8 @@ const DATA_ROOT_PATTERNS: { pattern: RegExp; grepArg: string }[] = [
  * manifest exempts the whole plugin). Tests are out of scope categorically, not
  * by name: a test that points the root at a temp dir is being hermetic — the
  * correct thing for a test to do, and the alternative (running against the
- * developer's real `~/.equin`) is the actual bug. Files that legitimately
- * read `EQUIN_DIR` declare it in their own plugin's manifest; entries
+ * developer's real `~/.muxos`) is the actual bug. Files that legitimately
+ * read `MUXOS_DIR` declare it in their own plugin's manifest; entries
  * LEAVE it the moment their read does (a stale one fails this check).
  */
 const dataRootNotJoinedCheck: Check = {
@@ -1040,7 +1040,7 @@ const appDataDirsCheck: Check = {
         throw new Error(
           `[paths:app-data-dirs] loading plugins/${entry.pluginPath}/data-dirs/index.ts failed: ` +
             `${err instanceof Error ? err.message : String(err)}. ` +
-            `(If that file was moved or deleted, run \`./equin build\` to regenerate core/data-dirs.generated.ts.)`,
+            `(If that file was moved or deleted, run \`./muxos build\` to regenerate core/data-dirs.generated.ts.)`,
           { cause: err },
         );
       }

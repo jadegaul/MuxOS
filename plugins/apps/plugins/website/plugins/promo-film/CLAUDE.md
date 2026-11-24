@@ -1,7 +1,7 @@
 # promo-film
 
 **Reporting to the user: every file is written as its full path**
-(`~/Downloads/showcase/equin-v0.mp4` or the absolute path, never a bare name or
+(`~/Downloads/showcase/muxos-v0.mp4` or the absolute path, never a bare name or
 a path relative to a folder named elsewhere) — the films, music candidates and
 previews, stills, logs — so each one is clickable.
 
@@ -11,8 +11,8 @@ On this checkout's **`promo-film` composition**, never on main: the whole app
 on its own empty database, holding the curated story of `plugins/seed`.
 
 ```bash
-./equin build --composition promo-film   # http://promo-film.<checkout>.localhost:<port>
-./equin promo-film seed                  # reset it to first launch, write the story
+./muxos build --composition promo-film   # http://promo-film.<checkout>.localhost:<port>
+./muxos promo-film seed                  # reset it to first launch, write the story
 ```
 
 A recorder or capture script targets it with the e2e harness's
@@ -22,14 +22,14 @@ It is also the only composition that ships the film's own plugins, Circle
 (`plugins/circle`) and the seed: every other row inherits the default
 exclusion set, `all-exclusions`, which leaves both out, while `promo-film`
 names the narrower `base-exclusions` (its `exclusions` field). So main never
-bundles them; `./equin promo-film seed` (this plugin's `cli/`) works from any
+bundles them; `./muxos promo-film seed` (this plugin's `cli/`) works from any
 checkout, and needs the promo-film build.
 
 ## Recording and rendering
 
 ```bash
-./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/record.ts --composition promo-film [--only pages,sonata,…]
-./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts [--preview] [--captions] [--stills t1,t2]
+./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/record.ts --composition promo-film [--only pages,sonata,…]
+./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts [--preview] [--captions] [--stills t1,t2]
 ```
 
 - **The script is the Video page's Script v2 page (its Principles first, then
@@ -151,7 +151,7 @@ checkout, and needs the promo-film build.
 - **`record.ts`** drives the real app on media/film's virtual clock (with a
   steady caret: the harness's `steadyCaret`) into
   `--rec-dir <dir>` (`recDir()`, `session-kit.ts`; pass
-  `"$EQUIN_SCRATCH/equin-film"` to keep one across runs — never a fixed `/tmp`
+  `"$MUXOS_SCRATCH/muxos-film"` to keep one across runs — never a fixed `/tmp`
   dir every session shares; omitted, a fresh `mkdtemp` dir; `film.ts` requires
   it):
   each segment's frames and input log, the facts it read off the page
@@ -191,19 +191,19 @@ checkout, and needs the promo-film build.
   frame again (same size and place, the hand where it rested at the start —
   the desktop's full screen is 1.5× the film's in CSS px, so without it the
   gallery read smaller than at the start), then the end
-  card (`outro.ts`: a direct fade to "equin." with ".ai" growing out of the
+  card (`outro.ts`: a direct fade to "muxos." with ".ai" growing out of the
   dot, "Free and open source" under it — no URL) and the sound. A recording
   at a larger screen (the desktop's 1920×1080 CSS px at 1.5×) is drawn on
   the film's 1280×720 stage, its logged marks and pointer scaled with it.
   The camera has no motion blur (media/film's default: CSS blur snaps on
   and off mid-move — v21's 0:28 Pick UI pull-back read as a shake).
 - **Every render is a new version; nothing is ever overwritten.** The plain
-  render writes `~/Downloads/showcase/equin-v<N>.mp4`, N one past the newest
-  version there; `--captions` writes `equin-v<N>-captions.mp4` for the newest
+  render writes `~/Downloads/showcase/muxos-v<N>.mp4`, N one past the newest
+  version there; `--captions` writes `muxos-v<N>-captions.mp4` for the newest
   version without one (render the plain variant first, same N); a preview
-  writes `equin-v<N>-preview[-k].mp4`. Every full render also writes its
-  light web version beside it — `equin-v<N>-web.mp4` (a `--music` render:
-  `equin-v<N>-music-<slug>-web.mp4`), what the website streams (media/film's
+  writes `muxos-v<N>-preview[-k].mp4`. Every full render also writes its
+  light web version beside it — `muxos-v<N>-web.mp4` (a `--music` render:
+  `muxos-v<N>-music-<slug>-web.mp4`), what the website streams (media/film's
   `web` option: 1080p H.264 CRF 28, AAC 128k, faststart; ~18 MB for 2 min).
   media/film's `runFilm` refuses any
   existing output path (and its encoder runs `ffmpeg -n`), so there is no
@@ -214,14 +214,14 @@ checkout, and needs the promo-film build.
 - **The music is one constant**, `FILM_MUSIC` in `e2e/internal/music.ts` (a
   file, or the pinned `promo-music` dep). Swapping it needs no re-recording.
   To audition another track on the same recordings, `film.ts --music <slug>`
-  renders `equin-v<N>-music-<slug>.mp4` (N the newest version) from
+  renders `muxos-v<N>-music-<slug>.mp4` (N the newest version) from
   `FILM_MUSIC_TRACKS` — each candidate's file, measured beat grid (the montage
   and end card land on it) and `sectionStart` (whole bars, chosen so the film
   ends on the track's own ending) — leaving `FILM_MUSIC` as it is.
 - **Another music on a finished film, without rendering:** `e2e/remix.ts
-  --film ~/Downloads/showcase/equin-v<N>.mp4 --music <slug>` (media/film's
-  `remixFilm` over the film's kept `equin-v<N>.sound/`) writes
-  `equin-v<N>-music-<slug>.mp4` (+ `-web.mp4`): the film's video untouched,
+  --film ~/Downloads/showcase/muxos-v<N>.mp4 --music <slug>` (media/film's
+  `remixFilm` over the film's kept `muxos-v<N>.sound/`) writes
+  `muxos-v<N>-music-<slug>.mp4` (+ `-web.mp4`): the film's video untouched,
   its clicks and SFX as rendered, the new track's bar put where the film's
   track had one (the montage's first window, `MusicBed.barAt`) under the
   film's gain automation. The cuts stay on the old track's grid — for cuts on
@@ -235,9 +235,9 @@ re-records alone; the others' files stay, and `film.ts` re-times everything
 after it.
 
 ```bash
-./equin promo-film seed      # only when the segment WRITES (see below)
-./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/record.ts --composition promo-film --only pages
-./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --preview
+./muxos promo-film seed      # only when the segment WRITES (see below)
+./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/record.ts --composition promo-film --only pages
+./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --preview
 ```
 
 - Needs a fresh seed first: `pages` (it writes the shops and the map; it
@@ -258,11 +258,11 @@ after it.
   in the same state: after changing where one ends, check the next one's
   opening frame against it.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: The equin showcase film (script: the Video page's Script v2): the real app recorded as one continuous session on the seeded promo-film composition (e2e/record.ts), ending on equin's desktop mode, rendered over media/film with a short open-source and end-card tail (e2e/film.ts), and its music track.
+- Description: The muxos showcase film (script: the Video page's Script v2): the real app recorded as one continuous session on the seeded promo-film composition (e2e/record.ts), ending on muxos's desktop mode, rendered over media/film with a short open-source and end-card tail (e2e/film.ts), and its music track.
 - Deps:
   - Uses:
     - `infra/deps.defineDep`

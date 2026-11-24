@@ -10,7 +10,7 @@ export type ByteRange = { start: number; end: number };
  * stops reading once it has enough, but over HTTP/2 the transport has
  * already let the rest in — Chrome's stream window admits ~6 MB before its
  * media stack's back-pressure applies. Unbounded, a 16 MB film that nobody
- * plays cost every phone visit to equin.ai ~6 MB. Answering the open end
+ * plays cost every phone visit to MuxOS.app ~6 MB. Answering the open end
  * with at most a chunk (RFC 9110 lets a 206 carry less than asked: the
  * `Content-Range` says which bytes and the total) puts the reader in charge
  * of the bytes on the wire: a player that wants more asks for the next

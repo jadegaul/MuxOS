@@ -4,7 +4,7 @@
 // fullscreen at all (Safari there fullscreens a <video> only), and a frame
 // without `allowfullscreen` has the method but may not use it. A caller that
 // calls `el.requestFullscreen()` unchecked crashes there with "requestFullscreen
-// is not a function" (equin.ai's Keyboard Party, Safari, 2026-11-18). So the
+// is not a function" (MuxOS.app's Keyboard Party, Safari, 2026-11-18). So the
 // request is reachable only through `fullscreenSupport(doc)`: its `unsupported`
 // arm carries no `request`, so a caller must branch — and a control whose only
 // job is fullscreen is not offered where the browser cannot do it.

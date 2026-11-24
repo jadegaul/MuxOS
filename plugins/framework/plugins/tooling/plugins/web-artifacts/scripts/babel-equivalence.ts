@@ -5,7 +5,7 @@
 // contribution on every module; the new pass skips modules no contribution
 // applies to — so equal bytes also prove each `appliesTo` false is exact.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/babel-equivalence.ts [--n 120]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/babel-equivalence.ts [--n 120]
 
 import { REPO_ROOT } from "@plugins/infra/plugins/paths/plugins/repo-root/core";
 

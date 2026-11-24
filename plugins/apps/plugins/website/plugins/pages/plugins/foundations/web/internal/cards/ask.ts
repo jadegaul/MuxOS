@@ -9,7 +9,7 @@ const IC = {
 };
 
 /**
- * Ask equin: the ? button opens a chat card floating over the app. The agent answers from the app's code, points at
+ * Ask muxos: the ? button opens a chat card floating over the app. The agent answers from the app's code, points at
  * the control it means on the page underneath, and files a task when the answer is a change to the app.
  * States: 0 closed · 1 asked · 2 answered · 3 the control it means is ringed on the page · 4 a task filed.
  * The card is anchored to its bottom-right corner, so it grows upwards as the thread does.
@@ -22,11 +22,11 @@ export const askCard = defineCard({
       `<span class="as-bar"><span>Roadmap</span>` +
       `<span class="as-ic">${IC.share}</span>` +
       `<span class="as-ic">${IC.moon}<span class="as-ring" data-in="3"></span></span>` +
-      `<span class="as-ic" data-act="ask" role="button" tabindex="0" aria-label="Ask equin" data-on="1 2 3 4">?</span></span>`;
+      `<span class="as-ic" data-act="ask" role="button" tabindex="0" aria-label="Ask muxos" data-on="1 2 3 4">?</span></span>`;
     const body = `<span class="as-body"><span class="as-h">Roadmap</span>${[94, 80, 88, 62, 84, 70, 46].map((w) => k.bar(w)).join("")}</span>`;
     const card =
       `<span class="as-card" data-in="1 2 3 4">` +
-      `<span class="as-head"><span class="as-mark">?</span>Ask equin</span><span class="as-th">` +
+      `<span class="as-head"><span class="as-mark">?</span>Ask muxos</span><span class="as-th">` +
       `<span class="as-bub as-me">How do I switch to dark mode?</span>` +
       `<span class="as-bub as-ag" data-in="2 3 4">The moon button in the top bar switches this app to dark.<br>` +
       k.hchip(IC.eye + "Show me", { act: "show", on: "3" }) +

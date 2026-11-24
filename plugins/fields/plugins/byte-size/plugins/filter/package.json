@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-byte-size-filter",
+  "name": "@muxos/plugin-fields-byte-size-filter",
   "version": "0.0.1",
   "private": true,
-  "description": "Byte size field type: data-view filter — number's operators, with operands typed in units."
+  "description": "Byte size field type: data-view filter \u2014 number's operators, with operands typed in units."
 }

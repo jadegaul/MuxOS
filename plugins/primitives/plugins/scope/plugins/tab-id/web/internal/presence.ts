@@ -9,7 +9,7 @@ import { webLocks } from "@plugins/primitives/plugins/dom/plugins/web-locks/core
 // storage partition: tabs, app windows, the menu-bar panel alike). Shared, not
 // exclusive: a duplicated tab copies its session storage, id included, and
 // both copies are that tab.
-const LOCK_PREFIX = "equin.tab-presence:";
+const LOCK_PREFIX = "muxos.tab-presence:";
 
 let claimed = false;
 

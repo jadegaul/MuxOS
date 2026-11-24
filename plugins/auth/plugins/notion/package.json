@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-auth-notion",
+  "name": "@muxos/plugin-auth-notion",
   "private": true,
   "version": "0.0.1"
 }

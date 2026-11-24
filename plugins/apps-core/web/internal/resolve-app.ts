@@ -18,7 +18,7 @@ export function isTabApp(
 /**
  * Whether launchers offer the app to `audience` — the rail, the app galleries
  * and launcher grids. An app declaring `defineApp({ listed: false })` is opened
- * at its URL by something outside equin (the menu-bar panel) and is never
+ * at its URL by something outside muxos (the menu-bar panel) and is never
  * picked from inside it; one declaring `audience: "developer"` is offered only
  * in Developer mode; one the deployed composition names in its `unlisted`
  * (`useComposition()`) came in only because something it asked for imports it,

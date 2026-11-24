@@ -31,7 +31,7 @@ export function demoSvg(): string {
   <rect x="${(W - btnW) / 2}" y="350" width="${btnW}" height="60" rx="14" fill="#f3f4f6"/>
   <text x="${W / 2}" y="388" text-anchor="middle" class="b">Try the demo online  →</text>
 </g>
-<text x="${W / 2}" y="456" text-anchor="middle" class="c">equin, running entirely in your browser.</text>
+<text x="${W / 2}" y="456" text-anchor="middle" class="c">muxos, running entirely in your browser.</text>
 </svg>
 `;
 }

@@ -3,7 +3,7 @@
 // status dot with its x offset from the sidebar's edge, its box, and its font
 // and colour. Read-only.
 //
-//   ./equin run plugins/apps/plugins/agent-manager/plugins/shell/e2e/sidebar-metrics.ts \
+//   ./muxos run plugins/apps/plugins/agent-manager/plugins/shell/e2e/sidebar-metrics.ts \
 //     [--path /agents] [--url http://<ns>.localhost:<port>/agents] [--color-scheme dark]
 
 import {

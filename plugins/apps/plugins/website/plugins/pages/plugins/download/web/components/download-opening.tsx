@@ -9,7 +9,7 @@ export function DownloadOpening() {
     <WebsiteHero
       kind="page"
       lead="Run "
-      accent="equin"
+      accent="muxos"
       trail=" on your machine."
       lede="Your own copy, yours to reshape."
     />

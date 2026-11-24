@@ -36,11 +36,11 @@ const run: CliAction<
     logLevel: string;
   }
 > = async (opts) => {
-  // The launcher is a release entry point: EQUIN_DIR must already
+  // The launcher is a release entry point: MUXOS_DIR must already
   // be set in the environment, because it re-roots the whole install. The
   // check is on the ENV rather than on `dataRoot()` precisely because
   // `dataRoot()` cannot express "explicitly set" — unset, it answers with
-  // the dev ~/.equin, and silently defaulting to that would pollute
+  // the dev ~/.muxos, and silently defaulting to that would pollute
   // the developer's data root with a release cluster, spec, and registry.
   if (!readEnv("DIR")) {
     console.error(
@@ -66,7 +66,7 @@ const run: CliAction<
 
   // The `--repo-root` default, resolved HERE rather than by commander: it is
   // `REPO_ROOT`, which lives behind a server barrel, and this command's
-  // declaration — reached on every `./equin` invocation — may import no
+  // declaration — reached on every `./muxos` invocation — may import no
   // server barrel. The option's help text states the default so it stays
   // discoverable from `serve-app --help`.
   const repoRoot =

@@ -154,7 +154,7 @@ Batching changes which program a file is checked in, never what it is checked ag
   - K stays large and batches serial because each program re-pays the environment (~10–15 CPU-s); three at once cost +54–125 % CPU.
   - **A batch's memory is its own working set**, not a shared environment re-loaded: what every program shares is ~0.23 GB; the rest is its sources' import closures (through barrels, 2,000 sources reach 4.6k–11k files) and, the largest part, the checker's types. Sharing parsed files across batches saves CPU, never a peak; no batch order loads much less. See DESIGN.md.
   - **Programs parse JSDoc as `tsc` does** (`ParseForTypeErrors`, `shared/name-host.ts`). A rule that reads JSDoc tags (e.g. `no-deprecated`) would need it revisited.
-- **Workers and batches run heap-paced** (`packages/heap-pacing`, passed as the spawn `env`): JSC sizes its collection pacing against the machine's RAM, so on a 64 GB host a batch's 4.4 GB live heap grew ~2× before collecting (peak 8.6–10.4 GB); paced against 4 GB the same batch peaks 5.3–7 GB for +0–10 % CPU. `--smol` and `Bun.gc(true)` between phases or lint files did nothing measurable. Measure a batch with `scripts/batch-memory-bench.ts` over a run kept with `EQUIN_TYPE_CHECK_KEEP_BATCHES` (research/2026-11-08-global-type-check-bun-heap-pacing.md).
+- **Workers and batches run heap-paced** (`packages/heap-pacing`, passed as the spawn `env`): JSC sizes its collection pacing against the machine's RAM, so on a 64 GB host a batch's 4.4 GB live heap grew ~2× before collecting (peak 8.6–10.4 GB); paced against 4 GB the same batch peaks 5.3–7 GB for +0–10 % CPU. `--smol` and `Bun.gc(true)` between phases or lint files did nothing measurable. Measure a batch with `scripts/batch-memory-bench.ts` over a run kept with `MUXOS_TYPE_CHECK_KEEP_BATCHES` (research/2026-11-08-global-type-check-bun-heap-pacing.md).
 - **Lint goes with the file**: a batch lints its files inside its program before their keys exist; the worker keeps the typed parts stale under the key it computes (`LintHook.adopt`). A batch also runs its files' stale syntactic groups, FIRST, before it builds its program (`shared/batch-worker.ts`): the worker hands them over instead of parsing them itself (next section).
 
 ## The lint cache is keyed on what the rules read, and exemptions apply when it is read
@@ -292,7 +292,7 @@ It takes the caller's `Grant`, so admission and priority cannot be skipped:
    - Why split: a whole-tree run (typed re-lint of every file, 600+ CPU-s) held the heavy pool's one background slot 8–12 min while 4-s runs queued behind it (977 s measured). ≤ 100 sources covered 63 % of 150 measured runs at ≤ 3.9 GB, ≤ 34 CPU-s.
    - The transcript's `type-check worker repo: admitted …` line says which pool, and for an escalation what the refused attempt cost.
 2. **`TYPE_CHECK_WORKER_UNITS` of the grant** (`core/worker-weight.ts`: `ceil(7.0 GB mean heavy-run footprint / PER_UNIT_BYTES)` = 2) — CPU accounting.
-   - Every run appends its measured footprints (admission, profile, mode, worker, batches at once, a dual run's oracle) to the host log `~/.equin/logs/type-check-worker-memory/worker-memory.jsonl` — written by `spawnTypeCheckWorker` itself (`shared/worker-memory-log.ts`), so every caller's runs land there (the check, the build's `--skip-checks` path, the backstop); a caller has no way to spawn an unrecorded worker. The host check `type-check:worker-weight-measured` (main's hourly host audit) fails when `TYPE_CHECK_WORKER_PEAK_BYTES` sits more than 20 % from the last 14 days' mean heavy-run footprint, or `PER_UNIT_BYTES` more than 20 % from that mean per unit spent; re-derive from the log, never by a guessed offset. It also fails when `TYPE_CHECK_BACKSTOP_PEAK_BYTES` sits more than 20 % from the dual runs' mean.
+   - Every run appends its measured footprints (admission, profile, mode, worker, batches at once, a dual run's oracle) to the host log `~/.muxos/logs/type-check-worker-memory/worker-memory.jsonl` — written by `spawnTypeCheckWorker` itself (`shared/worker-memory-log.ts`), so every caller's runs land there (the check, the build's `--skip-checks` path, the backstop); a caller has no way to spawn an unrecorded worker. The host check `type-check:worker-weight-measured` (main's hourly host audit) fails when `TYPE_CHECK_WORKER_PEAK_BYTES` sits more than 20 % from the last 14 days' mean heavy-run footprint, or `PER_UNIT_BYTES` more than 20 % from that mean per unit spent; re-derive from the log, never by a guessed offset. It also fails when `TYPE_CHECK_BACKSTOP_PEAK_BYTES` sits more than 20 % from the dual runs' mean.
    - **A dual run weighs its oracle** (`typeCheckWorkerUnits(mode)`: `TYPE_CHECK_BACKSTOP_UNITS` for `dual`, else `TYPE_CHECK_WORKER_UNITS`). The oracle is one fresh whole program — never batched, so no K bounds it — and runs in a process of its own (`shared/full-check-process.ts`) BEFORE the walks, so the run's tree peak is the larger of the oracle and the batches beside the worker, never their sum. In the worker, it was admitted at the batched weight (7 GB) while its tree peaked 14.9–21.3 GB.
    - The grant clamps it to its own size — and **the worker then fits the share it got** (`typeCheckProfileFor(share.units)`, decided inside `grant.run`): a share of `TYPE_CHECK_WORKER_UNITS` runs the full profile (K 2000, heap paced at 4 GB); a share the clamp cut to ONE unit (an 8 GB host's whole budget, or any host whose measured window shrank) runs the one-unit profile (K 500, paced at 1.5 GB). Measured cold on an 8 GB Ubuntu VM: the full profile alone was OOM-killed (a batch at 5.2 GB), the one-unit profile peaked at ~3.9 GB for +41 % CPU (`research/2026-11-19-global-8gb-deploy-check-pass-memory.md`). A small run keeps the full pace (it fits a unit already). The admission line prints the profile; the memory log records it, and `worker-weight-measured` judges the full weight on full-profile runs only.
    - Batch processes run serially inside this share.
@@ -304,13 +304,13 @@ Sizes: `research/2026-10-15-global-push-typecheck-lane-priority-and-cap.md`.
 ## Caching and forcing
 
 - There is no whole-program key (the old `type-check-programs`, `type-check-type-fps`, `type-check-file-results` stores and `.cache/type-check/` manifest are retired); the per-file stores answer everything, in the worker.
-- `--no-cache` / `EQUIN_CHECK_NO_CACHE=1` disarms only the OUTER read-set replay; per-file stores are content-addressed facts and are always used.
+- `--no-cache` / `MUXOS_CHECK_NO_CACHE=1` disarms only the OUTER read-set replay; per-file stores are content-addressed facts and are always used.
 - To force a full re-check: `scripts/dual-check.ts`.
 - A crashed worker records no lint results and yields no lint verdict.
 
 ## Reading the transcript
 
-`~/.equin/worktrees/<wt>/check-<runId>.log`, greppable lines per run — the instrument every claim about this check is made on:
+`~/.muxos/worktrees/<wt>/check-<runId>.log`, greppable lines per run — the instrument every claim about this check is made on:
 
 | Line prefix | Says |
 | --- | --- |
@@ -325,9 +325,9 @@ Sizes: `research/2026-10-15-global-push-typecheck-lane-priority-and-cap.md`.
 | `type-check: prepared off-thread in …` | prepare's phases with CPU, the base carried from (or `base none (<why>)` / `rules moved (…)`), files sent, what finalize wrote; `(finalize skipped: coverage gate failed)` |
 | `type-check: lint base …: every file carried unless its key moved` / `rules moved (…): every file carried runs its moved parts` | the lint base the worker compares keys with, and what moved since it |
 
-**Use `cpu`, not wall clock** — wall measures the neighbours (the same build: 105 s vs 266 s at similar load). Per-check cost claims need `./equin check --jobs 1`.
+**Use `cpu`, not wall clock** — wall measures the neighbours (the same build: 105 s vs 266 s at similar load). Per-check cost claims need `./muxos check --jobs 1`.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 

@@ -641,7 +641,7 @@ export class SharedWebSocket {
    * The worker failed to load or crashed. After the page lost its reach while
    * it loaded — a sleep, mostly: a laptop closed while the page booted, and
    * the worker script's request died with its connection — that is the
-   * visitor's network, not ours: attach again once the page is back (equin.ai
+   * visitor's network, not ours: attach again once the page is back (MuxOS.app
    * /foundations, Firefox, report-1795099021-ohg6bc; the edge saw the page
    * stop mid-load and resume 39 minutes later, the worker script never asked
    * for). A failure while the page kept its reach stays loud.

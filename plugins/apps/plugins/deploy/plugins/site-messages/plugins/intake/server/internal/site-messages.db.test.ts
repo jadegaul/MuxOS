@@ -66,7 +66,7 @@ function body(over: Record<string, unknown> = {}) {
     replyTo: "visitor@example.com",
     honeypot: "",
     elapsedMs: 15_000,
-    host: "equin.ai",
+    host: "MuxOS.app",
     page: "/?utm_source=x",
     ...over,
   });
@@ -153,7 +153,7 @@ describe("notify", () => {
     const sent: ResendEmail[] = [];
     return {
       apiKey: { kind: "set", value: "re_test" },
-      to: "hello@equin.ai",
+      to: "hello@MuxOS.app",
       send: async (_key, email): Promise<ResendSendResult> => {
         sent.push(email);
         return { ok: true, id: `email-${sent.length}` };
@@ -191,13 +191,13 @@ describe("notify", () => {
     const outcome = await notifySiteMessage(t.db, id, d);
     expect(outcome).toEqual({ kind: "sent", providerId: "email-1", held: 0 });
     expect(d.sent[0]).toMatchObject({
-      from: "equin <noreply@equin.ai>",
-      to: "hello@equin.ai",
+      from: "muxos <noreply@MuxOS.app>",
+      to: "hello@MuxOS.app",
       replyTo: "visitor@example.com",
       subject: "Website message from visitor@example.com",
     });
     expect(d.sent[0]!.text).toContain("Hello there");
-    expect(d.sent[0]!.text).toContain("https://equin.ai/");
+    expect(d.sent[0]!.text).toContain("https://MuxOS.app/");
     const [row] = await t.db
       .select()
       .from(siteMessages)
@@ -247,7 +247,7 @@ describe("notify", () => {
         createdAt: new Date(NOW.getTime() - 60 * 60_000),
         message: "earlier",
         replyTo: "a@example.com",
-        host: "equin.ai",
+        host: "MuxOS.app",
         page: "/",
         ipHash: "h",
         verdict: "accepted" as const,
@@ -277,7 +277,7 @@ describe("confirm", () => {
     const sent: ResendEmail[] = [];
     return {
       apiKey: { kind: "set", value: "re_test" },
-      contact: "hello@equin.ai",
+      contact: "hello@MuxOS.app",
       send: async (_key, email): Promise<ResendSendResult> => {
         sent.push(email);
         return { ok: true, id: `email-${sent.length}` };
@@ -313,9 +313,9 @@ describe("confirm", () => {
       providerId: "email-1",
     });
     expect(d.sent[0]).toMatchObject({
-      from: "equin <noreply@equin.ai>",
+      from: "muxos <noreply@MuxOS.app>",
       to: "visitor@example.com",
-      replyTo: "hello@equin.ai",
+      replyTo: "hello@MuxOS.app",
       subject: "We received your message",
     });
     expect(d.sent[0]!.text).toContain("> Line one\n> Line two");

@@ -13,7 +13,7 @@ const scanLog = defineLogSink({
 /**
  * Daily, main only (a schedule's default): every URL main serves, checked
  * against the generic rules of the content blockers' default lists. Not part
- * of a build or `./equin check`: the rules change upstream with no commit of
+ * of a build or `./muxos check`: the rules change upstream with no commit of
  * ours, and fetching them on every build would make builds depend on GitHub.
  *
  * In a supervised child running the `web-artifacts-blocker-scan` command

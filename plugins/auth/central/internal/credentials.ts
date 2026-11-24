@@ -23,7 +23,7 @@ const credCache = new Map<string, Promise<ResolvedCredentials>>();
  * Resolve a provider's OAuth client credentials.
  *
  * Each provider plugin's descriptor implements `resolveCredentials`. Typical
- * implementation: try env vars first (`EQUIN_AUTH_<PROVIDER>_CLIENT_ID`
+ * implementation: try env vars first (`MUXOS_AUTH_<PROVIDER>_CLIENT_ID`
  * / `..._CLIENT_SECRET`), then read user-pasted values from the secrets store
  * via `readSecretConfig` (auth runs on central — there is no per-worktree DB
  * to consult). If neither yields a clientId, throw AuthCredentialsMissingError

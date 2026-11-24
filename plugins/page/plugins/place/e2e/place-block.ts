@@ -16,7 +16,7 @@
 // `page/editor/e2e/convert-in-place-verify.ts` is the real gate for that rule.
 //
 // Usage:
-//   ./equin run plugins/page/plugins/place/e2e/place-block.ts [--url http://<worktree>.localhost:<port>] [--headed]
+//   ./muxos run plugins/page/plugins/place/e2e/place-block.ts [--url http://<worktree>.localhost:<port>] [--headed]
 
 import {
   snap,

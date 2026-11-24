@@ -7,7 +7,7 @@
 // the scans iterate (each is one call per entry), since Bun binds `node:fs`
 // imports natively and a wrapper cannot count them.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-cache-scans.ts
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-cache-scans.ts
 
 import {
   readdirSync,

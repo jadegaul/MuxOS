@@ -13,7 +13,7 @@ import (
 	"testing"
 )
 
-const snapshotShell = `<html><head><meta charset="UTF-8" /><title>equin</title></head>` +
+const snapshotShell = `<html><head><meta charset="UTF-8" /><title>muxos</title></head>` +
 	`<body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>`
 
 // writeSnapshot writes a dist's snapshot the way the build does: fragments
@@ -67,13 +67,13 @@ func TestSnapshotSplicedOnListedPath(t *testing.T) {
 		`<meta name="description" content="One command.">`,
 		`<link rel="canonical" href="http://alpha.localhost:9000/about/download">`,
 		snapshotHideHead + `</head>`,
-		`<div id="root"></div><div id="equin-snapshot"><h1>Download</h1><p>Run it.</p></div><script`,
+		`<div id="root"></div><div id="muxos-snapshot"><h1>Download</h1><p>Run it.</p></div><script`,
 	} {
 		if !strings.Contains(body, part) {
 			t.Errorf("missing %q in %q", part, body)
 		}
 	}
-	if strings.Count(body, "<title>") != 1 || strings.Contains(body, "<title>equin</title>") {
+	if strings.Count(body, "<title>") != 1 || strings.Contains(body, "<title>muxos</title>") {
 		t.Errorf("the shell's <title> must be replaced, not doubled: %q", body)
 	}
 	if got := rec.Header().Get("Cache-Control"); got != "no-cache" {
@@ -103,7 +103,7 @@ func TestSnapshotRequestPathNormalized(t *testing.T) {
 	f := snapshotFixture(t)
 	for _, p := range []string{"/about/download/", "//about//download", "/about/download?x=1"} {
 		body := serve(f.proxy, "alpha.localhost:9000", p).Body.String()
-		if !strings.Contains(body, `id="equin-snapshot"`) {
+		if !strings.Contains(body, `id="muxos-snapshot"`) {
 			t.Errorf("%s: no snapshot in %q", p, body)
 		}
 		if !strings.Contains(body, `href="http://alpha.localhost:9000/about/download"`) {
@@ -129,8 +129,8 @@ func TestSnapshotHomeRedirectsRoot(t *testing.T) {
 	f := newStaticProxy(t)
 	withShell(t, f, snapshotShell)
 	writeSnapshot(t, f.web,
-		`{"home":"/about","pages":{"/about":{"title":"equin","description":"The app.","file":"about.html"}}}`,
-		map[string]string{"about.html": "<h1>equin</h1>"})
+		`{"home":"/about","pages":{"/about":{"title":"muxos","description":"The app.","file":"about.html"}}}`,
+		map[string]string{"about.html": "<h1>muxos</h1>"})
 	for p, want := range map[string]string{"/": "/about", "/?utm=x&a=1": "/about?utm=x&a=1"} {
 		rec := serve(f.proxy, "alpha.localhost:9000", p)
 		if rec.Code != http.StatusMovedPermanently || rec.Header().Get("Location") != want {
@@ -138,7 +138,7 @@ func TestSnapshotHomeRedirectsRoot(t *testing.T) {
 		}
 	}
 	// The home itself, and any other path, is served as before.
-	if rec := serve(f.proxy, "alpha.localhost:9000", "/about"); rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), `id="equin-snapshot"`) {
+	if rec := serve(f.proxy, "alpha.localhost:9000", "/about"); rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), `id="muxos-snapshot"`) {
 		t.Errorf("/about: status=%d body=%q", rec.Code, rec.Body.String())
 	}
 	if rec := serve(f.proxy, "alpha.localhost:9000", "/other"); rec.Code != http.StatusOK {
@@ -152,8 +152,8 @@ func TestSnapshotMovedRedirects(t *testing.T) {
 	f := newStaticProxy(t)
 	withShell(t, f, snapshotShell)
 	writeSnapshot(t, f.web,
-		`{"home":"/about","moved":{"/website":"/about"},"pages":{"/about":{"title":"equin","description":"The app.","file":"about.html"}}}`,
-		map[string]string{"about.html": "<h1>equin</h1>"})
+		`{"home":"/about","moved":{"/website":"/about"},"pages":{"/about":{"title":"muxos","description":"The app.","file":"about.html"}}}`,
+		map[string]string{"about.html": "<h1>muxos</h1>"})
 	for p, want := range map[string]string{
 		"/website":                  "/about",
 		"/website/":                 "/about",
@@ -182,15 +182,15 @@ func TestSnapshotHomeAtRoot(t *testing.T) {
 	withShell(t, f, snapshotShell)
 	writeSnapshot(t, f.web,
 		`{"home":"/about","homeAtRoot":true,"moved":{"/website":"/about"},"pages":{`+
-			`"/about":{"title":"equin","description":"The app.","file":"about.html"},`+
+			`"/about":{"title":"muxos","description":"The app.","file":"about.html"},`+
 			`"/about/vision":{"title":"Vision","description":"Where it goes.","file":"about/vision.html"}}}`,
-		map[string]string{"about.html": "<h1>equin</h1>", "about/vision.html": "<h1>Vision</h1>"})
+		map[string]string{"about.html": "<h1>muxos</h1>", "about/vision.html": "<h1>Vision</h1>"})
 	for p, want := range map[string]string{
 		"/":       `href="http://alpha.localhost:9000/"`,
 		"/vision": `href="http://alpha.localhost:9000/vision"`,
 	} {
 		rec := serve(f.proxy, "alpha.localhost:9000", p)
-		if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), `id="equin-snapshot"`) || !strings.Contains(rec.Body.String(), want) {
+		if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), `id="muxos-snapshot"`) || !strings.Contains(rec.Body.String(), want) {
 			t.Errorf("%s: status=%d body=%q, want the snapshot with canonical %s", p, rec.Code, rec.Body.String(), want)
 		}
 	}
@@ -209,7 +209,7 @@ func TestSnapshotHomeAtRoot(t *testing.T) {
 		}
 	}
 	// An address with no snapshot is the plain shell, never a redirect.
-	if rec := serve(f.proxy, "alpha.localhost:9000", "/story"); rec.Code != http.StatusOK || strings.Contains(rec.Body.String(), `id="equin-snapshot"`) {
+	if rec := serve(f.proxy, "alpha.localhost:9000", "/story"); rec.Code != http.StatusOK || strings.Contains(rec.Body.String(), `id="muxos-snapshot"`) {
 		t.Errorf("/story: status=%d body=%q", rec.Code, rec.Body.String())
 	}
 }
@@ -251,7 +251,7 @@ func TestSnapshotEscapes(t *testing.T) {
 	for _, part := range []string{
 		`<title>A &lt;b&gt; &amp; &#34;c&#34;</title>`,
 		`content="it&#39;s &lt;x&gt;"`,
-		`<div id="equin-snapshot"><p>&amp;</p></div>`,
+		`<div id="muxos-snapshot"><p>&amp;</p></div>`,
 	} {
 		if !strings.Contains(body, part) {
 			t.Errorf("missing %q in %q", part, body)
@@ -387,7 +387,7 @@ func TestSnapshotComposesWithDocumentHead(t *testing.T) {
 	f := snapshotFixture(t)
 	writeDocumentHead(t, f, "alpha", `{"v":1,"entries":{"/about":"<style id=\"w\">w</style>"}}`)
 	body := serve(f.proxy, "alpha.localhost:9000", "/about/download").Body.String()
-	if !strings.Contains(body, `<style id="w">w</style>`) || !strings.Contains(body, `id="equin-snapshot"`) || !strings.Contains(body, "<title>Download</title>") {
+	if !strings.Contains(body, `<style id="w">w</style>`) || !strings.Contains(body, `id="muxos-snapshot"`) || !strings.Contains(body, "<title>Download</title>") {
 		t.Fatalf("both splices expected: %q", body)
 	}
 	if strings.Index(body, `<style id="w">`) > strings.Index(body, "</head>") {

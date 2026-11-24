@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-media",
-  "description": "Umbrella for media in equin: the player every surface plays video and audio in, the film engine (frame-exact composited video from captured app stills) and the ffmpeg it encodes with.",
+  "name": "@muxos/plugin-media",
+  "description": "Umbrella for media in muxos: the player every surface plays video and audio in, the film engine (frame-exact composited video from captured app stills) and the ffmpeg it encodes with.",
   "private": true,
   "version": "0.0.1"
 }

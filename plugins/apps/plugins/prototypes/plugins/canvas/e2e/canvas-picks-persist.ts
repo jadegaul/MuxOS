@@ -8,7 +8,7 @@
 // run wrote to the shared record.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-picks-persist.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-picks-persist.ts \
 //     [--name <prototype id>] [--out <prefix>] [--headed]
 
 import type { Page } from "playwright";

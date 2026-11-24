@@ -1,7 +1,7 @@
 /**
  * A leaf's drain (an entry with no downstream) runs as a lane off the flush
  * loop's critical path: a slow leaf loader no longer holds every later change.
- * Run with `./equin test plugins/network/plugins/live/plugins/resource-runtime`.
+ * Run with `./muxos test plugins/network/plugins/live/plugins/resource-runtime`.
  *
  * The 2026-10-29/30 incident: `conversations.context-usage` (a round trip to a
  * busy agent process, 2–10 s) held each flush pass, and every delivery that

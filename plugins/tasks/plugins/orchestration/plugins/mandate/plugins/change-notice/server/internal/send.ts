@@ -11,7 +11,7 @@ export interface SectionNotice {
   /** The system-prompt sections the change touches. */
   pick: (section: SystemPromptSection) => boolean;
   /**
-   * Whether the change also moves the agent's equin MCP tools (a mandate
+   * Whether the change also moves the agent's muxos MCP tools (a mandate
    * change): the server is reconnected first, and the notice is sent even
    * when no picked section has anything to say — the tools changed.
    */

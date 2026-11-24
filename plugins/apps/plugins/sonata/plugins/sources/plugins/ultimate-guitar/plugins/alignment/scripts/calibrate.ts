@@ -1,11 +1,11 @@
 // ─── Align UG tabs against cached beat features ──────────────────────────────
 //
-//   ./equin run plugins/apps/plugins/sonata/plugins/sources/plugins/ultimate-guitar/plugins/alignment/scripts/calibrate.ts \
+//   ./muxos run plugins/apps/plugins/sonata/plugins/sources/plugins/ultimate-guitar/plugins/alignment/scripts/calibrate.ts \
 //     <features.json>... <ug-tab.json>... [--chords | --bars]
-//   ./equin run …/calibrate.ts --set [--fetch http://<namespace>.localhost:<port>]
+//   ./muxos run …/calibrate.ts --set [--fetch http://<namespace>.localhost:<port>]
 //
 // <features.json>: a cached BeatFeatures file
-//   (~/.equin/cache/beat-features/v<N>/<settingsKey>/<videoId>.json).
+//   (~/.muxos/cache/beat-features/v<N>/<settingsKey>/<videoId>.json).
 // <ug-tab.json>: a UgTab, e.g. the `value` the live read
 //   `GET /api/resources/sonata.ultimate-guitar.tab?url=<tab url>` answers.
 //   Each file is recognised by its shape, in any order.

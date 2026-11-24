@@ -26,16 +26,16 @@ import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
  * The bare gateway binary's code-signing identifier: with the signing
  * certificate, what macOS keys its permission grants to when it runs where it
  * was built (`serve-app`, a release built on a Mac). The machine's own gateway
- * runs from the equin app bundle instead (`GATEWAY_APP_COMPONENT`), whose
+ * runs from the muxos app bundle instead (`GATEWAY_APP_COMPONENT`), whose
  * grants are the app's.
  */
 const GATEWAY_CODESIGN_IDENTIFIER = LEGACY_IDS.codesignIdentifier;
 
 /**
- * The gateway as a program of the equin app: `equin.app/Contents/MacOS/gateway`
+ * The gateway as a program of the muxos app: `muxos.app/Contents/MacOS/gateway`
  * on macOS (login-services' `macos-app`), so the backends' file access — which
  * macOS charges to the gateway that started them — asks, and is granted, as
- * "equin". Named `gateway` there too, so its process name is unchanged.
+ * "muxos". Named `gateway` there too, so its process name is unchanged.
  */
 export const GATEWAY_APP_COMPONENT: AppComponent = { name: "gateway" };
 
@@ -66,7 +66,7 @@ function goTarget(target: DepTarget): { GOOS: string; GOARCH: string } {
  * The gateway: `go build` of this checkout's `gateway/` module into the deps
  * cache. Its identity is every Go source plus `go.mod` / `go.sum`, the Go
  * version and the target, so editing a `.go` file (or a new Go) is a new build
- * beside the old one, and `./equin start` picks it up with no flag.
+ * beside the old one, and `./muxos start` picks it up with no flag.
  *
  * Cross-compiles to every release platform (`targets: "any"`), which is how a
  * release seals it for a Linux server from a Mac. It is pure Go on every
@@ -88,8 +88,8 @@ function goTarget(target: DepTarget): { GOOS: string; GOARCH: string } {
  * grants across rebuilds — an ad-hoc binary is keyed by its hash, and every
  * rebuild was a new app to it. The identity is not part of the build's
  * identity. That signature serves a gateway run where it was built
- * (`serve-app`, a release); the machine's own gateway runs from the equin app
- * bundle, which `./equin start` installs it into and signs as a whole.
+ * (`serve-app`, a release); the machine's own gateway runs from the muxos app
+ * bundle, which `./muxos start` installs it into and signs as a whole.
  */
 export const gatewayBinary = defineDep({
   id: "gateway-binary",

@@ -99,7 +99,7 @@ function UpdateReminderControl({
   );
 }
 
-/** `equin-update`: the update reminder's action (written by the daily check). */
+/** `muxos-update`: the update reminder's action (written by the daily check). */
 export const updateReminderAction: NotificationActionKind = {
   kind: REMINDER_ACTION_KIND,
   label: "Send agent to update",

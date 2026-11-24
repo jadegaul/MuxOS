@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-lint-marker-scan-safety",
+  "name": "@muxos/plugin-framework-tooling-lint-marker-scan-safety",
   "version": "0.0.1",
   "private": true,
   "description": "marker-scan-safety lint rule: no-adhoc-marker-scan"

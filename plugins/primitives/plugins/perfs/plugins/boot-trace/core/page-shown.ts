@@ -25,7 +25,7 @@
  * (`performance.now()` ms, set once), read by {@link pageShown}'s web reader.
  * Absent while the page has been visible since the head parsed.
  */
-export const FIRST_HIDDEN_GLOBAL = "__equinFirstHiddenAt";
+export const FIRST_HIDDEN_GLOBAL = "__muxosFirstHiddenAt";
 
 /** Whether the visitor could see the page load since its navigation started. */
 export type PageShown =

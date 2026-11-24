@@ -91,7 +91,7 @@ async function ensureWorktreeConfig(
  * daemon nobody owns. The include matches the main worktree's git dir only;
  * a linked checkout's is `<it>/worktrees/<id>`.
  */
-const MAIN_FSMONITOR_CONFIG = "equin-fsmonitor.config";
+const MAIN_FSMONITOR_CONFIG = "muxos-fsmonitor.config";
 
 /**
  * Where a checkout's `core.fsmonitor` is written, as `git config` options.

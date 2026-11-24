@@ -1,4 +1,4 @@
-/** Tests for `rail/no-unowned-overlay`. Run with `./equin test`. */
+/** Tests for `rail/no-unowned-overlay`. Run with `./muxos test`. */
 import { createRuleTester } from "@plugins/framework/plugins/tooling/plugins/lint/core/testing";
 import rule from "./no-unowned-overlay";
 

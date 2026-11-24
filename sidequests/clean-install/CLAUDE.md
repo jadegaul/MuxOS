@@ -2,21 +2,21 @@
 
 Host tooling, not part of the app (same spirit as
 [`sidequests/monitors`](../monitors/CLAUDE.md)). Answers: if someone with no
-Homebrew/Bun/Go/Postgres/`~/.equin` follows `docs/setup.md` exactly as
+Homebrew/Bun/Go/Postgres/`~/.muxos` follows `docs/setup.md` exactly as
 written, where do they get stuck, and how long does each step take?
 
 ## Why a VM
 
-This Mac already runs a real equin instance: gateway on this account's
-port (8700–8709, `./equin url`), embedded Postgres, state under `~/.equin`. A
+This Mac already runs a real muxos instance: gateway on this account's
+port (8700–8709, `./muxos url`), embedded Postgres, state under `~/.muxos`. A
 second macOS user account would still see this Mac's Homebrew (its gateway
 takes the next free port of the range), so it isn't clean. Instead this runs inside a throwaway VM via
 [Tart](https://github.com/cirruslabs/tart) (`~/.local/bin/tart`), cloned
 fresh each time from `ghcr.io/cirruslabs/macos-tahoe-vanilla` (no
 Homebrew/Xcode CLT/Bun/Go/Postgres/Claude Code — just an `admin` user with
 remote login on). The VM has its own network/disk and a capped 6 core /
-12 GB, so its gateway port, `~/.equin` and Postgres are its own; nothing
-under this Mac's `~/.equin` is ever touched.
+12 GB, so its gateway port, `~/.muxos` and Postgres are its own; nothing
+under this Mac's `~/.muxos` is ever touched.
 
 ## Running it
 
@@ -56,22 +56,22 @@ When the change also touches what the installer clones (e.g. the doctor), the
 guest must install that tree, not `main`. Snapshot it into a git bundle (a
 throwaway repo outside the worktree: tracked + untracked files, one commit,
 `git bundle create x.bundle main`), hand it over with `--upload
-<bundle>:/tmp/equin.bundle`, and pass `CLEAN_INSTALL_ARGS="--repo
-/tmp/equin.bundle"` — the installer's own `--repo`, the one a fork uses.
+<bundle>:/tmp/muxos.bundle`, and pass `CLEAN_INSTALL_ARGS="--repo
+/tmp/muxos.bundle"` — the installer's own `--repo`, the one a fork uses.
 
 A step may set `<fn>_REBOOT=1`: `run.sh` reboots the guest (`sudo shutdown -r
 now`) and records the time until ssh answers again, instead of running the
 step's text.
 
-`run.sh` refuses to run if its output dir would land under `~/.equin`,
+`run.sh` refuses to run if its output dir would land under `~/.muxos`,
 or if the VM name doesn't start with `si-clean` — both so a mistake here
 can't reach the real instance.
 
 ## `steps-migrate.sh` — the data-dir migration
 
-Installs a tree from before the move to `~/.equin` (a bundle of a pre-move
-commit), seeds a stored path and a Claude transcript dir, checks out the tree
-under test (a second bundle), and runs `./equin data-dir migrate --apply`.
+Installs a tree from before the most recent data-root move (a bundle of a
+pre-move commit), seeds a stored path and a Claude transcript dir, checks out the tree
+under test (a second bundle), and runs `./muxos data-dir migrate --apply`.
 Then it checks that the legacy dir and label are gone, the app answers, the
 stored paths moved, a second run has nothing to do, and the app comes back after
 a reboot. Usage is in the file's header. Every step is `harness-only`.

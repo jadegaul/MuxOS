@@ -15,7 +15,7 @@ import { wholeList } from "@plugins/packages/plugins/list-bound/core";
  * - `missing` — nothing at the path (ENOENT, or a component of it is a file):
  *   moved, renamed, or on a drive that is not connected.
  * - `not-a-folder` — the path is a file.
- * - `denied` — the OS refused (EPERM / EACCES): on macOS, equin has not been
+ * - `denied` — the OS refused (EPERM / EACCES): on macOS, muxos has not been
  *   given access to the folder (Privacy & Security → Files & Folders).
  * - `unreadable` — any other error, with its code and message as the OS said
  *   them.

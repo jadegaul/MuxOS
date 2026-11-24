@@ -37,7 +37,7 @@ const fsmonitorLog = defineLogSink({
  *
  * Main's checkout has no `setupWorktree`: this job is its whole lifecycle —
  * the first pass turns it on (`core.fsmonitor` in
- * `.git/equin-fsmonitor.config`, included for main's git dir only), and every pass after
+ * `.git/muxos-fsmonitor.config`, included for main's git dir only), and every pass after
  * restarts its daemon if it died or runs throttled and renews its index token
  * if stale. A pass that cannot fails the job (a job-attempt-failed report).
  * Between passes a dead daemon costs today's full scans, never a wrong

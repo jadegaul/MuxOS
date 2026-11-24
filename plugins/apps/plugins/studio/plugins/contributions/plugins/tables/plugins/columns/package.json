@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-studio-contributions-tables-columns",
+  "name": "@muxos/plugin-apps-studio-contributions-tables-columns",
   "description": "Table column definitions section in the table detail view.",
   "private": true,
   "version": "0.0.1"

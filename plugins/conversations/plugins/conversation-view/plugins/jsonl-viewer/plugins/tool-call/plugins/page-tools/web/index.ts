@@ -7,6 +7,6 @@ export { PageToolError } from "./components/page-tool-error";
 
 export default {
   description:
-    "Shared appearance for the equin page MCP tool rows (read_page / write_agent_note / edit_page): the page-identity chip, the apply-report chips, the markdown body, and the refusal block. Contributes no renderer itself — one sub-plugin per tool does.",
+    "Shared appearance for the muxos page MCP tool rows (read_page / write_agent_note / edit_page): the page-identity chip, the apply-report chips, the markdown body, and the refusal block. Contributes no renderer itself — one sub-plugin per tool does.",
   contributions: [],
 } satisfies PluginDefinition;

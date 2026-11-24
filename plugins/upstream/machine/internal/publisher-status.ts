@@ -45,7 +45,7 @@ import { RELEASE_WORKFLOW } from "@plugins/installer/plugins/release-assets/core
  *
  * External (git and the served dist are most of its truth), recomputed on
  * what can change it: `main` moving (the unreleased count), a tag created
- * or deleted (a cut, from the endpoint or `./equin version cut` in a
+ * or deleted (a cut, from the endpoint or `./muxos version cut` in a
  * terminal: the latest release and the unreleased count), a write to
  * `build_runs` (a build starting or ending), and the backend serving a new
  * build (a restart reads it fresh; an adopted deploy notifies, machine barrel),
@@ -113,7 +113,7 @@ async function readGitHubPublication(tag: string): Promise<GitHubPublication> {
   };
 }
 
-/** The cut's own checks (`./equin version cut`), against main's served build. */
+/** The cut's own checks (`./muxos version cut`), against main's served build. */
 async function readReleasability(root: string): Promise<Releasability> {
   const namespace = runtimeNamespace();
   const target = { only: MAIN_COMPOSITION_ID };

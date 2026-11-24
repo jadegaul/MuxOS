@@ -1,22 +1,22 @@
-//! `equin://open?url=<page>` — a browser tab asking for its page in the
-//! installed app's own window. The equin app bundle registers the scheme
+//! `muxos://open?url=<page>` — a browser tab asking for its page in the
+//! installed app's own window. The muxos app bundle registers the scheme
 //! (`menu-bar/login-services`, `CFBundleURLTypes`), so macOS hands the link to
-//! the tray (`RunEvent::Opened`); `equin-desktop open-link <link>` runs the
+//! the tray (`RunEvent::Opened`); `muxos-desktop open-link <link>` runs the
 //! same path from a shell.
 //!
 //! The grammar mirrors `openLink` in `plugins/companions/plugins/menu-bar/core` — KEEP IN SYNC.
 //!
 //! Any website can build such a link, so it opens only a page an installed
-//! app owns (an equin page): never the default browser, never another scheme.
+//! app owns (an muxos page): never the default browser, never another scheme.
 
 use url::Url;
 
 use crate::shim;
 
 /// The scheme the bundle registers (`OPEN_LINK_SCHEME` in `menu-bar/core`).
-pub const SCHEME: &str = "equin";
+pub const SCHEME: &str = "muxos";
 
-/// The page `link` asks to open: `equin://open?url=<http(s) url>`, nothing else.
+/// The page `link` asks to open: `muxos://open?url=<http(s) url>`, nothing else.
 pub fn parse(link: &Url) -> Result<Url, String> {
     if link.scheme() != SCHEME {
         return Err(format!("{link}: not an {SCHEME}: link"));
@@ -61,7 +61,7 @@ impl Outcome {
     pub fn failure(&self, page: &Url) -> Option<String> {
         match self {
             Outcome::Opened => None,
-            Outcome::NoApp => Some(format!("No installed equin app opens {page}")),
+            Outcome::NoApp => Some(format!("No installed muxos app opens {page}")),
             Outcome::Failed { app_id, error } => Some(format!("{app_id} could not open {page}: {error}")),
         }
     }
@@ -78,27 +78,27 @@ mod tests {
     #[test]
     fn reads_the_page() {
         assert_eq!(
-            parse(&u("equin://open?url=http%3A%2F%2Fequin.localhost%3A9000%2Ffiles%2Fcomputer%2Fat%2F~%252F__A__"))
+            parse(&u("muxos://open?url=http%3A%2F%2Fmuxos.localhost%3A9000%2Ffiles%2Fcomputer%2Fat%2F~%252F__A__"))
                 .unwrap()
                 .as_str(),
-            "http://equin.localhost:9000/files/computer/at/~%2F__A__"
+            "http://muxos.localhost:9000/files/computer/at/~%2F__A__"
         );
         assert_eq!(
-            parse(&u("equin://open?url=https%3A%2F%2Fequin.localhost%3A9000%2Fmail%3Fq%3D1%26x%3D2")).unwrap().as_str(),
-            "https://equin.localhost:9000/mail?q=1&x=2"
+            parse(&u("muxos://open?url=https%3A%2F%2Fmuxos.localhost%3A9000%2Fmail%3Fq%3D1%26x%3D2")).unwrap().as_str(),
+            "https://muxos.localhost:9000/mail?q=1&x=2"
         );
     }
 
     #[test]
     fn refuses_anything_else() {
         for bad in [
-            "equin://launch?url=http%3A%2F%2Fequin.localhost%3A9000%2F",
-            "equin://open",
-            "equin://open?url=file%3A%2F%2F%2Fetc%2Fpasswd",
-            "equin://open?url=javascript%3Aalert(1)",
-            "equin://open?url=not%20a%20url",
-            "equin://open?url=http%3A%2F%2Fa%2F&url=http%3A%2F%2Fb%2F",
-            "http://open/?url=http%3A%2F%2Fequin.localhost%3A9000%2F",
+            "muxos://launch?url=http%3A%2F%2Fmuxos.localhost%3A9000%2F",
+            "muxos://open",
+            "muxos://open?url=file%3A%2F%2F%2Fetc%2Fpasswd",
+            "muxos://open?url=javascript%3Aalert(1)",
+            "muxos://open?url=not%20a%20url",
+            "muxos://open?url=http%3A%2F%2Fa%2F&url=http%3A%2F%2Fb%2F",
+            "http://open/?url=http%3A%2F%2Fmuxos.localhost%3A9000%2F",
         ] {
             assert!(parse(&u(bad)).is_err(), "{bad} should be refused");
         }

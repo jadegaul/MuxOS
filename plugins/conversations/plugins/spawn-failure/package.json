@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-spawn-failure",
+  "name": "@muxos/plugin-conversations-spawn-failure",
   "private": true,
   "version": "0.0.1"
 }

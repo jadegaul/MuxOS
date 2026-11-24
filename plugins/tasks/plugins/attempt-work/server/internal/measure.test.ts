@@ -209,7 +209,7 @@ test("the landed grep is scoped to the attempt's own conversations", async () =>
   });
 });
 
-// A session equin did not launch has no conversation: push credits the
+// A session muxos did not launch has no conversation: push credits the
 // attempt its branch names, and that alone makes the commit the attempt's.
 test("a commit naming only the attempt lands for that attempt", async () => {
   await withRepo(async (repo) => {

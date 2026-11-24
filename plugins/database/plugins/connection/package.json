@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-database-connection",
+  "name": "@muxos/plugin-database-connection",
   "private": true,
   "version": "0.0.1"
 }

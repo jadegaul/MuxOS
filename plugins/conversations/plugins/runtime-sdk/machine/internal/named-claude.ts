@@ -11,7 +11,7 @@ import { agentBinDir } from "./paths";
 // bundle-less executable by its FILE NAME in a permission prompt — which for
 // the Agent SDK's bundled build is a bare `claude` (for the native installer
 // it was the version, `versions/2.1.308`), so every agent asked alike. A clone is the same signed bytes under another name:
-// the prompt reads "equin · conv-… · Fix login bug".
+// the prompt reads "muxos · conv-… · Fix login bug".
 //
 // TCC also keys a bundle-less client's decisions by that path (measured
 // 2026-10-24: an Allow given to a renamed hardlink did not reach the original

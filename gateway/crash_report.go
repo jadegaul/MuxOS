@@ -97,7 +97,7 @@ type backendCrash struct {
 	StartedAt    int64  `json:"startedAt"` // epoch ms of the spawn
 	ExitedAt     int64  `json:"exitedAt"`  // epoch ms the gateway saw it die
 	// Executable is the process's name (its binary's base name, e.g.
-	// "equin · server · <namespace>"): what macOS names its crash report by.
+	// "muxos · server · <namespace>"): what macOS names its crash report by.
 	Executable string `json:"executable"`
 	// StderrTail is the dead process's last stderr lines, oldest first.
 	StderrTail []string `json:"stderrTail"`

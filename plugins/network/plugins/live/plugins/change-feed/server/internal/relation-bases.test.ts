@@ -2,7 +2,7 @@
  * Relation bases (`./relation-bases`, C30): a view expands to the tables it
  * reads, transitively, with each rollup replaced by its sources. Pure — the
  * graph is the one `tasks_v` has at HEAD. Run with
- * `./equin test plugins/network/plugins/live/plugins/change-feed`.
+ * `./muxos test plugins/network/plugins/live/plugins/change-feed`.
  */
 
 import { afterAll, describe, expect, test } from "bun:test";

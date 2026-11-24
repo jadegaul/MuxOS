@@ -17,7 +17,7 @@
  * cached in memory). `--gpu` renders with the machine's GPU.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/layers/e2e/layer-click-cost.ts \
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/layers/e2e/layer-click-cost.ts \
  *     [--click "The technical foundations"] [--cpu 4] [--settle 3000] [--runs 3] [--gpu] [--desktop]
  */
 import {

@@ -8,7 +8,7 @@
 // flagged.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/css/plugins/ui-kit/e2e/field-density-verify.ts --path /settings
+//   ./muxos run plugins/primitives/plugins/css/plugins/ui-kit/e2e/field-density-verify.ts --path /settings
 //   … --click "Filter"   (open a popover first; matches a button's accessible name)
 
 import {

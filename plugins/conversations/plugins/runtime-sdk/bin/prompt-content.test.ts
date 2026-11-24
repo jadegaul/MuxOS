@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { promptContent } from "./prompt-content";
 
 const ID = "72d88753-c48f-47b8-bb96-374327ca1d22";
-const pngPath = `/home/u/.equin/state/attachments/${ID}.png`;
+const pngPath = `/home/u/.muxos/state/attachments/${ID}.png`;
 const PNG = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
 describe("promptContent", () => {
@@ -34,7 +34,7 @@ describe("promptContent", () => {
   });
 
   test("a non-image attachment is not sent as an image", () => {
-    const text = `read @/home/u/.equin/state/attachments/${ID}.pdf `;
+    const text = `read @/home/u/.muxos/state/attachments/${ID}.pdf `;
     expect(promptContent(text, () => PNG)).toBe(text);
   });
 });

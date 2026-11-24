@@ -12,11 +12,11 @@ import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 function verdict(command: string, cwd = REPO_ROOT): Verdict {
   // The guard's check is synchronous (hasBypass stats a path), so the result is
   // a Verdict. The default cwd is this checkout — the guard only judges a
-  // script inside a equin checkout.
+  // script inside a muxos checkout.
   return bunScriptGuard.check({ command }, createContext(cwd)) as Verdict;
 }
 
-/** Not let through as typed: denied, or rewritten to `./equin run`. */
+/** Not let through as typed: denied, or rewritten to `./muxos run`. */
 const blocks = (command: string, cwd?: AppPath) => {
   const kind = verdict(command, cwd).kind;
   return kind === "deny" || kind === "rewrite";
@@ -106,9 +106,9 @@ describe("bun-script guard", () => {
     });
   });
 
-  describe("a script outside every equin checkout is left alone", () => {
+  describe("a script outside every muxos checkout is left alone", () => {
     // A scratch workspace has no checkout above it to walk into, and no
-    // `./equin run` for the hint to name.
+    // `./muxos run` for the hint to name.
     test("relative script from a non-checkout cwd", () => {
       expect(blocks("bun x.ts", asAppPath("/tmp"))).toBe(false);
     });
@@ -180,7 +180,7 @@ describe("bun-script guard", () => {
     });
 
     test("the sanctioned replacement is not itself blocked", () => {
-      expect(blocks("./equin run scripts/verify.ts")).toBe(false);
+      expect(blocks("./muxos run scripts/verify.ts")).toBe(false);
     });
 
     test("node running a .ts file is a different binary", () => {
@@ -188,14 +188,14 @@ describe("bun-script guard", () => {
     });
   });
 
-  // `./equin` is a /bin/sh wrapper whose LAST line is
+  // `./muxos` is a /bin/sh wrapper whose LAST line is
   // `exec bun plugins/framework/plugins/cli/bin/index.ts "$@"`. The guard reads
   // the Bash tool's command string, never the wrapper's contents, and
   // parse-shell takes the basename of the executable — so the call is named
   // the legacy CLI name, not `bun`. If that ever inverted, every CLI verb (`build`,
   // `push`, `check`, `test`, and `run` itself) would deny itself: an agent could
   // not even run the command the denial tells it to use.
-  describe("the ./equin wrapper can never trip its own guard", () => {
+  describe("the ./muxos wrapper can never trip its own guard", () => {
     for (const verb of [
       "run plugins/apps-core/plugins/tabs/e2e/tabs-verify.ts",
       "run scripts/verify.mjs",
@@ -205,22 +205,24 @@ describe("bun-script guard", () => {
       "push -m 'msg'",
       "format",
     ]) {
-      test(`./equin ${verb}`, () => {
-        expect(blocks(`./equin ${verb}`)).toBe(false);
+      test(`./muxos ${verb}`, () => {
+        expect(blocks(`./muxos ${verb}`)).toBe(false);
       });
     }
 
-    test("under its canonical name, ./equin", () => {
-      expect(blocks("./equin run scripts/verify.mjs")).toBe(false);
+    test("under its canonical name, ./muxos", () => {
+      expect(blocks("./muxos run scripts/verify.mjs")).toBe(false);
     });
 
     test("invoked by absolute path", () => {
-      expect(blocks(`${USERS}me/repo/${LEGACY_IDS.cliShim} build`)).toBe(false);
+      expect(blocks(`${USERS}me/repo/${LEGACY_IDS.cliShims[0]} build`)).toBe(
+        false,
+      );
     });
 
     test("chained after a cd, the shape agents actually write", () => {
       expect(
-        blocks(`cd ${USERS}me/repo/wt && ./equin run e2e/verify.ts --headed`),
+        blocks(`cd ${USERS}me/repo/wt && ./muxos run e2e/verify.ts --headed`),
       ).toBe(false);
     });
   });
@@ -254,20 +256,20 @@ describe("bun-script guard", () => {
     });
   });
 
-  describe("a bare script run from the checkout root is rewritten to ./equin run", () => {
+  describe("a bare script run from the checkout root is rewritten to ./muxos run", () => {
     for (const [typed, ran] of [
-      ["bun x.ts", "./equin run x.ts"],
-      ["bun run x.ts --flag 'a b'", "./equin run x.ts --flag 'a b'"],
+      ["bun x.ts", "./muxos run x.ts"],
+      ["bun run x.ts --flag 'a b'", "./muxos run x.ts --flag 'a b'"],
       [
         "bun scripts/a.ts < in.json > out.txt 2>&1",
-        "./equin run scripts/a.ts < in.json > out.txt 2>&1",
+        "./muxos run scripts/a.ts < in.json > out.txt 2>&1",
       ],
       [
         "timeout 60 bun x.ts | tail -3",
-        "timeout 60 ./equin run x.ts | tail -3",
+        "timeout 60 ./muxos run x.ts | tail -3",
       ],
-      ["bun a.ts && bun b.ts", "./equin run a.ts && ./equin run b.ts"],
-      [`bun ${REPO_ROOT}/x.ts`, `./equin run ${REPO_ROOT}/x.ts`],
+      ["bun a.ts && bun b.ts", "./muxos run a.ts && ./muxos run b.ts"],
+      [`bun ${REPO_ROOT}/x.ts`, `./muxos run ${REPO_ROOT}/x.ts`],
     ]) {
       test(typed!, () => {
         expect(rewritten(typed!)).toBe(ran);
@@ -276,12 +278,12 @@ describe("bun-script guard", () => {
 
     test("the note says what ran and why", () => {
       const v = verdict("bun x.ts");
-      expect(v.kind === "rewrite" && v.note).toContain("./equin run x.ts");
+      expect(v.kind === "rewrite" && v.note).toContain("./muxos run x.ts");
     });
   });
 
-  describe("…but not when ./equin run would run something else", () => {
-    test("a bun flag before the script has no ./equin run spelling", () => {
+  describe("…but not when ./muxos run would run something else", () => {
+    test("a bun flag before the script has no ./muxos run spelling", () => {
       expect(verdict("bun --cpu-prof x.ts").kind).toBe("deny");
     });
 
@@ -296,10 +298,10 @@ describe("bun-script guard", () => {
 
   describe("the denial says what to do instead", () => {
     const v = verdict("bun --bun e2e/tabs-verify.ts");
-    test("names ./equin run with the same path", () => {
+    test("names ./muxos run with the same path", () => {
       expect(v.kind).toBe("deny");
       expect(v.kind === "deny" && v.reason).toContain(
-        "./equin run e2e/tabs-verify.ts",
+        "./muxos run e2e/tabs-verify.ts",
       );
     });
   });

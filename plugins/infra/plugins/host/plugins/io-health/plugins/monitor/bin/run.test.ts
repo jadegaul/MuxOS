@@ -10,7 +10,7 @@ afterAll(() => rmSync(tmp, { recursive: true, force: true }));
 describe("run", () => {
   // launchd gives a LaunchDaemon no locale; in C, ps writes `·` as `M-BM-7`.
   test("ps names a process with a non-ASCII name in UTF-8, whatever this process's locale", () => {
-    const name = "equin · test · run";
+    const name = "muxos · test · run";
     const exe = join(tmp, name);
     copyFileSync("/bin/sleep", exe);
     const child = Bun.spawn([exe, "30"], { env: {} });

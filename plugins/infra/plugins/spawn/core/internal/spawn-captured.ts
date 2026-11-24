@@ -186,7 +186,7 @@ async function meteredSpawn(
 
 /**
  * `spawn:<program>` — the basename of the program the caller ran, up to its
- * first space: a binary named per process (`equin · <kind> · <id>`,
+ * first space: a binary named per process (`muxos · <kind> · <id>`,
  * packages/process-name) is one layer, not one per id.
  */
 function defaultWaitLayer(argv: readonly string[]): string {
@@ -301,7 +301,7 @@ async function spawnCapturedNow(
           // by a long synchronous pass: `child.exited` is already settled, its
           // continuation just has not been scheduled yet, and this callback runs
           // first in the same drain. Observed in the field, not theorised:
-          // `./equin check` blocks its loop ~77 s building TypeScript
+          // `./muxos check` blocks its loop ~77 s building TypeScript
           // programs, and a `git worktree list` that finished in ~73 ms came back
           // `timedOut: true, exitCode: 0` — a successful result reported, and
           // thrown away, as a timeout. Killing here would also be a no-op against
@@ -327,7 +327,7 @@ async function spawnCapturedNow(
       // The timer only ever proves that the deadline elapsed without us having
       // OBSERVED an exit; it cannot prove the child was still running, because
       // `child.exitCode` is populated at reap time and reaping needs this event
-      // loop. Starve the loop — `./equin check` blocks its own for ~77 s
+      // loop. Starve the loop — `./muxos check` blocks its own for ~77 s
       // building TypeScript programs — and a child that finished in 73 ms is
       // still unreaped when the deadline fires, so the guard above sees `null`
       // and marks a timeout on a process that had already exited cleanly. The

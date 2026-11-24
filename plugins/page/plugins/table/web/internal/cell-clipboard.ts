@@ -23,7 +23,7 @@ import {
 // row as wide as the widest — so `pasteCells` can place it.
 
 /** The page table's own clipboard flavour: the copied cells' runs. */
-export const CELLS_MIME = "application/x-equin-table-cells";
+export const CELLS_MIME = "application/x-muxos-table-cells";
 
 const CellsPayloadSchema = z.object({
   cells: z.array(z.array(RichTextSchema)),

@@ -71,7 +71,7 @@ test("whitespace-only trailer values are skipped, values are trimmed", () => {
   });
 });
 
-test("a commit naming only its attempt is kept — pushed from outside equin", () => {
+test("a commit naming only its attempt is kept — pushed from outside muxos", () => {
   const [c] = parseTrailerLog(
     record(["sha1", ISO, "", "push-1", "att-a", "s"]),
   );
@@ -98,8 +98,8 @@ test("multiple values of one trailer key shift the fields — a known quirk", ()
   // both values into the conversation field's slot, pushing every later field
   // right. The parse then reads the second conversation id as the push id. This is
   // the ported behaviour, kept deliberately: the writer half stamps exactly one of
-  // each (the shell hook from EQUIN_CONVERSATION_ID, the push CLI per
-  // invocation), so no commit `./equin push` produces can reach it. Pinned
+  // each (the shell hook from MUXOS_CONVERSATION_ID, the push CLI per
+  // invocation), so no commit `./muxos push` produces can reach it. Pinned
   // here so a future fix is a deliberate change with a failing test, not a
   // surprise.
   const raw = record(["sha1", ISO, "conv-a", "conv-b", "push-1", "subject"]);

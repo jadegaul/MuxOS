@@ -62,7 +62,7 @@ pub struct Pin {
 
 impl Pin {
     /// The panel of `namespace` on the gateway's `port`, at the host it is
-    /// handed out under (main: `equin.localhost`, not its internal name).
+    /// handed out under (main: `muxos.localhost`, not its internal name).
     pub fn new(namespace: &str, port: u16) -> Self {
         let host = crate::cli::host_label(namespace);
         let url = Url::parse(&format!("http://{host}.localhost:{port}{PANEL_PATH}?embed=1"))
@@ -123,7 +123,7 @@ impl Pin {
     /// bridge.js with the pinned origin and route filled in.
     fn bridge_script(&self) -> String {
         let pin = serde_json::json!({ "origin": self.origin(), "path": PANEL_PATH });
-        BRIDGE_JS.replace("__EQUIN_PIN__", &pin.to_string())
+        BRIDGE_JS.replace("__MUXOS_PIN__", &pin.to_string())
     }
 }
 
@@ -139,7 +139,7 @@ pub fn is_offline_page(url: &Url) -> bool {
 /// Every load in the panel window — the page and each of its frames (the
 /// handler cannot tell them apart, so a frame is held to the same rule): the
 /// pinned page or the offline page, nothing else. Same-origin frames (a
-/// prototype, `srcdoc`) would otherwise reach `top.equinNative`.
+/// prototype, `srcdoc`) would otherwise reach `top.muxosNative`.
 /// A panel built with no pin (the port file was unreadable) loads the offline
 /// page only.
 pub fn navigation_allowed(pin: Option<&Pin>, url: &Url) -> bool {
@@ -191,7 +191,7 @@ pub fn open_in_browser(url: &Url) {
     let url = url.clone();
     std::thread::spawn(move || {
         if let Err(e) = shim::open_in_browser(&url) {
-            eprintln!("equin-desktop: the panel's link to {url} did not open: {e}");
+            eprintln!("muxos-desktop: the panel's link to {url} did not open: {e}");
         }
     });
 }
@@ -222,11 +222,11 @@ fn wanted(pin: &Result<Pin, String>) -> Url {
     match pin {
         Ok(pin) if gateway::up(pin.port()) => pin.url().clone(),
         Ok(pin) => {
-            eprintln!("equin-desktop: nothing answers on port {}; panel shows the offline page", pin.port());
+            eprintln!("muxos-desktop: nothing answers on port {}; panel shows the offline page", pin.port());
             offline_url(&Ok(pin.port()))
         }
         Err(e) => {
-            eprintln!("equin-desktop: {e}; panel shows the offline page");
+            eprintln!("muxos-desktop: {e}; panel shows the offline page");
             offline_url(&Err(e.clone()))
         }
     }
@@ -255,7 +255,7 @@ pub struct Observer {
 }
 
 /// Create the hidden panel window on the gateway's current port, its bridge
-/// granted to that origin: the equin page if the gateway answers, else the
+/// granted to that origin: the muxos page if the gateway answers, else the
 /// bundled offline page.
 pub fn create(app: &AppHandle) -> tauri::Result<WebviewWindow> {
     let panel = app.state::<Panel>();
@@ -275,7 +275,7 @@ pub fn create(app: &AppHandle) -> tauri::Result<WebviewWindow> {
     let refused = observer.as_ref().map(|o| o.refused);
     let loaded = observer.as_ref().map(|o| o.loaded);
     let builder = WebviewWindowBuilder::new(app, LABEL, initial)
-        .title("equin")
+        .title("muxos")
         .inner_size(WIDTH, INITIAL_HEIGHT)
         .resizable(false)
         .decorations(false)
@@ -294,7 +294,7 @@ pub fn create(app: &AppHandle) -> tauri::Result<WebviewWindow> {
         .on_navigation(move |url| {
             let allowed = navigation_allowed(pin.as_ref(), url);
             if !allowed {
-                eprintln!("equin-desktop: panel refused {url}");
+                eprintln!("muxos-desktop: panel refused {url}");
                 if let Some(refused) = refused {
                     refused(url);
                 }
@@ -305,7 +305,7 @@ pub fn create(app: &AppHandle) -> tauri::Result<WebviewWindow> {
             if url.scheme() == "http" || url.scheme() == "https" {
                 hand_off(&url);
             } else {
-                eprintln!("equin-desktop: panel refused a new window on {url}");
+                eprintln!("muxos-desktop: panel refused a new window on {url}");
             }
             NewWindowResponse::Deny
         })
@@ -322,7 +322,7 @@ pub fn create(app: &AppHandle) -> tauri::Result<WebviewWindow> {
                 }
             }
             if matches!(payload.event(), tauri::webview::PageLoadEvent::Finished) {
-                eprintln!("equin-desktop: panel loaded {}", payload.url());
+                eprintln!("muxos-desktop: panel loaded {}", payload.url());
                 if let Some(loaded) = loaded {
                     loaded(&window, payload.url());
                 }
@@ -333,7 +333,7 @@ pub fn create(app: &AppHandle) -> tauri::Result<WebviewWindow> {
         None => builder,
     };
     let window = with_material(builder).build()?;
-    eprintln!("equin-desktop: panel built on {}", window.url().map_or_else(|e| e.to_string(), |u| u.to_string()));
+    eprintln!("muxos-desktop: panel built on {}", window.url().map_or_else(|e| e.to_string(), |u| u.to_string()));
 
     let handle = app.clone();
     let shaped = window.clone();
@@ -387,7 +387,7 @@ fn moved(built: Option<&Pin>, current: &Result<Pin, String>) -> bool {
 
 /// Before a show: `false` when the port moved since the window was built —
 /// it is destroyed and built again on the new origin (`destroyed`), and shown
-/// once it is when `show` says so. Otherwise point it at the equin page or the
+/// once it is when `show` says so. Otherwise point it at the muxos page or the
 /// offline page, whichever the gateway's presence calls for, when it shows
 /// the other.
 fn reconcile(app: &AppHandle, window: &WebviewWindow, show: bool) -> bool {
@@ -395,14 +395,14 @@ fn reconcile(app: &AppHandle, window: &WebviewWindow, show: bool) -> bool {
     let current = Pin::current(&panel.namespace);
     if moved(panel.pin().as_ref(), &current) {
         eprintln!(
-            "equin-desktop: the gateway's port moved ({} → {}); rebuilding the panel",
+            "muxos-desktop: the gateway's port moved ({} → {}); rebuilding the panel",
             panel.pin().map_or_else(|| "unknown".into(), |p| p.port().to_string()),
             current.as_ref().map_or(0, Pin::port),
         );
         *panel.rebuilding.lock().unwrap() = Some(show);
         if let Err(e) = window.destroy() {
             *panel.rebuilding.lock().unwrap() = None;
-            eprintln!("equin-desktop: the panel cannot be rebuilt: {e}");
+            eprintln!("muxos-desktop: the panel cannot be rebuilt: {e}");
         }
         return false;
     }
@@ -411,7 +411,7 @@ fn reconcile(app: &AppHandle, window: &WebviewWindow, show: bool) -> bool {
         return true;
     }
     if let Err(e) = window.navigate(target.clone()) {
-        eprintln!("equin-desktop: panel cannot navigate to {target}: {e}");
+        eprintln!("muxos-desktop: panel cannot navigate to {target}: {e}");
     }
     true
 }
@@ -426,11 +426,11 @@ pub fn destroyed(app: &AppHandle) {
     match create(app) {
         Ok(window) if visible => show(&window, *panel.anchor.lock().unwrap()),
         Ok(_) => {}
-        Err(e) => eprintln!("equin-desktop: the panel could not be rebuilt: {e}"),
+        Err(e) => eprintln!("muxos-desktop: the panel could not be rebuilt: {e}"),
     }
 }
 
-/// Load the equin page now (the gateway just came up) — rebuilding the
+/// Load the muxos page now (the gateway just came up) — rebuilding the
 /// window when it came up on another port than the panel was built on.
 pub fn load_remote(app: &AppHandle) {
     if let Some(window) = app.get_webview_window(LABEL) {
@@ -455,7 +455,7 @@ pub type Anchor = Option<Rect>;
 /// A tray click: show the panel under the icon, or hide it if it is shown.
 pub fn toggle(app: &AppHandle, anchor: Anchor) {
     let Some(window) = app.get_webview_window(LABEL) else {
-        eprintln!("equin-desktop: no panel window");
+        eprintln!("muxos-desktop: no panel window");
         return;
     };
     if window.is_visible().unwrap_or(false) {
@@ -500,10 +500,10 @@ fn reshadow(window: &WebviewWindow) {
         // SAFETY: Tauri's NSWindow pointer for this live window, used on the
         // main thread.
         Ok(ptr) => unsafe { (*(ptr as *const objc2_app_kit::NSWindow)).invalidateShadow() },
-        Err(e) => eprintln!("equin-desktop: panel shadow not refreshed: {e}"),
+        Err(e) => eprintln!("muxos-desktop: panel shadow not refreshed: {e}"),
     });
     if let Err(e) = queued {
-        eprintln!("equin-desktop: panel shadow not refreshed: {e}");
+        eprintln!("muxos-desktop: panel shadow not refreshed: {e}");
     }
 }
 
@@ -565,20 +565,20 @@ mod tests {
 
     #[test]
     fn the_pin_is_on_the_gateways_port() {
-        let pin = Pin::new("equin", 8700);
-        assert_eq!(pin.url().as_str(), "http://equin.localhost:8700/home/menu-bar?embed=1");
+        let pin = Pin::new("muxos", 8700);
+        assert_eq!(pin.url().as_str(), "http://muxos.localhost:8700/home/menu-bar?embed=1");
         assert_eq!(pin.port(), 8700);
-        assert_eq!(pin.origin(), "http://equin.localhost:8700");
-        assert_eq!(pin.origin_url().as_str(), "http://equin.localhost:8700/");
-        assert_eq!(Pin::new("equin", 9000).origin(), "http://equin.localhost:9000");
+        assert_eq!(pin.origin(), "http://muxos.localhost:8700");
+        assert_eq!(pin.origin_url().as_str(), "http://muxos.localhost:8700/");
+        assert_eq!(Pin::new("muxos", 9000).origin(), "http://muxos.localhost:9000");
         // The old port's page is another origin: not the pin.
-        assert!(!pin.admits(&u("http://equin.localhost:9000/home/menu-bar?embed=1")));
+        assert!(!pin.admits(&u("http://muxos.localhost:9000/home/menu-bar?embed=1")));
     }
 
     #[test]
     fn a_moved_port_rebuilds_the_panel() {
-        let old = Pin::new("equin", 9000);
-        let new = Pin::new("equin", 8700);
+        let old = Pin::new("muxos", 9000);
+        let new = Pin::new("muxos", 8700);
         assert!(moved(Some(&old), &Ok(new.clone())));
         assert!(!moved(Some(&new), &Ok(new.clone())));
         // Built without a pin (the port file was unreadable), now readable.
@@ -597,29 +597,29 @@ mod tests {
         assert_eq!(broken.query(), Some("error=the+port+file+is+bad"));
         assert!(shows(&on, &on));
         assert!(!shows(&on, &broken));
-        let pin = Pin::new("equin", 8700);
-        assert!(shows(pin.url(), &u("http://equin.localhost:8700/home/menu-bar/x")));
-        assert!(!shows(pin.url(), &u("http://equin.localhost:9000/home/menu-bar?embed=1")));
+        let pin = Pin::new("muxos", 8700);
+        assert!(shows(pin.url(), &u("http://muxos.localhost:8700/home/menu-bar/x")));
+        assert!(!shows(pin.url(), &u("http://muxos.localhost:9000/home/menu-bar?embed=1")));
         assert!(!shows(pin.url(), &on));
     }
 
     #[test]
     fn the_panel_loads_its_page_and_nothing_else() {
-        let pin = Pin::new("equin", 9000);
-        assert_eq!(pin.url().as_str(), "http://equin.localhost:9000/home/menu-bar?embed=1");
+        let pin = Pin::new("muxos", 9000);
+        assert_eq!(pin.url().as_str(), "http://muxos.localhost:9000/home/menu-bar?embed=1");
         assert_eq!(
             Pin::new(crate::cli::MAIN_NAMESPACE, 9000).url().as_str(),
-            "http://equin.localhost:9000/home/menu-bar?embed=1"
+            "http://muxos.localhost:9000/home/menu-bar?embed=1"
         );
         let pin = Some(&pin);
         assert!(navigation_allowed(pin, pin.unwrap().url()));
         assert!(navigation_allowed(pin, &u("tauri://localhost/index.html")));
         assert!(navigation_allowed(None, &u("tauri://localhost/index.html?error=x")));
-        assert!(!navigation_allowed(None, &u("http://equin.localhost:9000/home/menu-bar?embed=1")));
+        assert!(!navigation_allowed(None, &u("http://muxos.localhost:9000/home/menu-bar?embed=1")));
         for refused in [
             "http://other.localhost:9000/home/menu-bar?embed=1",
-            "http://equin.localhost:9000/prototypes/x/index.html",
-            "http://equin.localhost:9000/agents",
+            "http://muxos.localhost:9000/prototypes/x/index.html",
+            "http://muxos.localhost:9000/agents",
             "about:srcdoc",
             "about:blank",
             "data:text/html,<script>top</script>",
@@ -631,20 +631,20 @@ mod tests {
 
     #[test]
     fn the_grant_is_the_exact_origin() {
-        let CapabilityFile::Capability(cap) = Pin::new("equin", 9000).capability().build() else {
+        let CapabilityFile::Capability(cap) = Pin::new("muxos", 9000).capability().build() else {
             panic!("one capability");
         };
         assert_eq!(cap.windows, vec![LABEL.to_string()]);
         assert!(!cap.local);
         let remote = cap.remote.expect("a remote grant");
-        assert_eq!(remote.urls, vec!["http://equin.localhost:9000/*".to_string()]);
+        assert_eq!(remote.urls, vec!["http://muxos.localhost:9000/*".to_string()]);
         assert_eq!(cap.permissions.len(), PANEL_COMMANDS.len());
     }
 
     #[test]
     fn the_bridge_script_carries_the_pin() {
-        let js = Pin::new("equin", 9000).bridge_script();
-        assert!(!js.contains("__EQUIN_PIN__"));
-        assert!(js.contains(r#""origin":"http://equin.localhost:9000""#));
+        let js = Pin::new("muxos", 9000).bridge_script();
+        assert!(!js.contains("__MUXOS_PIN__"));
+        assert!(js.contains(r#""origin":"http://muxos.localhost:9000""#));
     }
 }

@@ -1,5 +1,5 @@
 /**
- * The bun:test loop heartbeat: how `./equin test` tells a test process whose
+ * The bun:test loop heartbeat: how `./muxos test` tells a test process whose
  * event loop STOPPED from one that is merely slow.
  *
  * Why it exists. bun enforces each test's timeout on the process's own event

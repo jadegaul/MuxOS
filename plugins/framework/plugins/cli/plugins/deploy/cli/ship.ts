@@ -1,5 +1,5 @@
 /**
- * `./equin deploy ship <composition> --server <server> [--release <run-id>]`
+ * `./muxos deploy ship <composition> --server <server> [--release <run-id>]`
  * — put a bundle on a converged host and activate it behind a health gate.
  *
  * Bundle discovery is `@plugins/release/plugins/bundles`, which returns a
@@ -80,7 +80,7 @@ const run: CliAction<[string], { server: string; release?: string }> = async (
       refuse(
         `server "${server.name}" is not converged for "${composition}" ` +
           `(${UNIT_TEMPLATE_PATH} or ${install.envFile} is missing). Run:\n` +
-          `  ./equin deploy converge ${composition} --server ${opts.server}`,
+          `  ./muxos deploy converge ${composition} --server ${opts.server}`,
       );
     }
     refuse(
@@ -117,7 +117,7 @@ const run: CliAction<[string], { server: string; release?: string }> = async (
       binaryName: bundle.binaryName,
       loopbackPort: deployment.loopbackPort,
     }),
-    remoteName: `equin-activate-${composition}.sh`,
+    remoteName: `muxos-activate-${composition}.sh`,
     timeoutMs: ACTIVATE_MS,
     what: "activate",
   });

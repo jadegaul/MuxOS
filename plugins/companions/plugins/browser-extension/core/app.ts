@@ -8,7 +8,7 @@ import { symbol } from "@plugins/ui/plugins/icons/core";
  * Its own app for the same reason as the menu bar's (`menuBarApp`): a colour
  * scheme and a theme belong to an app, and the panel wears the companions'
  * theme (`companion`) and follows the OS (`colorMode: "system"`). Unlisted:
- * nothing inside equin launches it — the extension's popup does.
+ * nothing inside muxos launches it — the extension's popup does.
  */
 export const browserExtensionApp = defineApp({
   id: "browser-extension",

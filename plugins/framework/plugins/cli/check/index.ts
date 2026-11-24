@@ -56,7 +56,7 @@ function resolvesWithoutNodeModules(spec: string): boolean {
  * A registered pre-barrel or post-web codegen manifest may not be LOADED by a
  * CLI process that later REGENERATES it. Measured as two rules, because a CLI
  * process is two closures:
- *   1. the STARTUP closure — what every `./equin` invocation loads, whatever
+ *   1. the STARTUP closure — what every `./muxos` invocation loads, whatever
  *      the verb — may load no manifest at all;
  *   2. the RUN closure of every command that regenerates the manifests in-process
  *      may load no manifest either.
@@ -318,7 +318,7 @@ const manifestFreezeCheck: Check = {
 function describeFreezeFinding(f: FreezeFinding): string {
   const head =
     f.closure.kind === "startup"
-      ? `  startup closure (${f.closure.entry}) — loaded by EVERY ./equin invocation, ` +
+      ? `  startup closure (${f.closure.entry}) — loaded by EVERY ./muxos invocation, ` +
         `the regenerating ones included:`
       : `  run closure of \`${f.closure.commands.join("`, `")}\` (${f.closure.target}) — this ` +
         `process also regenerates the manifests, via ${f.closure.regenerators.join(", ")}:`;
@@ -341,9 +341,9 @@ function describeFreezeFinding(f: FreezeFinding): string {
  * checkout with no `node_modules` dies on an unresolved module before a single
  * line of the bootstrap runs. The CLI can no longer install its own dependencies,
  * and the failure is exactly the shape this whole design exists to eliminate: a
- * pre-CLI death with no subcommand to attribute it to (`./equin check` →
+ * pre-CLI death with no subcommand to attribute it to (`./muxos check` →
  * exit 1, and the module error names `commander`, not "your deps are missing").
- * `rm -rf node_modules && ./equin build` is then unrecoverable from inside
+ * `rm -rf node_modules && ./muxos build` is then unrecoverable from inside
  * the repo, which is also the fresh-clone path.
  *
  * That is the entire reason the bootstrap / `cli.ts` split exists: today's
@@ -427,13 +427,13 @@ const bootstrapPackageFreeCheck: Check = {
 };
 
 /**
- * EVERY plugin's `cli/index.ts` is loaded on EVERY `./equin` invocation,
+ * EVERY plugin's `cli/index.ts` is loaded on EVERY `./muxos` invocation,
  * so its static import closure must stay data-weight: no npm package, no
  * `web`/`server` barrel.
  *
  * WHY THIS IS THE LOAD-BEARING HALF OF THE WHOLE MECHANISM. Commander needs a
  * command's name, flags and help text before it can parse argv, so there is no
- * way to defer a DECLARATION — `./equin build` pays for every other
+ * way to defer a DECLARATION — `./muxos build` pays for every other
  * plugin's declaration, every time. The command's IMPLEMENTATION is the part
  * that must not load, and the declaration defers it through
  * `run: () => import("./run")`. Nothing in the language marks which half is
@@ -467,7 +467,7 @@ const bootstrapPackageFreeCheck: Check = {
 const declarationsLightCheck: Check = {
   id: "cli:command-declarations-light",
   description:
-    "every plugin's cli/index.ts must reach no npm package and no web/server barrel through its static imports — a command DECLARATION loads on every ./equin invocation, only its implementation is deferred",
+    "every plugin's cli/index.ts must reach no npm package and no web/server barrel through its static imports — a command DECLARATION loads on every ./muxos invocation, only its implementation is deferred",
   async run(ctx) {
     const root = await getWorktreeRoot();
     const repo = await ctx.repo();
@@ -522,7 +522,7 @@ const declarationsLightCheck: Check = {
       ok: false,
       message:
         `${offenders.length} CLI command declaration(s) load more than data on every ` +
-        `./equin invocation:\n    ` +
+        `./muxos invocation:\n    ` +
         offenders.join("\n    "),
       hint:
         "Move the import into the module the declaration reaches through `run: () => import(...)`. " +
@@ -540,7 +540,7 @@ const declarationsLightCheck: Check = {
  * The failure this prevents is silent, which is why it is worth a check rather
  * than the runtime assertion in `bin/cli.ts` alone: commander keeps whichever
  * command registered first, so the loser's verb is simply absent — its plugin
- * looks installed, its folder is there, and `./equin <verb>` runs someone
+ * looks installed, its folder is there, and `./muxos <verb>` runs someone
  * else's code. `bin/cli.ts` does throw on this, but only for whoever runs the
  * CLI next; catching it in `check` is what stops it reaching main.
  *
@@ -552,7 +552,7 @@ const declarationsLightCheck: Check = {
 const commandNamesUniqueCheck: Check = {
   id: "cli:command-names-unique",
   description:
-    "no two plugins may contribute the same ./equin verb — commander keeps the first registration, so a collision silently deletes one plugin's command",
+    "no two plugins may contribute the same ./muxos verb — commander keeps the first registration, so a collision silently deletes one plugin's command",
   async run() {
     const root = await getWorktreeRoot();
     const { cliEntries } = await import("../core/cli.generated");
@@ -596,7 +596,7 @@ const commandNamesUniqueCheck: Check = {
     return {
       ok: false,
       message:
-        `${collisions.length} ./equin verb(s) are claimed by more than one plugin:\n    ` +
+        `${collisions.length} ./muxos verb(s) are claimed by more than one plugin:\n    ` +
         collisions.join("\n    "),
       hint:
         "A verb belongs to exactly one plugin. Rename one of them, or — if both are really the same " +

@@ -11,7 +11,7 @@
 //     position are unchanged.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/file-explorer/e2e/expand-selected-scroll-verify.ts \
+//   ./muxos run plugins/apps/plugins/file-explorer/e2e/expand-selected-scroll-verify.ts \
 //     [--out /tmp/expand-selected-scroll] [--headed]
 
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";

@@ -4,10 +4,10 @@ import { describePlan, planRootMigration, type MigrationFacts } from "./plan";
 
 const H = "/home/u";
 const LEGACY = asAppPath(`${H}/.old`);
-const CURRENT = asAppPath(`${H}/.equin`);
+const CURRENT = asAppPath(`${H}/.muxos`);
 const BACKUPS = {
   legacy: asAppPath(`${H}/.backups/old`),
-  current: asAppPath(`${H}/.backups/equin`),
+  current: asAppPath(`${H}/.backups/muxos`),
   legacyExists: false,
   legacyIsLink: false,
   currentExists: false,
@@ -199,7 +199,7 @@ describe("planRootMigration", () => {
       expect(text).toContain(stale[4]!.path);
       expect(text).not.toContain(stale[5]!.path);
       expect(text).toContain("…and 2 more");
-      expect(text).toContain("./equin build");
+      expect(text).toContain("./muxos build");
     });
   });
 

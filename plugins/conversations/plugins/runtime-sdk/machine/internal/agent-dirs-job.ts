@@ -97,7 +97,7 @@ export const agentDirsOnReclaim = WorkspaceReclaimed({
 export const agentDirsReclaimJob = defineJob({
   name: "runtime-sdk.agent-dirs-reclaim",
   description:
-    "Deletes the state of SDK agents (event log, launch options, log) whose conversation's workspace no longer exists and whose agent is not running, the named claude clones a stopped agent kept that an upgrade has since replaced (and the per-conversation bun clones older starts made), and the shared `equin · agent` bun of a Bun version no running agent uses any more.",
+    "Deletes the state of SDK agents (event log, launch options, log) whose conversation's workspace no longer exists and whose agent is not running, the named claude clones a stopped agent kept that an upgrade has since replaced (and the per-conversation bun clones older starts made), and the shared `muxos · agent` bun of a Bun version no running agent uses any more.",
   // seconds: a readdir and a stat per agent directory, one indexed read per batch.
   hold: "seconds",
   input: z.object({ dryRun: z.boolean().default(false) }),

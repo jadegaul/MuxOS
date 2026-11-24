@@ -3,7 +3,7 @@
 Per-user OS services that start by themselves — at login, or at boot for a
 `background` service on a lingering Linux user — and are relaunched when they
 die. The gateway is one (`infra/launcher`'s `GATEWAY_SERVICE`); any plugin can
-declare another without `./equin start` / `stop` naming it.
+declare another without `./muxos start` / `stop` naming it.
 
 ## Declaring one
 
@@ -18,13 +18,13 @@ import { helperLogs } from "../data-dirs";
 
 export default [
   defineLoginService({
-    id: "dev.equin.example",        // the launchd Label / systemd unit name
+    id: "dev.muxos.example",        // the launchd Label / systemd unit name
     owner: "example",
     description: "Example tray helper",
     session: "graphical",           // or "background"
     dep: helperBinary,
-    executable: {                   // the program, as a component of the equin app
-      name: "example-helper",       // its file in equin.app/Contents/MacOS (macOS)
+    executable: {                   // the program, as a component of the muxos app
+      name: "example-helper",       // its file in muxos.app/Contents/MacOS (macOS)
       build: (ready) => ({ file: builtFile(ready), identity: componentIdentity(helperBinary.id, ready.identity) }),
     },
     spec: (ready, executable) => ({ // Ready: a job that never ensured its binary does not compile
@@ -47,7 +47,7 @@ export default [
 - `spec`'s fourth argument is this machine's bundle signer
   (`infra/codesign`'s `bundleSigner`, through `MacosAppHost.signer()`; null
   off macOS) — for a service that signs bundles of its own with the identity
-  `equin.app` is signed with (the menu-bar helper's app shims). Resolved by the
+  `muxos.app` is signed with (the menu-bar helper's app shims). Resolved by the
   reconcile like the labels, so a new identity renders a changed job.
 - `start`: ensures `dep` from the MAIN checkout (building it in the
   foreground if needed) BEFORE the gateway starts — the gateway's first boot
@@ -76,15 +76,15 @@ export default [
   also removes each definition (and so opts it out of following main).
 - A host with no service manager starts none of them, and says so.
 
-(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.equin.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./equin data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
+(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.muxos.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./muxos data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
 
 ## Messages a person installing reads
 
 Every message here that stops the install, asks for a permission or leaves
 something out follows the installer message rules —
-[`infra/launcher/installer-notice`](../installer-notice/CLAUDE.md) (no internal names; what equin was
+[`infra/launcher/installer-notice`](../installer-notice/CLAUDE.md) (no internal names; what muxos was
 doing and why; why it was blocked; what to do now and what skipping costs; raw
-facts only as evidence). Every declaration carries `forUser: { name, gives }` — the service in the user's words, checked against the rules by `defineLoginService` — and that is all `start` says about it; the id, manager and PID go on a `details:` line. A refused write to `equin.app` is a `BundleWriteRefusedError` whose message is evidence only; what a person reads is `appsBlockedNotice(refused, forUser[], skip)`.
+facts only as evidence). Every declaration carries `forUser: { name, gives }` — the service in the user's words, checked against the rules by `defineLoginService` — and that is all `start` says about it; the id, manager and PID go on a `details:` line. A refused write to `muxos.app` is a `BundleWriteRefusedError` whose message is evidence only; what a person reads is `appsBlockedNotice(refused, forUser[], skip)`.
 
 ## Binding to the installed label
 
@@ -109,7 +109,7 @@ one).
 is the one per-service body, answering `{ service, outcome }`: bind the
 service and every service it `refersTo` under `manager`, hold the dependency (`loginServiceHolder` — off
 macOS the job names the binary by path long after main moves on), install its
-executable into the equin app (macOS, below), write the job,
+executable into the muxos app (macOS, below), write the job,
 `reloadService` when loaded (unload, `awaitProcessGone`, truncate the stdio log, load — the load attempted whatever the wait says), else truncate and load.
 
 | policy | not registered | registered, not loaded | loaded, job same | loaded, job changed |
@@ -120,7 +120,7 @@ executable into the equin app (macOS, below), write the job,
 
 "Changed" is `LoginService.write`'s answer: off macOS the job's argv names the
 binary under `cache/deps/<id>/<identity>/`, on macOS its environment names the
-build in the app bundle (`EQUIN_APP_COMPONENT`), so a new dependency identity
+build in the app bundle (`MUXOS_APP_COMPONENT`), so a new dependency identity
 renders a different definition — that service's only. `LoginService.isCurrent(job)` asks the same without
 writing (the gateway's staleness notice in `start`).
 `LoginService.installedJob()` reads the written definition's argv and cwd back
@@ -155,17 +155,17 @@ process still alive then survived SIGKILL; and `terminateProcess` (a process no
 manager owns) SIGKILLs at it itself. They were three literals, and the wait
 equal to the kill made a slow stop a race the CLI could lose.
 
-## The equin app (macOS)
+## The muxos app (macOS)
 
 Every login service — the gateway too (`launcher`'s `GATEWAY_APP_COMPONENT`,
 installed by `start`) — runs from ONE app bundle,
-`~/.equin/state/macos-app/equin.app` (`machine/internal/macos-app.ts`):
-bundle id `dev.equin`, display name `equin`, `LSUIElement`, the icon the main
+`~/.muxos/state/macos-app/muxos.app` (`machine/internal/macos-app.ts`):
+bundle id `dev.muxos`, display name `muxos`, `LSUIElement`, the icon the main
 component brings, signed as a whole with the machine's identity
 (`infra/codesign`'s `signBundle`) and registered with LaunchServices. So every
-permission prompt says "equin", System Settings shows one row per pane with a
+permission prompt says "muxos", System Settings shows one row per pane with a
 switch per folder (a denied one included), and one app's decision resets on its
-own: `tccutil reset SystemPolicyDownloadsFolder dev.equin`. A bare executable
+own: `tccutil reset SystemPolicyDownloadsFolder dev.muxos`. A bare executable
 gets none of that — an anonymous row, no switch for a denied folder, and only
 the reset of every app. The gateway's backends are charged to it (macOS's
 responsible process); agents disclaim (`packages/spawn-disclaim`).
@@ -174,12 +174,12 @@ responsible process); agents disclaim (`packages/spawn-disclaim`).
   `main` (the menu-bar helper) is `CFBundleExecutable`, what notifications and
   `Bundle.main` see; while it is not installed another component stands in.
 - **Installing** (`installServiceExecutable`, under a machine-wide flock):
-  a no-op when `Info.plist`'s `EquinComponents` record already holds that build
+  a no-op when `Info.plist`'s `MuxOSComponents` record already holds that build
   and the bundle is signed by this machine's identity; otherwise the bundle is
   copied to a staging directory, the executable (and icon) replaced, the plist
   rewritten, the copy signed and verified, then swapped in whole. A running
   component keeps its own executable until its reload.
-- **The swapped-out bundle is kept** (`equin.app.old-*`) while a running
+- **The swapped-out bundle is kept** (`muxos.app.old-*`) while a running
   process was started from it, and deleted by the first install that finds
   nothing running from it (`sweepOldBundles`: one `lsof -d txt`, on every
   install, a no-op one included — main's boot installs, so a gateway restart
@@ -189,12 +189,12 @@ responsible process); agents disclaim (`packages/spawn-disclaim`).
   file or directory` and refuses the grant — minutes later, once its cache
   expires (2026-10-31).
 - **Every job running from the bundle names it** — `AssociatedBundleIdentifiers
-  [dev.equin]`, derived by the launchd renderer from argv[0]
+  [dev.muxos]`, derived by the launchd renderer from argv[0]
   (`appBundleIdOfProgram`), so no caller can forget it (`man launchd.plist`).
   **Ignored while the bundle has no Team ID** (measured, macOS 26): Background
   Task Management files every agent under "Unknown Developer" and names it by
   its executable's FILE NAME — the "… can run in the background" notification
-  and Login Items say `gateway`, `equin-desktop`, one per agent.
+  and Login Items say `gateway`, `muxos-desktop`, one per agent.
 - **A stable path**, not the per-build deps cache: components rebuild on their
   own, and a menu-bar rebuild must not restart the gateway. Never under `/tmp`:
   LaunchServices disables a bundle there (no Settings row, `tccutil` fails).
@@ -249,11 +249,11 @@ it), and `cli/` holds commands. A declaration is found by discovery and
 imported by nobody, which is the definition of a leaf (like `check/`), so the
 folder needs only its boundary row, not a barrel's doc and shipping policy.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: Per-user login services, generalized from the gateway's: a LoginService over a LoginServiceSpec (label, argv, cwd, env, stdio log, session background | graphical), rendered as a launchd LaunchAgent on macOS (graphical → LimitLoadToSessionType=Aqua) or a systemd user unit on Linux (graphical → graphical-session.target, no lingering); defineLoginService and the collected login-services/ registry, so ./equin start / stop bring every declared service up and down without naming one. On main's boot and on every advance of main (a git-watcher ref reaction — main's build may keep its backend), every declared service a start registered follows main: reloaded when main's build of its dependency changed its job (rewritten only, when stopped), the dependency requested through deps first when it is not built yet. On macOS every service (the gateway too) runs from ONE app bundle, equin.app (bundle id dev.equin, signed with the machine's identity, at a stable path under state/macos-app): installServiceExecutable copies a component's build in and swaps the re-signed bundle in whole, so every permission prompt, System Settings row and tccutil reset names one app, equin.
+- Description: Per-user login services, generalized from the gateway's: a LoginService over a LoginServiceSpec (label, argv, cwd, env, stdio log, session background | graphical), rendered as a launchd LaunchAgent on macOS (graphical → LimitLoadToSessionType=Aqua) or a systemd user unit on Linux (graphical → graphical-session.target, no lingering); defineLoginService and the collected login-services/ registry, so ./muxos start / stop bring every declared service up and down without naming one. On main's boot and on every advance of main (a git-watcher ref reaction — main's build may keep its backend), every declared service a start registered follows main: reloaded when main's build of its dependency changed its job (rewritten only, when stopped), the dependency requested through deps first when it is not built yet. On macOS every service (the gateway too) runs from ONE app bundle, muxos.app (bundle id dev.muxos, signed with the machine's identity, at a stable path under state/macos-app): installServiceExecutable copies a component's build in and swaps the re-signed bundle in whole, so every permission prompt, System Settings row and tccutil reset names one app, muxos.
 - Core:
   - Uses:
     - `framework/tooling/collected-dir.defineCollectedDir`

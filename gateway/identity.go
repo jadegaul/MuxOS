@@ -7,11 +7,11 @@ import (
 
 // productName is the product's own name (framework/product-name's
 // PRODUCT_NAME): what GET /gateway/identity answers as `product`.
-const productName = "equin"
+const productName = "muxos"
 
 // gatewayIdentity is GET /gateway/identity: whose gateway answers on this
-// port. `./equin start` reads it to tell its own gateway (same product, uid
-// and data root) from another account's equin or an unrelated server on the
+// port. `./muxos start` reads it to tell its own gateway (same product, uid
+// and data root) from another account's muxos or an unrelated server on the
 // port, and the health read reads legacyListen (null when there is no
 // -legacy-listen) to say whether the old port is still held. Owner-only,
 // like every /gateway/* route.

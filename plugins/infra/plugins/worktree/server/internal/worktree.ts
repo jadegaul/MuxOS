@@ -89,7 +89,7 @@ let cachedRepoRoot: AppPath | null = null;
 // Calibrated against measurement, not intuition. `git worktree list --porcelain`
 // on this repo (111 worktrees, 76 GB of checkouts) samples at p50 94 ms / p99
 // 302 ms / max 585 ms under host load — and a 10 s bound STILL false-fired in a
-// real `./equin check` run, where `ensureMainWorktreeRoot()` is called from
+// real `./muxos check` run, where `ensureMainWorktreeRoot()` is called from
 // every parallel type-check worker at once on a saturated box. Starvation, not
 // slowness, is what these commands actually suffer, and starvation is unbounded
 // by the p99 of an idle box. So each value is ~2-3 orders of magnitude above p50.
@@ -1613,7 +1613,7 @@ export async function convergeExistingCheckout(
  * the manifest lives in `config_v2`, whose server barrel resolves its config dir
  * at module eval from this process's runtime namespace, which a CLI process does
  * not have — and the CLI statically reaches this barrel
- * from four commands, so importing it would break every `./equin` command.
+ * from four commands, so importing it would break every `./muxos` command.
  * `infra/worktree` also has no business knowing what a composition is; the
  * caller, which runs in a backend, does.
  *

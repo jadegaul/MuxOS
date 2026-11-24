@@ -16,7 +16,7 @@
 // `tour.ts` first on an empty deploy).
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/presets.ts \
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/presets.ts \
 //     [--name "E2E preset"] [--out /tmp/places-presets]
 //
 // Writes `<out>-<step>.png`; exits non-zero on the first broken expectation.

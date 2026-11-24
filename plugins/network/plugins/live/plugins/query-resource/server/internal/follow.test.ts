@@ -20,7 +20,7 @@
  *   followed table read whole or through a lookup too is refused, as is a
  *   hand-made read; a value declaring neither is refused.
  *
- * Run: `./equin test plugins/network/plugins/live/plugins/query-resource`.
+ * Run: `./muxos test plugins/network/plugins/live/plugins/query-resource`.
  */
 
 import { describe, expect, test } from "bun:test";

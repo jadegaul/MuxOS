@@ -1,7 +1,7 @@
 // The repo's byte-format AUTHORITY: what may be formatted (the allowlist),
 // with which options (the hardcoded object below), and which files must always
 // be formatted together (the coupled sets). Everything that writes or asserts
-// formatted bytes — `./equin build`, `./equin format`, and the
+// formatted bytes — `./muxos build`, `./muxos format`, and the
 // `format-clean` check — goes through this one module, so the writer and the
 // readers cannot produce different bytes.
 

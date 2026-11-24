@@ -21,7 +21,7 @@
 // the median of the warm rounds.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/desktop/plugins/fullscreen-budget/e2e/fullscreen-switch-budget.ts \
+//   ./muxos run plugins/apps/plugins/desktop/plugins/fullscreen-budget/e2e/fullscreen-switch-budget.ts \
 //     [--rounds 4] [--settle 1500] [--url http://<namespace>.localhost:<port>]
 //
 // On demand it prints the verdict and exits 1 while a case is over budget.
@@ -194,10 +194,10 @@ const verdict = await settleBudget({
   title: "Desktop ↔ full screen switch",
   metric: "elements restyled",
   cases,
-  rerun: `./equin run ${SCRIPT}`,
+  rerun: `./muxos run ${SCRIPT}`,
   hint:
     "**Finding the cause:** profile the switch with " +
-    "`./equin run plugins/apps/plugins/desktop/plugins/windows/e2e/fullscreen-switch-profile.ts " +
+    "`./muxos run plugins/apps/plugins/desktop/plugins/windows/e2e/fullscreen-switch-profile.ts " +
     "--windows 3 --invalidations` — it lists each whole-document recalc, the <html> " +
     "attribute writes and the <style> elements the switch touched, and what scheduled " +
     "the invalidations. Past causes, each a jump of about the document's element count: " +

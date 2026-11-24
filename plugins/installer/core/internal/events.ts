@@ -4,7 +4,7 @@ import { z } from "zod";
  * The installer's event stream, protocol v1 — what the install writes, one
  * JSON object per line, and what every renderer (the installer window's page,
  * install.sh's own terminal view) draws. install.sh writes its events by hand
- * (its `ev` function); `./equin` writes its own (`emitInstallEvent`, the
+ * (its `ev` function); `./muxos` writes its own (`emitInstallEvent`, the
  * installer `deps` barrel) while it runs as one of the install's steps. This
  * schema is the one definition: the `--dry-run` stream test holds the bash
  * emitter to it, the TS emitter is typed by it.
@@ -42,7 +42,7 @@ export const InstallTopStepId = z.enum(TOP_STEP_IDS);
 export type InstallTopStepId = z.infer<typeof InstallTopStepId>;
 
 /**
- * The sub-steps of the `build` step, in run order: what `./equin build`
+ * The sub-steps of the `build` step, in run order: what `./muxos build`
  * reports of itself during an install. Each is declared by the build's own
  * profiler spans (`SpanOptions.installStep`, op-runtime), never by a span's
  * name — and the `installer:build-sub-steps-declared` check fails when one of
@@ -118,7 +118,7 @@ export type WaitOn = z.infer<typeof WaitOn>;
 export const PauseKind = z.enum([
   /** The app the install was started from runs it in a protected mode that stopped it. */
   "sandbox",
-  /** Security software the organisation runs removed or blocked part of equin. */
+  /** Security software the organisation runs removed or blocked part of muxos. */
   "security",
   /** The install is waiting on something that stopped making progress. */
   "stall",
@@ -198,7 +198,7 @@ export const PlanStep = z.strictObject({
   id: InstallTopStepId,
   /** What the step does, in the user's words (the installer message rules). */
   label: z.string().min(1),
-  /** The same, as it happens ("Downloading equin"). */
+  /** The same, as it happens ("Downloading muxos"). */
   doing: z.string().min(1),
   group: InstallGroupId,
   /** The whole step's median (its sub-steps' sum when it has any). */
@@ -217,7 +217,7 @@ export type PlanGroup = z.infer<typeof PlanGroup>;
 
 /** Who holds what a step waits on, when the step engine knows. */
 export const WaitHolder = z.strictObject({
-  /** The holder's op id (`./equin ops`), when it is an op. */
+  /** The holder's op id (`./muxos ops`), when it is an op. */
   op: z.string().min(1),
   /** What kind of work it is (build, check, test, …). */
   kind: z.string().min(1),
@@ -345,7 +345,7 @@ export const InstallEvent = z.discriminatedUnion("type", [
   }),
   /**
    * An optional part the install went on without (the login services macOS
-   * refused to add), and later what became of it. `id` names what `./equin
+   * refused to add), and later what became of it. `id` names what `./muxos
    * start --only` adds back; `title` / `text` follow the message rules.
    */
   z.strictObject({
@@ -358,7 +358,7 @@ export const InstallEvent = z.discriminatedUnion("type", [
     /** What the install went on without, as a person knows it ("the menu-bar icon and app shortcuts"). */
     without: z.string().min(1),
   }),
-  /** The install finished: equin is running at `url`. */
+  /** The install finished: muxos is running at `url`. */
   z.strictObject({
     ...base,
     type: z.literal("done"),

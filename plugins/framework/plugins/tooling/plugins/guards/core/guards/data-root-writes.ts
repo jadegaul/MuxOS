@@ -8,15 +8,15 @@ import type { BashInput, FileInput, GuardContext } from "../types";
 import { firstFlaggedWrite } from "../write-scan";
 
 /**
- * Everything at the data root (`~/.equin`) is a declared directory with an
+ * Everything at the data root (`~/.muxos`) is a declared directory with an
  * owner (`infra/paths` CLAUDE.md, § The data root is a registry), and
  * `paths:no-undeclared-data-dirs` fails on anything else — hourly, on main, as
  * a `host-check` report nobody can clear but by hand. On 2026-11-10 two agents
  * put screenshots there: one copied its browser screenshots into
- * `~/.equin/demo-audit-2026-11-10/` so the tasks it filed could cite files that
+ * `~/.muxos/demo-audit-2026-11-10/` so the tasks it filed could cite files that
  * outlive its session; another, refused by `launcher:env-names` for spelling
- * `process.env.EQUIN_SCRATCH` in a probe script, rewrote the script's output
- * to `~/.equin/tmp-probe-…png`. Nothing refused either write; the audit fired
+ * `process.env.MUXOS_SCRATCH` in a probe script, rewrote the script's output
+ * to `~/.muxos/tmp-probe-…png`. Nothing refused either write; the audit fired
  * every hour after.
  *
  * So this guard asks, of every write an agent makes by hand (the same scan

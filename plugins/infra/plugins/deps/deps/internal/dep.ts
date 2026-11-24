@@ -196,7 +196,7 @@ type BundleField<S extends DepSource> = S extends {
  * must never change under it by a checkout moving on: what it runs is the
  * install PINNED to it — a hold named `holder` — not the checkout's current
  * identity. Adopted once (the first start pins the checkout's install);
- * afterwards only `pinDep` (`./equin deps pin <id>`) moves it, on purpose,
+ * afterwards only `pinDep` (`./muxos deps pin <id>`) moves it, on purpose,
  * and it takes effect at `appliesAt`. See `pinnedDep`.
  */
 export interface DepPin {
@@ -219,7 +219,7 @@ export interface DepPin {
  * provides: the libraries a native build links against (the menu-bar icon's
  * GTK and WebKitGTK on Linux), or a downloaded browser runs against
  * (Chromium's NSS, ATK, libgbm, ALSA, …). Declared beside the dependency so
- * whoever prepares a machine (install.sh, through `./equin start
+ * whoever prepares a machine (install.sh, through `./muxos start
  * --system-packages`) installs them from the declaration, never from a list
  * of its own. Linux only: apt is the one package manager the installer
  * drives. Checked before an install (`checkSystemPackages`): a missing one
@@ -229,7 +229,7 @@ export interface DepPin {
 export interface SystemPackages {
   readonly linux: AptPackages | ToolInstalledPackages;
   /**
-   * Set when EVERY Linux install prepares these, not only one whose `./equin
+   * Set when EVERY Linux install prepares these, not only one whose `./muxos
    * start` adds a part that runs this dependency — the reason, for people
    * ("main's deploy checks run in it"). Without it a dependency installed on
    * demand later, by a process that cannot ask for a password (main's

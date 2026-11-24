@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-build-build-profiling",
+  "name": "@muxos/plugin-build-build-profiling",
   "private": true,
   "version": "0.0.1"
 }

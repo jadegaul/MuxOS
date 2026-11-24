@@ -81,7 +81,7 @@ function diagSocketKind(url: string) {
 // cannot establish its fault — a wait that spanned a page suspension — does not
 // fire at all (its deadline restarts once the page runs again: `firedLate`,
 // visible-only deadlines), rather than firing and asking for a mute. Every
-// toast is a developer one: this is equin's own telemetry, and the health
+// toast is a developer one: this is muxos's own telemetry, and the health
 // report's Connection row already tells a user their live state.
 function wedge(
   toast: Toast,
@@ -247,7 +247,7 @@ export function WedgeWatchdog() {
         // keeps running while this page is hidden or frozen — so its
         // `firedLate` sees the worker's suspension, never the page's. A phone
         // that backgrounds the page holds the worker's handshake with it, and
-        // the stall reaches this page as it resumes (equin.ai, 2026-11-14
+        // the stall reaches this page as it resumes (MuxOS.app, 2026-11-14
         // 11:03: the page hidden for minutes, the stall processed 11 ms after
         // it became visible, the backend up 27 min and answering in ~80 ms).
         // So this page takes its own hidden time out of the window — the rule

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-backup-targets-google-drive",
+  "name": "@muxos/plugin-backup-targets-google-drive",
   "private": true,
   "version": "0.0.1"
 }

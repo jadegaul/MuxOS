@@ -15,7 +15,7 @@ import { PRODUCT_NAME } from "@plugins/framework/plugins/product-name/core";
  *
  * - `op` — work that runs and ends: a build, a check pass, a test run, a
  *   supervised run (a build, a job's child). A nested op (a build's own
- *   `./equin check`) stays in its parent's op scope: it is part of that work.
+ *   `./muxos check`) stays in its parent's op scope: it is part of that work.
  * - `daemon` — a process started to outlive the backend that launched it (an
  *   sdk agent, a browser host, a release preview). Whatever it runs is its
  *   own, except an op it starts, which moves to an op scope of its own: an

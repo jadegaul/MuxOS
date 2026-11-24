@@ -101,13 +101,13 @@ case "$VM_NAME" in
 esac
 
 # The data root, by paths/data-root-layout's rule (data-root-layout.ts): the legacy dir
-# while an install not yet migrated has it (`./equin data-dir migrate` moves
-# it), else ~/.equin.
+# while an install not yet migrated has it (`./muxos data-dir migrate` moves
+# it), else ~/.muxos.
 data_root() {
-  if { [ -e "$HOME/.singularity" ] || [ -L "$HOME/.singularity" ]; } && ! [ "$HOME/.singularity" -ef "$HOME/.equin" ]; then
-    printf '%s\n' "$HOME/.singularity"
-  else
+  if { [ -e "$HOME/.equin" ] || [ -L "$HOME/.equin" ]; } && ! [ "$HOME/.equin" -ef "$HOME/.muxos" ]; then
     printf '%s\n' "$HOME/.equin"
+  else
+    printf '%s\n' "$HOME/.muxos"
   fi
 }
 DATA_ROOT="$(data_root)"

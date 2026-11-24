@@ -1,5 +1,5 @@
 /**
- * `./equin deploy converge <composition> --server <server>` — make a host
+ * `./muxos deploy converge <composition> --server <server>` — make a host
  * serve a composition: run user, dir layout, the `env` EnvironmentFile, Caddy,
  * the systemd unit, the firewall.
  *
@@ -78,7 +78,7 @@ const run: CliAction<[string], { server: string }> = async (
       sshUser: server.sshUser,
       secretKeys: secrets.map((s) => s.key),
     }),
-    remoteName: `equin-converge-${composition}.sh`,
+    remoteName: `muxos-converge-${composition}.sh`,
     timeoutMs: CONVERGE_MS,
     what: "converge",
     // Values travel ONLY here: the SSH session's stdin.
@@ -87,7 +87,7 @@ const run: CliAction<[string], { server: string }> = async (
 
   console.log(`\n[done] ${server.name} is converged for "${composition}".`);
   console.log(
-    `  Ship a bundle: ./equin deploy ship ${composition} --server ${opts.server}`,
+    `  Ship a bundle: ./muxos deploy ship ${composition} --server ${opts.server}`,
   );
 };
 

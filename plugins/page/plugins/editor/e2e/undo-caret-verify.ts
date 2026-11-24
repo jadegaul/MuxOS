@@ -13,7 +13,7 @@
 //     matter where the caret stood when the entry was recorded or replayed);
 //  3. typing undo: caret where the typed text began; redo: after it.
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/undo-caret-verify.ts [--out /tmp/undo-caret]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/undo-caret-verify.ts [--out /tmp/undo-caret]
 import {
   arg,
   report,

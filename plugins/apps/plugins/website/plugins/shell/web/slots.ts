@@ -62,7 +62,7 @@ export const Website = {
     docLabel: (p) => p.label,
   }),
   /**
-   * The pages the header's Learn menu holds — the ones that explain equin
+   * The pages the header's Learn menu holds — the ones that explain muxos
    * rather than show it (Foundations, Story). Each renders one
    * `WebsiteLearnLink`: in the header it is an entry of the hover panel, on a
    * phone a row of the ☰ menu. Their order is the slot's reorder config

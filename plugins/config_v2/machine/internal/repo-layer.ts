@@ -26,7 +26,7 @@ async function readOrNull(file: string): Promise<string | null> {
 /**
  * The committed files ONE descriptor's document is resolved from — its origin,
  * its override and each `@app/<id>` override under its hierarchy dir — read
- * off the checkout's `config/` (or a release's, `EQUIN_REPO_CONFIG_DIR`)
+ * off the checkout's `config/` (or a release's, `MUXOS_REPO_CONFIG_DIR`)
  * without holding the thread, keyed by their layer-relative path.
  */
 async function committedFilesOf(

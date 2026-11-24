@@ -52,7 +52,7 @@ function harness(
     notShownFrom: null,
   };
   const tracker = createTracker({
-    host: "equin.dev",
+    host: "muxos.dev",
     landing: opts.landing ?? {},
     isOwner: opts.owner ?? (() => false),
     consentKey: opts.consentKey ?? (() => undefined),
@@ -150,17 +150,17 @@ describe("owner mark", () => {
     h.tracker.track("film_play", undefined, "/website");
     h.tracker.pathChanged("/website/story");
     expect(h.sent.filter((b) => b.kind !== "engagement")).toEqual([
-      { kind: "pageview", host: "equin.dev", path: "/website" },
+      { kind: "pageview", host: "muxos.dev", path: "/website" },
       {
         kind: "event",
-        host: "equin.dev",
+        host: "muxos.dev",
         path: "/website",
         name: "film_play",
         owner: true,
       },
       {
         kind: "pageview",
-        host: "equin.dev",
+        host: "muxos.dev",
         path: "/website/story",
         owner: true,
       },
@@ -178,15 +178,15 @@ describe("consent key", () => {
     key = undefined;
     h.tracker.pathChanged("/website/story");
     expect(h.sent.filter((b) => b.kind !== "engagement")).toEqual([
-      { kind: "pageview", host: "equin.dev", path: "/website" },
+      { kind: "pageview", host: "muxos.dev", path: "/website" },
       {
         kind: "event",
-        host: "equin.dev",
+        host: "muxos.dev",
         path: "/website",
         name: "film_play",
         consentKey: "6f1c3b0e-8d4a-4f6e-9c2b-1a7d5e3f9b20",
       },
-      { kind: "pageview", host: "equin.dev", path: "/website/story" },
+      { kind: "pageview", host: "muxos.dev", path: "/website/story" },
     ]);
   });
 });
@@ -199,8 +199,8 @@ describe("pageviews", () => {
     h.tracker.pathChanged("/about");
     h.tracker.pathChanged("/about/story");
     expect(h.sent.filter((b) => b.kind === "pageview")).toEqual([
-      { kind: "pageview", host: "equin.dev", path: "/about" },
-      { kind: "pageview", host: "equin.dev", path: "/about/story" },
+      { kind: "pageview", host: "muxos.dev", path: "/about" },
+      { kind: "pageview", host: "muxos.dev", path: "/about/story" },
     ]);
   });
 
@@ -233,13 +233,13 @@ describe("pageviews", () => {
     h.tracker.pathChanged("/about/story");
     expect(h.sent[0]).toEqual({
       kind: "pageview",
-      host: "equin.dev",
+      host: "muxos.dev",
       path: "/about",
       ...landing,
     });
     expect(h.sent[1]).toEqual({
       kind: "pageview",
-      host: "equin.dev",
+      host: "muxos.dev",
       path: "/about/story",
     });
   });
@@ -299,7 +299,7 @@ describe("engagement", () => {
         gaps: [],
         load: NO_LOAD,
       },
-      { kind: "pageview", host: "equin.dev", path: "/about/story" },
+      { kind: "pageview", host: "muxos.dev", path: "/about/story" },
     ]);
     await h.respond(2, { outcome: "pageview", pageviewId: PV_B });
     h.advance(300);
@@ -691,13 +691,13 @@ describe("events", () => {
     expect(h.sent.filter((b) => b.kind === "event")).toEqual([
       {
         kind: "event",
-        host: "equin.dev",
+        host: "muxos.dev",
         path: "/about",
         name: "improve_open",
       },
       {
         kind: "event",
-        host: "equin.dev",
+        host: "muxos.dev",
         path: "/about/story",
         name: "improve_show_me",
         props: { step: "1" },
@@ -712,7 +712,7 @@ describe("landingSource", () => {
       landingSource({
         referrer: "https://www.google.com/",
         search: "?utm_source=news&utm_campaign=%20launch%20&other=1",
-        siteHost: "equin.dev",
+        siteHost: "muxos.dev",
       }),
     ).toEqual({
       referrer: "https://www.google.com/",
@@ -721,9 +721,9 @@ describe("landingSource", () => {
   });
 
   it("drops a same-site, empty or unparseable referrer", () => {
-    for (const referrer of ["", "https://equin.dev/website", "not a url"]) {
+    for (const referrer of ["", "https://muxos.dev/website", "not a url"]) {
       expect(
-        landingSource({ referrer, search: "", siteHost: "equin.dev" }),
+        landingSource({ referrer, search: "", siteHost: "muxos.dev" }),
       ).toEqual({});
     }
   });

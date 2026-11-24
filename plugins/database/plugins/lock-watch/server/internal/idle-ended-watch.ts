@@ -19,7 +19,7 @@ let previous: { seen: IdleSessionSeen[]; sessionsFatal: number } | null = null;
 export interface IdleEndSeen {
   data: DbIdleTransactionEndedPayload;
   /**
-   * An app client owns it (`application_name` `equin:<pool>`): that client saw
+   * An app client owns it (`application_name` `muxos:<pool>`): that client saw
    * the server's 25P03 itself and reports it with the exact statement, so the
    * watch only logs it.
    */

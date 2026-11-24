@@ -10,19 +10,19 @@ import { llmProxyUrl } from "./llm-proxy-address";
 
 // The Claude accounts agents can run on. One is always there: the account the
 // computer's Claude Code is signed into (its keychain; signed in from the app,
-// `claude-cli/sign-in`) — the only plan (subscription) account equin runs on.
+// `claude-cli/sign-in`) — the only plan (subscription) account muxos runs on.
 // The others are either Anthropic API keys (billed per use to their Console
 // org, e.g. the plan's monthly API credit), pasted by the user; the key lives
 // in the encrypted secrets store, never in this list — or local model
 // endpoints (the user's own OpenAI-compatible or Anthropic-compatible server:
 // Ninfer, LM Studio, Ollama, …), addressed in the accounts file, their bearer
 // token (when they have one) in the secrets store. An OpenAI-compatible
-// endpoint is reached through equin's local translator proxy
+// endpoint is reached through muxos's local translator proxy
 // (`claude-cli/llm-proxy`) — the ANTHROPIC_BASE_URL an agent on it gets is the
 // proxy's, not the endpoint's own. The choice is the machine's — every
 // worktree's agents launch on the active account.
 //
-// No added plan accounts. equin once signed in to more plans (Claude Code's
+// No added plan accounts. muxos once signed in to more plans (Claude Code's
 // `setup-token`) and kept their tokens; Anthropic's terms say developers may
 // not "collect, store, or intermediate Claude.ai credentials or session
 // tokens", and plan limits "assume ordinary, individual usage". A plan account
@@ -59,7 +59,7 @@ const API_KEY_ENV = "ANTHROPIC_API_KEY";
  * Every variable that signs Claude Code in from the environment, removed from
  * an agent's environment but for the one its account sets — so a variable
  * inherited from elsewhere can never sign an agent in as another account.
- * `CLAUDE_CODE_OAUTH_TOKEN` (a plan token) is never set by equin, only
+ * `CLAUDE_CODE_OAUTH_TOKEN` (a plan token) is never set by muxos, only
  * stripped. Its presence is also how a session knows it does not run on the
  * computer's own login (`guard/`). The two endpoint variables are stripped
  * alike: an endpoint account is the only one that sets them.
@@ -105,7 +105,7 @@ export function claudeCredentialEnv(
 // API shapes: `openai` (OpenAI chat-completions, the common local shape —
 // Ninfer, LM Studio, Ollama) and `anthropic` (the Anthropic messages API
 // itself, reached directly). Claude Code speaks only the Anthropic shape, so
-// an `openai` endpoint is addressed at equin's translator proxy, which turns
+// an `openai` endpoint is addressed at muxos's translator proxy, which turns
 // its requests around (`claude-cli/llm-proxy`); an `anthropic` endpoint is
 // addressed at itself.
 
@@ -226,7 +226,7 @@ export function claudeEndpointEnv(
   // server never sees: the `openai` half's proxy decides the upstream auth
   // from the secrets store, and an `anthropic` endpoint that wants a token
   // refuses the placeholder with its own 401 — which is the truth.
-  env.ANTHROPIC_AUTH_TOKEN = credential.token ?? "equin-local";
+  env.ANTHROPIC_AUTH_TOKEN = credential.token ?? "muxos-local";
   if (credential.modelMap?.haiku !== undefined)
     env.ANTHROPIC_SMALL_FAST_MODEL = credential.modelMap.haiku;
   // Local model servers have no SLA, and their time-to-first-byte grows with

@@ -5,7 +5,7 @@ import { envName } from "@plugins/infra/plugins/launcher/plugins/env-names/core"
 import { sharedTmpGuard } from "./shared-tmp";
 
 const WT = "/r/repo/.claude/worktrees/att-123-abcd";
-const LAUNCHED = "/tmp/equin-scratch/conv-1-abc";
+const LAUNCHED = "/tmp/muxos-scratch/conv-1-abc";
 const SESSION = "615f223d-ac72-45b2-9bb8-6f7d361d78da";
 
 type Input = { file_path?: string; notebook_path?: string; command?: string };
@@ -30,7 +30,7 @@ describe("shared-tmp guard", () => {
   test("the 2026-11-08 incident: the message file write is refused", () => {
     expect(
       cmd(
-        "cat > /tmp/msg.txt <<'EOF'\nfix: x\nEOF\n./equin push -m \"$(cat /tmp/msg.txt)\"",
+        "cat > /tmp/msg.txt <<'EOF'\nfix: x\nEOF\n./muxos push -m \"$(cat /tmp/msg.txt)\"",
       ),
     ).toBe(true);
     expect(blocks({ file_path: "/tmp/msg.txt" })).toBe(true);
@@ -39,14 +39,14 @@ describe("shared-tmp guard", () => {
   });
 
   test("writes by redirection, known writers and cwd are refused", () => {
-    expect(cmd("./equin check 2>&1 | tee /tmp/tc.log")).toBe(true);
-    expect(cmd("./equin test x > /tmp/t.log 2>&1")).toBe(true);
+    expect(cmd("./muxos check 2>&1 | tee /tmp/tc.log")).toBe(true);
+    expect(cmd("./muxos test x > /tmp/t.log 2>&1")).toBe(true);
     expect(cmd("echo hi >> /var/tmp/x")).toBe(true);
     expect(cmd("cp a.txt /tmp/b.txt")).toBe(true);
     expect(cmd("mkdir -p /tmp/bp10")).toBe(true);
     expect(cmd("cd /tmp && cat > msg.txt <<'EOF'\nx\nEOF")).toBe(true);
     expect(cmd("cd /tmp && tar czf out.tgz x")).toBe(true);
-    expect(cmd("cd /tmp/x && ./equin run e2e/shot.ts --out shot")).toBe(true);
+    expect(cmd("cd /tmp/x && ./muxos run e2e/shot.ts --out shot")).toBe(true);
     expect(cmd("curl -s http://x -o /tmp/optime/snap.json")).toBe(true);
     expect(cmd("python3 /tmp/fiximp.py a.ts")).toBe(true);
     expect(cmd("dd if=/dev/zero of=/tmp/a bs=1 count=1")).toBe(true);
@@ -57,8 +57,8 @@ describe("shared-tmp guard", () => {
   });
 
   test("an unknown command handed a fixed temp path is refused", () => {
-    expect(cmd("./equin run e2e/screenshot.ts --out /tmp/shot")).toBe(true);
-    expect(cmd("./equin run e2e/screenshot.ts --out=/tmp/shot")).toBe(true);
+    expect(cmd("./muxos run e2e/screenshot.ts --out /tmp/shot")).toBe(true);
+    expect(cmd("./muxos run e2e/screenshot.ts --out=/tmp/shot")).toBe(true);
     expect(cmd("go build -o /tmp/gateway .")).toBe(true);
     expect(cmd("git bundle create /tmp/main.bundle main")).toBe(true);
   });
@@ -70,7 +70,7 @@ describe("shared-tmp guard", () => {
     );
     // Code is never read for intent: an interpreter there counts.
     expect(cmd('cd /tmp && python3 -c "\nprint(1)\n"')).toBe(true);
-    expect(cmd("cd /tmp/equin-film/session; head -c 1500 places.json")).toBe(
+    expect(cmd("cd /tmp/muxos-film/session; head -c 1500 places.json")).toBe(
       false,
     );
     expect(cmd("cd /tmp && find . -name '*.json'")).toBe(false);
@@ -109,16 +109,16 @@ describe("shared-tmp guard", () => {
     );
     expect(cmd("lsof +d /private/tmp/pw-race")).toBe(false);
     expect(cmd("otool -L /tmp/rel/watcher.node")).toBe(false);
-    expect(cmd("find /tmp/equin-film -name '*.png'")).toBe(false);
+    expect(cmd("find /tmp/muxos-film -name '*.png'")).toBe(false);
     expect(cmd("git apply /tmp/hostfs-fix.patch")).toBe(false);
-    expect(cmd("timeout 60 ./equin run x.ts")).toBe(false);
+    expect(cmd("timeout 60 ./muxos run x.ts")).toBe(false);
     // The outputs of the same commands still count.
     expect(cmd("sips -Z 320 in.jpg --out /tmp/x.png")).toBe(true);
     expect(cmd("sips -Z 900 /tmp/crop.png")).toBe(true); // in place
-    expect(cmd("ffmpeg -i in.mp4 /tmp/equin-film/rt/sheet.png")).toBe(true);
+    expect(cmd("ffmpeg -i in.mp4 /tmp/muxos-film/rt/sheet.png")).toBe(true);
     expect(cmd("find /tmp/old -delete")).toBe(true);
     expect(cmd("find . -name x -fprint /tmp/list.txt")).toBe(true);
-    expect(cmd("timeout 60 ./equin run x.ts --out /tmp/shot")).toBe(true);
+    expect(cmd("timeout 60 ./muxos run x.ts --out /tmp/shot")).toBe(true);
     expect(cmd("curl -s http://x -o /tmp/rdbg.json")).toBe(true);
   });
 
@@ -213,7 +213,7 @@ describe("shared-tmp guard", () => {
     expect(blocks({ file_path: "/tmp/tmp.wAkVzaePNQ/x.json" })).toBe(false);
     expect(
       cmd(
-        "./equin run x.ts list '/tmp/systemd-private-1fdcbdbb035a44fdad86054d925ac35e-equin@website.service-K3xpmj/tmp/sgs-LuJq1H/.s.PGSQL.5433'",
+        "./muxos run x.ts list '/tmp/systemd-private-1fdcbdbb035a44fdad86054d925ac35e-muxos@website.service-K3xpmj/tmp/sgs-LuJq1H/.s.PGSQL.5433'",
       ),
     ).toBe(false);
     // A loop variable, a word or a lowercase id is no random suffix.
@@ -223,12 +223,12 @@ describe("shared-tmp guard", () => {
     expect(cmd("echo x > /tmp/my-Bundle")).toBe(true);
     expect(cmd("echo x > /tmp/notes-README")).toBe(true);
     expect(cmd("echo x > /tmp/fix-fooBar")).toBe(true);
-    expect(cmd("echo x > /tmp/equin-scratch/conv-2-asram0/m.txt")).toBe(true);
+    expect(cmd("echo x > /tmp/muxos-scratch/conv-2-asram0/m.txt")).toBe(true);
     expect(cmd("rm /tmp/type-check-repo-*.json")).toBe(true);
   });
 
   test("another session's scratch is not this one's", () => {
-    expect(cmd("echo x > /tmp/equin-scratch/conv-2/msg.txt")).toBe(true);
+    expect(cmd("echo x > /tmp/muxos-scratch/conv-2/msg.txt")).toBe(true);
   });
 
   test("this session's scratch, unique names and reads pass", () => {
@@ -237,7 +237,7 @@ describe("shared-tmp guard", () => {
       false,
     );
     expect(blocks({ file_path: `${LAUNCHED}/review.md` })).toBe(false);
-    expect(cmd('f=$(mktemp); ./equin check > "$f"')).toBe(false);
+    expect(cmd('f=$(mktemp); ./muxos check > "$f"')).toBe(false);
     expect(cmd("mktemp /tmp/x.XXXXXX")).toBe(false);
     expect(cmd("cat /tmp/claude-501/x/tasks/b1.output")).toBe(false);
     expect(cmd("tail -50 /tmp/some.log; ls /tmp; rg foo /tmp/x.log")).toBe(
@@ -245,7 +245,7 @@ describe("shared-tmp guard", () => {
     );
     expect(blocks({ file_path: `${WT}/plugins/a.ts` })).toBe(false);
     expect(cmd("cp /tmp/tree-oracle.bak plugins/x.ts")).toBe(false);
-    expect(cmd("sed -n 1,20p /tmp/equin-test-LqgCmT/output.log")).toBe(false);
+    expect(cmd("sed -n 1,20p /tmp/muxos-test-LqgCmT/output.log")).toBe(false);
     expect(
       cmd(
         `git diff > /private/tmp/claude-501/-r-repo/${SESSION}/scratchpad/p.patch`,
@@ -259,21 +259,21 @@ describe("shared-tmp guard", () => {
   test("a message that mentions a temp path is not a write", () => {
     expect(
       cmd(
-        "./equin push -m \"$(cat <<'EOF'\nfix: /tmp/msg.txt was shared\nEOF\n)\"",
+        "./muxos push -m \"$(cat <<'EOF'\nfix: /tmp/msg.txt was shared\nEOF\n)\"",
       ),
     ).toBe(false);
-    expect(cmd('./equin push -m "/tmp/msg.txt was shared"')).toBe(false);
+    expect(cmd('./muxos push -m "/tmp/msg.txt was shared"')).toBe(false);
   });
 
   test("without a delivered scratch dir, the session id names it", () => {
     const v = verdict({ file_path: "/tmp/msg.txt" }, null);
     expect(v.kind).toBe("deny");
     if (v.kind !== "deny") return;
-    expect(v.reason).toContain(`/tmp/equin-scratch/${SESSION}`);
+    expect(v.reason).toContain(`/tmp/muxos-scratch/${SESSION}`);
     expect(v.reason).toContain("mkdir -p");
-    expect(blocks({ file_path: `/tmp/equin-scratch/${SESSION}/m` })).toBe(true); // a launched session's scratch is the conversation's
+    expect(blocks({ file_path: `/tmp/muxos-scratch/${SESSION}/m` })).toBe(true); // a launched session's scratch is the conversation's
     expect(
-      verdict({ file_path: `/tmp/equin-scratch/${SESSION}/m` }, null).kind,
+      verdict({ file_path: `/tmp/muxos-scratch/${SESSION}/m` }, null).kind,
     ).toBe("allow");
   });
 

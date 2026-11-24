@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-audience",
-  "description": "Who the user is — a regular user or a developer (Developer mode) — so features can declare who they are for instead of branching on a flag.",
+  "name": "@muxos/plugin-audience",
+  "description": "Who the user is \u2014 a regular user or a developer (Developer mode) \u2014 so features can declare who they are for instead of branching on a flag.",
   "private": true,
   "version": "0.0.1"
 }

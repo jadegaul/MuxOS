@@ -29,7 +29,7 @@ export function DownloadNextSteps() {
       </Text>
       <Grid as="ol" minCellWidth="14rem" mode="fit" gap="2xl" align="start">
         <Step n={1} title="Open it">
-          equin lives at <LocalAppLink />, and comes back on its own after a
+          muxos lives at <LocalAppLink />, and comes back on its own after a
           restart.
         </Step>
         <Step n={2} title="Make it yours">

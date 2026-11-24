@@ -19,7 +19,7 @@ const localPort = (): number => pagePort(window.location);
 const localHost = new URL(localAppUrl(localPort())).hostname;
 const swapIcon = { symbol: symbol("swap-horiz"), color: "indigo" } as const;
 
-/** On equin.ai: the same page on the local instance. */
+/** On MuxOS.app: the same page on the local instance. */
 export const openLocally: PageAction = {
   id: "open-locally",
   site: { label: publicHost, matches: isPublicSiteUrl },
@@ -29,10 +29,10 @@ export const openLocally: PageAction = {
   run: (url, host) => host.navigate(localSiteUrl(url, localPort())),
 };
 
-/** On any local equin page: equin.ai (the same page for a website page, else its home). */
+/** On any local muxos page: MuxOS.app (the same page for a website page, else its home). */
 export const openOnPublicSite: PageAction = {
   id: "open-on-public-site",
-  site: { label: "equin (local)", matches: isLocalAppUrl },
+  site: { label: "muxos (local)", matches: isLocalAppUrl },
   icon: swapIcon,
   title: `Open on ${publicHost}`,
   subtitle: () => `${localHost} → ${publicHost}`,

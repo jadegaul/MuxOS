@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-backup-targets-local",
+  "name": "@muxos/plugin-backup-targets-local",
   "private": true,
   "version": "0.0.1"
 }

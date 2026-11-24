@@ -19,8 +19,8 @@
  * Runs against a throwaway database (`db-test-fixture`); the app's migration
  * chain is not needed — the queue schema is graphile's own.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

@@ -12,8 +12,8 @@
 // what the not-clobber below exists for.
 //
 // The `Lane` a build/check passes to `withHostGrant` IS this fact. `publishLane`
-// additionally mirrors it into `EQUIN_LANE` so a subprocess that does not
-// inherit a full grant (`EQUIN_HOST_GRANT`) still classifies correctly;
+// additionally mirrors it into `MUXOS_LANE` so a subprocess that does not
+// inherit a full grant (`MUXOS_HOST_GRANT`) still classifies correctly;
 // `inheritedGrant()` reads the same var to reconstruct the inherited lane.
 //
 // Keyed on whether this is the human-blocking (interactive) origin, NOT on the

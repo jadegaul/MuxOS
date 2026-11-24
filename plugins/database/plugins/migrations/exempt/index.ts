@@ -9,6 +9,13 @@ export default [
       "Committed migrations are history: their SQL carries the kept migration marker and DB object names verbatim, and rewriting a published migration changes its hash.",
   },
   {
+    rule: "product-name:legacy",
+    paths: ["data"],
+    kind: "sanctioned",
+    reason:
+      "Committed migrations are history: a comment may name the product as it was called when the migration was written, and rewriting a published migration changes its hash.",
+  },
+  {
     rule: "imperative-create-table-allowlisted",
     paths: ["check/imperative-create-table-allowlisted.ts"],
     kind: "sanctioned",

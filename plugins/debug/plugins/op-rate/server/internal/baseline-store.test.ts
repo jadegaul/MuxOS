@@ -4,7 +4,7 @@
  * upsert adds to element by element, read back as the per-bucket and per-hour
  * history the monitor judges against.
  *
- * Run: `./equin test plugins/debug/plugins/op-rate`
+ * Run: `./muxos test plugins/debug/plugins/op-rate`
  */
 
 import {

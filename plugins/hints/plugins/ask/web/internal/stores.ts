@@ -8,9 +8,9 @@ export const askPositionStore = defineStore<AskPosition>({
   owner: "hints.ask.position",
   pageWide: {
     reason:
-      "the page's one Ask equin card, mounted at Core.Root above every tab",
+      "the page's one Ask muxos card, mounted at Core.Root above every tab",
   },
-  label: "Ask equin card positions",
+  label: "Ask muxos card positions",
   area: "local",
   cap: "4 KB",
   ttl: Infinity,
@@ -23,9 +23,9 @@ export const askQuestionDraft = defineStore<string>({
   owner: "hints.ask.question",
   pageWide: {
     reason:
-      "the page's one Ask equin card, mounted at Core.Root above every tab",
+      "the page's one Ask muxos card, mounted at Core.Root above every tab",
   },
-  label: "Ask equin questions",
+  label: "Ask muxos questions",
   area: "local",
   cap: "64 KB",
   ttl: DEFAULT_DRAFT_TTL,
@@ -43,9 +43,9 @@ export const askSeenPageStore = defineStore<string>({
   owner: "hints.ask.seen-page",
   pageWide: {
     reason:
-      "the page's one Ask equin card, mounted at Core.Root above every tab",
+      "the page's one Ask muxos card, mounted at Core.Root above every tab",
   },
-  label: "Ask equin pages sent",
+  label: "Ask muxos pages sent",
   area: "local",
   cap: "16 KB",
   ttl: 30 * 24 * 60 * 60 * 1000,
@@ -62,9 +62,9 @@ export const askCardStore = defineStore<AskCardSnapshot>({
   owner: "hints.ask.card",
   pageWide: {
     reason:
-      "the page's one Ask equin card, mounted at Core.Root above every tab",
+      "the page's one Ask muxos card, mounted at Core.Root above every tab",
   },
-  label: "Ask equin cards",
+  label: "Ask muxos cards",
   area: "session",
   cap: "4 KB",
   ttl: Infinity,

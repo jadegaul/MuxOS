@@ -1,17 +1,17 @@
-//! equin-desktop — equin's native helper. Generic: it knows namespaces, URLs
+//! muxos-desktop — muxos's native helper. Generic: it knows namespaces, URLs
 //! and the installed-app shims on disk, never an app.
 //!
 //! ```text
-//! equin-desktop tray [--namespace <ns>]        the menu-bar / top-bar icon and its panel
-//! equin-desktop window --app <id> --url <url>  one app's own window (an installed app's process)
-//! equin-desktop probe --namespace <ns>         the panel's bridge, attacked and judged (src/probe.rs)
-//! equin-desktop probe-window --namespace <ns>  an app window's scope, tried and judged (src/probe_window.rs)
-//! equin-desktop sync-apps --namespace <ns>     install every app of <ns> once, under $HOME (src/apps.rs; verification)
-//! equin-desktop open-link <equin://open?url=…>  a page in its installed app's window (src/open_link.rs)
+//! muxos-desktop tray [--namespace <ns>]        the menu-bar / top-bar icon and its panel
+//! muxos-desktop window --app <id> --url <url>  one app's own window (an installed app's process)
+//! muxos-desktop probe --namespace <ns>         the panel's bridge, attacked and judged (src/probe.rs)
+//! muxos-desktop probe-window --namespace <ns>  an app window's scope, tried and judged (src/probe_window.rs)
+//! muxos-desktop sync-apps --namespace <ns>     install every app of <ns> once, under $HOME (src/apps.rs; verification)
+//! muxos-desktop open-link <muxos://open?url=…>  a page in its installed app's window (src/open_link.rs)
 //! ```
 //!
 //! On macOS the binary is also every installed app's shim executable: inside a
-//! bundle whose Info.plist names an equin app (`EquinAppId`), it is that app's
+//! bundle whose Info.plist names an muxos app (`MuxOSAppId`), it is that app's
 //! window, whatever its arguments.
 
 mod apps;
@@ -50,7 +50,7 @@ fn main() {
         Ok(cli::Mode::SyncApps { namespace }) => sync_apps(&namespace),
         Ok(cli::Mode::OpenLink { link }) => open_link_once(&link),
         Err(message) => {
-            eprintln!("equin-desktop: {message}\n\n{}", cli::USAGE);
+            eprintln!("muxos-desktop: {message}\n\n{}", cli::USAGE);
             std::process::exit(2);
         }
     }
@@ -68,22 +68,22 @@ fn window_launch(app_id: String, url: url::Url) -> window::Launch {
 }
 
 /// `open-link <link>`: the page a link names, in its installed app's window —
-/// Linux's handler of `equin:` links (a failure is a desktop notification),
+/// Linux's handler of `muxos:` links (a failure is a desktop notification),
 /// and on macOS the tray's path from a shell (the outcome printed).
 fn open_link_once(link: &url::Url) {
     let page = open_link::parse(link).unwrap_or_else(|e| {
-        eprintln!("equin-desktop: {e}");
+        eprintln!("muxos-desktop: {e}");
         std::process::exit(2);
     });
     let outcome = open_link::open_in_owner(&page);
     println!("{outcome:?}");
     if let Some(message) = outcome.failure(&page) {
-        eprintln!("equin-desktop: {message}");
-        // Linux runs this as the scheme's handler (`dev.equin.open-link.desktop`),
+        eprintln!("muxos-desktop: {message}");
+        // Linux runs this as the scheme's handler (`dev.muxos.open-link.desktop`),
         // from a browser that shows nothing of what happened here.
         #[cfg(target_os = "linux")]
         if let Err(e) = std::process::Command::new("notify-send").args(["Cannot open in a window", &message]).status() {
-            eprintln!("equin-desktop: cannot notify: {e}");
+            eprintln!("muxos-desktop: cannot notify: {e}");
         }
         std::process::exit(1);
     }
@@ -103,7 +103,7 @@ fn sync_apps(namespace: &str) {
     match result {
         Ok(report) => println!("{}", serde_json::to_string(&report).expect("a report serializes")),
         Err(e) => {
-            eprintln!("equin-desktop: sync-apps: {e}");
+            eprintln!("muxos-desktop: sync-apps: {e}");
             std::process::exit(1);
         }
     }

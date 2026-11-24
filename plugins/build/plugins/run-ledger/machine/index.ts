@@ -5,7 +5,7 @@ import type { MachinePluginDefinition } from "@plugins/framework/plugins/server-
 export { settleDeadInflightRun } from "../shared/stale-holder";
 // The same ledger reads the CLI's recorder runs, over the backend's own `db`:
 // "is a build in flight" and "did the build of this commit pass" (the release
-// row on main, `upstream/machine`, answers what `./equin version cut` checks).
+// row on main, `upstream/machine`, answers what `./muxos version cut` checks).
 export { inflightRunOn, lastClosedRunOn } from "../shared/recorder";
 export type {
   AttemptTarget,

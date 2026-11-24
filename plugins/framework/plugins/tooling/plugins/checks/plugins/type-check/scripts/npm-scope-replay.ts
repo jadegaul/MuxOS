@@ -21,7 +21,7 @@
 // by an environment program over this checkout's install, and applied to
 // every commit.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/npm-scope-replay.ts [--since 2026-10-09]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/npm-scope-replay.ts [--since 2026-10-09]
 
 import { createHash } from "crypto";
 import ts from "typescript";

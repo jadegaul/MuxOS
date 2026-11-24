@@ -461,7 +461,7 @@ const check: Check = {
     const hints: string[] = [];
     if (hasMissingModule) {
       hints.push(
-        'A "Cannot find module" error for a dep you didn\'t touch is usually a missing workspace link — run ./equin build first (it re-runs bun install) and re-push.',
+        'A "Cannot find module" error for a dep you didn\'t touch is usually a missing workspace link — run ./muxos build first (it re-runs bun install) and re-push.',
       );
     }
     if (tscErrors) {

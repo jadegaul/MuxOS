@@ -1,14 +1,14 @@
 /**
  * The extension end to end: Chromium with this checkout's built shell loaded
- * unpacked, a tab on an equin.ai page (served by the script — the action
+ * unpacked, a tab on an MuxOS.app page (served by the script — the action
  * matches on the tab's URL, and the real site is not this build), then the
  * popup opened as a page of its own.
  *
- *   ./equin run plugins/companions/plugins/browser-extension/e2e/popup-probe.ts [--headed]
+ *   ./muxos run plugins/companions/plugins/browser-extension/e2e/popup-probe.ts [--headed]
  *
  * Asserts the popup frames this checkout's deploy and its bridge answers
  * (hostInfo, then the tab), the Wish section renders, Open locally is offered
- * for the equin.ai tab, and running it moves that tab to the same page on the
+ * for the MuxOS.app tab, and running it moves that tab to the same page on the
  * local instance.
  */
 import { mkdtemp, readFile, rm } from "node:fs/promises";
@@ -38,7 +38,7 @@ import {
   SHELL_FOLDER,
 } from "@plugins/companions/plugins/browser-extension/data-dirs";
 
-const PUBLIC_PAGE = "https://equin.ai/about/guide";
+const PUBLIC_PAGE = "https://MuxOS.app/about/guide";
 /**
  * Where Open locally lands: the guide on main's namespace, on the port of the
  * gateway the popup's panel was framed from (this deploy's).
@@ -59,7 +59,7 @@ const installed = await ensureDepViaCli(chromium, {
   stdio: "inherit",
   grant: null,
 });
-const profile = await mkdtemp(join(tmpdir(), "equin-extension-probe-"));
+const profile = await mkdtemp(join(tmpdir(), "muxos-extension-probe-"));
 // The headed binary: the headless shell runs no extensions. Headless unless
 // --headed, in Chrome's own (new) headless mode, which does.
 const context = await launchPersistentChromium(installed, profile, {
@@ -73,10 +73,10 @@ const context = await launchPersistentChromium(installed, profile, {
 });
 try {
   // A stand-in for the published page: only its URL matters to the action.
-  await context.route("https://equin.ai/**", (route) =>
+  await context.route("https://MuxOS.app/**", (route) =>
     route.fulfill({
       contentType: "text/html",
-      body: "<!doctype html><title>The guide · equin</title><h1>The guide</h1>",
+      body: "<!doctype html><title>The guide · muxos</title><h1>The guide</h1>",
     }),
   );
   const tab = context.pages()[0] ?? (await context.newPage());
@@ -97,13 +97,13 @@ try {
   const openLocally = panel.getByText("Open locally", { exact: true });
   await openLocally.waitFor({ timeout: TIMEOUT_MS });
   r.ok(
-    "the bridge answered (hostInfo, then the tab): Open locally is offered for equin.ai",
+    "the bridge answered (hostInfo, then the tab): Open locally is offered for MuxOS.app",
     true,
   );
   r.ok(
     "the panel is not the plain-tab state",
     (await panel
-      .getByText("This page runs inside the equin browser extension")
+      .getByText("This page runs inside the muxos browser extension")
       .count()) === 0,
   );
 

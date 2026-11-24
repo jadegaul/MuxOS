@@ -5,13 +5,13 @@ A launchd agent that runs a **two-tier poll** every 5s:
 - **Cheap probe** (every tick): `sysctl kern.num_files` + `ps -A | wc -l`. Microseconds, no FD cost. Silent unless it trips an early-warning threshold.
 - **Heavy tick** (full `lsof` + log block + incident detection): runs every 30s as a baseline heartbeat, *plus* on demand whenever the cheap probe sees elevation (high `kern.num_files`, ps-explosion, or rapid growth between probes).
 
-Output lands in `~/.equin/logs/monitors/fd-monitor.log` (per-tick blocks) and `~/.equin/logs/monitors/fd-monitor-incidents/<ts>/` (forensic dumps when any single process holds an unusual number of FDs or `kern.num_files` crosses a fraction of `kern.maxfiles`).
+Output lands in `~/.muxos/logs/monitors/fd-monitor.log` (per-tick blocks) and `~/.muxos/logs/monitors/fd-monitor-incidents/<ts>/` (forensic dumps when any single process holds an unusual number of FDs or `kern.num_files` crosses a fraction of `kern.maxfiles`).
 
 The two-tier design lets us catch in-progress leaks within ~5s while keeping the lsof cost — the only expensive part — pinned to roughly the same rate as before.
 
 ## Why
 
-Originally set up because equin was the leading suspect for "too many files open" crashes (long-lived gateway, many spawned bun backends, accumulating worktrees / Postgres DBs / tmux sessions). The monitor captured a real spike on 2026-04-26 and showed the leak was a runaway **Claude CLI** child process (pid held 65,489 FDs in <30s; `lsof` itself failed mid-run; system rebooted seconds later). equin processes were normal throughout. The monitor is being kept active to catch future repeats and gather full forensics.
+Originally set up because muxos was the leading suspect for "too many files open" crashes (long-lived gateway, many spawned bun backends, accumulating worktrees / Postgres DBs / tmux sessions). The monitor captured a real spike on 2026-04-26 and showed the leak was a runaway **Claude CLI** child process (pid held 65,489 FDs in <30s; `lsof` itself failed mid-run; system rebooted seconds later). muxos processes were normal throughout. The monitor is being kept active to catch future repeats and gather full forensics.
 
 ## What it captures
 
@@ -33,7 +33,7 @@ lsof_total=11980
    1820 bun
     873 Code
     ...
---- equin quick stats ---
+--- muxos quick stats ---
 gateway_pid=1436
 gateway_fds=429
 bun_backends=2
@@ -62,7 +62,7 @@ Throttled to at most one heavy tick per `ELEVATED_MIN_GAP` seconds (default **10
 If any pid holds more than `SUSPECT_PID_FDS` (default **3000**) FDs, or `kern.num_files` crosses `SYSTEM_NUM_FILES_PCT` (default **25%**) of `kern.maxfiles`, this tick *also* writes a forensic dump to:
 
 ```
-~/.equin/logs/monitors/fd-monitor-incidents/<YYYYMMDD-HHMMSS>/
+~/.muxos/logs/monitors/fd-monitor-incidents/<YYYYMMDD-HHMMSS>/
 ├── system.txt           # kernel state, top 50 cmd:pid, top 20 cmd groups, full ps
 ├── system.lsof.gz       # gzipped system-wide lsof at incident time
 ├── pid<pid>.txt         # ps line, FD type/kind breakdown, top 30 names per suspect pid
@@ -110,7 +110,7 @@ Verify it's running:
 
 ```sh
 launchctl list | grep fd-monitor
-tail -f ~/.equin/logs/monitors/fd-monitor.log
+tail -f ~/.muxos/logs/monitors/fd-monitor.log
 ```
 
 A new block should appear every 30s.
@@ -121,7 +121,7 @@ After editing the script (no plist change needed — script path is stable):
 
 ```sh
 # changes pick up on the next tick automatically
-tail -f ~/.equin/logs/monitors/fd-monitor.log
+tail -f ~/.muxos/logs/monitors/fd-monitor.log
 ```
 
 After editing the plist:
@@ -139,7 +139,7 @@ launchctl unload ~/Library/LaunchAgents/com.epot.fd-monitor.plist
 rm ~/Library/LaunchAgents/com.epot.fd-monitor.plist
 ```
 
-The log file at `~/.equin/logs/monitors/fd-monitor.log` is left in place; delete manually if you want.
+The log file at `~/.muxos/logs/monitors/fd-monitor.log` is left in place; delete manually if you want.
 
 ## Cost
 
@@ -151,7 +151,7 @@ The cheap probe (sysctl + ps_count) is microseconds — running it every 5s is e
 
 ```sh
 # Find the gap in timestamps that brackets the crash
-grep '^=====' ~/.equin/logs/monitors/fd-monitor.log | tail -50
+grep '^=====' ~/.muxos/logs/monitors/fd-monitor.log | tail -50
 
 # Pull the last 200 lines before that gap and look for:
 #   - lsof_total trending upward fast

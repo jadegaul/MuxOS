@@ -25,7 +25,7 @@ export async function statHostPath(path: UserPath): Promise<HostFsStatResult> {
 
 /**
  * Whether the account can read `path`'s contents. EPERM is macOS privacy
- * protection (TCC: a folder like ~/Downloads the equin app is not allowed
+ * protection (TCC: a folder like ~/Downloads the muxos app is not allowed
  * into), EACCES the path's own permissions. A path gone in between rethrows
  * as `missing` through the caller's classification.
  */

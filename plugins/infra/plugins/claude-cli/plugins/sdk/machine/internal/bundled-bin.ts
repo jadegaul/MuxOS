@@ -37,7 +37,7 @@ export class BundledClaudeMissingError extends Error {
   constructor(tried: string[]) {
     super(
       `The Agent SDK's bundled Claude Code is not installed (tried ${tried.join(", ")}). ` +
-        "It ships as an optional dependency of @anthropic-ai/claude-agent-sdk for this platform: reinstall dependencies (./equin build).",
+        "It ships as an optional dependency of @anthropic-ai/claude-agent-sdk for this platform: reinstall dependencies (./muxos build).",
     );
     this.name = "BundledClaudeMissingError";
   }

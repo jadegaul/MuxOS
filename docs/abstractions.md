@@ -1,6 +1,6 @@
 # Abstractions
 
-A high-level map of the generic systems equin is built on. Each item is a building block that is not tied to the agent-manager app and could host other apps on top.
+A high-level map of the generic systems muxos is built on. Each item is a building block that is not tied to the agent-manager app and could host other apps on top.
 
 See [`plugins-details.md`](plugins-details.md) for the specific plugins used by the agent manager.
 
@@ -68,7 +68,7 @@ Reverse proxy that multiplexes many app instances behind a single port.
 - **Static serving** — the gateway serves each instance's built frontend directly; no backend spawn needed for page loads.
 - **Lazy backend spawn** — the backend process is started on the first `/api/*` or `/ws/*` request and shut down after idle.
 - **Port pool** — backends are assigned an ephemeral port from a range and read it from their `PORT` env var.
-- **Worktree registry** — file-based inventory (`~/.equin/worktrees/<name>.json`) discovered via fsnotify.
+- **Worktree registry** — file-based inventory (`~/.muxos/worktrees/<name>.json`) discovered via fsnotify.
 - **`/gateway/*` API** — reserved path on every host exposing gateway state (e.g. `GET /gateway/worktrees`).
 - **WebSocket hijack** — HTTP upgrade proxied through `http.Hijacker` so the backend sees a native WS.
 

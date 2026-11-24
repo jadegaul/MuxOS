@@ -39,7 +39,7 @@ export function parseConfigFile(
 
 /**
  * Parse one USER-layer override file's text — the one config file a person or
- * an agent writes by hand (`~/.equin/state/config/<ns>/<tree>/<name>.jsonc`).
+ * an agent writes by hand (`~/.muxos/state/config/<ns>/<tree>/<name>.jsonc`).
  *
  * The header is optional here, and its absence means something: the file was
  * written against the origin beside it, by a writer that had no reason to know

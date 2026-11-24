@@ -6,14 +6,14 @@ import { useExtensionStatus } from "./internal/status";
 
 export default {
   description:
-    "The browser extension's row in Settings → Accounts (Auth.Integration, service equin): not built / not connected / connected · up to date / update pending — read live from the served shell's digest and the record the popup writes on each open — and, in its pane, the folder to load it unpacked from once.",
+    "The browser extension's row in Settings → Accounts (Auth.Integration, service muxos): not built / not connected / connected · up to date / update pending — read live from the served shell's digest and the record the popup writes on each open — and, in its pane, the folder to load it unpacked from once.",
   contributions: [
     Auth.Integration({
       id: "browser-extension",
       name: "Browser extension",
       icon: symbol("extension"),
-      service: "equin",
-      description: "equin in Chrome's toolbar, on any tab.",
+      service: "muxos",
+      description: "muxos in Chrome's toolbar, on any tab.",
       setup: ExtensionSetup,
       useStatus: useExtensionStatus,
     }),

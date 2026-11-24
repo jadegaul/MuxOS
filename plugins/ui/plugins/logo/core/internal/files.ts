@@ -99,7 +99,7 @@ export function logoFileSvg(path: string): string {
 }
 
 /** The PNG text key a rendered PNG carries its source digest under. */
-export const LOGO_PNG_SOURCE_KEY = "equin-logo-source";
+export const LOGO_PNG_SOURCE_KEY = "muxos-logo-source";
 
 /** What a `png` entry was rendered from: its source SVG's text and its size. */
 export function logoPngSourceDigest(

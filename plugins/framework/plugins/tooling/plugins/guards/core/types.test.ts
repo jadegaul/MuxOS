@@ -13,6 +13,6 @@ describe("matchesTool", () => {
       true,
     );
     expect(matchesTool(m, "mcp__claude-in-chrome-x__navigate")).toBe(false);
-    expect(matchesTool(m, "mcp__equin__browser_navigate")).toBe(false);
+    expect(matchesTool(m, "mcp__muxos__browser_navigate")).toBe(false);
   });
 });

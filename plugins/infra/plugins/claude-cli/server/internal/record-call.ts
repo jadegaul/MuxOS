@@ -109,7 +109,7 @@ export async function writeClaudeCliCall(
         costUsd: input.costUsd,
       }),
       usageLedgerUpsert(tx, usage),
-      // A one-shot call is equin's own generation, run outside any project.
+      // A one-shot call is muxos's own generation, run outside any project.
       usageSourcesUpsert(
         tx,
         usage.length === 0

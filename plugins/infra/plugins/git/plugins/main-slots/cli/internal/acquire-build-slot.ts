@@ -433,8 +433,8 @@ export interface HandedSlot {
   slot: AppPath;
   created: boolean;
   /**
-   * The environment entries the child is started with: `EQUIN_BUILD_SLOT`
-   * names the slot and `EQUIN_BUILD_SLOT_HANDOFF` the handoff it is marked
+   * The environment entries the child is started with: `MUXOS_BUILD_SLOT`
+   * names the slot and `MUXOS_BUILD_SLOT_HANDOFF` the handoff it is marked
    * for, so the child takes its exclusive lease (`claimHandedBuildSlot`,
    * core) and the CLI bootstrap holds no shared one there (`boot-lease`).
    */

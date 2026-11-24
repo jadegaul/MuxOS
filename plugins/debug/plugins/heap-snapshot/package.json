@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-heap-snapshot",
+  "name": "@muxos/plugin-debug-heap-snapshot",
   "private": true,
   "version": "0.0.1"
 }

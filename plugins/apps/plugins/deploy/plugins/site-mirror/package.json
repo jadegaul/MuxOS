@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-deploy-site-mirror",
+  "name": "@muxos/plugin-apps-deploy-site-mirror",
   "description": "The table mirror between a deployed site's box and this computer: the host-only route contracts both halves speak (changes, copy, keys, rows), the box half serving them over the source's readers, and the pull half keeping one replica per deployment and set.",
   "private": true,
   "version": "0.0.1"

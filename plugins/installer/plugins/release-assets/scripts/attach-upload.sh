@@ -13,7 +13,7 @@ cp "$BUNDLE" "$RUNNER_TEMP/installer-provenance.intoto.jsonl"
 if gh release view "$TAG" --json assets --jq '.assets[].name' | grep -qx INSTALLER-SHA256SUMS; then
   gh release delete-asset "$TAG" INSTALLER-SHA256SUMS --yes
 fi
-gh release upload "$TAG" --clobber "$DIR"/equin-installer-*
+gh release upload "$TAG" --clobber "$DIR"/muxos-installer-*
 gh release upload "$TAG" --clobber "$RUNNER_TEMP/installer-provenance.intoto.jsonl"
 gh release upload "$TAG" --clobber "$DIR/INSTALLER-SHA256SUMS"
 gh release view "$TAG"

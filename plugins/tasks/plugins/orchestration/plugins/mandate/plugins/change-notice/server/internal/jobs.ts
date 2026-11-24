@@ -25,7 +25,7 @@ function mandateLabel(id: string): string {
 
 /**
  * On a mandate change: each live agent RUNNING one of the moved tasks
- * reconnects the equin MCP server (its tools follow at once), then is sent a
+ * reconnects the muxos MCP server (its tools follow at once), then is sent a
  * notice carrying every system-prompt section that follows the mandate
  * (`## Mandate`, the supervisor prompt, …), rendered again — its system prompt
  * is fixed for the life of its process (`sendSectionNotice`). A conversation
@@ -35,7 +35,7 @@ function mandateLabel(id: string): string {
 export const onMandateChangedJob = defineJob({
   name: "mandate-change-notice.on-change",
   description:
-    "When tasks' effective mandate changes, makes each live agent running them reconnect the equin MCP server (its tools follow the new mandate) and sends it every system-prompt section that follows the mandate (Mandate, Supervisor prompt, Task tree…), rendered again, as an informational turn, the way a user message is sent; a side chat opened beside the agent running the task keeps its own mandate and is only told that nothing changed for it.",
+    "When tasks' effective mandate changes, makes each live agent running them reconnect the muxos MCP server (its tools follow the new mandate) and sends it every system-prompt section that follows the mandate (Mandate, Supervisor prompt, Task tree…), rendered again, as an informational turn, the way a user message is sent; a side chat opened beside the agent running the task keeps its own mandate and is only told that nothing changed for it.",
   hold: "instant",
   input: z.object({}),
   dedup: "none",
@@ -72,13 +72,13 @@ export const onMandateChangedJob = defineJob({
 /**
  * When a conversation takes over running its task (the one it was opened
  * beside closed — tasks-core's `handOverTaskRuns`): it now works under its
- * task's mandate, so a live agent reconnects the equin MCP server and is sent
+ * task's mandate, so a live agent reconnects the muxos MCP server and is sent
  * the mandate's sections again, as on a mandate change.
  */
 export const onRunHandedOverJob = defineJob({
   name: "mandate-change-notice.on-run-handed-over",
   description:
-    "When a conversation opened beside its task's own one takes over running the task (that one closed), makes its live agent reconnect the equin MCP server (its tools follow the task's mandate) and sends it every system-prompt section that follows the mandate, rendered again, as an informational turn.",
+    "When a conversation opened beside its task's own one takes over running the task (that one closed), makes its live agent reconnect the muxos MCP server (its tools follow the task's mandate) and sends it every system-prompt section that follows the mandate, rendered again, as an informational turn.",
   hold: "instant",
   input: z.object({}),
   dedup: "none",

@@ -7,8 +7,8 @@
  * That gap is not hypothetical. Until the installer existed the only thing that
  * created the schema was a side effect of `makeWorkerUtils` — reached from the
  * non-transactional enqueue path and from `startWorkers()`, and from nowhere
- * else. So in a fresh worktree where `./equin test` ran before
- * `./equin build`, every `{ tx }` enqueue failed with a bare Postgres
+ * else. So in a fresh worktree where `./muxos test` ran before
+ * `./muxos build`, every `{ tx }` enqueue failed with a bare Postgres
  * `3F000` naming nothing in this repo — which four tasks-core tests hit and a
  * filed report mis-diagnosed as a fixture gap.
  *
@@ -24,8 +24,8 @@
  * and independent of ours, so a database with zero app tables is exactly the
  * right substrate for proving one call makes it enqueue-capable.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { describe, test, expect, beforeAll, afterAll } from "bun:test";

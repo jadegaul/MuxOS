@@ -3,8 +3,8 @@
 // deliverable"): one PNG per surface, same viewport, scheme and settle, so a
 // pair taken around a change differs only by the change.
 //
-//   ./equin run plugins/primitives/plugins/css/plugins/rail/e2e/inset-review.ts \
-//     --out "$EQUIN_SCRATCH/inset-review" --suffix before [--only a,b]
+//   ./muxos run plugins/primitives/plugins/css/plugins/rail/e2e/inset-review.ts \
+//     --out "$MUXOS_SCRATCH/inset-review" --suffix before [--only a,b]
 //
 // Writes `<out>/<surface>-<suffix>.png` and prints, per surface, `ok` or
 // `FAILED <why>` (the run goes on), plus `measure <surface> {…}` for the

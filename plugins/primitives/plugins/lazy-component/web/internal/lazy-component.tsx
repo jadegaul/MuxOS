@@ -132,7 +132,7 @@ export function lazyComponent<P extends object>(
   // A chunk the browser dropped because the page lost its reach (hidden,
   // offline, asleep, leaving) is asked again once the page is back, like a
   // plugin's (web-sdk's page-reach): an idle preload in flight when a laptop
-  // closed rejected on wake, unhandled, as the visitor's crash (equin.ai
+  // closed rejected on wake, unhandled, as the visitor's crash (MuxOS.app
   // /foundations, Firefox, report-1794609421-fk1a49). A failure while the
   // page kept its reach is as loud as before.
   const load = () =>

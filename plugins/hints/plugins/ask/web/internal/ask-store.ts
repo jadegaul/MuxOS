@@ -40,10 +40,10 @@ function initialState(): AskState {
   return { mode, conversationId, fresh: 0 };
 }
 
-// The page has ONE Ask equin card, mounted at Core.Root above every tab; the
+// The page has ONE Ask muxos card, mounted at Core.Root above every tab; the
 // help menu's entry and the host both read it. Read from the tab's storage on
 // first use, not at import.
-// eslint-disable-next-line scoped-store/no-module-mutable-store -- page-global by design: one Ask equin card per page, opened from the ? menu (a popover) and drawn by the Core.Root host, which share no React tree below the root.
+// eslint-disable-next-line scoped-store/no-module-mutable-store -- page-global by design: one Ask muxos card per page, opened from the ? menu (a popover) and drawn by the Core.Root host, which share no React tree below the root.
 let state: AskState | null = null;
 const listeners = new Set<() => void>();
 

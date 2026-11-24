@@ -25,7 +25,7 @@ import type { HistoryStore } from "../../server";
 // `cp -R _template <name>`: the naming, the flat-folder rule and the copy were
 // all the agent's to get right, and there was no write path on the server at
 // all. Two surfaces call this instead — the gallery's New prototype button
-// (`POST /api/prototypes`, before it launches the agent) and `./equin
+// (`POST /api/prototypes`, before it launches the agent) and `./muxos
 // prototype new` — so the id, the template it starts from and the atomic copy
 // are decided once here rather than re-derived per caller.
 //

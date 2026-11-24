@@ -5,5 +5,5 @@ export const appsPage = defineWebsitePage({
   path: "/about/apps",
   title: "Apps",
   description:
-    "Every app equin ships, grouped by what it is for. Each one is a composition of plugins: install it as it is, or ask an agent to reshape it for you.",
+    "Every app muxos ships, grouped by what it is for. Each one is a composition of plugins: install it as it is, or ask an agent to reshape it for you.",
 });

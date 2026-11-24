@@ -4,7 +4,7 @@
  * preset ("Unplayed") name are unchanged, and a song with no playback row reads
  * `playCount` 0 (its declared default) and `lastPlayedAt` null.
  *
- * Run: `./equin test plugins/apps/plugins/sonata/plugins/playback-history`.
+ * Run: `./muxos test plugins/apps/plugins/sonata/plugins/playback-history`.
  */
 
 import { describe, expect, test } from "bun:test";

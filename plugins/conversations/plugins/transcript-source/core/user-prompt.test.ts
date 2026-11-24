@@ -14,12 +14,12 @@ describe("userPromptText", () => {
 
   test("an event turn the app delivered is not — a rewind never cuts at it", () => {
     expect(
-      userPromptText(userLine("<equin-event>\nreported\n</equin-event>")),
+      userPromptText(userLine("<muxos-event>\nreported\n</muxos-event>")),
     ).toBe(null);
     expect(
       userPromptText(
         userLine([
-          { type: "text", text: "<equin-event>\nreported\n</equin-event>" },
+          { type: "text", text: "<muxos-event>\nreported\n</muxos-event>" },
         ]),
       ),
     ).toBe(null);

@@ -15,15 +15,15 @@ export interface TweakcnFragment {
   dark: Record<string, string>;
 }
 
-/** Pick keys from source, renaming via keyMap (tweakcn key → equin key). */
+/** Pick keys from source, renaming via keyMap (tweakcn key → muxos key). */
 function pick(
   source: Record<string, string>,
   keyMap: Record<string, string>,
 ): Record<string, string> {
   const out: Record<string, string> = {};
-  for (const [tweakcnKey, equinKey] of Object.entries(keyMap)) {
+  for (const [tweakcnKey, muxosKey] of Object.entries(keyMap)) {
     if (tweakcnKey in source) {
-      out[equinKey] = source[tweakcnKey]!;
+      out[muxosKey] = source[tweakcnKey]!;
     }
   }
   return out;
@@ -96,7 +96,7 @@ export function tweakcnPalettePreview(cssVars: TweakcnCssVars): {
 }
 
 /**
- * Convert a tweakcn theme into the token-group fragments of an equin theme.
+ * Convert a tweakcn theme into the token-group fragments of an muxos theme.
  *
  * tweakcn carries colour, sidebar, shape, shadow, chart and font identity — never
  * a type scale, density or categorical palette — so those groups are simply not

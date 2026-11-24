@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-sonata-sources",
-  "description": "Input source sub-plugins for Sonata (MIDI, chord-grid, …).",
+  "name": "@muxos/plugin-apps-sonata-sources",
+  "description": "Input source sub-plugins for Sonata (MIDI, chord-grid, \u2026).",
   "private": true,
   "version": "0.0.1"
 }

@@ -1,6 +1,6 @@
 import type { DataRootLayout } from "@plugins/infra/plugins/paths/plugins/data-root-layout/core";
 
-// What `./equin data-dir migrate` will do, decided from facts alone — pure, so
+// What `./muxos data-dir migrate` will do, decided from facts alone — pure, so
 // every state an install can be in is a unit test, and the dry run prints the
 // exact plan `--apply` executes. The effects live in `./migrate.ts`.
 
@@ -59,7 +59,7 @@ export interface MigrationFacts {
    * Checkouts of this repo whose code still predates the move: it resolves the
    * legacy names unconditionally (no environment variable the gateway passes
    * overrides them). While any exists, removing a legacy link would let its
-   * `./equin`, guard hooks, backend or a relaunched agent create a real legacy
+   * `./muxos`, guard hooks, backend or a relaunched agent create a real legacy
    * dir beside the current one — a split every later start refuses
    * (`DataRootSplitError`). So the links stay until none is left.
    */
@@ -225,7 +225,7 @@ function describeKeptLinks(kept: KeptLinks): string {
     `Keep ${links.join(" and ")} as ${links.length > 1 ? "links" : "a link"} to ${links.length > 1 ? "their" : "its"} new home: ${staleCheckouts.length} checkout(s) of this repo still run code from before the move, which uses the legacy name${links.length > 1 ? "s" : ""} unconditionally — without the link, the first command, hook, backend or agent from one would create a second, real data root that every start then refuses (DataRootSplitError).`,
     ...sample,
     ...(more > 0 ? [`       - …and ${more} more`] : []),
-    `     Clear each one — rebase it onto main and \`./equin build\`, or delete the worktree (\`git worktree remove <path>\`) — then rerun \`./equin data-dir migrate\`: once none is left it rewrites what still names the old path and removes the link.`,
+    `     Clear each one — rebase it onto main and \`./muxos build\`, or delete the worktree (\`git worktree remove <path>\`) — then rerun \`./muxos data-dir migrate\`: once none is left it rewrites what still names the old path and removes the link.`,
   ].join("\n");
 }
 
@@ -260,9 +260,9 @@ export function describePlan(plan: MigrationPlan): string {
       if (plan.keptLinks) lines.push(describeKeptLinks(plan.keptLinks));
       if (plan.relabel)
         lines.push(
-          "Remove the gateway's old-label service; `./equin start` installs it as dev.equin.gateway.",
+          "Remove the gateway's old-label service; `./muxos start` installs it as dev.muxos.gateway.",
         );
-      lines.push("Start the app again (`./equin start`).");
+      lines.push("Start the app again (`./muxos start`).");
       return lines.map((l, i) => `  ${i + 1}. ${l}`).join("\n");
     }
   }

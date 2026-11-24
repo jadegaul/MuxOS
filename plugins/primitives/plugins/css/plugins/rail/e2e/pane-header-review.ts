@@ -3,8 +3,8 @@
 // desktop surface modes), so a pair taken around a change to where a pane's
 // header and body start differs only by that change.
 //
-//   ./equin run plugins/primitives/plugins/css/plugins/rail/e2e/pane-header-review.ts \
-//     --out "$EQUIN_SCRATCH/header-review" --suffix before [--only a,b] [--set hj]
+//   ./muxos run plugins/primitives/plugins/css/plugins/rail/e2e/pane-header-review.ts \
+//     --out "$MUXOS_SCRATCH/header-review" --suffix before [--only a,b] [--set hj]
 //
 // Writes `<out>/<surface>-<suffix>.png` and prints, per surface, one
 // `measure <surface> […]` line — for EVERY pane header on screen, from that

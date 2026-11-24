@@ -138,7 +138,7 @@ export function shownWholeByRead(
  * `pageId` is the page that id sits in, whose instructions apply.
  */
 export async function deliverWithRead(args: {
-  /** `null` for a session equin did not launch: with no conversation to
+  /** `null` for a session muxos did not launch: with no conversation to
    * record them against, every instructions block covering the page is handed
    * over on every read. */
   conversationId: string | null;
@@ -297,7 +297,7 @@ export async function renderGlobalSection(
 
   const parts = [
     `## Page instructions\n\n` +
-      `equin pages can carry instructions from their author, the way a ` +
+      `muxos pages can carry instructions from their author, the way a ` +
       `CLAUDE.md file carries instructions for a folder. They cover the page they ` +
       `sit on (an instructions page covers its parent page) and every page below ` +
       `it. read_page hands you the ones covering what you read, in a ` +

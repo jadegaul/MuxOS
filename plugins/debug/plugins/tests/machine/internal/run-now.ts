@@ -12,12 +12,12 @@ import { runTestsNow, RUN_NOW_MAX_PATHS } from "../../core";
 const runNowLog = defineLogSink({
   id: "tests-run-now",
   description:
-    "Test-status page: the `./equin test` runs its Run now / Run stale / Run all buttons started.",
+    "Test-status page: the `./muxos test` runs its Run now / Run stale / Run all buttons started.",
 });
 
 /**
- * Run now: an ordinary `./equin test <paths…>` in this checkout, as a
- * supervised child, marked `run-now` (`EQUIN_TEST_ORIGIN`) so its harvest
+ * Run now: an ordinary `./muxos test <paths…>` in this checkout, as a
+ * supervised child, marked `run-now` (`MUXOS_TEST_ORIGIN`) so its harvest
  * record says who asked. Its verdicts reach the page like any run's — through
  * the record it writes and the ingest — so nothing here reads its outcome.
  * Locked per set of files: the same request twice is one run.
@@ -25,7 +25,7 @@ const runNowLog = defineLogSink({
 export const runNowJob = defineSupervisedJob({
   name: "tests.run-now",
   description:
-    "Runs the test files the Debug → Tests page asked for (Run now, Run stale, Run all) with `./equin test`, so their verdicts are harvested onto the page.",
+    "Runs the test files the Debug → Tests page asked for (Run now, Run stale, Run all) with `./muxos test`, so their verdicts are harvested onto the page.",
   input: z.object({
     paths: z.array(z.string()).max(RUN_NOW_MAX_PATHS),
   }),

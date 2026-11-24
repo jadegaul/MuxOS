@@ -105,7 +105,7 @@ export function DeployingSection({ site }: SiteLiveProps): ReactNode {
  * The row's primary action — the next step for the site — and why it cannot
  * be pressed:
  *
- * - **Restart site** while the server answers but equin does not (`down`):
+ * - **Restart site** while the server answers but muxos does not (`down`):
  *   the `restart` verb — the service restarted on the release it already
  *   has, behind the ship's health gate, recorded as a run. Drawn pending
  *   ("Restarting…") while that run is in flight.
@@ -160,7 +160,7 @@ function rowActionOf(site: SiteHealth): RowAction {
 
 const DEPLOY_TIP =
   "Build, upload and switch with no downtime — reverted on its own if the new version fails its health check";
-const RESTART_TIP = "Restart equin's service on the server";
+const RESTART_TIP = "Restart muxos's service on the server";
 
 /** The row's action button as it looks: the label, and the reason it is blocked. */
 function RowActionButton({
@@ -233,7 +233,7 @@ function LiveRowAction({
 /**
  * The health report's site row's primary action: the site page's own
  * `update` (`runDeployment`), labelled as there (`deployLabelOf`), or Restart
- * site (the `restart` verb) while equin is down on the box — whichever is the
+ * site (the `restart` verb) while muxos is down on the box — whichever is the
  * next step (`rowActionOf`).
  */
 export function SiteDeployAction({

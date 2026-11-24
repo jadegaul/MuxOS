@@ -229,7 +229,7 @@ describe("judgeLoad — only what the visitor could see is judged", () => {
     ).toEqual({ kind: "not-waited", reason: "prerendered-load" });
   });
 
-  // The slow-page-load occurrences equin.ai recorded (main's reports, latest
+  // The slow-page-load occurrences MuxOS.app recorded (main's reports, latest
   // sample per row, 2026-11-19/20), replayed: the real 3–11 s loads are kept
   // on a page visible throughout; the minutes-long ones, whose first paint
   // came only when the tab was shown, are dropped once the record shows the
@@ -294,7 +294,7 @@ describe("judgeLoad — only what the visitor could see is judged", () => {
   });
 
   test("an untimed connection says so, so request→response is not read as the server's", () => {
-    // equin.ai/download, macOS Safari: no DNS / TCP / TLS time, 7.1 s to the first byte.
+    // MuxOS.app/download, macOS Safari: no DNS / TCP / TLS time, 7.1 s to the first byte.
     const p = judgeReadyLoad(
       { ttfbMs: 7_131, fcpMs: 7_900, readyMs: 7_900 },
       {

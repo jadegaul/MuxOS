@@ -4,16 +4,16 @@
 use url::Url;
 
 pub const USAGE: &str = "usage:
-  equin-desktop tray [--namespace <ns>]
-  equin-desktop window --app <id> --url <url>
-  equin-desktop probe --namespace <ns> [--other <ns>]
-  equin-desktop probe-window --namespace <ns>
-  equin-desktop sync-apps --namespace <ns>
-  equin-desktop open-link <equin://open?url=…>";
+  muxos-desktop tray [--namespace <ns>]
+  muxos-desktop window --app <id> --url <url>
+  muxos-desktop probe --namespace <ns> [--other <ns>]
+  muxos-desktop probe-window --namespace <ns>
+  muxos-desktop sync-apps --namespace <ns>
+  muxos-desktop open-link <muxos://open?url=…>";
 
 /// The probe's "elsewhere" when none is given: a namespace nothing serves —
 /// the panel must refuse it before any load, so it need not exist.
-pub const PROBE_OTHER: &str = "equin-probe-elsewhere";
+pub const PROBE_OTHER: &str = "muxos-probe-elsewhere";
 
 /// The main checkout's namespace (`infra/namespace`'s MAIN_WORKTREE_NAME): an
 /// internal id (its database, socket, spec dir), never the address shown.
@@ -21,10 +21,10 @@ pub const MAIN_NAMESPACE: &str = "singularity";
 
 /// The host label main is handed out under (`infra/namespace`'s
 /// NAMESPACE_HOST_LABELS) — KEEP IN SYNC, enforced by `namespace:grammar-in-sync`.
-pub const MAIN_HOST_LABEL: &str = "equin";
+pub const MAIN_HOST_LABEL: &str = "muxos";
 
 /// The `.localhost` label a namespace is served at: its public host label when
-/// it has one (main → `equin`), else its own name — `namespaceHost`'s rule.
+/// it has one (main → `muxos`), else its own name — `namespaceHost`'s rule.
 pub fn host_label(namespace: &str) -> &str {
     if namespace == MAIN_NAMESPACE { MAIN_HOST_LABEL } else { namespace }
 }
@@ -163,17 +163,17 @@ mod tests {
 
     #[test]
     fn main_is_served_at_its_host_label() {
-        assert_eq!(host_label(MAIN_NAMESPACE), "equin");
+        assert_eq!(host_label(MAIN_NAMESPACE), "muxos");
         assert_eq!(host_label("att-1-x"), "att-1-x");
     }
 
     #[test]
     fn shim_takes_only_an_in_scope_url() {
-        let base = Url::parse("http://equin.localhost:9000/mail").unwrap();
+        let base = Url::parse("http://muxos.localhost:9000/mail").unwrap();
         assert_eq!(shim_url(&args(&["-psn_0_1"]), &base), base);
         assert_eq!(
-            shim_url(&args(&["--url", "http://equin.localhost:9000/mail/t/1"]), &base).as_str(),
-            "http://equin.localhost:9000/mail/t/1"
+            shim_url(&args(&["--url", "http://muxos.localhost:9000/mail/t/1"]), &base).as_str(),
+            "http://muxos.localhost:9000/mail/t/1"
         );
         assert_eq!(shim_url(&args(&["--url", "https://evil.com/mail"]), &base), base);
     }
@@ -183,7 +183,7 @@ mod tests {
         assert!(parse(&args(&["window", "--app", "mail"])).is_err());
         assert!(parse(&args(&["window", "--app", "mail", "--url", "file:///etc"])).is_err());
         assert!(matches!(
-            parse(&args(&["window", "--app", "mail", "--url", "http://equin.localhost:9000/mail"])),
+            parse(&args(&["window", "--app", "mail", "--url", "http://muxos.localhost:9000/mail"])),
             Ok(Mode::Window { .. })
         ));
     }

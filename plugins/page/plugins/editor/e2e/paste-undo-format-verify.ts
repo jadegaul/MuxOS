@@ -13,7 +13,7 @@
 // reaches `data.text`.
 //
 // Manual-only; nothing runs this automatically.
-// Usage: ./equin run plugins/page/plugins/editor/e2e/paste-undo-format-verify.ts
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/paste-undo-format-verify.ts
 import {
   report,
   withBrowser,

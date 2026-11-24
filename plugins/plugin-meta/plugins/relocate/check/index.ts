@@ -105,7 +105,7 @@ const movedPluginsUnnamed = defineFoldCheck({
         problems.slice(0, MAX_SHOWN).join("\n") +
         more,
       hint:
-        "Each plugin named here was moved (`./equin plugin move`, recorded in " +
+        "Each plugin named here was moved (`./muxos plugin move`, recorded in " +
         `${PLUGIN_MOVES_FILE}). Move a file under an old directory to the new one; rewrite a mention to the ` +
         "new name. A dot id that names stored data (a job name, a row's plugin id) needs that data migrated " +
         `before it is renamed — or, kept on purpose, an exemption in the file's plugin's exempt/index.ts (rule ${RULE}).`,

@@ -8,7 +8,7 @@ import type { CardKey } from "../cards";
  *
  * A piece's name says what the thing IS; its sentence says what it brings.
  * `harness` pieces shorten the loop from "you have an idea" to "it runs in
- * production"; every other piece is a component: what every app built on equin
+ * production"; every other piece is a component: what every app built on muxos
  * gets for free. `loc` is the lines of code in the layer (tests and generated
  * files excluded, recounted by `scripts/count-loc.ts`), which the depth gauge
  * counts down through.
@@ -131,7 +131,7 @@ export const LAYERS: readonly IcebergLayer[] = [
         kind: "component",
       },
       {
-        name: "Ask equin",
+        name: "Ask muxos",
         weight: 2,
         desc: "A chat in every app that answers questions about the app.",
         card: "ask",
@@ -386,7 +386,7 @@ export const LAYERS: readonly IcebergLayer[] = [
       {
         name: "Profiling",
         weight: 2,
-        desc: "equin primitives are profiled out of the box, so agents can investigate performance issues.",
+        desc: "muxos primitives are profiled out of the box, so agents can investigate performance issues.",
         card: "profiling",
         kind: "harness",
       },
@@ -513,7 +513,7 @@ export const LAYERS: readonly IcebergLayer[] = [
       {
         name: "Isolated agent sessions",
         weight: 1,
-        desc: "Agent sessions run outside the app, so they keep working even when equin is down.",
+        desc: "Agent sessions run outside the app, so they keep working even when muxos is down.",
         card: "sessions",
         kind: "harness",
       },

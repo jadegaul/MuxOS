@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-page-prototype",
-  "description": "Prototype block type: links a prototype (proto-…) into a page — live and interactive, opened beside the page.",
+  "name": "@muxos/plugin-page-prototype",
+  "description": "Prototype block type: links a prototype (proto-\u2026) into a page \u2014 live and interactive, opened beside the page.",
   "private": true,
   "version": "0.0.1"
 }

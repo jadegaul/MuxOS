@@ -75,7 +75,7 @@ function isIgnoredDir(name: string): boolean {
   );
 }
 
-/** Self-declared SPA/CLI bootstrap root (`package.json` `equin.compositionRoot`). */
+/** Self-declared SPA/CLI bootstrap root (`package.json` `muxos.compositionRoot`). */
 function readCompositionRoot(dir: AppPath): boolean {
   const src = readIfExistsSync(joinAppPath(dir, "package.json"));
   if (!src) return false;

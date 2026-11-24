@@ -36,7 +36,7 @@ export interface ReadyContentUrl {
 
 /** What a content frame shows where nothing serves its document by URL. */
 const UNSUPPORTED_MESSAGE =
-  "This page can't show live content here — it is served on equin's content host, which this address does not reach (a deployed site), or this browser has no Service Workers (a private window).";
+  "This page can't show live content here — it is served on muxos's content host, which this address does not reach (a deployed site), or this browser has no Service Workers (a private window).";
 
 /** {@link ContentUrl} of `content` on `transport`. */
 export function contentUrlOver(

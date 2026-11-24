@@ -32,14 +32,14 @@ export const DEFAULT_AUDIENCE: Audience = "visitors";
 
 /**
  * The URL fragment that marks the browser opening it as the owner's:
- * `https://<site>/#equin-me`. A fragment never reaches the server (nor its
+ * `https://<site>/#muxos-me`. A fragment never reaches the server (nor its
  * logs). The mark is a flag in the site's local storage (the tracker's
  * `owner-mark.ts`), so it lasts until that browser's site data is cleared —
  * once per browser, laptop and phone alike.
  */
-export const OWNER_MARK_FRAGMENT = "equin-me";
-/** The fragment that removes the mark: `https://<site>/#equin-not-me`. */
-export const OWNER_UNMARK_FRAGMENT = "equin-not-me";
+export const OWNER_MARK_FRAGMENT = "muxos-me";
+/** The fragment that removes the mark: `https://<site>/#muxos-not-me`. */
+export const OWNER_UNMARK_FRAGMENT = "muxos-not-me";
 
 /** The link that marks a device as the owner's on the site at `siteUrl` (an origin). */
 export function ownerMarkUrl(siteUrl: string): string {

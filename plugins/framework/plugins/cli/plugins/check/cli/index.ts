@@ -78,8 +78,8 @@ export default defineCliCommand<
         "`deploy` = it verifies the local gitignored dist/artifact store `build` produces; " +
         "`host` = it is about this MACHINE — the shared data root and other host-global state " +
         "no single worktree owns, which another live checkout may have created. " +
-        "`--scope tree` reproduces the pass `./equin push` runs, and " +
-        "`--scope tree,deploy` the pass `./equin build` runs. Host checks are not in the " +
+        "`--scope tree` reproduces the pass `./muxos push` runs, and " +
+        "`--scope tree,deploy` the pass `./muxos build` runs. Host checks are not in the " +
         "default: they judge state every checkout shares, and main's hourly " +
         "checks.host-audit runs them.",
     },

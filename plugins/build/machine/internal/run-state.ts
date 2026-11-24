@@ -121,7 +121,7 @@ export async function listUnfinished(): Promise<readonly UnfinishedRun[]> {
   return rows.map((row) => ({ runId: row.id, pid: row.pid }));
 }
 
-/** Record the pid of the detached `./equin build` now serving this run. */
+/** Record the pid of the detached `./muxos build` now serving this run. */
 export async function setPid(buildId: string, pid: number): Promise<void> {
   await db
     .update(_buildRuns)
@@ -141,7 +141,7 @@ export async function setPid(buildId: string, pid: number): Promise<void> {
  * and the convergence reconcile are the workflow's to run exactly once, and live
  * in {@link onBuildEnded}.
  *
- * `WHERE finished_at IS NULL` because `./equin build` closes its own row
+ * `WHERE finished_at IS NULL` because `./muxos build` closes its own row
  * right after the health probe, ~100s before its child exits: the CLI is the
  * authoritative first writer and this is usually a no-op.
  */
@@ -171,7 +171,7 @@ export async function closeBuildRow(
  * own outcome stamp.
  *
  * **The row is already closed by the time this runs, and that is the ordinary
- * case rather than an edge.** Two writers get there first: `./equin build`
+ * case rather than an edge.** Two writers get there first: `./muxos build`
  * stamps its own row right after the health probe (~100s before its child
  * exits), and failing that the supervised job's `closeRow` runs in the
  * reconciler *before* the announcement that resumes the workflow. So nothing
@@ -179,7 +179,7 @@ export async function closeBuildRow(
  * assumed — the bell describes the outcome the ledger carries, whoever wrote it.
  *
  * **This is the repair the migration to a supervised run bought, and it is worth
- * stating with the measurement.** `./equin build` restarts the very
+ * stating with the measurement.** `./muxos build` restarts the very
  * backend that spawned it, so the process that used to hold `await proc.exited`
  * was routinely killed before the build finished, and everything after that
  * await went with it. On `main`: 33 `Auto-build started` bells against **2**
@@ -260,7 +260,7 @@ async function fileFailureReport(
  * A build main's convergence run started has ended — the bell, from the
  * backend, for a build no backend owns.
  *
- * The convergence run is a gateway child (`./equin build --allow-main
+ * The convergence run is a gateway child (`./muxos build --allow-main
  * --converge`), so no supervised workflow of this backend waits on its builds
  * and no `onEnded` rings for them. This does, at two edges: the run's exit
  * marker landing (`onRunTerminal`, the watcher every backend of the namespace
@@ -400,7 +400,7 @@ function finishDedupeKey(buildId: string): string {
  * status instead is not the banned `exitCode > 128` inference — but only
  * because of a precondition that has to hold and is written down where the rule
  * lives (`BUILD_EXIT_SIGNAL_BASE`): **these codes are first-party.**
- * `./equin build` installs `installFatalSignalExit` and CHOOSES
+ * `./muxos build` installs `installFatalSignalExit` and CHOOSES
  * `128 + signo` for itself, having caught the signal, so the number is a record
  * the build wrote rather than a wait status somebody decoded. If
  * `build_runs.exit_code` ever carries a status this repo did not author, that
@@ -425,14 +425,14 @@ async function notifyBuildFinished(
   // TODO(§6, research/2026-10-25-global-notifications-in-user-terms.md): the
   // subject is the conversation(s) whose pushes this build contains (their
   // commit trailers over prev..commitHash). Until that attribution lands,
-  // "equin was updated" and "Build failed" carry no subject.
+  // "muxos was updated" and "Build failed" carry no subject.
   if (status === "success") {
     await recordNotification(
       {
         type: "build",
         category: "updates",
         icon: updatedIcon,
-        title: "equin was updated",
+        title: "muxos was updated",
         description: "",
         detail: `${buildId} · ${row.commitHash?.slice(0, 9) ?? "no commit"} · ${seconds}s`,
         variant: "success",
@@ -475,9 +475,9 @@ async function notifyBuildFinished(
       {
         type: "build",
         category: "updates",
-        title: "equin couldn't update",
+        title: "muxos couldn't update",
         description:
-          "Your computer ran out of memory while checking the update. equin keeps running the version you have; closing other apps frees memory for the next attempt.",
+          "Your computer ran out of memory while checking the update. muxos keeps running the version you have; closing other apps frees memory for the next attempt.",
         detail: `${buildId} · ${row.commitHash?.slice(0, 9) ?? "no commit"} · out of memory after ${seconds}s`,
         variant: "warning",
         linkTo,

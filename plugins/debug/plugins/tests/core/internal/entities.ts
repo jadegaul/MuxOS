@@ -46,7 +46,7 @@ const originOptions = {
   idle: { label: "Idle run" },
 } as const;
 
-/** One harvested `./equin test` run (its record, minus the per-file rows). */
+/** One harvested `./muxos test` run (its record, minus the per-file rows). */
 export const testRunFields = {
   opId: textField(),
   slug: textField(),
@@ -123,7 +123,7 @@ export const testCaseFailuresEntityRef = entityRef(
   testCaseFailureFields,
 );
 
-/** Each test file of this checkout, with its digest NOW (`./equin test-digest`). */
+/** Each test file of this checkout, with its digest NOW (`./muxos test-digest`). */
 export const testCheckoutDigestFields = {
   path: textField(),
   digest: textField(),

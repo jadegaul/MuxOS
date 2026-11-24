@@ -10,7 +10,7 @@
 // Writes a throwaway plugin into THIS checkout's `plugins/` and removes it,
 // pass or fail.
 //
-//   ./equin run plugins/plugin-meta/plugins/plugin-tree/e2e/facets-tree-live.ts
+//   ./muxos run plugins/plugin-meta/plugins/plugin-tree/e2e/facets-tree-live.ts
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { PLUGINS_DIR } from "@plugins/infra/plugins/paths/core";

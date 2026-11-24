@@ -6,10 +6,10 @@
 // `render-profiler.jsonl` log channel by the engine on stop.
 //
 // Usage:
-//   ./equin run plugins/debug/plugins/render-profiler/e2e/render-profile.ts [--url <url>] [--seconds 8] [--top 12]
+//   ./muxos run plugins/debug/plugins/render-profiler/e2e/render-profile.ts [--url <url>] [--seconds 8] [--top 12]
 //
 // Example:
-//   ./equin run plugins/debug/plugins/render-profiler/e2e/render-profile.ts \
+//   ./muxos run plugins/debug/plugins/render-profiler/e2e/render-profile.ts \
 //     --url http://<worktree>.localhost:<port>/agents/c/<id> \
 //     --seconds 8
 
@@ -49,7 +49,7 @@ const ok = await withBrowser(async (h) => {
   if (!hasApi) {
     console.error(
       `window.${RENDER_PROFILER_GLOBAL} is undefined — the commit bridge or the\n` +
-        "render-profiler plugin is not loaded. Run ./equin build and retry.",
+        "render-profiler plugin is not loaded. Run ./muxos build and retry.",
     );
     return false;
   }

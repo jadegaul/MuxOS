@@ -38,7 +38,7 @@ function isForeignLanguage(rel: string): boolean {
  * `mcp:mcp-json-in-sync` pins to the default port by derivation), lockfiles,
  * SQL (a published migration is immutable). Sidequests: independent projects
  * with their own lifecycle (one drives the pre-move tree, which listens on
- * 9000 and has no `./equin url`). Research notes and generated files are the
+ * 9000 and has no `./muxos url`). Research notes and generated files are the
  * check's `outOfScope` categories.
  */
 function notADerivation(rel: string): boolean {
@@ -109,9 +109,9 @@ const noPortLiteralCheck: Check = {
       ok: false,
       message: `${offenders.length} spelled-out gateway port(s):\n    ${offenders.join("\n    ")}`,
       hint:
-        "The port is this account's (8700 by default, the first free one of the range; `./equin url` prints it). " +
+        "The port is this account's (8700 by default, the first free one of the range; `./muxos url` prints it). " +
         "Code reads it — `gatewayPortSync()` / `gatewayOriginSync()` (data-dirs: CLI, scripts), `resolveGatewayPort()` (machine, async), `servedGatewayPort()` (core: a process a gateway started), `pagePort(location)` (a page) — from `@plugins/infra/plugins/launcher/plugins/gateway-port`, and passes it to `namespaceUrl(ns, path, port)`. " +
-        "Prose writes `http://<worktree>.localhost:<port>`. Shell asks `./equin url`. " +
+        "Prose writes `http://<worktree>.localhost:<port>`. Shell asks `./muxos url`. " +
         `A file that must keep one declares a \`${RULE}\` exemption in its plugin's \`exempt/index.ts\`, with the reason.`,
     };
   },

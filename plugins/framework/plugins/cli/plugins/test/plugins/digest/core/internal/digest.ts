@@ -23,7 +23,7 @@ export const BUN_RUNNER_PRELOAD = "test/bun-preload.ts";
 /** vitest's: its config and its setup file (each by static closure). */
 export const VITEST_RUNNER_ENTRIES = ["vitest.config.ts", "test/setup.ts"];
 
-/** The two test runners (`./equin test` runs both). */
+/** The two test runners (`./muxos test` runs both). */
 export type TestRunnerName = "bun:test" | "vitest";
 
 /** Which runner runs a test file — the repo's one split (`test-layout`). */

@@ -223,13 +223,13 @@ describe("sweepReclaimedAgentDirs: clones a stopped agent kept", () => {
 
   test("an outdated clone in a kept directory goes; a current one stays", async () => {
     agentDir(OWN, "conv-a");
-    const current = clone(OWN, "conv-a", "equin · agent · conv-a");
-    const old = clone(OWN, "conv-a", "equin · conv-a · title old");
+    const current = clone(OWN, "conv-a", "muxos · agent · conv-a");
+    const old = clone(OWN, "conv-a", "muxos · conv-a · title old");
     agentDir("att-2", "conv-t");
     const oldInCheckout = clone(
       "att-2",
       "conv-t",
-      "equin · agent · conv-t old",
+      "muxos · agent · conv-t old",
     );
     const facts = factsOf(
       { "conv-a": "att-1" },
@@ -246,13 +246,13 @@ describe("sweepReclaimedAgentDirs: clones a stopped agent kept", () => {
 
   test("a stopped agent's per-conversation bun clone goes, its claude stays", async () => {
     agentDir(OWN, "conv-a");
-    const claude = clone(OWN, "conv-a", "equin · conv-a · Fix login");
-    const legacyBun = clone(OWN, "conv-a", "equin · agent · conv-a");
+    const claude = clone(OWN, "conv-a", "muxos · conv-a · Fix login");
+    const legacyBun = clone(OWN, "conv-a", "muxos · agent · conv-a");
     // As the job decides it: only a claude clone is current in `bin/`.
     const facts = factsOf(
       { "conv-a": "att-1" },
       { "att-1": true },
-      (path) => !path.includes("equin · agent"),
+      (path) => !path.includes("muxos · agent"),
     );
 
     const r = await sweepReclaimedAgentDirs(roots, facts, { dryRun: false });
@@ -264,7 +264,7 @@ describe("sweepReclaimedAgentDirs: clones a stopped agent kept", () => {
 
   test("a running agent's clones are left alone, outdated or not", async () => {
     agentDir(OWN, "conv-a");
-    const old = clone(OWN, "conv-a", "equin · agent · conv-a old");
+    const old = clone(OWN, "conv-a", "muxos · agent · conv-a old");
     pidFile(OWN, "conv-a", `${String(process.pid)}\naccount`);
     const facts = factsOf({ "conv-a": "att-1" }, { "att-1": true });
 
@@ -276,7 +276,7 @@ describe("sweepReclaimedAgentDirs: clones a stopped agent kept", () => {
 
   test("one made current by a start since it was looked at stays", async () => {
     agentDir(OWN, "conv-a");
-    const path = clone(OWN, "conv-a", "equin · agent · conv-a old");
+    const path = clone(OWN, "conv-a", "muxos · agent · conv-a old");
     let asked = 0;
     const facts = factsOf({ "conv-a": "att-1" }, { "att-1": true }, () => {
       asked++;
@@ -303,7 +303,7 @@ describe("sweepReclaimedAgentDirs: the shared agent bun of an outdated Bun", () 
   function sharedBun(version: string): AppPath {
     const dir = join(root, "process-names", `bun-${version}`);
     mkdirSync(dir, { recursive: true });
-    const path = joinAppPath(asAppPath(dir), "equin · agent");
+    const path = joinAppPath(asAppPath(dir), "muxos · agent");
     writeFileSync(path, "bun");
     return path;
   }

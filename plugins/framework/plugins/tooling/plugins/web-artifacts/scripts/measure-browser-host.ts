@@ -4,7 +4,7 @@
 // bundles (the host entry, dynamic imports inlined, PGlite's assets by URL),
 // in memory, and reads rolldown's per-module rendered lengths.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-browser-host.ts [--minify] [--json <file>]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-browser-host.ts [--minify] [--json <file>]
 
 import { REPO_ROOT } from "@plugins/infra/plugins/paths/plugins/repo-root/core";
 import { writeFileSync } from "node:fs";

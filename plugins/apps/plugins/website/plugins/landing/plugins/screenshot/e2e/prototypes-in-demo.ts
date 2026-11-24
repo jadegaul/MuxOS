@@ -32,7 +32,7 @@
  * every frame `src` is under `/artifacts/*\/frames/`, no page or console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/prototypes-in-demo.ts [--out /tmp/demo-prototypes] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/prototypes-in-demo.ts [--out /tmp/demo-prototypes] [--headed]
  */
 import type { Frame, Locator, Page } from "playwright";
 import {

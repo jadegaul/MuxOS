@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "equin": {
+    "muxos": {
       "type": "http",
-      "url": "${EQUIN_PARENT_URL:-http://equin.localhost:8700}/api/mcp/${EQUIN_CONVERSATION_ID:-unattached}"
+      "url": "${MUXOS_PARENT_URL:-http://muxos.localhost:8700}/api/mcp/${MUXOS_CONVERSATION_ID:-unattached}"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-central-core",
+  "name": "@muxos/plugin-framework-central-core",
   "private": true,
   "type": "module",
   "devDependencies": {

@@ -1,12 +1,12 @@
-# equin
+# muxos
 
-equin is a self-evolving app for the agentic era. The goal is to have an app which can replace all others, customized for each individual user, at the boundary of an application and an operating system. The vision has a few steps:
+muxos is a self-evolving app for the agentic era. The goal is to have an app which can replace all others, customized for each individual user, at the boundary of an application and an operating system. The vision has a few steps:
 
 - At first, the app itself is an Agent manager app whose goal is to fix todos faster than they are created. The app will be used to improve itself.
 
   The app is a nested todo list of tasks agents need to execute. Each agent executes in its own isolated `worktree` (including this current session) and deploys to `http://<worktree>.localhost:<port>` (`<port>` is this account's gateway port — see Ports). The UI allows seamless switching between namespaces to inspect agent work.
 
-- The app evolves into a Notion-like WeChat: a single unified surface where agents compose user-tailored apps on the fly from plugin building blocks. Notion gives users composable blocks (databases, pages, views) to fit their workflow; equin does the same at the *app* level, with agents doing the composing. The agent manager becomes one such composition among many, sharing the same plugins and primitives.
+- The app evolves into a Notion-like WeChat: a single unified surface where agents compose user-tailored apps on the fly from plugin building blocks. Notion gives users composable blocks (databases, pages, views) to fit their workflow; muxos does the same at the *app* level, with agents doing the composing. The agent manager becomes one such composition among many, sharing the same plugins and primitives.
 
 - A plugin marketplace where users contribute and share building blocks. Each user gets a unique composition assembled by agents from marketplace plugins — not a one-size-fits-all tool, but a personal OS shaped to their workflow.
 
@@ -15,32 +15,32 @@ equin is a self-evolving app for the agentic era. The goal is to have an app whi
 Agents work in isolated, auto-created git worktrees:
 
 1. Solve the request.
-2. Deploy with `./equin build` (frontend + server + gateway registration).
+2. Deploy with `./muxos build` (frontend + server + gateway registration).
 
-   **Use `run_in_background: true` and end your turn** — build/push take ~10 min (median), over the 600 s foreground cap. The background task re-invokes you on exit; nothing to wait for or watch. Every backgrounded `./equin` call is rewritten to the 2 h timeout ceiling (the 30 min default would kill it). Guards enforce all three.
+   **Use `run_in_background: true` and end your turn** — build/push take ~10 min (median), over the 600 s foreground cap. The background task re-invokes you on exit; nothing to wait for or watch. Every backgrounded `./muxos` call is rewritten to the 2 h timeout ceiling (the 30 min default would kill it). Guards enforce all three.
 
-   **A SUBAGENT must not end its turn there** — it is never re-invoked (its completion notification lands in the parent's queue). Background the op, then call `./equin await <op>` in the FOREGROUND: it blocks until the verdict and prints it (exit 0 ok, 1 failed, 70 still running — call again). A stop hook refuses a subagent turn that walks away from its running op.
+   **A SUBAGENT must not end its turn there** — it is never re-invoked (its completion notification lands in the parent's queue). Background the op, then call `./muxos await <op>` in the FOREGROUND: it blocks until the verdict and prints it (exit 0 ok, 1 failed, 70 still running — call again). A stop hook refuses a subagent turn that walks away from its running op.
 
-   **`./equin check` / `./equin test` run in the FOREGROUND** (usually seconds to a few minutes). Near the cap they hand themselves off: the op keeps running detached and the call exits 70 with `./equin await <op>` as the next step — call it, never end your turn waiting (`plugins/framework/plugins/cli/plugins/foreground-handoff`).
+   **`./muxos check` / `./muxos test` run in the FOREGROUND** (usually seconds to a few minutes). Near the cap they hand themselves off: the op keeps running detached and the call exits 70 with `./muxos await <op>` as the next step — call it, never end your turn waiting (`plugins/framework/plugins/cli/plugins/foreground-handoff`).
 
-3. The app is served at `http://<worktree>.localhost:<port>` (always write `http://` so it's clickable; `./equin url` prints main's address with the real port).
+3. The app is served at `http://<worktree>.localhost:<port>` (always write `http://` so it's clickable; `./muxos url` prints main's address with the real port).
 
-4. Once reviewed, `./equin push -m "…"` merges to main (pulls main, merges, pushes).
+4. Once reviewed, `./muxos push -m "…"` merges to main (pulls main, merges, pushes).
 
 RULES:
 
-- NEVER `./equin push` unless instructed — the user reviews first. (A Dependencies-category upgrade task — or legacy Toolchain-category — counts as instruction; its text says when it may push. See `plugins/infra/plugins/deps/plugins/updates`.)
-- NEVER `git commit` yourself (branch conflicts). Always `./equin push -m "commit message"`.
-- **Always rebase, never merge** (`git rebase origin/main`). Never `git merge origin/main`; never `git reset` a branch onto `main` (deletes the commits in between). Exception: `./equin upstream merge` (see Upstream).
-- NEVER run `drizzle-kit generate` or the migration runner manually — `./equin build` does it.
+- NEVER `./muxos push` unless instructed — the user reviews first. (A Dependencies-category upgrade task — or legacy Toolchain-category — counts as instruction; its text says when it may push. See `plugins/infra/plugins/deps/plugins/updates`.)
+- NEVER `git commit` yourself (branch conflicts). Always `./muxos push -m "commit message"`.
+- **Always rebase, never merge** (`git rebase origin/main`). Never `git merge origin/main`; never `git reset` a branch onto `main` (deletes the commits in between). Exception: `./muxos upstream merge` (see Upstream).
+- NEVER run `drizzle-kit generate` or the migration runner manually — `./muxos build` does it.
 - **Review diffs against the merge-base**: `git diff $(git merge-base HEAD main)`, not `git diff main` (which includes later main commits).
 
 ### MCP Tools
 
-Agents have access to MCP tools provided by the equin server. Key tools:
+Agents have access to MCP tools provided by the muxos server. Key tools:
 
-- `query_db` — Read-only SQL query against the worktree's PostgreSQL database. For **debugging and inspection only** — mutations are rejected at the DB level. Defaults to the agent's own worktree DB; pass `database` to query another worktree or `"equin"` for main.
-- `add_task` — **When the user asks to "add a task", always use this MCP tool.** Never use the TaskCreate tool (that is for the agent's own internal task tracking during implementation, not for adding tasks to the equin task system).
+- `query_db` — Read-only SQL query against the worktree's PostgreSQL database. For **debugging and inspection only** — mutations are rejected at the DB level. Defaults to the agent's own worktree DB; pass `database` to query another worktree or `"muxos"` for main.
+- `add_task` — **When the user asks to "add a task", always use this MCP tool.** Never use the TaskCreate tool (that is for the agent's own internal task tracking during implementation, not for adding tasks to the muxos task system).
 - `read_page` / `edit_page` / `write_agent_note` — pages, shaped like `Read` / `Edit` / `Write`. **These write to the SHARED instance (normally main), not your worktree** — the opposite default from `query_db`, because pages are prod documents you edit collaboratively with the user, not something to test on. **You may only write INSIDE an agent-authored block: an `<agent-inline>` card, or an `<agent-page>`.** `edit_page` takes any block id, but every block its diff creates, rewrites, moves or deletes must sit in one (a tagless `<agent-inline>` in your replacement text mints a card; a tagless `<agent-page title="…">…</agent-page>` mints a sub-page whose whole content is yours, written afterwards by its own id); a page's own prose is read-only — you annotate it, you do not edit it. Pages can carry instructions from their author: `read_page` hands you the ones covering what you read, a write is refused until you have received them, and global ones arrive when the conversation starts.
 
 ## Architecture
@@ -54,7 +54,7 @@ Always READ the plugin architecture doc to understand design, caveats, and rules
 
 Think carefully about the plugin's boundaries, APIs, etc. when designing plugins, as it is the load-bearing infra of the entire project.
 
-**Deployment model — one instance per user.** equin runs as exactly one instance per user: the marketplace shares *plugins*, not runtime, and multi-tenancy is a non-goal. This is a recorded architectural decision — read it before touching auth, the gateway, DB forks, secrets, or the live-state subscription path: [`research/2026-07-02-global-adr-single-instance-per-user.md`](research/2026-07-02-global-adr-single-instance-per-user.md).
+**Deployment model — one instance per user.** muxos runs as exactly one instance per user: the marketplace shares *plugins*, not runtime, and multi-tenancy is a non-goal. This is a recorded architectural decision — read it before touching auth, the gateway, DB forks, secrets, or the live-state subscription path: [`research/2026-07-02-global-adr-single-instance-per-user.md`](research/2026-07-02-global-adr-single-instance-per-user.md).
 
 ### Collection-consumer separation
 
@@ -64,17 +64,17 @@ This pattern applies to *genuinely open* sets — ones where future plugins must
 
 ### Plugin boundary rules
 
-Enforced by `./equin check boundary-rules` (which folder may import which — the `folders` table in `plugins/framework/plugins/tooling/plugins/boundaries/core/boundary-config.ts`) and `./equin check plugin-boundaries` (import grammar, barrels, cycles; rules R1–R13). Details: [`boundaries/CLAUDE.md`](plugins/framework/plugins/tooling/plugins/boundaries/CLAUDE.md), [`plugin-boundaries/CLAUDE.md`](plugins/framework/plugins/tooling/plugins/checks/plugins/plugin-boundaries/CLAUDE.md).
+Enforced by `./muxos check boundary-rules` (which folder may import which — the `folders` table in `plugins/framework/plugins/tooling/plugins/boundaries/core/boundary-config.ts`) and `./muxos check plugin-boundaries` (import grammar, barrels, cycles; rules R1–R13). Details: [`boundaries/CLAUDE.md`](plugins/framework/plugins/tooling/plugins/boundaries/CLAUDE.md), [`plugin-boundaries/CLAUDE.md`](plugins/framework/plugins/tooling/plugins/checks/plugins/plugin-boundaries/CLAUDE.md).
 
 - **Known folders only** (vocabulary in `plugins/framework/plugins/plugin-id/core`): barrel folders `web`, `server`, `machine`, `central`, `core`, `shared`, `e2e`, `provision`, `data-dirs`, `cli`, `deps`; leaf folders `check`, `lint`, `facet`, `bin`, `scripts`, `exhibits`, `vite`, `prewarm`, `python`, `rust`, `exempt`, `guard`, `login-services`; plus `plugins/` for children. No loose root `.ts`, no unclaimed file under `plugins/`. A new folder kind = a vocabulary entry + its table row (tsc enforces the row).
 - **One import table, inside and across plugins.** Each folder's row lists the barrel folders it may import (`core` → `core`; `web` → `web`, `core`, `shared`; `e2e` → `e2e`, `core`, `data-dirs`). Relative imports in your own plugin obey it too (`core/` → `../server/x` fails). Leaf folders are never import targets. `core/` is the public channel, `shared/` the plugin-private one.
 - **One barrel per runtime.** `plugins/<name>/<runtime>/index.ts` is the only cross-plugin entry point — no `api.ts`, no deep paths.
-- **Import grammar.** A specifier ends at a barrel folder (`@plugins/<name>/<runtime>`, `@plugins/<name>/plugins/…/<runtime>`) or at `<runtime>/testing`. Forbidden: cross-plugin `shared/` (R10; your own is imported relatively), paths inside a barrel (`/web/components/`, `/server/internal/`), workspace names (`@equin/plugin-shell`), `../` escapes into another plugin.
+- **Import grammar.** A specifier ends at a barrel folder (`@plugins/<name>/<runtime>`, `@plugins/<name>/plugins/…/<runtime>`) or at `<runtime>/testing`. Forbidden: cross-plugin `shared/` (R10; your own is imported relatively), paths inside a barrel (`/web/components/`, `/server/internal/`), workspace names (`@muxos/plugin-shell`), `../` escapes into another plugin.
 - **Test code** = `*.test.ts(x)`, `__tests__/`, or `<runtime>/testing/` (never under `e2e/`). It follows its folder's row; only test code and `check/` may import it (`e2e/` ships, so it may not). A public barrel publishes no test support: no `*ForTest(s)` names, nothing from a test-support module (R12), no name only tests import (R13). Own tests import by relative path; reusable helpers go in `<runtime>/testing/`.
 - **No cross-plugin re-exports** — import the source barrel directly (`@plugins/tasks/plugins/task-draft-form/web`, not a proxy via `@plugins/tasks/web`). Enforced transitively and by name (through an internal file, or import-then-export); no umbrella→descendant exception.
 - **Barrel purity.** `index.ts` holds only imports, re-exports of own files, type aliases, and one `export default { … } satisfies PluginDefinition`. No `const`/`let`, logic, or side effects.
-- **Registry exclusivity.** Default-export plugin imports live only in the generated registries (`{web,server,central}.generated.ts` under `plugins/framework/plugins/{web-sdk,server-core,central-core}/core/`) and the `bin`/`App.tsx` roots (the `exclude` list in `boundary-config.ts`). Never register by hand: create `<runtime>/index.ts` and `./equin build` (`plugins-registry-in-sync` catches drift).
-- **Exemptions are declared by the exempted plugin**, in its `plugins/<p>/exempt/index.ts` (`rule`, plugin-relative `paths`, `kind: "sanctioned" | "debt"` + `reason`, `task` for debt). Never hand-roll an allowlist (`ALLOWED_FILES`, `ignores`, `.startsWith("plugins/…")`) in a rule — `exempt/no-path-allowlist` rejects it; exempt a whole kind of file with `outOfScope`. List: `./equin exempt list [--rule <id>] [--plugin <path>] [--debt]`. Details: [`exempt/CLAUDE.md`](plugins/framework/plugins/tooling/plugins/exempt/CLAUDE.md).
+- **Registry exclusivity.** Default-export plugin imports live only in the generated registries (`{web,server,central}.generated.ts` under `plugins/framework/plugins/{web-sdk,server-core,central-core}/core/`) and the `bin`/`App.tsx` roots (the `exclude` list in `boundary-config.ts`). Never register by hand: create `<runtime>/index.ts` and `./muxos build` (`plugins-registry-in-sync` catches drift).
+- **Exemptions are declared by the exempted plugin**, in its `plugins/<p>/exempt/index.ts` (`rule`, plugin-relative `paths`, `kind: "sanctioned" | "debt"` + `reason`, `task` for debt). Never hand-roll an allowlist (`ALLOWED_FILES`, `ignores`, `.startsWith("plugins/…")`) in a rule — `exempt/no-path-allowlist` rejects it; exempt a whole kind of file with `outOfScope`. List: `./muxos exempt list [--rule <id>] [--plugin <path>] [--debt]`. Details: [`exempt/CLAUDE.md`](plugins/framework/plugins/tooling/plugins/exempt/CLAUDE.md).
 - **No cycles.** The cross-plugin import graph is a DAG; type-only imports count.
 - **Search before writing a helper or fixture.** The plugin's own `CLAUDE.md` has an autogen reference (exports, uses, importers, contributions, test helpers); `docs/plugins-details.md` has it for every plugin, incl. reverse indexes (who imports me, contributes to my slots, calls my endpoints). A list over 20 values is summarized as per-group counts; the plugin's `REFERENCE.md` lists it in full. Kept in sync by `plugins-doc-in-sync`.
 
@@ -91,7 +91,7 @@ Enforced by `./equin check boundary-rules` (which folder may import which — th
 │       ├── shared/   # Private DRY — shared between web/server within this plugin only, never imported cross-plugin
 │       ├── cli/, e2e/, provision/, data-dirs/, deps/   # other barrel folders (CLI verbs, Playwright scripts, install steps, data-dir declarations, on-demand dependency declarations)
 │       ├── lint/     # ESLint rules contributed by this plugin (optional)
-│       ├── check/    # Custom Check[] enforced by ./equin check (optional)
+│       ├── check/    # Custom Check[] enforced by ./muxos check (optional)
 │       ├── exhibits/ # Real components shown standalone — the `plugin-meta/exhibits` catalog (optional)
 │       ├── bin/, scripts/, facet/, vite/, prewarm/   # other leaf folders — discovered or run by path, never imported
 │       └── plugins/  # child plugins
@@ -112,32 +112,32 @@ The project uses bun workspaces (defined in root `package.json`). Run `bun insta
 
 ## CLI
 
-The CLI is `./equin <verb>`. Its old name is still a shim at the repo root (`LEGACY_IDS.cliShim`) so old muscle memory works — always write `./equin`.
+The CLI is `./muxos <verb>`. Its old name is still a shim at the repo root (`LEGACY_IDS.cliShim`) so old muscle memory works — always write `./muxos`.
 
 ### Deploy
 
-Always deploy after changes: `./equin build`, from the worktree directory (not the main repo root). It regenerates DB migrations from `schema.ts` (applied on server restart), builds frontend and server, restarts the server and registers the worktree with the gateway (`http://<worktree>.localhost:<port>`).
+Always deploy after changes: `./muxos build`, from the worktree directory (not the main repo root). It regenerates DB migrations from `schema.ts` (applied on server restart), builds frontend and server, restarts the server and registers the worktree with the gateway (`http://<worktree>.localhost:<port>`).
 
-> **NEVER run `./equin start` / `stop`** (install / stop the gateway as the machine's launchd service) unless the user explicitly asks. A pushed gateway change needs neither: main's deploy rebuilds and restarts the gateway itself once the change lands (rolling back if the new one does not come up), and the health report's Gateway row says when it is still out of date (`gateway/CLAUDE.md` § "The gateway follows main").
+> **NEVER run `./muxos start` / `stop`** (install / stop the gateway as the machine's launchd service) unless the user explicitly asks. A pushed gateway change needs neither: main's deploy rebuilds and restarts the gateway itself once the change lands (rolling back if the new one does not come up), and the health report's Gateway row says when it is still out of date (`gateway/CLAUDE.md` § "The gateway follows main").
 
 ### Check
 
 ```bash
-./equin check                       # every check this checkout owns (tree + deploy scope)
-./equin check --list                # list checks
-./equin check migrations-in-sync    # one check (id as positional arg)
+./muxos check                       # every check this checkout owns (tree + deploy scope)
+./muxos check --list                # list checks
+./muxos check migrations-in-sync    # one check (id as positional arg)
 ```
 
-Checks run first in `push`, and in `build` after migration/doc generation (unless `--skip-checks`). Host-scoped checks (shared machine state, e.g. the `~/.equin` data root) are not in any checkout's pass: main's hourly `checks.host-audit` runs them and files a `host-check` report; `./equin check --scope host` runs them on demand. Built-ins live in, and are registered in, `plugins/framework/plugins/tooling/plugins/checks/core/index.ts`. Plugins contribute their own (discovered at runtime, no registry edits):
+Checks run first in `push`, and in `build` after migration/doc generation (unless `--skip-checks`). Host-scoped checks (shared machine state, e.g. the `~/.muxos` data root) are not in any checkout's pass: main's hourly `checks.host-audit` runs them and files a `host-check` report; `./muxos check --scope host` runs them on demand. Built-ins live in, and are registered in, `plugins/framework/plugins/tooling/plugins/checks/core/index.ts`. Plugins contribute their own (discovered at runtime, no registry edits):
 
 - `plugins/<name>/lint/index.ts` — default-export `{ name: "<plugin-id>", rules: { ... } }` of ESLint v9 rules. Each rule is enabled as `error` **repo-wide** (`**/*.{ts,tsx}`), not just in the contributing subtree; the `eslint` check runs them.
 - `plugins/<name>/check/index.ts` — default-export `Check | Check[]` (same interface as built-ins), id `<plugin-name>:<check-id>`.
 
-Notable built-ins: `migrations-in-sync` (schema changes without a committed migration — fix with `./equin build`), `type-check` (one repo TS program → tsc diagnostics + type-aware ESLint, plugin lint rules included).
+Notable built-ins: `migrations-in-sync` (schema changes without a committed migration — fix with `./muxos build`), `type-check` (one repo TS program → tsc diagnostics + type-aware ESLint, plugin lint rules included).
 
 ### Push
 
-`./equin push -m "message"`:
+`./muxos push -m "message"`:
 
 1. Run checks
 2. Fail if dirty
@@ -149,30 +149,30 @@ Notable built-ins: `migrations-in-sync` (schema changes without a committed migr
 
 A push that fixes a report names it: `--fixes-report <report-id>` (repeatable; one of main's reports). Main records the fix when it lands, marks it Fixed once it runs it, and Regressed if it fires again from code that has it (`plugins/reports/plugins/engine` § the fix ledger).
 
-> **CRITICAL — NEVER push or commit on your own initiative.** No raw `git commit` / `git push`. "push", "publish", "ship" all mean `./equin push`.
+> **CRITICAL — NEVER push or commit on your own initiative.** No raw `git commit` / `git push`. "push", "publish", "ship" all mean `./muxos push`.
 
 Steps 3, 4, 6 (the only network git) run only when this checkout can write to its remote (probed once, cached in `.git/config`; `plugins/infra/plugins/git/plugins/remotes`). Without write access the work lands on local `main`, which main's auto-build watches.
 
 ### Upstream
 
-For a checkout cloned from someone else's repo, that repo is **upstream** (read-only). A daily main-only job records a report when it has new commits (no task; the report's Investigate button mints one). An update is an ordinary task: `./equin upstream merge` in a worktree, resolve, build, review; the user lands it with `push`. See `plugins/upstream`. This checkout owns the canonical repo, so it has no upstream.
+For a checkout cloned from someone else's repo, that repo is **upstream** (read-only). A daily main-only job records a report when it has new commits (no task; the report's Investigate button mints one). An update is an ordinary task: `./muxos upstream merge` in a worktree, resolve, build, review; the user lands it with `push`. See `plugins/upstream`. This checkout owns the canonical repo, so it has no upstream.
 
 ### `--from-main` (dangerous)
 
-`./equin push --from-main -m "…"` commits and pushes straight from main. **Never pass it without explicit user approval in the current conversation, for this push** — not from memory, a prior session, or a CLAUDE.md rule. On main with no worktree branch for the changes: stop and ask.
+`./muxos push --from-main -m "…"` commits and pushes straight from main. **Never pass it without explicit user approval in the current conversation, for this push** — not from memory, a prior session, or a CLAUDE.md rule. On main with no worktree branch for the changes: stop and ask.
 
 ## Ports
 
-- The gateway listens on **this account's port** for all browser traffic, routed by subdomain (`<name>.localhost:<port>`). The port is 8700 by default — the first free one of 8700–8709, chosen once by `./equin start` and printed by `./equin url`; installs from before 2026-11 also answer on 9000 for a while (navigations there are redirected to the new port). Code never spells a port: a page reads its own (`pagePort` / `usePagePort`), a backend the gateway that started it (`servedGatewayPort`), the CLI and scripts the port file (`gatewayPort`) — `plugins/infra/plugins/launcher/plugins/gateway-port`. The main namespace (agent manager app, served from `main`) is always at `equin.localhost:<port>` — its public host label (`NAMESPACE_HOST_LABELS` in `plugins/infra/plugins/namespace`); the namespace itself keeps its internal name (`MAIN_WORKTREE_NAME`), and its old address keeps answering as an alias.
-- Backends do **not** listen on TCP. The gateway hands each backend a per-worktree Unix domain socket at `~/.equin/sockets/<name>.sock` and dials it directly. There is no backend port range to allocate.
+- The gateway listens on **this account's port** for all browser traffic, routed by subdomain (`<name>.localhost:<port>`). The port is 8700 by default — the first free one of 8700–8709, chosen once by `./muxos start` and printed by `./muxos url`; installs from before 2026-11 also answer on 9000 for a while (navigations there are redirected to the new port). Code never spells a port: a page reads its own (`pagePort` / `usePagePort`), a backend the gateway that started it (`servedGatewayPort`), the CLI and scripts the port file (`gatewayPort`) — `plugins/infra/plugins/launcher/plugins/gateway-port`. The main namespace (agent manager app, served from `main`) is always at `muxos.localhost:<port>` — its public host label (`NAMESPACE_HOST_LABELS` in `plugins/infra/plugins/namespace`); the namespace itself keeps its internal name (`MAIN_WORKTREE_NAME`), and its old address keeps answering as an alias.
+- Backends do **not** listen on TCP. The gateway hands each backend a per-worktree Unix domain socket at `~/.muxos/sockets/<name>.sock` and dials it directly. There is no backend port range to allocate.
 
 ## Driving the app (screenshots & E2E)
 
-`./equin build` first: every script resolves its target from the deploy registry THIS checkout's build wrote, and refuses when there is none. Never hand-write `http://<worktree>.localhost:<port>` — in an agent session the name comes out as the main namespace and the run drives main. Chromium is an on-demand dependency (`infra/deps`), installed on the first browser run (~280 MB).
+`./muxos build` first: every script resolves its target from the deploy registry THIS checkout's build wrote, and refuses when there is none. Never hand-write `http://<worktree>.localhost:<port>` — in an agent session the name comes out as the main namespace and the run drives main. Chromium is an on-demand dependency (`infra/deps`), installed on the first browser run (~280 MB).
 
 **Main is read-only for agent sessions**: on main, a write from the agent browser or an e2e run is refused with a 403 (telemetry excepted) — to exercise a write, drive your own build.
 
-**Show the user a visible UI change with `register_before_after`** (MCP, [`conversations/before-after`](plugins/conversations/plugins/before-after/CLAUDE.md)) — after `./equin build`, one call per changed screen or state: `{ route, title }` captures the route on main and on your build, or pass `{ beforePath, afterPath, title }` for two PNGs you made (`screenshot.ts --click …`). Cite the returned `ba-…` id in your final message.
+**Show the user a visible UI change with `register_before_after`** (MCP, [`conversations/before-after`](plugins/conversations/plugins/before-after/CLAUDE.md)) — after `./muxos build`, one call per changed screen or state: `{ route, title }` captures the route on main and on your build, or pass `{ beforePath, afterPath, title }` for two PNGs you made (`screenshot.ts --click …`). Cite the returned `ba-…` id in your final message.
 
 **Explore interactively with the `browser_*` MCP tools** ([`infra/mcp/browser`](plugins/infra/plugins/mcp/plugins/browser/CLAUDE.md)) — a headless tab that stays open across calls: routes (`/agents/…`) open your own build (so they need one), an absolute URL (any website, or main) works before you have built; script what must be repeatable with the headless scripts below. Not Claude-in-Chrome: that is one shared Chrome on the user's screen with their real accounts — only for what needs it (their sign-ins, a state they have open, a demo they watch).
 
@@ -181,20 +181,20 @@ For a checkout cloned from someone else's repo, that repo is **upstream** (read-
 **Snapshot / verify behavior** (click, confirm state) with [`screenshot.ts`](plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts) — prints the resolved deploy and the matched button's state, writes `-before.png` / `-after.png`:
 
 ```bash
-./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts --out "$EQUIN_SCRATCH/shot"
-./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts \
-  --path /agents/c/<id> --click "Artifacts" --out "$EQUIN_SCRATCH/artifacts"
+./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts --out "$MUXOS_SCRATCH/shot"
+./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts \
+  --path /agents/c/<id> --click "Artifacts" --out "$MUXOS_SCRATCH/artifacts"
 ```
 
-**One component on its own** (an exhibit — `plugins/plugin-meta/plugins/exhibits`): `./equin run plugins/plugin-meta/plugins/exhibits/e2e/exhibit-shot.ts --id <group/name> [--width <px>] [--theme <app-id>|chrome]`. With `browser_*`: `/debug/exhibit-stage/<group>/<name>;width=<px>?embed=1` is the component alone (viewport = width); `/debug/exhibit/<group>/<name>` shows every width.
+**One component on its own** (an exhibit — `plugins/plugin-meta/plugins/exhibits`): `./muxos run plugins/plugin-meta/plugins/exhibits/e2e/exhibit-shot.ts --id <group/name> [--width <px>] [--theme <app-id>|chrome]`. With `browser_*`: `/debug/exhibit-stage/<group>/<name>;width=<px>?embed=1` is the component alone (viewport = width); `/debug/exhibit/<group>/<name>` shows every width.
 
 Flags: `--path <route>`, `--viewport 1280x900`, `--wait <ms>`, `--color-scheme dark|light`, `--composition <id>` (a composition this checkout built), `--url http://<namespace>.localhost:<port>` (escape hatch for a deploy you didn't build — skips the is-this-my-build check).
 
 **Compare a prototype against the real app** it mocks (`<meta name="mocks">`: a route, the whole app, or `exhibit:<id>`) with [`compare-diff.ts`](plugins/apps/plugins/prototypes/plugins/compare/e2e/compare-diff.ts): captures both frames at one size and 100% zoom, writes a red-on-grey diff and side-by-side sheet, logs the differing-pixel ratio, a per-cell heatmap and a colour report (dominant colours, region means, luminance profiles):
 
 ```bash
-./equin run plugins/apps/plugins/prototypes/plugins/compare/e2e/compare-diff.ts \
-  --name <proto-id> [--width 1280] [--options <name>=<value>,…] [--out "$EQUIN_SCRATCH/compare"] [--fail-above 5]
+./muxos run plugins/apps/plugins/prototypes/plugins/compare/e2e/compare-diff.ts \
+  --name <proto-id> [--width 1280] [--options <name>=<value>,…] [--out "$MUXOS_SCRATCH/compare"] [--fail-above 5]
 ```
 
 `--width` must be a canvas size preset (omit for the mock's declared viewport); variants are captured at their defaults unless `--options` picks one.
@@ -202,22 +202,22 @@ Flags: `--path <route>`, `--viewport 1280x900`, `--wait <ms>`, `--color-scheme d
 **Tab memory leaks** with [`leak-test.ts`](plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/leak-test.ts): repeats a flow, forces GC, diffs three heap snapshots. Reports what grew per constructor, detached DOM, listeners and retainer paths, with PASS/FAIL against per-iteration thresholds and the `.heapsnapshot` files. `--from <out>` re-analyses a run. A domain flow calls `runLeakTest(page, { step })` (harness CLAUDE.md):
 
 ```bash
-./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/leak-test.ts \
-  --path /agents --clicks "<A>|<B>" [--iterations 10] [--attach <ticket>] --no-record --out "$EQUIN_SCRATCH/leak"
+./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/leak-test.ts \
+  --path /agents --clicks "<A>|<B>" [--iterations 10] [--attach <ticket>] --no-record --out "$MUXOS_SCRATCH/leak"
 ```
 
-**Repeatable flows**: a standalone script at `plugins/<path>/e2e/<name>.ts` in the plugin it verifies — never `*.test.ts` (the test runner would pick it up). Manual only. Running an `e2e/` script is an op (host grant, "E2E in progress" banner); any other `./equin run` script is recorded as a `script` op (op log, Ops views) but takes no grant and no banner. `--headed` to watch.
+**Repeatable flows**: a standalone script at `plugins/<path>/e2e/<name>.ts` in the plugin it verifies — never `*.test.ts` (the test runner would pick it up). Manual only. Running an `e2e/` script is an op (host grant, "E2E in progress" banner); any other `./muxos run` script is recorded as a `script` op (op log, Ops views) but takes no grant and no banner. `--headed` to watch.
 
 - Shared helpers (argv, target, `withBrowser`, `report()`): `@plugins/framework/plugins/tooling/plugins/e2e-harness/e2e` — extend it, don't hand-roll. Domain flows go in the owning plugin's `e2e/index.ts`.
 - `e2e` imports only other plugins' `core` and `e2e` barrels — it drives the deployed app, not the code under test.
 
 ## Debugging
 
-Browser/server logs persist to `~/.equin/worktrees/<wt>/logs/<channel>.jsonl` (one JSON `{t,stream,line}` per line). Emit from the browser via `clientLog(channel, line)`. Read them by `tail`/`cat` on the file. See [`plugins/debug/plugins/logs/CLAUDE.md`](plugins/debug/plugins/logs/CLAUDE.md).
+Browser/server logs persist to `~/.muxos/worktrees/<wt>/logs/<channel>.jsonl` (one JSON `{t,stream,line}` per line). Emit from the browser via `clientLog(channel, line)`. Read them by `tail`/`cat` on the file. See [`plugins/debug/plugins/logs/CLAUDE.md`](plugins/debug/plugins/logs/CLAUDE.md).
 
 ## Sidequests
 
-Independent projects that live in `sidequests/`, not directly related to equin. Each has its own `CLAUDE.md`.
+Independent projects that live in `sidequests/`, not directly related to muxos. Each has its own `CLAUDE.md`.
 
 - [`sidequests/ui-mastery/`](sidequests/ui-mastery/CLAUDE.md) — Research and tooling to make agents produce professional UI. **Read before any UI polish work.** Feature agents build functionality; polish agents apply UI Mastery knowledge separately.
 - [`sidequests/monitors/`](sidequests/monitors/CLAUDE.md) — Host-level launchd monitors that watch the machine from outside the app, for failures the app's own observability cannot survive (FD leaks before a crash; worktree checkouts deleted under a live conversation). None are auto-installed.
@@ -230,12 +230,12 @@ Independent projects that live in `sidequests/`, not directly related to equin. 
 - New features are plugins in `plugins/` — see [`plugins/framework/plugins/web-sdk/CLAUDE.md`](plugins/framework/plugins/web-sdk/CLAUDE.md).
 - Read the matching SKILL first: `create-app` (new top-level app), `debug` (before debugging — logs, profiling, crashes, DB, queues), `theme` (tokens, tweakcn, per-app config, typography/radius/z-index), `css` (layout mental model — containers share space, leaves truncate — and the layout-primitive index).
 - **When the user asks for a new app, always start with a new prototype** (see [`prototypes/CLAUDE.md`](prototypes/CLAUDE.md)) — implement the app only once the prototype is reviewed.
-- Before writing or editing a prototype, or implementing one in the app (the default is pixel-perfect), read [`prototypes/CLAUDE.md`](prototypes/CLAUDE.md). Prototypes live outside the repo in `~/.equin/apps/prototypes/<name>/`, shared by every worktree and live at `http://equin.localhost:<port>` with no build or commit. Design from the blank `_template/`. Do not open other prototypes for inspiration.
+- Before writing or editing a prototype, or implementing one in the app (the default is pixel-perfect), read [`prototypes/CLAUDE.md`](prototypes/CLAUDE.md). Prototypes live outside the repo in `~/.muxos/apps/prototypes/<name>/`, shared by every worktree and live at `http://muxos.localhost:<port>` with no build or commit. Design from the blank `_template/`. Do not open other prototypes for inspiration.
 - Always edit files in your worktree, not the main branch.
 - **No unbounded `find`** — it has crashed macOS (65k DIR FDs via the bfs shim). Use `rg --files -g '<glob>'` or `fd '<regex>'`; `find` only with `-maxdepth` / `-prune`.
 - **`rg` is already recursive — never pass `-r`** (it means `--replace`, and the `rg-replace` guard blocks it).
-- **Scratch files go in `$EQUIN_SCRATCH`** (your session's own dir), or a `mktemp` name — never a fixed `/tmp/<name>`, which every session shares (a push once landed another task's commit message from `/tmp/msg.txt`). The `shared-tmp` guard refuses such writes. A commit message needs no file: `-m "$(cat <<'EOF' … EOF)"`.
-- **Run scripts with `./equin run <file>.ts`, never bare `bun <file>.ts`** — bare `bun` resolves dependencies by walking UP, so a worktree without `node_modules` runs against main's (or a mid-install npm state). `./equin run` installs this worktree's lock first. The `bun-script` guard blocks the bare form (machine-launched scripts importing no npm package stay bare). A one-off script in `$EQUIN_SCRATCH` runs the same way (`./equin run "$EQUIN_SCRATCH/x.ts"`), against this checkout's dependencies and `@plugins/…` aliases.
+- **Scratch files go in `$MUXOS_SCRATCH`** (your session's own dir), or a `mktemp` name — never a fixed `/tmp/<name>`, which every session shares (a push once landed another task's commit message from `/tmp/msg.txt`). The `shared-tmp` guard refuses such writes. A commit message needs no file: `-m "$(cat <<'EOF' … EOF)"`.
+- **Run scripts with `./muxos run <file>.ts`, never bare `bun <file>.ts`** — bare `bun` resolves dependencies by walking UP, so a worktree without `node_modules` runs against main's (or a mid-install npm state). `./muxos run` installs this worktree's lock first. The `bun-script` guard blocks the bare form (machine-launched scripts importing no npm package stay bare). A one-off script in `$MUXOS_SCRATCH` runs the same way (`./muxos run "$MUXOS_SCRATCH/x.ts"`), against this checkout's dependencies and `@plugins/…` aliases.
 - **STOP on unexpected failures; never improvise around them.** Surface it and ask — don't route around (e.g. curl after a failed MCP call). A loud failure is debuggable; a workaround on a broken assumption is not.
 - **Subagents: Opus for the work, Sonnet only for lookups.** Debugging, planning, design, implementation and synthesis run on Opus (`model: "opus"`). Pass `model: "sonnet"` only for lookup and exploration (locate code, read and report) and large mechanical refactors (the same edit applied across many files). Review: your judgment — weigh what a missed bug would cost.
 - **On breakage, rebase to HEAD first** (`git fetch origin main && git rebase origin/main`) — it may already be fixed.
@@ -268,11 +268,11 @@ Details: [`plugins/active-data/plugins/go/CLAUDE.md`](plugins/active-data/plugin
 
 ### Testing
 
-**`./equin test` is the ONLY way to run tests** — paths only, no flags, no setup (installs dependencies when stale). Never bare `bun test` / `vitest`. Optional and manual; a run is an op (host CPU grant, "Test in progress" banner).
+**`./muxos test` is the ONLY way to run tests** — paths only, no flags, no setup (installs dependencies when stale). Never bare `bun test` / `vitest`. Optional and manual; a run is an op (host CPU grant, "Test in progress" banner).
 
 ```bash
-./equin test plugins/network/plugins/live/plugins/optimistic-mutation   # one plugin
-./equin test                                                  # everything
+./muxos test plugins/network/plugins/live/plugins/optimistic-mutation   # one plugin
+./muxos test                                                  # everything
 ```
 
 - Two runners, split by location: `*.test.ts(x)` beside its source = pure logic; `web/__tests__/` = jsdom/React (auto-discovered by root `vitest.config.ts`).

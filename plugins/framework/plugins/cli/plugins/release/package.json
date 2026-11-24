@@ -1,8 +1,8 @@
 {
-  "name": "@equin/plugin-framework-cli-release",
+  "name": "@muxos/plugin-framework-cli-release",
   "private": true,
   "version": "0.0.1",
-  "description": "`./equin release` — stage a composition into a portable, self-contained artifact (compiled binaries + vendored native PG/PgBouncer/gateway/parcel-watcher) and pack it as a single-file web binary or a Tauri desktop bundle.",
+  "description": "`./muxos release` \u2014 stage a composition into a portable, self-contained artifact (compiled binaries + vendored native PG/PgBouncer/gateway/parcel-watcher) and pack it as a single-file web binary or a Tauri desktop bundle.",
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2"
   }

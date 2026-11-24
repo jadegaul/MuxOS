@@ -1,4 +1,4 @@
-// Equin Isle, the home island: hand-shaped (a lake, a river out of it to an
+// MuxOS Isle, the home island: hand-shaped (a lake, a river out of it to an
 // estuary on the east coast, a dock in the south), the same whatever the world
 // seed. Its river and lake are carved into the land on a coarse grid.
 

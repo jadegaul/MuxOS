@@ -47,7 +47,7 @@
  * console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/sonata-in-demo.ts [--out /tmp/demo-sonata] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/sonata-in-demo.ts [--out /tmp/demo-sonata] [--headed]
  */
 import type { Locator, Page, Request, WebSocket } from "playwright";
 import { isWorkerTreePath } from "@plugins/framework/plugins/tooling/plugins/web-artifacts/plugins/served-paths/core";

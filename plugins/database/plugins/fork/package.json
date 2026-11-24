@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-database-fork",
+  "name": "@muxos/plugin-database-fork",
   "description": "Durable, self-healing worktree DB fork job and orphaned-temp sweep.",
   "private": true,
   "version": "0.0.1"

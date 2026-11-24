@@ -9,7 +9,7 @@
 // script always restores the page's original state, so it is safe to re-run.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/pages/plugins/starred/e2e/starred-verify.ts \
+//   ./muxos run plugins/apps/plugins/pages/plugins/starred/e2e/starred-verify.ts \
 //     --page <pageId> [--settle 60000] [--headed]
 //
 // `--page` is required — pick any page:

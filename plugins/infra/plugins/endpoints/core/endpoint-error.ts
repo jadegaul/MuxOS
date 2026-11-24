@@ -28,7 +28,7 @@ export class EndpointError extends SubjectError {
 }
 
 /**
- * A non-2xx whose body is an HTML page: not equin's answer. No equin server
+ * A non-2xx whose body is an HTML page: not muxos's answer. No muxos server
  * answers an API request with HTML — the backend's refusals are JSON or plain
  * text, the gateway's JSON or plain text, the site's edge (Caddy) answers
  * empty — so a proxy, network filter or browser extension between the browser
@@ -38,7 +38,7 @@ export class EndpointError extends SubjectError {
  *
  * Still an `EndpointError` with the status and the page as `body`, so every
  * caller handles it as the refusal it is; its message and subject say it was
- * refused before reaching equin, so a crash it raises lands on its own report
+ * refused before reaching muxos, so a crash it raises lands on its own report
  * row, never on the row of the route's real refusals.
  */
 export class EndpointForeignAnswerError extends EndpointError {
@@ -48,8 +48,8 @@ export class EndpointForeignAnswerError extends EndpointError {
       route,
       status,
       body,
-      `HTTP ${status} from ${route}: refused before reaching equin — the answer is an HTML page, which no equin server sends to an API request (a proxy, network filter or browser extension answered)`,
-      `${route} ${status} not-from-equin`,
+      `HTTP ${status} from ${route}: refused before reaching muxos — the answer is an HTML page, which no muxos server sends to an API request (a proxy, network filter or browser extension answered)`,
+      `${route} ${status} not-from-muxos`,
     );
   }
 }

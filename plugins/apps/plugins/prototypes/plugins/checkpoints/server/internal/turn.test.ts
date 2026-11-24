@@ -43,7 +43,7 @@ const midText = (messageId: string): JsonlEvent => ({
   stopReason: "tool_use",
 });
 
-const PROTOS = `/data/.equin/apps/prototypes`;
+const PROTOS = `/data/.muxos/apps/prototypes`;
 
 // Two turns: the first touches C only; the second edits A, runs a Bash command
 // on B, and delegates D to a subagent.

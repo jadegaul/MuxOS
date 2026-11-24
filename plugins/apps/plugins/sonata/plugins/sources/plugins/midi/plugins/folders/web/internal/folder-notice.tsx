@@ -169,7 +169,7 @@ function FolderNoticeRow({ folder }: { folder: UnreadableFolder }) {
               className={PRIMARY_PILL}
               nativeButton={false}
               render={<a href={MACOS_FILES_AND_FOLDERS_SETTINGS} />}
-              tooltip={`Opens System Settings → Privacy & Security → Files & Folders, at equin's ${name} switch`}
+              tooltip={`Opens System Settings → Privacy & Security → Files & Folders, at muxos's ${name} switch`}
             >
               Allow access
             </Button>

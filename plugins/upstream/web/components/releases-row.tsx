@@ -27,7 +27,7 @@ const NOW_TICK_MS = 60_000;
 
 /**
  * The release row's body on the checkout that publishes releases: the
- * unreleased commits and the Release button (`./equin version cut`, run by
+ * unreleased commits and the Release button (`./muxos version cut`, run by
  * main's backend). Nothing elsewhere — the row itself is absent there.
  */
 export function ReleasesGlance() {

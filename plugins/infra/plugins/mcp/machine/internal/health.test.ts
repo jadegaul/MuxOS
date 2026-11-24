@@ -2,7 +2,7 @@
  * `mcp.health` is what real requests saw: the latest request's outcome, and
  * every contribution whose latest run threw (cleared by its next clean run).
  *
- * Run: `./equin test plugins/infra/plugins/mcp`
+ * Run: `./muxos test plugins/infra/plugins/mcp`
  */
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";

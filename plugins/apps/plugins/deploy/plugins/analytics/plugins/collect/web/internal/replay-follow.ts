@@ -18,7 +18,7 @@ import { canParseUrl } from "@plugins/packages/plugins/floor-compat/core";
  * Installed only when the page is served on this computer's gateway (an
  * app namespace's host) AND framed: a deployed site on its public host never
  * listens. A command is honoured only from the frame's own parent, on an app
- * namespace's origin — the equin app on this computer, never the content host — and only once it
+ * namespace's origin — the muxos app on this computer, never the content host — and only once it
  * parses; anything else is ignored.
  */
 export interface ReplayFollowDeps {

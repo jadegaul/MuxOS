@@ -8,7 +8,7 @@ import type * as parcel from "@parcel/watcher";
 // FSEvents stream is delivered every event under its path, however deep. A
 // children watch of `/` or `~` (the file explorer's) therefore made fseventsd
 // match and deliver every file event on the machine to this process — the
-// largest per-stream cost equin put on it — to hear a few dozen entries. And
+// largest per-stream cost muxos put on it — to hear a few dozen entries. And
 // FSEvents is fseventsd's queue: 3–14 s late while it is loaded (2026-11-09),
 // where kqueue delivers in milliseconds. kqueue costs what the dir holds, not
 // what happens below it, so it fits exactly the watch that wants only the
@@ -68,7 +68,7 @@ export const KQUEUE_CHILDREN_PROCESS_BUDGET = 8192;
  * tell from a regex that nothing below an entry folder is wanted, so it
  * listed every entry folder and stat'ed everything in it — before the ignore
  * dropped it — on open, and on every write inside one. A children watch of
- * `~/.equin/cache` (44 entries, 690k one level below) took 37 s to open,
+ * `~/.muxos/cache` (44 entries, 690k one level below) took 37 s to open,
  * holding the backend's lock: every other kqueue subscribe and unsubscribe of
  * the process queued behind it, each on a Bun worker-pool thread, until file
  * reads queued too (`research/2026-11-12-infra-file-watcher-close-queue.md`).

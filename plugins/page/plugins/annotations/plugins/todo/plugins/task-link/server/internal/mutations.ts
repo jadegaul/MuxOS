@@ -65,7 +65,7 @@ function composePrompt(
 ): string {
   const extra = context?.trim();
   return [
-    `Work on the TODO card \`${blockId}\` in equin page \`${pageId}\`.`,
+    `Work on the TODO card \`${blockId}\` in muxos page \`${pageId}\`.`,
     "",
     "<todo>",
     cardSnapshot(cardMarkdown),

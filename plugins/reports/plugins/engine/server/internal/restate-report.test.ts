@@ -4,7 +4,7 @@
  * another one. Driven against a throwaway Postgres with the real migration
  * chain, as `record-report.test.ts` drives `writeReport`.
  *
- * Run: `./equin test plugins/reports/plugins/engine`
+ * Run: `./muxos test plugins/reports/plugins/engine`
  */
 
 import {

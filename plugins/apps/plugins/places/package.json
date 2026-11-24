@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-places",
-  "description": "Places — the places you want to go and have been, on a map: saved Google places organised by one nested tag tree, coloured by their tags.",
+  "name": "@muxos/plugin-apps-places",
+  "description": "Places \u2014 the places you want to go and have been, on a map: saved Google places organised by one nested tag tree, coloured by their tags.",
   "private": true,
   "version": "0.0.1"
 }

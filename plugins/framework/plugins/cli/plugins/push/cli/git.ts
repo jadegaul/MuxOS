@@ -107,7 +107,7 @@ async function pushToRemote(
   cmd: string[],
   cwd?: string,
 ): Promise<{ exitCode: number; output: string }> {
-  const dir = await mkdtemp(join(tmpdir(), "equin-push-"));
+  const dir = await mkdtemp(join(tmpdir(), "muxos-push-"));
   try {
     const outputPath = asAppPath(join(dir, "git-push.log"));
     console.log(`$ ${cmd.join(" ")}  (git's output follows when it finishes)`);
@@ -155,7 +155,7 @@ async function explainPushRejection(root: string): Promise<never> {
   const reprobed = await recordPushRejection(root);
   if (reprobed.kind === "local") {
     console.error(describePublishTarget(reprobed));
-    console.error("Re-run ./equin push to land the work on local main.");
+    console.error("Re-run ./muxos push to land the work on local main.");
   } else {
     // The probe and reality disagree: the remote accepts a write probe but
     // refused this push. That is a fact about THIS push — a protected branch,
@@ -207,7 +207,7 @@ export async function publishMain(
         ``,
         `${remote}/main moved while this push ran — someone else landed a commit on it.`,
         `Local main was NOT touched, and nothing of this push reached ${remote}/main.`,
-        `Re-run ./equin push: it fetches the new commit and rebases onto it.`,
+        `Re-run ./muxos push: it fetches the new commit and rebases onto it.`,
       ].join("\n"),
     );
     process.exit(1);

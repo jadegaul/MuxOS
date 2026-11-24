@@ -79,8 +79,8 @@ export const FileReadAccessSchema = z.enum([
 export type FileReadAccess = z.infer<typeof FileReadAccessSchema>;
 
 /**
- * Where macOS keeps equin's per-folder switches (Privacy & Security → Files &
- * Folders): the equin app bundle gets a switch per protected folder there, a
+ * Where macOS keeps muxos's per-folder switches (Privacy & Security → Files &
+ * Folders): the muxos app bundle gets a switch per protected folder there, a
  * denied one included, so this is where a `macos-privacy` read access is
  * undone. A page opens it as a link.
  */

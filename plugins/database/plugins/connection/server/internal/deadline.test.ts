@@ -51,7 +51,7 @@ import { startBlackHoleProxy, type BlackHoleProxy } from "../testing";
 // `database/embedded` (not `readDatabaseConfigSync` from `database/core`: that edge
 // would close a plugin cycle, since `database` imports this plugin).
 //
-// Requires the running embedded cluster (./equin build). Unreachable
+// Requires the running embedded cluster (./muxos build). Unreachable
 // cluster ⇒ the first connect throws loudly, never a silent skip.
 
 const DEADLINE_MS = 300;

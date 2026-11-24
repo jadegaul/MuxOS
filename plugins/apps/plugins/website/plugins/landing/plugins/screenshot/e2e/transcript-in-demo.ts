@@ -22,7 +22,7 @@
  * and asserts no page error and no console error throughout.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/transcript-in-demo.ts [--out /tmp/demo-transcript] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/transcript-in-demo.ts [--out /tmp/demo-transcript] [--headed]
  */
 import type { Page } from "playwright";
 import {

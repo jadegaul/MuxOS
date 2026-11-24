@@ -9,7 +9,7 @@ import {
 export interface ShellCall {
   /**
    * The command's basename — except the repo CLI, which is always `CLI_NAME`
-   * whichever of its names was typed (`./equin`, `./equin`), so a guard
+   * whichever of its names was typed (`./muxos`, `./muxos`), so a guard
    * matching it cannot miss the other spelling.
    */
   name: string;
@@ -311,7 +311,7 @@ const SHELL_INTERPRETERS = new Set([
  * The scanner tracks quoting AND substitution context, not quoting alone. The
  * commonest heredoc in this repo is
  *
- *     ./equin push -m "$(cat <<'EOF'   ← `<<` sits inside the `-m` quote
+ *     ./muxos push -m "$(cat <<'EOF'   ← `<<` sits inside the `-m` quote
  *
  * where a quote-only mask declines. It is tempting to leave that to the
  * recursion — `splitOnOperators` keeps the whole `$( … )` in one segment, so the
@@ -693,7 +693,7 @@ const ASSIGNMENT_HEAD = /^[A-Za-z_][A-Za-z0-9_]*\+?=/;
  * Shell variables this scope assigned a value the parser can know, by name.
  *
  * Without them a path held in a variable is a blind spot every Bash guard
- * shares: `O=$HOME/.equin/x; mkdir -p $O` (2026-11-10, an agent that wrote
+ * shares: `O=$HOME/.muxos/x; mkdir -p $O` (2026-11-10, an agent that wrote
  * screenshots into the data root) reaches each guard as `mkdir -p $O`. An
  * assignment whose value runs something (`$(…)`, backticks) or reads an
  * unknown variable FORGETS the name instead — a stale value would be a wrong

@@ -14,8 +14,8 @@ const tmp = mkdtempSync(join(tmpdir(), "fs-latency-root-"));
 afterAll(() => rmSync(tmp, { recursive: true, force: true }));
 
 const spec = {
-  label: "dev.equin.fs-latency-monitor",
-  executable: "/opt/x y/equin.app/Contents/MacOS/fs-latency-monitor",
+  label: "dev.muxos.fs-latency-monitor",
+  executable: "/opt/x y/muxos.app/Contents/MacOS/fs-latency-monitor",
   dir: "/opt/x y/logs/<monitors> & co",
   intervalS: 30,
 };

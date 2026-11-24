@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-profiling-ops-op-gantt",
+  "name": "@muxos/plugin-debug-profiling-ops-op-gantt",
   "private": true,
   "version": "0.0.1"
 }

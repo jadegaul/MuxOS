@@ -22,7 +22,7 @@ export interface InstallShBash {
  * installed, or a binary that is not the version it is pinned to, throws.
  */
 export async function installShBashes(): Promise<InstallShBash[]> {
-  // grant null: a test runs inside `./equin test`, whose grant its env
+  // grant null: a test runs inside `./muxos test`, whose grant its env
   // carries (HOST_GRANT), so the install child spends it rather than queue.
   const ready = await ensureDepViaCli(installerTestBashes, {
     stdio: "capture",

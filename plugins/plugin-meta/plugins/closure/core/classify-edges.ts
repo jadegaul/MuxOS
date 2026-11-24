@@ -125,7 +125,7 @@ export function classifyEdges(tree: PluginTreeData): EdgeGraph {
   // The var exists on the page only once G's `web/` registers the group, and
   // nothing imports that half: a Tailwind class or a `var(--x)` names the token,
   // not the plugin. As an import-less dependency it used to drop out of every
-  // served bundle unless hand-listed in `served-baseline` (equin.ai shipped
+  // served bundle unless hand-listed in `served-baseline` (MuxOS.app shipped
   // blank app tiles and an unpainted headline that way). Deriving it here makes
   // the bundle carry every group its members paint with, by construction.
   for (const node of tree.byDir.values()) {

@@ -2,21 +2,21 @@ import { expect, test } from "bun:test";
 import { lockfileNpmClosure } from "./lockfile-closure";
 
 // The shape bun writes, trimmed: workspaces, patchedDependencies, packages —
-// `eslint/ignore` is a copy nested under eslint, `@equin/plugin-a/zod` a
+// `eslint/ignore` is a copy nested under eslint, `@muxos/plugin-a/zod` a
 // workspace's non-hoisted copy.
 const LOCK = `{
   "lockfileVersion": 1,
   "workspaces": {
     "": { "name": "repo" },
-    "plugins/a": { "name": "@equin/plugin-a", "version": "0.0.1" },
+    "plugins/a": { "name": "@muxos/plugin-a", "version": "0.0.1" },
   },
   "patchedDependencies": {
     "eslint@9.0.0": "patches/eslint@9.0.0.patch",
     "pg@8.0.0": "patches/pg@8.0.0.patch",
   },
   "packages": {
-    "@equin/plugin-a": ["@equin/plugin-a@workspace:plugins/a"],
-    "@equin/plugin-a/zod": ["zod@3.0.0", "", {}, "sha512-z3"],
+    "@muxos/plugin-a": ["@muxos/plugin-a@workspace:plugins/a"],
+    "@muxos/plugin-a/zod": ["zod@3.0.0", "", {}, "sha512-z3"],
     "eslint": ["eslint@9.0.0", "", { "dependencies": { "ignore": "^5", "debug": "^4" }, "peerDependencies": { "jiti": "*" }, "optionalPeers": ["jiti"] }, "sha512-e"],
     "eslint/ignore": ["ignore@5.0.0", "", {}, "sha512-i5"],
     "ignore": ["ignore@7.0.0", "", {}, "sha512-i7"],
@@ -41,7 +41,7 @@ test("the closure follows dependencies node's way: nested copy first, then up", 
 
 test("a root name is found hoisted and under every workspace", () => {
   expect(keys(lockfileNpmClosure(LOCK, ["zod"]))).toEqual([
-    "@equin/plugin-a/zod",
+    "@muxos/plugin-a/zod",
     "zod",
   ]);
 });

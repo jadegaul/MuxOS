@@ -13,7 +13,7 @@ export interface AttachedRun {
 
 /**
  * Run a command as a supervised run of kind `kindId` WITH ITS CALLER ATTACHED —
- * a hand-typed `./equin build` — so it leaves exactly the record a run the
+ * a hand-typed `./muxos build` — so it leaves exactly the record a run the
  * backend starts leaves: the transcript (`runs/<kind>-<id>.log`, stdout and
  * stderr merged, written by the child straight into the file) and the exit
  * marker (`.exit-code`, `<status> <signal-or-dash>`). The caller sees the

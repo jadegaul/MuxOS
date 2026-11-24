@@ -232,7 +232,7 @@ export function BuildButton() {
   const serverBehind = useServerBehind();
 
   // --- Worktree live-state channel status (backend liveness) ---
-  // During a build the `./equin build` process restarts this very backend,
+  // During a build the `./muxos build` process restarts this very backend,
   // so the worktree channel drops to reconnecting/closed. Guarded by `building`,
   // that gap is what separates "Server restarting…" from "Building…".
   const { worktree: wsStatus } = useNotificationsChannelStatuses();

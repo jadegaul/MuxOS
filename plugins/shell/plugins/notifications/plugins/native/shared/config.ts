@@ -7,7 +7,7 @@ export const nativeNotificationsConfig = defineConfig({
       default: false,
       label: "Native notifications",
       description:
-        "Show each new notification as a native OS notification, through equin's menu-bar helper. Off by default; the switch is in the menu-bar panel, and only where the helper can notify.",
+        "Show each new notification as a native OS notification, through muxos's menu-bar helper. Off by default; the switch is in the menu-bar panel, and only where the helper can notify.",
     }),
   },
 });

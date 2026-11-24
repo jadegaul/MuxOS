@@ -88,11 +88,11 @@ const trashState: PlacesState = {
   ],
 };
 
-/** The equin main checkout — its path is the server's to say. */
+/** The muxos main checkout — its path is the server's to say. */
 function useRepoPlace(): PlacesState {
   const checkout = useLive(fileExplorerMainCheckout);
   const home = useHomeDir();
-  const label = "equin";
+  const label = "muxos";
   if (checkout.status === "unavailable" || home.kind === "unavailable") {
     return { kind: "unavailable" };
   }

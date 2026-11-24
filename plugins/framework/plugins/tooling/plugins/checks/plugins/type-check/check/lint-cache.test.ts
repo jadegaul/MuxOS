@@ -33,12 +33,12 @@ const LOCK = `{
       "name": "repo",
     },
     "plugins/a": {
-      "name": "@equin/plugin-a",
+      "name": "@muxos/plugin-a",
       "version": "0.0.1",
     },
   },
   "packages": {
-    "@equin/plugin-a": ["@equin/plugin-a@workspace:plugins/a"],
+    "@muxos/plugin-a": ["@muxos/plugin-a@workspace:plugins/a"],
 
     "eslint": ["eslint@9.39.4", "", {}, "sha512-x"],
   }
@@ -48,10 +48,10 @@ const LOCK = `{
 test("a workspace-only lockfile change keeps the lint digest", () => {
   const added = LOCK.replace(
     `  },\n  "packages": {`,
-    `    "plugins/b": {\n      "name": "@equin/plugin-b",\n      "version": "0.0.1",\n    },\n  },\n  "packages": {`,
+    `    "plugins/b": {\n      "name": "@muxos/plugin-b",\n      "version": "0.0.1",\n    },\n  },\n  "packages": {`,
   ).replace(
     `\n    "eslint"`,
-    `\n    "@equin/plugin-b": ["@equin/plugin-b@workspace:plugins/b"],\n\n    "eslint"`,
+    `\n    "@muxos/plugin-b": ["@muxos/plugin-b@workspace:plugins/b"],\n\n    "eslint"`,
   );
   expect(added).not.toBe(LOCK);
   expect(lockfileNpmResolutions(added)).toBe(lockfileNpmResolutions(LOCK));

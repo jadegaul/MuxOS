@@ -137,7 +137,7 @@ describe("buildJsonlEvents — a turn's line carries its uuid", () => {
 // An `event` turn the app delivered to a watching agent is typed inside the
 // turn ledger's envelope (turn-ledger core/event-envelope.ts).
 describe("buildJsonlEvents — an event turn", () => {
-  const ENVELOPE = "<equin-event>\nreported · task-1\n\ndigest\n</equin-event>";
+  const ENVELOPE = "<muxos-event>\nreported · task-1\n\ndigest\n</muxos-event>";
 
   test("is an event-turn under its line's uuid, not the user's message", async () => {
     const events = await buildJsonlEvents(
@@ -239,7 +239,7 @@ describe("buildJsonlEvents — an event turn", () => {
           timestamp: AT,
           message: {
             role: "user",
-            content: "what is <equin-event>x</equin-event>?",
+            content: "what is <muxos-event>x</muxos-event>?",
           },
         },
       ],
@@ -291,11 +291,11 @@ describe("buildJsonlEvents — the launch preprompt", () => {
     });
   });
 
-  test("every equin-context section rides with the preprompt, in order", async () => {
+  test("every muxos-context section rides with the preprompt, in order", async () => {
     const append = [
       BLOCK,
-      '<equin-context id="mandate" label="Mandate">\nYou may file tasks.\n</equin-context>',
-      '<equin-context id="tree-digest">\nThe tree.\n</equin-context>',
+      '<muxos-context id="mandate" label="Mandate">\nYou may file tasks.\n</muxos-context>',
+      '<muxos-context id="tree-digest">\nThe tree.\n</muxos-context>',
     ].join("\n\n");
     const events = await buildJsonlEvents(
       [prompt("u1", "hi"), snapshot("s1", append)],
@@ -323,7 +323,7 @@ describe("buildJsonlEvents — the launch preprompt", () => {
         prompt("u1", "hi"),
         snapshot(
           "s1",
-          '<equin-context id="mandate" label="Mandate">\nM\n</equin-context>',
+          '<muxos-context id="mandate" label="Mandate">\nM\n</muxos-context>',
         ),
       ],
       noImages,

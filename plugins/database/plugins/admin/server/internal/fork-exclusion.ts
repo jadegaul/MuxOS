@@ -134,7 +134,7 @@ export interface ForkExclusions {
 
 // The declared exclusion set, read two ways:
 //
-//   - `forkExclusions()` — what every host and `./equin db fork` reads: the
+//   - `forkExclusions()` — what every host and `./muxos db fork` reads: the
 //     data lists, i.e. what the build wrote down (installed by every boot, and
 //     by the db fork probe, which boots nothing);
 //   - `forkExclusionsFrom(plugins)` — the CODE side, from loaded plugin

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-tasks-attempt-status",
+  "name": "@muxos/plugin-tasks-attempt-status",
   "private": true,
   "version": "0.0.1"
 }

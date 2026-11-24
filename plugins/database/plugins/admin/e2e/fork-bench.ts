@@ -4,9 +4,9 @@
  *
  * Manual only; nothing runs this automatically.
  *
- *   ./equin run plugins/database/plugins/admin/e2e/fork-bench.ts [--runs 3] [--source <database>]
+ *   ./muxos run plugins/database/plugins/admin/e2e/fork-bench.ts [--runs 3] [--source <database>]
  *
- * It drives `./equin db fork <scratch>` as a subprocess rather than
+ * It drives `./muxos db fork <scratch>` as a subprocess rather than
  * importing `forkDatabase` directly, for two reasons. The `e2e` runtime may
  * reach only other plugins' `core`/`e2e` barrels, so `admin/server` is out of
  * bounds by construction; and the subprocess IS the real path, exclusion
@@ -149,7 +149,7 @@ async function main(): Promise<void> {
         const elapsed = performance.now() - started;
         if (result.exitCode !== 0) {
           throw new Error(
-            `./equin db fork ${target} exited ${result.exitCode}\n${
+            `./muxos db fork ${target} exited ${result.exitCode}\n${
               result.stderr.trim() || result.stdout.trim()
             }`,
           );

@@ -65,8 +65,8 @@ import { moveClaudeProjects } from "./claude-projects";
 import { rewriteDbValue } from "./rewrite";
 import { staleCheckouts } from "./checkouts";
 
-// `./equin data-dir migrate`: the effects of the plan `./plan.ts` decides.
-// Design: research/2026-10-26-global-equin-data-dir-migration-v2.md
+// `./muxos data-dir migrate`: the effects of the plan `./plan.ts` decides.
+// Design: research/2026-10-26-global-muxos-data-dir-migration-v2.md
 
 type Opts = { apply?: boolean; stopAgents?: boolean };
 
@@ -191,7 +191,7 @@ function step(text: string): void {
 }
 
 /** Run this checkout's own CLI verb, its output on this terminal; throws when it fails. */
-async function equin(checkout: string, ...args: string[]): Promise<void> {
+async function muxos(checkout: string, ...args: string[]): Promise<void> {
   const res = await spawnPassthrough([join(checkout, CLI_NAME), ...args], {
     cwd: checkout,
   });
@@ -301,7 +301,7 @@ async function apply(plan: MigratePlan, facts: MigrationFacts): Promise<void> {
     console.error(
       `\nThe migration stopped: ${err instanceof Error ? err.message : String(err)}\nStarting the app again; rerun \`./${CLI_NAME} data-dir migrate --apply\` once the cause is fixed.`,
     );
-    await equin(checkout, "start");
+    await muxos(checkout, "start");
     throw err;
   }
 }
@@ -316,7 +316,7 @@ async function applyStopped(
   const newRoot = plan.root?.to ?? oldRoot;
 
   step("Stopping the app");
-  await equin(checkout, "stop");
+  await muxos(checkout, "stop");
   // SIGTERM is an agent's clean exit: it records that it exited and removes
   // its pid file, and its conversation relaunches it on the next message.
   for (const agent of plan.stopAgents) {
@@ -437,7 +437,7 @@ async function applyStopped(
   }
 
   step("Starting the app");
-  await equin(checkout, "start");
+  await muxos(checkout, "start");
   // After the start, which rewrote the app's own launchd / systemd jobs: what
   // still names an old path out there is the user's.
   reportOutside(plan.rewrite);

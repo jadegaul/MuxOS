@@ -9,7 +9,7 @@
 // content doc) alike — and back to the three lines on A's Cmd+Z. The states B
 // renders on the way are printed (see the note at the assertion).
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/cross-block-span-collab-verify.ts [--url <deploy>]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/cross-block-span-collab-verify.ts [--url <deploy>]
 import {
   report,
   withBrowser,

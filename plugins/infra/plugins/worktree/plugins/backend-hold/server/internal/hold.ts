@@ -42,7 +42,7 @@ const HeldStatus = z.object({ held: z.boolean().optional() });
 /**
  * Stop the namespace's backend and HOLD it down: the gateway answers traffic
  * with "held" instead of cold-starting a backend, until a deploy start
- * (`startBackend`, `./equin build`) releases it — or the namespace is
+ * (`startBackend`, `./muxos build`) releases it — or the namespace is
  * deregistered (its spec removed), which ends it for good.
  *
  * Throws `BackendHoldError` unless the gateway confirms the hold: a gateway

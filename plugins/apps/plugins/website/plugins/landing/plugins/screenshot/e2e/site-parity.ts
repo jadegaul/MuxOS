@@ -25,8 +25,8 @@
  *     demo's worker, never an `/api/config…` request to the page's server.
  *
  * Run it on both builds and compare the shots and `tokens.json`:
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/site-parity.ts --out /tmp/parity-main
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/site-parity.ts --site --composition website --out /tmp/parity-site
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/site-parity.ts --out /tmp/parity-main
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/site-parity.ts --site --composition website --out /tmp/parity-site
  *
  * Manual only — nothing runs this automatically.
  */

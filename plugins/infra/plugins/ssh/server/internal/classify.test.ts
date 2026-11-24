@@ -191,11 +191,12 @@ describe("ownFailureExit: null (scp)", () => {
   test("a copy failure stays unknown and keeps its stderr", () => {
     // Not an ssh-layer failure and not a remote command either, so there is no
     // kind to claim — the diagnostic is the answer.
-    const stderr = "scp: dest open \"/srv/equin/website/releases/r1/app\": Permission denied\n";
+    const stderr =
+      'scp: dest open "/srv/muxos/website/releases/r1/app": Permission denied\n';
     const kind = classify(1, null, stderr, false, SCP);
     expect(kind).toBe("unknown");
     expect(failureMessage(kind, stderr)).toBe(
-      'scp: dest open "/srv/equin/website/releases/r1/app": Permission denied',
+      'scp: dest open "/srv/muxos/website/releases/r1/app": Permission denied',
     );
   });
 });

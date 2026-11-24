@@ -110,7 +110,7 @@ describe("planLedger", () => {
     expect(after.rows[0]!.attemptId).toBe("att-2");
   });
 
-  // A session equin did not launch has no conversation: the push names only
+  // A session muxos did not launch has no conversation: the push names only
   // the attempt its branch belongs to.
   test("attributes a commit naming only its attempt", () => {
     const { rows, deferred } = planLedger(

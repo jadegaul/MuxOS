@@ -33,7 +33,7 @@ import {
 // including one just renamed away or deleted. syspolicyd then cannot read it
 // (ENOENT), calls it a "Malware rejection" and SIGKILLs the process inside
 // exec, before it prints a byte. With every named Bun on the machine one inode
-// of ~800 churning names, that killed a `./equin install` and a `./equin push`
+// of ~800 churning names, that killed a `./muxos install` and a `./muxos push`
 // (2026-11-03). Measured: a stable hardlink exec'd while siblings are made and
 // deleted was killed 7 times in 2,600 runs, a stable clone 0 in 2,300 — and a
 // clone's only name is the one exec'd. A fresh name costs one ~1.1 s scan on
@@ -67,7 +67,7 @@ const REFUSALS = new Set(["EXDEV", "EPERM", "ENOTSUP", "EACCES", "ENOSYS"]);
  *
  * Making one holds a per-name kernel lock across processes
  * (`dir/.locks/<name>`): a name many processes run through (the shared
- * `equin · agent`) is made by the first, and the others, once it is done,
+ * `muxos · agent`) is made by the first, and the others, once it is done,
  * find it current. Two makers would
  * each rename their own clone in, and the second rename would unname the
  * first's file while a process that exec'd it may still be under macOS's
@@ -104,7 +104,7 @@ async function swapInClone(
   const staging = joinAppPath(dir, `.${stagingSuffix()}`);
   try {
     // The clone keeps the source's mtime (to the nanosecond), which is how
-    // `isCurrentClone` — and the `./equin` script — recognise it later.
+    // `isCurrentClone` — and the `./muxos` script — recognise it later.
     await copyFile(source, staging, constants.COPYFILE_FICLONE_FORCE);
     await rename(staging, path);
   } catch (err) {
@@ -190,15 +190,15 @@ async function isCurrentClone(path: AppPath, source: Stats): Promise<boolean> {
 
 /**
  * Where a checkout keeps its own Bun as a clone (`bun`) plus a `stamp`, and
- * `verbs` — a symlink to the machine-wide directory of named Buns `./equin`
- * runs the CLI under (`equin · <verb>`) — relative to the checkout root. Under
+ * `verbs` — a symlink to the machine-wide directory of named Buns `./muxos`
+ * runs the CLI under (`muxos · <verb>`) — relative to the checkout root. Under
  * `node_modules/`, so it is ignored and goes with a dependency wipe. Spelled
- * again in the `./equin` script, which reads it before any TypeScript runs.
+ * again in the `./muxos` script, which reads it before any TypeScript runs.
  */
-export const CHECKOUT_BUN_DIR = "node_modules/.cache/equin-bun";
+export const CHECKOUT_BUN_DIR = "node_modules/.cache/muxos-bun";
 
 /**
- * Record `bin` (the Bun this CLI runs on) as the checkout's Bun, for `./equin`
+ * Record `bin` (the Bun this CLI runs on) as the checkout's Bun, for `./muxos`
  * to name the next CLI process from, and point the checkout's `verbs` at
  * `verbsDir` — the machine-wide clones of that Bun, one per verb. A shell
  * cannot find the real Bun behind mise's shim without spawning mise, nor the
@@ -210,7 +210,7 @@ export const CHECKOUT_BUN_DIR = "node_modules/.cache/equin-bun";
  * this file) — and plain `bun` runs it.
  *
  * The verb names are machine-wide, not per checkout: each fresh name costs a
- * scan on its first exec, and per-checkout names (`equin · <verb> · <checkout>`)
+ * scan on its first exec, and per-checkout names (`muxos · <verb> · <checkout>`)
  * made every new worktree pay a dozen. Those older names are removed here.
  */
 export async function refreshCheckoutBun(
@@ -255,7 +255,7 @@ async function pointSymlink(
 /**
  * The checkout's Bun while it is still the one `mise.lock` picks (its stamp is
  * newer), or null — none recorded yet, or the toolchain moved since. The same
- * test the `./equin` script makes.
+ * test the `./muxos` script makes.
  */
 export async function checkoutBun(root: AppPath): Promise<AppPath | null> {
   const dir = joinAppPath(root, CHECKOUT_BUN_DIR);

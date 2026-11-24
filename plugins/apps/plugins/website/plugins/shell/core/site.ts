@@ -23,7 +23,7 @@ import { pagePort } from "@plugins/infra/plugins/launcher/plugins/gateway-port/c
  * the contact band's two cards and the footer's email link — so it is declared
  * in one place rather than inside either of them.
  */
-export const CONTACT_EMAIL = "hello@equin.ai";
+export const CONTACT_EMAIL = "hello@MuxOS.app";
 export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 
 /**
@@ -34,13 +34,7 @@ export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 export const ISSUES_URL = `${SOURCE_REPO_URL}/issues/new`;
 
 /**
- * The project's community: its Discord server's invite. The site links it from
- * the header (beside the source), the footer and the feedback card.
- */
-export const DISCORD_URL = "https://discord.gg/QYE8qSsfSQ";
-
-/**
- * The one command that installs equin on a Mac: the repository's own
+ * The one command that installs muxos on a Mac: the repository's own
  * `install.sh`, piped from its `main` branch. Derived from the same repository
  * as `SOURCE_REPO_URL`, so the page cannot offer one repository's installer beside
  * another's source.
@@ -48,7 +42,7 @@ export const DISCORD_URL = "https://discord.gg/QYE8qSsfSQ";
 export const INSTALL_COMMAND = `curl -fsSL https://raw.githubusercontent.com/${SOURCE_REPO}/main/install.sh | bash`;
 
 /**
- * Where an installed equin answers on `port`: the main namespace behind the
+ * Where an installed muxos answers on `port`: the main namespace behind the
  * local gateway. Each account's gateway has its own port (the first free one of
  * 8700…8709), so the address is a function of the port.
  */
@@ -62,7 +56,7 @@ export function localAppUrl(port: number): string {
 /**
  * The port to name a local install by, from a page at `loc`: the page's own
  * when it is itself a page of a local instance (it was served by that
- * gateway), else — on equin.ai, which cannot know a visitor's port — the
+ * gateway), else — on MuxOS.app, which cannot know a visitor's port — the
  * default a fresh install takes.
  */
 export function localAppPortFor(loc: {
@@ -77,19 +71,19 @@ export function localAppPortFor(loc: {
 
 /**
  * Where the site is published: the `website` composition, which serves the
- * website app at `/` (its `homeAtRoot`) — `equin.ai/vision` is the local
+ * website app at `/` (its `homeAtRoot`) — `MuxOS.app/vision` is the local
  * app's `/about/vision`. A page moves between the two by swapping the origin
  * and putting back, or dropping, `WEBSITE_BASE_PATH` (route-prefix's address
  * root, `PUBLIC_SITE_ROOT`).
  */
-export const PUBLIC_SITE_ORIGIN = "https://equin.ai";
+export const PUBLIC_SITE_ORIGIN = "https://MuxOS.app";
 
 /** The base path the published site drops from its addresses. */
 const PUBLIC_SITE_ROOT = WEBSITE_BASE_PATH;
 
 /**
  * A website page (`/about/guide`, query and hash allowed) as published:
- * `https://equin.ai/guide`.
+ * `https://MuxOS.app/guide`.
  */
 export function publicSitePageUrl(path: string): string {
   const end = path.search(/[?#]/);
@@ -111,8 +105,8 @@ function isSitePath(url: URL): boolean {
 }
 
 /**
- * Whether `url` is any page of a local equin instance: a namespace host (main
- * or a worktree, whatever the app) on a port an equin gateway listens on — one
+ * Whether `url` is any page of a local muxos instance: a namespace host (main
+ * or a worktree, whatever the app) on a port an muxos gateway listens on — one
  * of the per-account range, or the port every install used before it, which a
  * moved install keeps answering on for a while.
  */
@@ -136,13 +130,13 @@ export function localSiteUrl(url: URL, port: number): string {
 }
 
 /**
- * A local equin page, on equin.ai: a website page at its published address
- * (the base path dropped), any other app's page (which equin.ai does not
+ * A local muxos page, on MuxOS.app: a website page at its published address
+ * (the base path dropped), any other app's page (which MuxOS.app does not
  * publish) at the site's home.
  */
 export function publicSiteUrl(url: URL): string {
   if (!isLocalAppUrl(url))
-    throw new Error(`${url.href} is not a page of a local equin instance`);
+    throw new Error(`${url.href} is not a page of a local muxos instance`);
   return isSitePath(url)
     ? `${PUBLIC_SITE_ORIGIN}${addressPathOf(url.pathname, PUBLIC_SITE_ROOT)}${url.search}${url.hash}`
     : `${PUBLIC_SITE_ORIGIN}/`;

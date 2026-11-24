@@ -20,7 +20,7 @@
 // every animation paused and stepped through 0…1500 ms, one screenshot per
 // 100 ms (`<dir>/batch-<ms>.png`) — to judge the cascade by eye.
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/remote-batch-arrival-verify.ts [--frames <dir>]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/remote-batch-arrival-verify.ts [--frames <dir>]
 import { mkdirSync } from "node:fs";
 import {
   agentFetch,

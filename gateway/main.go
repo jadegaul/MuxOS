@@ -126,7 +126,7 @@ func (c *Config) validatePublicServing() error {
 	return nil
 }
 
-// dataRoot resolves the equin data root: the DIR override, else the home
+// dataRoot resolves the muxos data root: the DIR override, else the home
 // root by the rule in homeDataRoot (dataroot.go).
 //
 // It exists ONLY to derive the defaults of the path flags below. Every path the
@@ -155,9 +155,9 @@ func dataRoot() string {
 // cfg.ChildEnv by main, once logging is set up to report a bad one.
 func parseFlags() (Config, string) {
 	var cfg Config
-	// No default: the port is this account's, chosen by ./equin start
+	// No default: the port is this account's, chosen by ./muxos start
 	// (listen.go). A missing -listen is a fatal startup error.
-	flag.StringVar(&cfg.Listen, "listen", "", "REQUIRED: address to listen on: loopback:<port> (127.0.0.1 and [::1]), a host:port, or :<port> for every interface; ./equin start passes this account's port")
+	flag.StringVar(&cfg.Listen, "listen", "", "REQUIRED: address to listen on: loopback:<port> (127.0.0.1 and [::1]), a host:port, or :<port> for every interface; ./muxos start passes this account's port")
 	flag.StringVar(&cfg.LegacyListen, "legacy-listen", "", "the port an install moved off, served too while it migrates (same grammar as -listen; a document navigation there is redirected to -listen's port; a failed bind is a warning); empty: none")
 	flag.DurationVar(&cfg.IdleTimeout, "idle-timeout", 10*time.Minute, "backend idle timeout")
 	flag.DurationVar(&cfg.ShutdownGrace, "shutdown-grace", 5*time.Second, "grace period before SIGKILL")
@@ -186,7 +186,7 @@ func parseFlags() (Config, string) {
 	if defaultSockets == "" {
 		defaultSockets = filepath.Join(dataDir, "sockets")
 	}
-	flag.StringVar(&cfg.SocketsDir, "sockets-dir", defaultSockets, "directory for per-worktree Unix sockets (env: EQUIN_SOCKETS_DIR; short /tmp dir for deep release roots)")
+	flag.StringVar(&cfg.SocketsDir, "sockets-dir", defaultSockets, "directory for per-worktree Unix sockets (env: MUXOS_SOCKETS_DIR; short /tmp dir for deep release roots)")
 	defaultCentralRoutes := filepath.Join(dataDir, "state", "gateway", "central-routes.json")
 	flag.StringVar(&cfg.CentralRoutesFile, "central-routes-file", defaultCentralRoutes, "path to the central routing manifest")
 	defaultDbConfig := filepath.Join(dataDir, "state", "db-config", "database.json")
@@ -202,10 +202,10 @@ func parseFlags() (Config, string) {
 	flag.StringVar(&cfg.DefaultNamespace, "default-namespace", "", "fallback namespace for requests with no subdomain")
 	// The public hostnames a deployed site is served under (comma-separated).
 	// Caddy forwards the visitor's Host unchanged, so without this every visitor
-	// would fail principalOf's equin-host test and be anonymous.
+	// would fail principalOf's muxos-host test and be anonymous.
 	flag.StringVar(&cfg.PublicHosts, "public-hosts", "", "comma-separated public hostnames this gateway serves as its own (deployed site)")
 	// Where the gateway records its own pid. The gateway writes it itself because
-	// under launchd (./equin start on macOS) no launcher sees the spawn: a
+	// under launchd (./muxos start on macOS) no launcher sees the spawn: a
 	// gateway launchd relaunches at login or after a crash would otherwise leave
 	// the file naming a dead generation. Empty ⇒ no pidfile (a hand-run gateway).
 	flag.StringVar(&cfg.PidFile, "pid-file", "", "file to write this process's pid to at boot")
@@ -216,14 +216,14 @@ func parseFlags() (Config, string) {
 	flag.StringVar(&cfg.LockFile, "lock-file", defaultLockFile, "the data root's gateway lock: held (flock) for this process's life; a second gateway on the same root refuses to start")
 	// Main's checkout: the gateway starts main's convergence run there on every
 	// advance of refs/heads/main (main_deploy.go). Only the machine's dev
-	// gateway (./equin start) passes it.
+	// gateway (./muxos start) passes it.
 	// The `current` link of main's slot pool (infra/git/main-slots data-dirs,
 	// `services/main-slots`): main's convergence run starts in the slot it
 	// names, the -main-checkout while it does not exist. The launcher passes
 	// it with -main-checkout.
 	defaultMainSlotsCurrent := filepath.Join(dataDir, "services", "main-slots", "current", mainNamespace)
 	flag.StringVar(&cfg.MainSlotsCurrent, "main-slots-current", defaultMainSlotsCurrent, "main's own `current` link in its slot pool (current/<main namespace>): main's convergence run starts in the slot it names (the -main-checkout while it does not exist)")
-	flag.StringVar(&cfg.MainCheckout, "main-checkout", "", "main's checkout: run `./equin build --allow-main --converge` there on every advance of refs/heads/main, at boot, and on POST /gateway/deploy/converge (empty: no auto-deploy)")
+	flag.StringVar(&cfg.MainCheckout, "main-checkout", "", "main's checkout: run `./muxos build --allow-main --converge` there on every advance of refs/heads/main, at boot, and on POST /gateway/deploy/converge (empty: no auto-deploy)")
 	// The environment names every child process may receive (see env.go).
 	// Required and deliberately default-less: the declaration lives in
 	// plugins/infra/plugins/launcher/core (runtimeEnvNames), and a default here
@@ -234,7 +234,7 @@ func parseFlags() (Config, string) {
 	flag.StringVar(&cfg.KeeperFd, keeperFdFlag[1:], "", "set by the keeper: the inherited control socket of this gateway generation")
 	flag.BoolVar(&cfg.NoKeeper, "no-keeper", false, "run the gateway in this process, with no keeper: nothing outlives it, and it cannot hand over")
 	var childEnv string
-	flag.StringVar(&childEnv, "child-env", "", "REQUIRED: comma-separated environment variable names children receive (NAME_* matches a prefix); ./equin start passes launcher/core runtimeEnvNames()")
+	flag.StringVar(&childEnv, "child-env", "", "REQUIRED: comma-separated environment variable names children receive (NAME_* matches a prefix); ./muxos start passes launcher/core runtimeEnvNames()")
 
 	flag.Parse()
 	return cfg, childEnv
@@ -344,7 +344,7 @@ func main() {
 
 	// Resolve the declared child environment before anything can spawn. The
 	// names the gateway itself carries but will not forward are logged at warn:
-	// the normal ./equin start path drops nothing (the launcher already
+	// the normal ./muxos start path drops nothing (the launcher already
 	// filtered the gateway's own environment to the same list), so a non-empty
 	// list means a hand-run gateway, and its would-be leak is visible in
 	// gateway.log rather than silently absent. Names only — never values.

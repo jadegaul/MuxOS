@@ -7,7 +7,7 @@ const create: MigrationAnswer = { action: "create" };
 describe("createdEntityKeys", () => {
   test("reads every entity a branch migration creates, keyed as drizzle prompts name it", () => {
     const sql = [
-      "-- equin:snapshot id=a parents=b",
+      "-- muxos:snapshot id=a parents=b",
       'CREATE TABLE "claude_usage_hours" (\n\t"id" text PRIMARY KEY\n);',
       "--> statement-breakpoint",
       'CREATE TABLE IF NOT EXISTS "public"."claude_model_rates" ("id" text);',

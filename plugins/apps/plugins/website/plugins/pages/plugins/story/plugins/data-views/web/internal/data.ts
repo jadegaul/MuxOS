@@ -446,7 +446,7 @@ export interface ItemOpts {
   time?: string;
 }
 /* rows are not links: the figure is about the list, so an item never answers a click.
-   ONE conversation row for both apps (Claude's sidebar and equin's data view): a flat row with the title, nothing
+   ONE conversation row for both apps (Claude's sidebar and muxos's data view): a flat row with the title, nothing
    else, so the two figures differ only in what the list can do. */
 export function cvRow(r: { id: string; title: string }, o: ItemOpts) {
   return `<div class="cv${o.fresh ? " fresh" : ""}" data-k="${o.k}" data-id="${r.id}"><span class="t">${esc(r.title)}</span></div>`;

@@ -1,11 +1,11 @@
 // The contributed check guarding the per-plugin web-artifact composition.
 //
 // It is `scope: "deploy"`: its subject is the local deployment `build`
-// produces — this checkout's served dist (`~/.equin/worktrees/<name>/web`)
-// and the `~/.equin/cache/web-artifacts` store, both outside any repo — not the
+// produces — this checkout's served dist (`~/.muxos/worktrees/<name>/web`)
+// and the `~/.muxos/cache/web-artifacts` store, both outside any repo — not the
 // tree. So it is not in the push payload,
 // and `push` (which asks for `--scope tree`) does not run it; `build`, a
-// standalone `./equin check`, and main's post-push auto-build do. It
+// standalone `./muxos check`, and main's post-push auto-build do. It
 // therefore owes a `cacheSignature()` covering that deploy state, since the
 // runner's tree hash does not reach it — see `Check.scope`.
 //
@@ -15,7 +15,7 @@
 //   real failure (nothing deployed, or a pre-artifacts dist), not the old
 //   "monolith ⇒ nothing to verify" pass, and a checkout registered to no
 //   namespace at all fails before that, with no path to name. A stale map fails
-//   with the `./equin build` fix. Skips (uncached) inside a `./equin build`
+//   with the `./muxos build` fix. Skips (uncached) inside a `./muxos build`
 //   process, where the dist under inspection is the one that very build is about
 //   to replace — standalone runs verify for real.
 //
@@ -70,7 +70,7 @@ import { extractEntryScriptSrc, extractImportMap } from "./scan";
 
 const MARKER_NAME = ".web-artifacts.json";
 const BUILD_HINT =
-  "Run `./equin build` to recompose the dist from the current tree.";
+  "Run `./muxos build` to recompose the dist from the current tree.";
 
 /**
  * Which dist this checkout deploys, or the fact that it deploys none.
@@ -185,7 +185,7 @@ const mapInSync: Check = {
     return sha256(`${marker}\n${html}`);
   },
   async run(ctx: CheckContext): Promise<CheckResult> {
-    // See run-context.ts: during `./equin build` the checks race the
+    // See run-context.ts: during `./muxos build` the checks race the
     // frontend build, so the deployed dist is by definition the one this build
     // replaces — comparing it against the current tree would fail every build
     // that changes source. Push/standalone runs verify for real.
@@ -202,7 +202,7 @@ const mapInSync: Check = {
         ok: false,
         message:
           `no deploy is registered to this checkout, so there is no dist to compare against — ` +
-          `\`./equin build\` has never published one from here.` +
+          `\`./muxos build\` has never published one from here.` +
           serves(dist.others),
         hint: BUILD_HINT,
       };

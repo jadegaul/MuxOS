@@ -2,8 +2,8 @@
 // every byte of it is already in the browser's caches — the case a returning
 // user of the local app is in on every load.
 //
-//   ./equin run plugins/debug/plugins/profiling/plugins/cold-start/e2e/warm-load.ts \
-//     [--path /agents] [--iterations 5] [--coverage] [--out "$EQUIN_SCRATCH/warm.json"]
+//   ./muxos run plugins/debug/plugins/profiling/plugins/cold-start/e2e/warm-load.ts \
+//     [--path /agents] [--iterations 5] [--coverage] [--out "$MUXOS_SCRATCH/warm.json"]
 //
 // One browser context (its HTTP and V8 code caches filled by one warm-up load,
 // no Playwright route — any route disables the HTTP cache; see this plugin's

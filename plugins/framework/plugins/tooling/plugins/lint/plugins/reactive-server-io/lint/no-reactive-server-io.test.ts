@@ -1,6 +1,6 @@
 /**
  * Tests for the `no-reactive-server-io` lint rule. Run with
- * `./equin test plugins/framework/plugins/tooling/plugins/lint/plugins/reactive-server-io`.
+ * `./muxos test plugins/framework/plugins/tooling/plugins/lint/plugins/reactive-server-io`.
  *
  * The rule flags server I/O inside a `useEffect` / `useLayoutEffect` that reacts
  * to shared live-state, because every open tab receives the same push and runs

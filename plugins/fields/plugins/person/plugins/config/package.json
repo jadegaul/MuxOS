@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-fields-person-config",
+  "name": "@muxos/plugin-fields-person-config",
   "version": "0.0.1",
   "private": true,
   "description": "Person field factory (personField) for building field records."

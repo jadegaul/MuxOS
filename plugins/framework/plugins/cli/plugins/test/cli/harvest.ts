@@ -30,7 +30,7 @@ const GIT_TIMEOUT_MS = 30_000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
- * The harvest's half of a test run (`./equin test` feeding Debug → Tests):
+ * The harvest's half of a test run (`./muxos test` feeding Debug → Tests):
  * digests taken BEFORE the runners start, a record written AFTER the verdict.
  * Nothing here may fail the run: every failure is one loud line and the
  * harvest is skipped, while the tests' own verdict stands.
@@ -41,7 +41,7 @@ export interface HarvestStart {
   startedAt: string;
 }
 
-/** Who started this run: `EQUIN_TEST_ORIGIN`, unset = an agent typed it. */
+/** Who started this run: `MUXOS_TEST_ORIGIN`, unset = an agent typed it. */
 function readOrigin(): TestRunOrigin {
   const raw = readEnv("TEST_ORIGIN");
   if (raw === undefined) return "agent";

@@ -50,7 +50,7 @@ describe("isRepoProjectDir", () => {
   });
 
   test("honours a renamed repo basename", () => {
-    expect(isRepoProjectDir("-Users-epot-dev-equin", "equin")).toBe(true);
-    expect(isRepoProjectDir("-Users-epot-dev-equin", REPO)).toBe(false);
+    expect(isRepoProjectDir("-Users-epot-dev-muxos", "muxos")).toBe(true);
+    expect(isRepoProjectDir("-Users-epot-dev-muxos", REPO)).toBe(false);
   });
 });

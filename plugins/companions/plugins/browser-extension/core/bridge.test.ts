@@ -62,12 +62,12 @@ describe("bridge schemas", () => {
       BridgeRequestSchema.parse({
         id: 1,
         method: "navigate",
-        params: { url: "http://equin.localhost:9000/about" },
+        params: { url: "http://muxos.localhost:9000/about" },
       }),
     ).toEqual({
       id: 1,
       method: "navigate",
-      params: { url: "http://equin.localhost:9000/about" },
+      params: { url: "http://muxos.localhost:9000/about" },
     });
     expect(
       BridgeRequestSchema.safeParse({

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { describeBrowserCall } from "./describe";
 
-const T = (n: string) => `mcp__equin__browser_${n}`;
+const T = (n: string) => `mcp__muxos__browser_${n}`;
 
 describe("describeBrowserCall", () => {
   test("navigate shows the url", () => {

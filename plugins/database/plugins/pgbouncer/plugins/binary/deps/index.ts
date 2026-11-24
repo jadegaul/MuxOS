@@ -1,8 +1,9 @@
 import type { DepTarget } from "@plugins/infra/plugins/deps/deps";
 import { defineDep } from "@plugins/infra/plugins/deps/deps";
 import { npmPackageCopy } from "@plugins/infra/plugins/deps/plugins/package-copy/deps";
+import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 
-/** `@equin/pgbouncer-<platform>`, the package carrying this target's binary. */
+/** The package carrying this target's pgbouncer binary. */
 function pgbouncerPackage(target: DepTarget): string {
   const tags: Record<string, Record<string, string>> = {
     darwin: { arm64: "darwin-arm64", x64: "darwin-x64" },
@@ -14,17 +15,17 @@ function pgbouncerPackage(target: DepTarget): string {
       `pgbouncer: no PgBouncer build for ${target.platform}/${target.arch}`,
     );
   }
-  return `@equin/pgbouncer-${tag}`;
+  return `${LEGACY_IDS.npmScope}/pgbouncer-${tag}`;
 }
 
 /**
- * The PgBouncer binary: a copy of this platform's `@equin/pgbouncer` package
+ * The PgBouncer binary: a copy of this platform's pgbouncer package
  * outside the checkout, so a `bun install` that moves the package never
  * replaces the binary under the running daemon, and the next start does not
  * silently run a new version.
  *
  * Pinned: the start script runs the install the pin holds; moving it is
- * `./equin deps pin pgbouncer-binary`, then a restart of PgBouncer.
+ * `./muxos deps pin pgbouncer-binary`, then a restart of PgBouncer.
  */
 export const pgbouncerBinary = defineDep({
   id: "pgbouncer-binary",

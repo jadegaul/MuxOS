@@ -93,7 +93,7 @@ export async function catalogMismatches(
     if (slot.meta.catalog !== undefined) continue;
     if (!catalog.lists.has(id)) {
       problems.push(
-        `list "${id}" (${pluginId}) is declared by a loaded plugin but is not in the page's list catalog — the catalog is stale; run \`./equin build\``,
+        `list "${id}" (${pluginId}) is declared by a loaded plugin but is not in the page's list catalog — the catalog is stale; run \`./muxos build\``,
       );
     }
   }

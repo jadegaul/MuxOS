@@ -19,7 +19,7 @@ import {
  * 2026-11-05), then a SIGKILL at the readiness deadline. The gateway strips it
  * from every request it proxies, so only its own probe carries it.
  */
-export const BOOT_TIER_HEADER = "X-Equin-Boot-Tier";
+export const BOOT_TIER_HEADER = "X-MuxOS-Boot-Tier";
 
 /** The tier values the probe carries (`bootTierBackground` / `bootTierForeground` in Go). */
 export const BOOT_TIERS = {

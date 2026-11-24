@@ -25,7 +25,7 @@ export { onRunTerminal } from "./internal/run-terminal";
 
 export default {
   description:
-    "Build, desktop-only half: runs `./equin build` as a supervised job (the Build and Serve routes), the run-terminal watcher, and the backend's side of main's auto-build — which the gateway runs (`./equin build --allow-main --converge`, build/converge), not this backend: the bell for the builds it ran, and the two optional edges only a backend sees (the compositions config changing, the composition cadence tick).",
+    "Build, desktop-only half: runs `./muxos build` as a supervised job (the Build and Serve routes), the run-terminal watcher, and the backend's side of main's auto-build — which the gateway runs (`./muxos build --allow-main --converge`, build/converge), not this backend: the bell for the builds it ran, and the two optional edges only a backend sees (the compositions config changing, the composition cadence tick).",
   httpRoutes: {
     [triggerBuildEndpoint.route]: handleBuild,
     [serveCompositionEndpoint.route]: handleServeComposition,

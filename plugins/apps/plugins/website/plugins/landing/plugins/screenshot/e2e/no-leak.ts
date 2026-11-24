@@ -80,7 +80,7 @@
  *
  * Manual only — nothing runs this automatically. Refuses main (the DB check
  * reads this deploy's database).
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/no-leak.ts [--out /tmp/demo-no-leak] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/no-leak.ts [--out /tmp/demo-no-leak] [--headed]
  */
 import type { Locator, Page, WebSocket } from "playwright";
 import { tapSharedSocket } from "@plugins/primitives/plugins/networking/e2e";

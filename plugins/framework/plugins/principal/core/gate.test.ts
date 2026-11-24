@@ -83,7 +83,7 @@ describe("gateByPrincipal", () => {
       {
         headers: {
           [PRINCIPAL_HEADER]: "owner",
-          "x-forwarded-host": "equin.localhost:9000",
+          "x-forwarded-host": "muxos.localhost:9000",
         },
       },
     );
@@ -91,7 +91,7 @@ describe("gateByPrincipal", () => {
       await gated(req, { id: "proto-1", file: "index.html" })
     ).json()) as { reason: string; url: string | null; message: string };
     const want =
-      "http://proto-1.content.localhost:9000/equin/api/prototypes/proto-1/index.html?palette=azure";
+      "http://proto-1.content.localhost:9000/muxos/api/prototypes/proto-1/index.html?palette=azure";
     expect(body.reason).toBe("content-only");
     expect(body.url).toBe(want);
     expect(body.message).toContain(want);

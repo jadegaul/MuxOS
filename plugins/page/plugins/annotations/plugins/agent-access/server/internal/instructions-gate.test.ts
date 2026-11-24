@@ -4,8 +4,8 @@
  * that delivers, the refusal coming back after an edit, and the connect-time
  * global section.
  *
- * Run: `./equin test plugins/page/plugins/annotations/plugins/agent-access`
- * (requires the running embedded cluster, and a `./equin build` that has
+ * Run: `./muxos test plugins/page/plugins/annotations/plugins/agent-access`
+ * (requires the running embedded cluster, and a `./muxos build` that has
  * generated the `page_instructions_deliveries` migration).
  */
 

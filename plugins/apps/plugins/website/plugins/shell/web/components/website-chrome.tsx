@@ -3,7 +3,7 @@ import { PaneChrome, type AnyPane } from "@plugins/primitives/plugins/pane/web";
 import { Theme } from "@plugins/primitives/plugins/css/plugins/theme-boundary/web";
 import { subThemeScope } from "@plugins/primitives/plugins/css/plugins/ui-kit/core";
 import type { SubTheme } from "@plugins/ui/plugins/theme-engine/core";
-import { equinDocumentTheme } from "../internal/theme";
+import { muxosDocumentTheme } from "../internal/theme";
 import { WebsitePageKeyProvider } from "../internal/section-reach";
 import { WebsitePage } from "./website-page";
 
@@ -17,7 +17,7 @@ import { WebsitePage } from "./website-page";
  * would be a page missing its footer, and nothing would say so.
  *
  * It is also where a page takes on the site's page sizes: the whole pane —
- * header included — wears the `equin-document` sub-theme, while a popup opened
+ * header included — wears the `muxos-document` sub-theme, while a popup opened
  * from it (the Improve panel, the header's `⋯`) goes back to the app's standard
  * UI sizes.
  *
@@ -46,7 +46,7 @@ export function WebsiteChrome({
     // default (subpixel on macOS) sets the site's light-on-dark words a weight
     // heavier than the mock.
     <Theme
-      name={subThemeScope(equinDocumentTheme)}
+      name={subThemeScope(muxosDocumentTheme)}
       surface="canvas"
       className="h-full antialiased"
     >

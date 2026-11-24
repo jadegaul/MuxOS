@@ -69,22 +69,22 @@ function executedModule(args: string[]): string | undefined {
 }
 
 /**
- * Whether the module `call` executes sits in a equin checkout — the only
+ * Whether the module `call` executes sits in a muxos checkout — the only
  * place resolution can walk up into a checkout's `node_modules`, and the only
- * place `./equin run` (the fix the hint names) exists. A script in a scratch
+ * place `./muxos run` (the fix the hint names) exists. A script in a scratch
  * workspace or any other directory outside a checkout is left alone.
  */
 function runsInCheckout(call: ShellCall, cwd: string): boolean {
   const script = executedModule(call.args);
   if (script === undefined) return false;
   const path = script.startsWith("/") ? script : `${call.cwd || cwd}/${script}`;
-  return classifyRepo(path).kind === "equin";
+  return classifyRepo(path).kind === "muxos";
 }
 
 /**
  * Where the script operand sits in `args` when `bun [run] <script>` is ALL the
  * call says before it — `undefined` when a bun flag precedes it (`--cpu-prof`,
- * `--bun`, `--cwd`): `./equin run` forwards nothing to bun itself, so those
+ * `--bun`, `--cwd`): `./muxos run` forwards nothing to bun itself, so those
  * calls have no equivalent to rewrite to.
  */
 function bareScriptIndex(args: string[]): number | undefined {
@@ -94,9 +94,9 @@ function bareScriptIndex(args: string[]): number | undefined {
 }
 
 /**
- * Whether `./equin run` would run this call's script exactly as `bun` would:
+ * Whether `./muxos run` would run this call's script exactly as `bun` would:
  * no bun flags, and the call already runs AT the root of the checkout holding
- * the script. `./equin run` cd's to that root and resolves the script — and
+ * the script. `./muxos run` cd's to that root and resolves the script — and
  * the script then resolves its own relative arguments — from there, so from
  * any other directory the same words would name other files.
  */
@@ -106,7 +106,7 @@ function rewritable(call: ShellCall): boolean {
   const script = call.args[at]!;
   const path = script.startsWith("/") ? script : `${call.cwd}/${script}`;
   const repo = classifyRepo(path);
-  return repo.kind === "equin" && repo.root === call.cwd;
+  return repo.kind === "muxos" && repo.root === call.cwd;
 }
 
 export const bunScriptGuard = defineGuard<BashInput>({
@@ -146,7 +146,7 @@ export const bunScriptGuard = defineGuard<BashInput>({
     return {
       blocked: `\`bun ${script}\` runs the script against whichever checkout's \`node_modules\` it happens to find first. A bare \`bun <script>\` run from the checkout root is rewritten for you; this one could not be (a bun flag before the script, or a working directory other than the checkout root, where \`./${CLI_NAME} run\` would resolve the paths differently).`,
       why: "Module resolution walks UP the directory tree, so a worktree without its own `node_modules` silently uses the MAIN checkout's installed tree — or, if that is mid-install, whatever the registry's `latest` is today. Which dependency versions the script gets depends on timing, not on this branch's `bun.lock`. That is how an e2e script came to launch a Playwright the lockfile never chose, demanding a chromium revision nothing had provisioned.",
-      hint: `Use \`./equin run ${script} [args…]\` — it installs this worktree's own dependencies from its own lock (and provisions their binaries) first, then runs the script. \`bun run <script-name>\`, \`bun install\`, \`bun test\` and \`bunx\` are untouched: they resolve a bin or a subcommand, not a module.`,
+      hint: `Use \`./muxos run ${script} [args…]\` — it installs this worktree's own dependencies from its own lock (and provisions their binaries) first, then runs the script. \`bun run <script-name>\`, \`bun install\`, \`bun test\` and \`bunx\` are untouched: they resolve a bin or a subcommand, not a module.`,
     };
   },
 });

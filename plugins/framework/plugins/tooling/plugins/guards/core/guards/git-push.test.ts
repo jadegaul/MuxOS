@@ -9,16 +9,16 @@ import { gitPushGuard } from "./git-push";
 const root = mkdtempSync(join(tmpdir(), "git-push-guard-"));
 afterAll(() => rmSync(root, { recursive: true, force: true }));
 
-// An equin checkout: a `.git` FILE (as in a worktree) plus the CLI.
-const equinRepo = join(root, "equin-wt");
-mkdirSync(join(equinRepo, "plugins/framework/plugins/cli/bin"), {
+// An muxos checkout: a `.git` FILE (as in a worktree) plus the CLI.
+const muxosRepo = join(root, "muxos-wt");
+mkdirSync(join(muxosRepo, "plugins/framework/plugins/cli/bin"), {
   recursive: true,
 });
-mkdirSync(join(equinRepo, "src/deep"), { recursive: true });
-writeFileSync(join(equinRepo, ".git"), "gitdir: elsewhere\n");
-writeFileSync(join(equinRepo, "equin"), "#!/bin/sh\n");
+mkdirSync(join(muxosRepo, "src/deep"), { recursive: true });
+writeFileSync(join(muxosRepo, ".git"), "gitdir: elsewhere\n");
+writeFileSync(join(muxosRepo, "muxos"), "#!/bin/sh\n");
 writeFileSync(
-  join(equinRepo, "plugins/framework/plugins/cli/bin/index.ts"),
+  join(muxosRepo, "plugins/framework/plugins/cli/bin/index.ts"),
   "",
 );
 
@@ -34,13 +34,13 @@ const blocks = (command: string, cwd: string) =>
   (gitPushGuard.check({ command }, createContext(cwd)) as Verdict).kind ===
   "deny";
 
-describe("git-push guard targets only equin checkouts", () => {
-  test("blocks a push from an equin checkout", () => {
-    expect(blocks("git push origin main", equinRepo)).toBe(true);
+describe("git-push guard targets only muxos checkouts", () => {
+  test("blocks a push from an muxos checkout", () => {
+    expect(blocks("git push origin main", muxosRepo)).toBe(true);
   });
 
-  test("blocks from a subdirectory of an equin checkout", () => {
-    expect(blocks("git push", join(equinRepo, "src/deep"))).toBe(true);
+  test("blocks from a subdirectory of an muxos checkout", () => {
+    expect(blocks("git push", join(muxosRepo, "src/deep"))).toBe(true);
   });
 
   test("allows a push from another repo", () => {
@@ -49,33 +49,33 @@ describe("git-push guard targets only equin checkouts", () => {
   });
 
   test("follows cd into another repo", () => {
-    expect(blocks(`cd ${other} && git push`, equinRepo)).toBe(false);
+    expect(blocks(`cd ${other} && git push`, muxosRepo)).toBe(false);
   });
 
-  test("follows cd into an equin checkout", () => {
-    expect(blocks(`cd ${equinRepo} && git push`, other)).toBe(true);
+  test("follows cd into an muxos checkout", () => {
+    expect(blocks(`cd ${muxosRepo} && git push`, other)).toBe(true);
   });
 
   test("follows -C, relative to the call's cwd", () => {
-    expect(blocks(`git -C ${other} push`, equinRepo)).toBe(false);
-    expect(blocks("git -C ../equin-wt push", other)).toBe(true);
-    expect(blocks(`git -c a.b=c -C ${equinRepo} push`, other)).toBe(true);
+    expect(blocks(`git -C ${other} push`, muxosRepo)).toBe(false);
+    expect(blocks("git -C ../muxos-wt push", other)).toBe(true);
+    expect(blocks(`git -c a.b=c -C ${muxosRepo} push`, other)).toBe(true);
   });
 
-  test("an equin push later in the chain is still caught", () => {
-    expect(blocks(`git push; git -C ${equinRepo} push`, other)).toBe(true);
+  test("an muxos push later in the chain is still caught", () => {
+    expect(blocks(`git push; git -C ${muxosRepo} push`, other)).toBe(true);
   });
 
-  test("an unfollowed repository spelling is treated as equin", () => {
+  test("an unfollowed repository spelling is treated as muxos", () => {
     expect(blocks(`git --git-dir=${other}/.git push`, other)).toBe(true);
     expect(blocks("GIT_DIR=.git git push", other)).toBe(true);
   });
 
-  test("a directory that is no repo is treated as equin", () => {
+  test("a directory that is no repo is treated as muxos", () => {
     expect(blocks("git push", notARepo)).toBe(true);
   });
 
   test("other git subcommands are untouched", () => {
-    expect(blocks("git -C . status", equinRepo)).toBe(false);
+    expect(blocks("git -C . status", muxosRepo)).toBe(false);
   });
 });

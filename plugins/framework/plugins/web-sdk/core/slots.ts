@@ -54,7 +54,7 @@ export interface CompanionFlag {
  * Ordering is never a number on a slot contribution: a slot whose contributions
  * paint UI is a `defineRenderSlot` (or `defineOrderedDispatchSlot` when its host
  * draws its own rows) and its order is the slot's reorder config layout
- * (`config/<plugin>/<slotId>.jsonc`, seeded by `./equin build`). A plain
+ * (`config/<plugin>/<slotId>.jsonc`, seeded by `./muxos build`). A plain
  * `defineSlot` is data read as data. A number that means something else is
  * named for what it means.
  */

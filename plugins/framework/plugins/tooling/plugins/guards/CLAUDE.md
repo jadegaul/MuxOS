@@ -13,7 +13,7 @@ Once, in `plugins/agent-policy` (hooks + deny rules). `.claude/settings.json`'s
 it — so a scratch-workspace agent, whose cwd loads no project settings, is
 guarded too. Never add a hook to `.claude/settings.json` by hand
 (`guards:claude-settings-in-sync`). An app launch also names the workspace root
-(`EQUIN_WORKSPACE_ROOT` → `ctx.workRoot` / `ctx.protectedRoot`): the
+(`MUXOS_WORKSPACE_ROOT` → `ctx.workRoot` / `ctx.protectedRoot`): the
 write guards' boundary, for any workspace kind.
 
 ## The guard survives a broken checkout
@@ -38,7 +38,7 @@ command blocks. A mistake in the bootstrap files themselves still locks the
 checkout out — keep them tiny.
 
 **An uninstalled checkout counts as broken.** Before the dynamic import, the
-bootstrap checks for the install stamp (`node_modules/.equin-deps`, a literal
+bootstrap checks for the install stamp (`node_modules/.muxos-deps`, a literal
 `bootstrap.test.ts` pins to `ensureDeps`'s `STAMP_REL`); without it, Bun would
 resolve the guard's npm packages by walking up into main's `node_modules`. So a
 missing stamp is a live failure with that reason, and main's guard runs.
@@ -56,7 +56,7 @@ A subagent's background-task completion notification is filed under the PARENT
 session's queue and never delivered, so an agent that backgrounds a build and
 ends its turn is never woken — and whoever waits on it waits forever (measured:
 nine hours). `background-ops` therefore tells a subagent to hold its turn open on
-`./equin await <op>` instead, and records which agent started which op
+`./muxos await <op>` instead, and records which agent started which op
 (`core/agent-ops.ts`), because neither half of "is this agent walking away from
 its own op?" is available at stop time: the marker on disk doesn't say who asked,
 and the stop payload doesn't say what they started.
@@ -116,12 +116,12 @@ cache the whole host shares.
   walk's denial names its depth against the bound — it once said only "not a
   bounded place" to an `fd -d 3` while advising `fd -d 2` (measured 2026-11-18:
   185 refusals in 7 days, none of a walk within the bound; ~19 named one deep
-  subdirectory with a depth past it, the rest `~/.equin` / `~/.claude/projects`
+  subdirectory with a depth past it, the rest `~/.muxos` / `~/.claude/projects`
   3–8 levels deep — no per-dir allowlist).
 - **A warning, not a wall.** Its denial is `allowOnRepeat`: the first
   out-of-scope search is refused with the narrowing hints, and the same agent
   repeating the IDENTICAL call is let through — a deliberate search of
-  `~/.equin/logs` is the agent's call once it has read the cost. The allowlist
+  `~/.muxos/logs` is the agent's call once it has read the cost. The allowlist
   stays as narrow as it was; only a repeat widens it, one call at a time.
 
 ## A scratch file is the session's own
@@ -135,9 +135,9 @@ the commit carried the other task's message. Over the 4 days before, 225 of
 546 sessions used fixed `/tmp/<name>`s and 62 names were used by two or more.
 
 So every session has a private directory (`infra/launcher/agent-scratch`):
-`/tmp/equin-scratch/<conversation id>`, created by the launcher and delivered
-as `$EQUIN_SCRATCH`; a session no app launched gets
-`/tmp/equin-scratch/<Claude session id>`, named in the denial (`ctx.scratch`).
+`/tmp/muxos-scratch/<conversation id>`, created by the launcher and delivered
+as `$MUXOS_SCRATCH`; a session no app launched gets
+`/tmp/muxos-scratch/<Claude session id>`, named in the denial (`ctx.scratch`).
 Claude Code's own per-session dir (`/tmp/claude-<uid>/<slug>/<session id>/`,
 its task outputs and scratchpad) counts as the session's too. A name unique by
 construction passes: a `mktemp` name held in a variable, a Bash path still
@@ -174,7 +174,7 @@ write by WHERE it lands asks it, never rebuilds it.
 ## The data root is declared, never written by hand
 
 `data-root-writes` (Bash, Write, Edit, NotebookEdit) refuses a write that would
-create an entry at the data root (`~/.equin`) nothing declares — the question
+create an entry at the data root (`~/.muxos`) nothing declares — the question
 `paths:no-undeclared-data-dirs` asks hourly AFTER the fact, asked BEFORE the
 write lands (`dataRootWriteViolationSync`, `infra/paths` core). A data dir comes
 into existence through its declaration's `ensure()`, so a write by hand may
@@ -185,11 +185,11 @@ the root (`postgres`, `sockets` — read from the machine's data-dirs
 manifests). Reads and removals (`rm` of a stray is the repair) pass.
 
 Written after 2026-11-10, when two agents put screenshots there: one copied its
-browser screenshots to `~/.equin/demo-audit-2026-11-10/` so the tasks it filed
+browser screenshots to `~/.muxos/demo-audit-2026-11-10/` so the tasks it filed
 could cite them; one, refused by `launcher:env-names` for spelling
-`process.env.EQUIN_SCRATCH`, hard-coded `~/.equin/tmp-probe-…png` into its
+`process.env.MUXOS_SCRATCH`, hard-coded `~/.muxos/tmp-probe-…png` into its
 probe script. The audit then failed every hour. The denial points at
-`$EQUIN_SCRATCH` (`readEnv("SCRATCH")` in a script), attaching evidence to
+`$MUXOS_SCRATCH` (`readEnv("SCRATCH")` in a script), attaching evidence to
 the task, and `defineDataDir` for durable state. A script that writes under
 the root from inside (the second case) is outside what a hook sees; the
 `env-names` refusal now names the exact `readEnv("<KEY>")` replacement, and the
@@ -285,9 +285,9 @@ Two kinds, placed at opposite ends of the registry:
 The corrective ones were measured on 45 days of Opus 5.5 transcripts before
 they existed (denials → the agent's next call):
 
-- `bun-script`, 31 denials: the retry was `./equin run <same script> <same
+- `bun-script`, 31 denials: the retry was `./muxos run <same script> <same
   args>` nearly every time. Rewritten only with no bun flag before the script
-  and a cwd AT the checkout root — `./equin run` cd's there, so from elsewhere
+  and a cwd AT the checkout root — `./muxos run` cd's there, so from elsewhere
   the same words name other files.
 - `git-diff-main`, 68: mostly FALSE positives — `git diff X origin/main` and
   `git diff HEAD origin/main` are deliberate, and were re-run unchanged. Only
@@ -298,9 +298,9 @@ they existed (denials → the agent's next call):
 
 `background-ops` is a judging guard that rewrites one case
 (2026-11-14 audit: 75 refusals in 7 days, each retried as the same command
-with `run_in_background: true`). A foreground `./equin build|push` is moved to
+with `run_in_background: true`). A foreground `./muxos build|push` is moved to
 the background, with a note — end your turn, or for a subagent
-`./equin await <op>` (its op is recorded for the stop guard exactly as a
+`./muxos await <op>` (its op is recorded for the stop guard exactly as a
 backgrounded one) — when the command is the op alone: its flags, `2>&1`, the
 `-m "$(cat <<'EOF' … EOF)"` message, a leading `cd <dir> &&`/`;`, a trailing
 `| tail -N`. Those last two are what the refused calls actually looked like
@@ -319,11 +319,11 @@ the result set instead (gitignored and hidden files vanish; `-type d`,
 `-mtime`, `-exec` have no equivalent).
 
 `foreground-deadline` exports the call's cut-off instant
-(`EQUIN_FOREGROUND_DEADLINE`) into a foreground `check` / `test` and raises its
+(`MUXOS_FOREGROUND_DEADLINE`) into a foreground `check` / `test` and raises its
 timeout to the 600 s ceiling, so the op hands itself off before the harness can
 kill it (`cli/plugins/foreground-handoff`); `background-ops` therefore lets those
 two through in the foreground and holds only `build` / `push` / `release` to the
-background. `background-timeout` raises a backgrounded `./equin` call to the
+background. `background-timeout` raises a backgrounded `./muxos` call to the
 2 h ceiling; `e2e-tool-use-id` exports the tool-use id into an e2e run.
 
 `pipefail`: `cmd | tail -20` exits with tail's status, so a
@@ -366,7 +366,7 @@ judged it — and the command that uses it (`plugins/bypass`, appended by the
 runner so no guard can leave it out):
 
 ```
-./equin guard bypass <guard>#<hash> --reason "<why this exact call is safe>"
+./muxos guard bypass <guard>#<hash> --reason "<why this exact call is safe>"
 ```
 
 Run as its OWN tool call (chained into anything, it is refused), it is recorded
@@ -390,7 +390,7 @@ what they would have done. Re-run `--guards` after touching `core/parse-shell.ts
 or `core/argv.ts` — both are inputs every Bash guard shares, so a change there
 can blind or deafen all of them at once.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
@@ -463,8 +463,8 @@ can blind or deafen all of them at once.
     - `blocking-fs/sync-named` — `core/agent-ops.ts`, `core/context.ts`, `core/git-target.ts`, `core/guards/data-root-writes.ts`, `core/guards/git-diff-main.ts`, `core/guards/poll-loop.ts`, `core/informed-once.ts`, `core/walk-scope.ts` (sanctioned)
 - Sub-plugins:
   - **`agent-policy`** — The protections every agent runs with — the guard and stop-guard hooks and the deny rules — declared once as data: `.claude/settings.json`'s protection keys are generated from it…
-  - **`bypass`** — The guard bypass grammar: a denied call's bypass id (<guard>#<call hash>), the `./equin guard bypass <id> --reason "…"` command that lets that one call through, and its parser — shared by the hook…
-  - **`module-extension`** — MODULE_EXTENSION: the extensions bun loads as a module (.ts/.tsx/.js/.jsx and their m/c forms) — the one set the bun-script guard denies and `./equin run` accepts. A leaf with no imports, so the e2e…
+  - **`bypass`** — The guard bypass grammar: a denied call's bypass id (<guard>#<call hash>), the `./muxos guard bypass <id> --reason "…"` command that lets that one call through, and its parser — shared by the hook…
+  - **`module-extension`** — MODULE_EXTENSION: the extensions bun loads as a module (.ts/.tsx/.js/.jsx and their m/c forms) — the one set the bun-script guard denies and `./muxos run` accepts. A leaf with no imports, so the e2e…
   - **`refusal-format`** — The text format of a guard's denial — the did-not-run banner, then 'Why it was blocked:' and the guard's own reason — written (joinRefusal) and read back (refusalReason) in one place, so a…
   - **`tool-use-id`** — TOOL_USE_ID_RE and toolUseIdFrom(env): the tool-use id a PreToolUse guard stamps into a Bash command's environment (TOOL_USE_ID), so what the command leaves behind (an e2e recording) is filed under…
 

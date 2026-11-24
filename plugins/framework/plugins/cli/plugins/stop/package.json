@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-cli-stop",
+  "name": "@muxos/plugin-framework-cli-stop",
   "private": true,
   "version": "0.0.1",
-  "description": "`./equin stop` — stop the gateway daemon (and with it every backend); `--disable` also stops it starting at login."
+  "description": "`./muxos stop` \u2014 stop the gateway daemon (and with it every backend); `--disable` also stops it starting at login."
 }

@@ -127,7 +127,7 @@ function renderErrorPage(title: string, detail: string): string {
 </head><body>
 <h1>${escapeHtml(title)}</h1>
 <pre>${escapeHtml(detail)}</pre>
-<p>Close this window and complete the setup in equin Settings.</p>
+<p>Close this window and complete the setup in muxos Settings.</p>
 </body></html>`;
 }
 

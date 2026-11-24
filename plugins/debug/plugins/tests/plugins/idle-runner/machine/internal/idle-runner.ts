@@ -30,15 +30,15 @@ import { selectIdleBatch } from "./select-batch";
 //   a batch ended        → ingest its record, then the next batch
 //   host.idleEnded       → cancel the running batch (one batch lost at most)
 //
-// Each batch is an ordinary `./equin test`, OPPORTUNISTIC
-// (`EQUIN_OP_OPPORTUNISTIC`: background lane, low priority, not counted as
+// Each batch is an ordinary `./muxos test`, OPPORTUNISTIC
+// (`MUXOS_OP_OPPORTUNISTIC`: background lane, low priority, not counted as
 // work by the ops blocker — or it would end the idle period it runs in) and
 // marked `idle` in its harvest record.
 
 const idleRunLog = defineLogSink({
   id: "tests-idle-runs",
   description:
-    "Test-status page: the `./equin test` batches run while the computer is idle.",
+    "Test-status page: the `./muxos test` batches run while the computer is idle.",
 });
 
 /** Every batch holds this one lock: at most one runs, and it is what idleEnded cancels. */

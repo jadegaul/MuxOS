@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-database-derived-views",
+  "name": "@muxos/plugin-database-derived-views",
   "private": true,
   "version": "0.0.1"
 }

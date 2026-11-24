@@ -3,12 +3,12 @@
 //! set — the helper keeps no list of its own, so an app's URL, name and
 //! launcher are whatever its shim says.
 //!
-//! - macOS: `~/Applications/equin <Name>.app` whose `Info.plist` carries
-//!   `CFBundleIdentifier dev.equin.app.<id>`, `EquinAppId`, `EquinUrl`,
-//!   `EquinShimHash`, `EquinHelperDigest`.
-//! - Linux: `~/.local/share/applications/equin-<id>.desktop` whose `Exec=`
-//!   is `<helper> window --app <id> --url <url>`, plus `X-Equin-ShimHash` /
-//!   `X-Equin-HelperDigest`.
+//! - macOS: `~/Applications/muxos <Name>.app` whose `Info.plist` carries
+//!   `CFBundleIdentifier dev.muxos.app.<id>`, `MuxOSAppId`, `MuxOSUrl`,
+//!   `MuxOSShimHash`, `MuxOSHelperDigest`.
+//! - Linux: `~/.local/share/applications/muxos-<id>.desktop` whose `Exec=`
+//!   is `<helper> window --app <id> --url <url>`, plus `X-MuxOS-ShimHash` /
+//!   `X-MuxOS-HelperDigest`.
 
 use std::path::PathBuf;
 use std::process::Command;
@@ -72,7 +72,7 @@ impl Roots {
     }
 }
 
-/// An app id as the shims spell it (`dev.equin.app.<id>`, `equin-<id>`).
+/// An app id as the shims spell it (`dev.muxos.app.<id>`, `muxos-<id>`).
 pub fn valid_app_id(id: &str) -> bool {
     !id.is_empty()
         && id.len() <= 64
@@ -81,13 +81,13 @@ pub fn valid_app_id(id: &str) -> bool {
 }
 
 pub fn bundle_id(app_id: &str) -> String {
-    format!("dev.equin.app.{app_id}")
+    format!("dev.muxos.app.{app_id}")
 }
 
 /// The Linux window class / Wayland app id, = the shim's `StartupWMClass`.
 #[cfg_attr(target_os = "macos", allow(dead_code))]
 pub fn wm_class(app_id: &str) -> String {
-    format!("equin-{app_id}")
+    format!("muxos-{app_id}")
 }
 
 /// The app a URL belongs to, by scope: same origin, and its path at or under
@@ -124,14 +124,14 @@ pub fn on_port(url: &Url, port: u16) -> Url {
 
 /// `url` on the gateway's port, when this process KNOWS it (the port file
 /// names one, `Port::known`); otherwise `url` as written — an app window
-/// launched from its shim has no `EQUIN_GATEWAY_PORT_FILE`, and its shim's URL
+/// launched from its shim has no `MUXOS_GATEWAY_PORT_FILE`, and its shim's URL
 /// (rewritten by the tray after a move) is the best port it has. An unreadable
 /// port file is logged and leaves `url` as written too.
 pub fn on_current_port(url: &Url) -> Url {
     match gateway::port() {
         Ok(port) => port.known().map_or_else(|| url.clone(), |port| on_port(url, port)),
         Err(e) => {
-            eprintln!("equin-desktop: {e}; {url} is used as written");
+            eprintln!("muxos-desktop: {e}; {url} is used as written");
             url.clone()
         }
     }
@@ -207,17 +207,17 @@ pub fn launch(shim: &Shim, url: Option<&Url>) -> Result<(), String> {
 pub fn hand_off(url: &Url) {
     let result = match owner_of(url) {
         Some(shim) => {
-            eprintln!("equin-desktop: {url} belongs to installed app {}", shim.app_id);
+            eprintln!("muxos-desktop: {url} belongs to installed app {}", shim.app_id);
             launch(&shim, Some(url))
         }
         None => open_in_browser(url),
     };
     if let Err(e) = result {
-        eprintln!("equin-desktop: cannot open {url}: {e}");
+        eprintln!("muxos-desktop: cannot open {url}: {e}");
     }
 }
 
-/// Every equin shim under the user's home, as routing reads them: each URL on
+/// Every muxos shim under the user's home, as routing reads them: each URL on
 /// the gateway's port when this process knows it (`Port::known`), so a shim
 /// written before the port moved still owns its app's pages (the keeper's next
 /// sync rewrites it on disk — `apps::sync` compares the URL as written,
@@ -230,7 +230,7 @@ pub fn installed() -> Vec<Shim> {
             None => shims,
         },
         Err(e) => {
-            eprintln!("equin-desktop: {e}; the installed apps are routed on the ports they were written with");
+            eprintln!("muxos-desktop: {e}; the installed apps are routed on the ports they were written with");
             shims
         }
     }
@@ -253,11 +253,11 @@ mod platform {
         let value = plist::Value::from_file(bundle.join("Contents/Info.plist")).ok()?;
         let dict = value.as_dictionary()?;
         let get = |k: &str| dict.get(k).and_then(|v| v.as_string()).map(str::to_string);
-        let app_id = get("EquinAppId").filter(|id| valid_app_id(id))?;
+        let app_id = get("MuxOSAppId").filter(|id| valid_app_id(id))?;
         if get("CFBundleIdentifier")? != bundle_id(&app_id) {
             return None;
         }
-        let url = Url::parse(&get("EquinUrl")?).ok().filter(|u| u.scheme() == "http" || u.scheme() == "https")?;
+        let url = Url::parse(&get("MuxOSUrl")?).ok().filter(|u| u.scheme() == "http" || u.scheme() == "https")?;
         let name = get("CFBundleName").unwrap_or_else(|| app_id.clone());
         Some(Shim {
             app_id,
@@ -265,14 +265,14 @@ mod platform {
             url,
             path: bundle.to_path_buf(),
             program: None,
-            hash: get("EquinShimHash"),
-            helper_digest: get("EquinHelperDigest"),
+            hash: get("MuxOSShimHash"),
+            helper_digest: get("MuxOSHelperDigest"),
         })
     }
 
     /// The shim this process runs from: the bundle around the executable
-    /// (`<bundle>/Contents/MacOS/equin-desktop`) when its Info.plist names an
-    /// equin app. `None` for the helper's own `equin.app` and a bare binary.
+    /// (`<bundle>/Contents/MacOS/muxos-desktop`) when its Info.plist names an
+    /// muxos app. `None` for the helper's own `muxos.app` and a bare binary.
     pub fn own_bundle() -> Option<Shim> {
         let exe = std::env::current_exe().ok()?;
         let bundle = exe.parent()?.parent()?.parent()?;
@@ -291,7 +291,7 @@ mod platform {
             .filter(|p| {
                 p.file_name()
                     .and_then(|n| n.to_str())
-                    .is_some_and(|n| n.starts_with("equin ") && n.ends_with(".app"))
+                    .is_some_and(|n| n.starts_with("muxos ") && n.ends_with(".app"))
             })
             .filter_map(|p| read_plist(&p))
             .collect::<Vec<_>>()
@@ -375,9 +375,9 @@ mod platform {
                     name = Some(v.to_string());
                 } else if let Some(v) = line.strip_prefix("Exec=") {
                     exec = Some(v.to_string());
-                } else if let Some(v) = line.strip_prefix("X-Equin-ShimHash=") {
+                } else if let Some(v) = line.strip_prefix("X-MuxOS-ShimHash=") {
                     hash = Some(v.to_string());
-                } else if let Some(v) = line.strip_prefix("X-Equin-HelperDigest=") {
+                } else if let Some(v) = line.strip_prefix("X-MuxOS-HelperDigest=") {
                     helper_digest = Some(v.to_string());
                 }
             }
@@ -408,13 +408,13 @@ mod platform {
             .filter(|p| {
                 p.file_name()
                     .and_then(|n| n.to_str())
-                    .is_some_and(|n| n.starts_with("equin-") && n.ends_with(".desktop"))
+                    .is_some_and(|n| n.starts_with("muxos-") && n.ends_with(".desktop"))
             })
             .filter_map(|p| read_desktop(&p, &std::fs::read_to_string(&p).ok()?))
             .collect()
     }
 
-    /// No URL: `gtk-launch equin-<id>` (the launcher entry, as the desktop
+    /// No URL: `gtk-launch muxos-<id>` (the launcher entry, as the desktop
     /// would). A URL: the entry's own program with that URL (an `Exec=` has no
     /// field code to pass one through).
     pub fn launch(shim: &Shim, url: Option<&Url>) -> Result<(), String> {
@@ -442,30 +442,30 @@ mod tests {
     #[test]
     fn a_shim_written_on_another_port_moves_to_the_current_one() {
         assert_eq!(
-            rebased(&u("http://equin.localhost:9000/mail/t/1?q=1#x"), 8700).map(|u| u.to_string()),
-            Some("http://equin.localhost:8700/mail/t/1?q=1#x".to_string())
+            rebased(&u("http://muxos.localhost:9000/mail/t/1?q=1#x"), 8700).map(|u| u.to_string()),
+            Some("http://muxos.localhost:8700/mail/t/1?q=1#x".to_string())
         );
         assert_eq!(rebased(&u("http://localhost:9000/"), 8701).map(|u| u.to_string()), Some("http://localhost:8701/".into()));
         // Already there.
-        assert_eq!(rebased(&u("http://equin.localhost:8700/mail"), 8700), None);
+        assert_eq!(rebased(&u("http://muxos.localhost:8700/mail"), 8700), None);
         // Not the gateway's: another host, or https (a hosted instance).
         assert_eq!(rebased(&u("http://example.com:9000/mail"), 8700), None);
-        assert_eq!(rebased(&u("https://equin.localhost:9000/mail"), 8700), None);
+        assert_eq!(rebased(&u("https://muxos.localhost:9000/mail"), 8700), None);
         assert_eq!(on_port(&u("http://example.com:9000/mail"), 8700).as_str(), "http://example.com:9000/mail");
         assert_eq!(on_port(&u("http://a.localhost:9000/mail"), 8700).as_str(), "http://a.localhost:8700/mail");
     }
 
     #[test]
     fn scope_is_origin_and_base_path() {
-        let base = u("http://equin.localhost:9000/mail");
-        assert!(in_scope(&base, &u("http://equin.localhost:9000/mail")));
-        assert!(in_scope(&base, &u("http://equin.localhost:9000/mail/inbox?x=1")));
-        assert!(!in_scope(&base, &u("http://equin.localhost:9000/mailbox")));
-        assert!(!in_scope(&base, &u("http://equin.localhost:9000/agents")));
+        let base = u("http://muxos.localhost:9000/mail");
+        assert!(in_scope(&base, &u("http://muxos.localhost:9000/mail")));
+        assert!(in_scope(&base, &u("http://muxos.localhost:9000/mail/inbox?x=1")));
+        assert!(!in_scope(&base, &u("http://muxos.localhost:9000/mailbox")));
+        assert!(!in_scope(&base, &u("http://muxos.localhost:9000/agents")));
         assert!(!in_scope(&base, &u("http://other.localhost:9000/mail")));
         assert!(!in_scope(&base, &u("https://example.com/mail")));
-        let root = u("http://equin.localhost:9000/");
-        assert!(in_scope(&root, &u("http://equin.localhost:9000/anything")));
+        let root = u("http://muxos.localhost:9000/");
+        assert!(in_scope(&root, &u("http://muxos.localhost:9000/anything")));
     }
 
     #[test]
@@ -481,11 +481,11 @@ mod tests {
     #[cfg(target_os = "linux")]
     #[test]
     fn reads_a_desktop_entry() {
-        let text = "[Desktop Entry]\nType=Application\nName=Mail\nExec=\"/home/u/.equin/state/menu-bar/equin desktop\" window --app mail --url http://equin.localhost:9000/mail\nStartupWMClass=equin-mail\n";
-        let shim = platform::read_desktop(std::path::Path::new("/x/equin-mail.desktop"), text).unwrap();
+        let text = "[Desktop Entry]\nType=Application\nName=Mail\nExec=\"/home/u/.muxos/state/menu-bar/muxos desktop\" window --app mail --url http://muxos.localhost:9000/mail\nStartupWMClass=muxos-mail\n";
+        let shim = platform::read_desktop(std::path::Path::new("/x/muxos-mail.desktop"), text).unwrap();
         assert_eq!(shim.app_id, "mail");
         assert_eq!(shim.name, "Mail");
-        assert_eq!(shim.program.as_deref(), Some("/home/u/.equin/state/menu-bar/equin desktop"));
-        assert!(platform::read_desktop(std::path::Path::new("/x/equin-other.desktop"), text).is_none());
+        assert_eq!(shim.program.as_deref(), Some("/home/u/.muxos/state/menu-bar/muxos desktop"));
+        assert!(platform::read_desktop(std::path::Path::new("/x/muxos-other.desktop"), text).is_none());
     }
 }

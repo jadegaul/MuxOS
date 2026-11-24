@@ -80,7 +80,7 @@ export const computerFileCreate = defineEndpoint({
   needsMachine: COMPUTER,
 });
 
-/** {@link computerFileCreate} in the browser's storage (never under `~/.equin/`). */
+/** {@link computerFileCreate} in the browser's storage (never under `~/.muxos/`). */
 export const browserFileCreate = defineEndpoint({
   route: "POST /api/files/browser/create",
   body: CreateBodySchema,

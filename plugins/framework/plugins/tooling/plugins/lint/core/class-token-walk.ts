@@ -24,7 +24,7 @@ import type { DeclaredUtilities } from "./declared-utility-types";
  * import that jiti would then try (and fail) to resolve.
  *
  * A rule that declared its own walk would be back where we started, so
- * `./equin check class-token-walk-single-source` fails if any rule file
+ * `./muxos check class-token-walk-single-source` fails if any rule file
  * declares one.
  */
 

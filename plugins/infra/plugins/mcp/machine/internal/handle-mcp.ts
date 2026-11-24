@@ -78,7 +78,7 @@ function mcpFailureResponse(
     id,
     error: {
       code: INTERNAL_ERROR,
-      message: `${what} failed: the equin server could not serve it: ${err.message}`,
+      message: `${what} failed: the muxos server could not serve it: ${err.message}`,
     },
   }));
   return Response.json(errors.length === 1 ? errors[0] : errors, {
@@ -125,7 +125,7 @@ async function answerMcpRequest(
 }
 
 /**
- * Who a request is for: a conversation equin launched, or a session it did not
+ * Who a request is for: a conversation muxos launched, or a session it did not
  * (`MCP_UNATTACHED_ID` — a `claude` started in a terminal).
  */
 export type McpCaller =

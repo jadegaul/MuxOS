@@ -16,8 +16,8 @@ describe("parseFileLinks", () => {
   });
 
   it("matches an absolute path, line suffix included", () => {
-    expect(paths("File: /tmp/equin-promo/equin-promo.webm (16 MB)")).toEqual([
-      "/tmp/equin-promo/equin-promo.webm",
+    expect(paths("File: /tmp/muxos-promo/muxos-promo.webm (16 MB)")).toEqual([
+      "/tmp/muxos-promo/muxos-promo.webm",
     ]);
     expect(paths("/srv/repo/src/a.ts:12")).toEqual(["/srv/repo/src/a.ts:12"]);
   });

@@ -81,7 +81,7 @@ export interface DirectOpContext<K extends OpKind> {
   /** `undefined` exactly when `nested`: a nested op records nothing of its own. */
   profiler: OpProfiler<K> | undefined;
   /**
-   * The op runs only because the host is idle (`EQUIN_OP_OPPORTUNISTIC=1`):
+   * The op runs only because the host is idle (`MUXOS_OP_OPPORTUNISTIC=1`):
    * it acquires on the background lane at low priority and its marker and
    * op-log record say so, so the host idle signal does not count it as work.
    * Always false when `nested` (a nested op acquires and records nothing).
@@ -222,7 +222,7 @@ type OpAdmission = { pool: "cpu"; work: HolderWork } | { pool: "e2e" };
 
 /**
  * Which pool each kind's grant comes from, or `null` for a kind that is
- * RECORDED but not ADMITTED: a plain `./equin run` script (`script`) writes its
+ * RECORDED but not ADMITTED: a plain `./muxos run` script (`script`) writes its
  * marker and op-log record — so the Ops views show it and the machine-usage
  * sampler charges its process tree to `agent ops` — but never waits on or holds
  * a slot. A one-off script must not queue behind builds, and its weight is not
@@ -241,7 +241,7 @@ const OP_POOL = {
 /**
  * What a direct op's body is handed: the grant it runs under, or `null` for an
  * unadmitted kind — it holds no slots, so there is nothing to spend and nothing
- * to hand a child (a `./equin check` it spawns acquires its own grant).
+ * to hand a child (a `./muxos check` it spawns acquires its own grant).
  */
 export type OpGrant<K extends OpKind> = (typeof OP_POOL)[K] extends null
   ? null
@@ -304,7 +304,7 @@ export interface DirectOpDeps {
   priority: (kind: OpKind, isMainCheckout: boolean) => Promise<Priority>;
   /**
    * Whoever started this op marked it opportunistic — it runs only because the
-   * host is idle and must yield to any other work (`EQUIN_OP_OPPORTUNISTIC`).
+   * host is idle and must yield to any other work (`MUXOS_OP_OPPORTUNISTIC`).
    */
   opportunistic: () => boolean;
   checkBroadcasts: (kind: OpKind) => Promise<void>;
@@ -445,7 +445,7 @@ export async function withDirectOp<K extends OpKind>(
 
   // A direct op on the main worktree is human-blocking (interactive), any other
   // is background. `publishLane` not-clobbers: a parent op's grant share (`share.env()`)
-  // always sets EQUIN_LANE, so a nested op reads the parent's
+  // always sets MUXOS_LANE, so a nested op reads the parent's
   // classification here rather than reclassifying off its own branch — that
   // is how a push-nested check keeps `interactive` even on an agent branch.
   // Left UNCONDITIONAL; a `!nested` gate would be a second rule saying the

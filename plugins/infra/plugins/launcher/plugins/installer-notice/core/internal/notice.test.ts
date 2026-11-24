@@ -7,21 +7,21 @@ import {
 } from "./notice";
 
 const good: InstallerNotice = {
-  title: "macOS blocked equin from adding its apps",
+  title: "macOS blocked muxos from adding its apps",
   doing:
-    "equin was adding an icon in your menu bar and its apps in their own windows.",
+    "muxos was adding an icon in your menu bar and its apps in their own windows.",
   blocked: "This Mac only lets apps you approved change other apps.",
   now: [
-    "Turn on the app you ran the installer from in System Settings → Privacy & Security → App Management, then run `./equin start` again.",
+    "Turn on the app you ran the installer from in System Settings → Privacy & Security → App Management, then run `./muxos start` again.",
   ],
   ifSkipped: {
     optional: true,
     stillWorks:
-      "equin works fully in your browser at http://equin.localhost:9000.",
-    addLater: "Add them later with `./equin start --only dev.equin.menu-bar`.",
+      "muxos works fully in your browser at http://muxos.localhost:9000.",
+    addLater: "Add them later with `./muxos start --only dev.muxos.menu-bar`.",
   },
   evidence: [
-    "refused to write ~/Applications/equin.app: Operation not permitted",
+    "refused to write ~/Applications/muxos.app: Operation not permitted",
   ],
 };
 
@@ -40,11 +40,11 @@ describe("installer notice", () => {
     expect(plainTextProblems("could not write ~/Applications/x")).toEqual([
       'path "~/Applications/x"',
     ]);
-    expect(plainTextProblems("skipped dev.equin.menu-bar")).toEqual([
-      'label "dev.equin.menu-bar"',
+    expect(plainTextProblems("skipped dev.muxos.menu-bar")).toEqual([
+      'label "dev.muxos.menu-bar"',
     ]);
     expect(
-      plainTextProblems("run `./equin start --only dev.equin.gateway`"),
+      plainTextProblems("run `./muxos start --only dev.muxos.gateway`"),
     ).toEqual([]);
   });
 

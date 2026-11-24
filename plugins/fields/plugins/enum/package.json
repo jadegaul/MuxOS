@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-enum",
+  "name": "@muxos/plugin-fields-enum",
   "version": "0.0.1",
   "private": true,
-  "description": "Enum (select) field type: identity only — single-choice from a fixed set of string options."
+  "description": "Enum (select) field type: identity only \u2014 single-choice from a fixed set of string options."
 }

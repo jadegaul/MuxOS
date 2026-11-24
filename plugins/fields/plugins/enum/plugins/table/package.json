@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-fields-enum-table",
+  "name": "@muxos/plugin-fields-enum-table",
   "version": "0.0.1",
   "private": true,
   "description": "Enum (select) field type: data-view table cell (read-only chip cell)."

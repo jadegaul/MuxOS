@@ -27,7 +27,7 @@ function label(name: string): string[] {
 export type GlyphBody = (name: string) => string;
 
 /**
- * The app shelf under the banner: every app equin ships (the website's apps
+ * The app shelf under the banner: every app muxos ships (the website's apps
  * catalog, the ones not built yet left out), each its website tile — its glyph
  * on its colour's deep-to-base gradient — popping in one after the other, then
  * an outlined "All apps" arrow tile saying the shelf opens the full gallery.

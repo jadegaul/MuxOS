@@ -39,7 +39,7 @@ export const CATEGORIES: readonly AppCategory[] = [
   {
     id: "harness",
     name: "The harness",
-    body: "The apps used to build equin itself",
+    body: "The apps used to build muxos itself",
   },
   { id: "daily", name: "Daily life", body: "The apps used every day" },
   { id: "tools", name: "Tools", body: "Small utilities the others lean on" },
@@ -53,8 +53,8 @@ export const CATEGORIES: readonly AppCategory[] = [
 ];
 
 /**
- * Every app equin ships, and the ones being built — a closed list, plain data.
- * Adding an app to equin does not add it here: the site is a written page, and
+ * Every app muxos ships, and the ones being built — a closed list, plain data.
+ * Adding an app to muxos does not add it here: the site is a written page, and
  * this is its copy. Plain data in core/, so what draws the apps outside the
  * page (the repo README's app shelf) reads the same list; the screenshots join
  * it on the web side (`web/internal/catalog.ts`).
@@ -69,7 +69,7 @@ export const APPS: readonly CatalogEntry[] = [
     icon: symbol("chat-bubble"),
     summary: "Agents working through a task tree",
     description:
-      "Nested tasks, each worked on by an agent in its own copy of the code. equin's version of Cursor.",
+      "Nested tasks, each worked on by an agent in its own copy of the code. muxos's version of Cursor.",
   },
   {
     id: "prototypes",
@@ -80,7 +80,7 @@ export const APPS: readonly CatalogEntry[] = [
     icon: symbol("dashboard-customize"),
     summary: "Mockups beside the real app",
     description:
-      "Mockups beside the real app they mock, with versions and variants. equin's version of Claude Design.",
+      "Mockups beside the real app they mock, with versions and variants. muxos's version of Claude Design.",
   },
   {
     id: "deploy",
@@ -173,7 +173,7 @@ export const APPS: readonly CatalogEntry[] = [
     name: "Desktop",
     category: "surfaces",
     icon: symbol("desktop-windows"),
-    description: "Use equin as a desktop, with every app in its own window.",
+    description: "Use muxos as a desktop, with every app in its own window.",
   },
   {
     id: "isle",
@@ -193,7 +193,7 @@ export const APPS: readonly CatalogEntry[] = [
     category: "harness",
     icon: symbol("extension"),
     description:
-      "Every plugin of equin, its graph and what it contributes, open to inspect.",
+      "Every plugin of muxos, its graph and what it contributes, open to inspect.",
   },
   {
     id: "party",

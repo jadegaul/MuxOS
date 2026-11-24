@@ -57,7 +57,7 @@ export type AdoptVerdict = z.infer<typeof AdoptVerdictSchema>;
 export const adoptDeploy = defineEndpoint({
   route: "POST /api/build/restart-skip/adopt",
   needsMachine: { feature: "Keeping a backend across deploys" },
-  internal: { why: "asked by `./equin build` of the backend it would restart" },
+  internal: { why: "asked by `./muxos build` of the backend it would restart" },
   body: AdoptRequestSchema,
   response: AdoptVerdictSchema,
 });
@@ -70,7 +70,7 @@ export const adoptDeploy = defineEndpoint({
 export const adoptCentralDeploy = defineEndpoint({
   route: "POST /api/restart-skip/central/adopt",
   internal: {
-    why: "asked by main's `./equin build` of central before restarting it",
+    why: "asked by main's `./muxos build` of central before restarting it",
   },
   body: AdoptRequestSchema,
   response: AdoptVerdictSchema,

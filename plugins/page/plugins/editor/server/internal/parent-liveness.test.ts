@@ -18,7 +18,7 @@
  * real `deleteBlocksSubtree`.
  *
  * Run: `bun test plugins/page/plugins/editor/server/internal/parent-liveness.test.ts`
- * (requires the running embedded cluster — `./equin build` first).
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

@@ -8,11 +8,11 @@ import { useRunQuestion } from "../internal/use-question";
 const askIcon = symbol("forum");
 
 /**
- * The ? menu's Ask equin entry: opens the card. With a run minimized (or the
+ * The ? menu's Ask muxos entry: opens the card. With a run minimized (or the
  * card closed on one), it reads "Back to your question", the question under
  * it once known.
  */
-export function AskEquinEntry() {
+export function AskMuxOSEntry() {
   const close = useCloseHelpMenu();
   const { mode, conversationId } = useAskState();
   const back = conversationId !== null && mode !== "open";
@@ -25,7 +25,7 @@ export function AskEquinEntry() {
   if (!back) {
     return (
       <ControlPanel.Row icon={icon} onSelect={select}>
-        Ask equin how to…
+        Ask muxos how to…
       </ControlPanel.Row>
     );
   }

@@ -77,7 +77,7 @@ const RESULT_KEYS: Record<string, string> = {
 };
 
 beforeAll(async () => {
-  // The stores are host-global; `EQUIN_DIR` points them at a temp root.
+  // The stores are host-global; `MUXOS_DIR` points them at a temp root.
   dataRoot = mkdtempSync(join(tmpdir(), "type-check-records-data-"));
   setEnv("DIR", dataRoot);
   root = asAppPath(mkdtempSync(join(tmpdir(), "type-check-records-")));

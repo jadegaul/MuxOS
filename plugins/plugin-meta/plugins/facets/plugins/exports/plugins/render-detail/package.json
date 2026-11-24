@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-plugin-meta-facets-exports-render-detail",
+  "name": "@muxos/plugin-plugin-meta-facets-exports-render-detail",
   "description": "Per-plugin exports section in the plugin detail pane.",
   "private": true,
   "version": "0.0.1"

@@ -9,7 +9,7 @@
 // — no `_debugSource`, no owner — so the build says it: after each component
 // definition that calls a hook it adds
 //
-//   Name.__equinSource = "plugins/…/file.tsx";
+//   Name.__muxosSource = "plugins/…/file.tsx";
 //
 // and the detector reads that stamp off the fiber's type (`web/internal/fiber.ts`,
 // `componentSource`). Only repo modules go through the artifact builder's Babel
@@ -41,7 +41,7 @@
 import { relative, sep } from "node:path";
 
 /** The property the stamp sets on a component (mirrored in `web/internal/fiber.ts`). */
-const COMPONENT_SOURCE_PROP = "__equinSource";
+const COMPONENT_SOURCE_PROP = "__muxosSource";
 
 // A hook call always spells `use<Upper|digit>` (or is React's `use`).
 const HOOK_TOKEN_RE = /\buse[A-Z0-9(]/;

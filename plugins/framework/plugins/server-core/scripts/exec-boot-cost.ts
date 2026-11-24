@@ -3,7 +3,7 @@
 // that only reports, so everything before the body is exactly the boot a job
 // pays (graph import, register, contributions, the `onReadyBlocking` barrier).
 //
-//   ./equin run plugins/framework/plugins/server-core/scripts/exec-boot-cost.ts \
+//   ./muxos run plugins/framework/plugins/server-core/scripts/exec-boot-cost.ts \
 //     --namespace <ns> [--json] [--start <pluginPath> [--reads <kind>,…]]
 //
 // `--start` boots the way a supervised job's child does (`--reads`: the lists
@@ -13,14 +13,14 @@
 // starting throws here exactly as it would in the job.
 //
 // `<ns>` must be a namespace whose serving backend has booted THIS checkout's
-// code (its own worktree after `./equin build`): an exec child only verifies
+// code (its own worktree after `./muxos build`): an exec child only verifies
 // the schema, and refuses when its owner has not set it up for this code.
 //
 // Prints one line of JSON (with --json) or a table: wall and CPU from process
 // start to each boot checkpoint (`after-import` = every plugin barrel imported,
 // `after-onReadyBlocking` = ready to run the job), the slowest blocking hooks,
 // and how many modules / plugins the process holds when the job would start.
-// Process start → this script's first line (Bun start + `./equin run`'s own
+// Process start → this script's first line (Bun start + `./muxos run`'s own
 // wrapper is NOT in it — run the whole command under `/usr/bin/time -l` for
 // that) is reported as `preScriptMs`.
 //

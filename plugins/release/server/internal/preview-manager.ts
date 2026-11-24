@@ -83,8 +83,8 @@ async function pickFreePort(from: number): Promise<number> {
 
 /**
  * Start a local preview of a finished release artifact. Spawns the staged
- * `launch` binary, which self-roots EQUIN_DIR under the data dir we hand it
- * and binds its embedded PG to the free `EQUIN_PG_PORT` we pick — so the
+ * `launch` binary, which self-roots MUXOS_DIR under the data dir we hand it
+ * and binds its embedded PG to the free `MUXOS_PG_PORT` we pick — so the
  * whole stack runs isolated alongside the dev environment. The data root MUST be
  * short because the embedded PG/gateway open Unix sockets under it (104-byte path
  * limit) — `/tmp/sgp/XXXXXX` is short by construction, the canonical mitigation.

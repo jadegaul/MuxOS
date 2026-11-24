@@ -4,7 +4,7 @@
 // errors.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/overlay/plugins/image-viewer/e2e/views-verify.ts \
+//   ./muxos run plugins/primitives/plugins/overlay/plugins/image-viewer/e2e/views-verify.ts \
 //     --file </files/browse/… route of an image in a folder of ≥ 3 images> [--out /tmp/image-viewer-views]
 
 import {

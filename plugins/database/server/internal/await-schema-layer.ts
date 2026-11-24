@@ -228,6 +228,6 @@ function nothingComing(
       return `${check.detail}; ${after}: ${backend} exited before it recorded its schema stamp — see its backend-exit report and its log`;
     case "recorded":
     case undefined:
-      return `${check.detail}; ${after}, so nothing will — if this checkout has changes its backend was not built from, run \`./equin build\``;
+      return `${check.detail}; ${after}, so nothing will — if this checkout has changes its backend was not built from, run \`./muxos build\``;
   }
 }

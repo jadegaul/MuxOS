@@ -28,7 +28,7 @@ const LearnPlaceContext = createContext<LearnPlace | null>(null);
 const ROW_PLACE: LearnPlace = { kind: "row" };
 
 /**
- * "Learn ▾" in the shared site header: the pages that explain equin rather
+ * "Learn ▾" in the shared site header: the pages that explain muxos rather
  * than show it (`Website.LearnEntry` — Foundations, Story) folded behind one
  * word, so the header lists the site's two places (Vision, Apps) and its
  * actions without four page links competing.

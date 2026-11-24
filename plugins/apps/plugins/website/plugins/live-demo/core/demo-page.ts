@@ -6,7 +6,7 @@ export const demoPage = defineWebsitePage({
   path: "/about/demo",
   title: "Demo",
   description:
-    "equin itself, running entirely in your browser on made-up data: the Agent Manager, Pages, Prototypes, Sonata and Keyboard Party, live.",
+    "muxos itself, running entirely in your browser on made-up data: the Agent Manager, Pages, Prototypes, Sonata and Keyboard Party, live.",
 });
 
 /**

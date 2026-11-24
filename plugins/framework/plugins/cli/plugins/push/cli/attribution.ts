@@ -11,7 +11,7 @@ import { envName } from "@plugins/infra/plugins/launcher/plugins/env-names/core"
  * the push trailer.
  *
  * The conversation trailer is the prepare-commit-msg hook's, from
- * `EQUIN_CONVERSATION_ID`, which only a session equin launched carries. A push
+ * `MUXOS_CONVERSATION_ID`, which only a session muxos launched carries. A push
  * from any other session (a plain `claude` in a terminal, the usual case while
  * recovering a broken main) is still credited, by what the checkout itself
  * says: an attempt's branch is `claude-web/<attemptId>`, so its commits are
@@ -29,7 +29,7 @@ export type PushAttribution =
 export function resolvePushAttribution(input: {
   branch: string;
   pushId: string;
-  /** `EQUIN_CONVERSATION_ID`, unset outside an equin-launched session. */
+  /** `MUXOS_CONVERSATION_ID`, unset outside an muxos-launched session. */
   conversationId: string | undefined;
   /** `--unattributed <reason>`. */
   unattributed: string | undefined;

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-session-chain",
+  "name": "@muxos/plugin-conversations-session-chain",
   "private": true,
   "version": "0.0.1"
 }

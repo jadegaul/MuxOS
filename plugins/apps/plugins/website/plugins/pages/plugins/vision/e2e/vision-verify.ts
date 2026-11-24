@@ -13,7 +13,7 @@
 //     pass against the prototype.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-verify.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-verify.ts \
 //     [--out /tmp/vision] [--width 1400] [--height 900] [--color-scheme dark|light] [--headed]
 //
 // Manual only — nothing runs this automatically.

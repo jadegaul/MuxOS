@@ -16,7 +16,7 @@
 # piped to bash the same way.
 #
 # CLEAN_INSTALL_ARGS="<args>" passes options to install.sh (after
-# `bash -s --`), e.g. `--repo /tmp/equin.bundle` for a snapshot of an
+# `bash -s --`), e.g. `--repo /tmp/muxos.bundle` for a snapshot of an
 # unpushed tree handed over with run.sh --upload — the same documented
 # `--repo` a fork uses.
 #
@@ -24,7 +24,7 @@
 # is on macOS, so it sees exactly what install.sh added to ~/.zshrc and
 # nothing the harness set up.
 
-INSTALL_URL="https://raw.githubusercontent.com/equinai/equin/main/install.sh"
+INSTALL_URL="https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh"
 
 step_01_baseline() {
   cat <<'CMD'
@@ -53,37 +53,37 @@ step_02_one_command_DOC="README.md Install: \`curl -fsSL $INSTALL_URL | bash\`${
 step_02_one_command_TAG="from-docs"
 
 step_03_new_terminal() {
-  # equin's tools are the checkout's own (~/equin/mise.toml; no global mise
-  # config): `mise activate` puts bun/go on PATH inside ~/equin only. So the
-  # contract is "cd ~/equin && ./equin works in a new terminal"; what $HOME
+  # muxos's tools are the checkout's own (~/muxos/mise.toml; no global mise
+  # config): `mise activate` puts bun/go on PATH inside ~/muxos only. So the
+  # contract is "cd ~/muxos && ./muxos works in a new terminal"; what $HOME
   # sees is recorded, not asserted (absent there is by design).
   # The guest's login shell is zsh; a bash user gets the same line in the file
   # bash's new terminals read (install.sh picks it).
   cat <<'CMD'
 zsh -l -i -c 'echo "in \$HOME (absent by design):"; for t in mise bun go; do printf "  %-5s %s\n" "$t" "$(command -v $t || echo absent)"; done
-cd ~/equin || exit 1
-echo "in ~/equin:"; for t in bun go; do printf "  %-5s %s\n" "$t" "$(command -v $t || echo MISSING)"; done
-command -v bun >/dev/null && command -v go >/dev/null && ./equin --help >/dev/null && echo "./equin runs"'
+cd ~/muxos || exit 1
+echo "in ~/muxos:"; for t in bun go; do printf "  %-5s %s\n" "$t" "$(command -v $t || echo MISSING)"; done
+command -v bun >/dev/null && command -v go >/dev/null && ./muxos --help >/dev/null && echo "./muxos runs"'
 CMD
 }
-step_03_new_terminal_DOC="README.md: open a new terminal, cd into equin's folder, and ./equin works there (install.sh's closing line says so)."
+step_03_new_terminal_DOC="README.md: open a new terminal, cd into muxos's folder, and ./muxos works there (install.sh's closing line says so)."
 step_03_new_terminal_TAG="from-docs"
 
 step_04_app_answers() {
   cat <<'CMD'
-APP=$(zsh -l -i -c 'cd ~/equin && ./equin url')   # this account's gateway port, as equin recorded it
+APP=$(zsh -l -i -c 'cd ~/muxos && ./muxos url')   # this account's gateway port, as muxos recorded it
 code=$(curl -sS -o /dev/null -w '%{http_code}' "$APP/")
 echo "http $code"
-cat ~/.equin/worktrees/singularity/build-status.json
-[ "$code" = 200 ] && grep -q '"status": *"ok"' ~/.equin/worktrees/singularity/build-status.json
+cat ~/.muxos/worktrees/singularity/build-status.json
+[ "$code" = 200 ] && grep -q '"status": *"ok"' ~/.muxos/worktrees/singularity/build-status.json
 CMD
 }
-step_04_app_answers_DOC="README.md: the app is left at the address the installer prints (./equin url)."
+step_04_app_answers_DOC="README.md: the app is left at the address the installer prints (./muxos url)."
 step_04_app_answers_TAG="from-docs"
 
 step_05_screenshot() {
   cat <<'CMD'
-zsh -l -i -c 'cd ~/equin && ./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts --out /tmp/clean-install-shot' && ls -la /tmp/clean-install-shot*
+zsh -l -i -c 'cd ~/muxos && ./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts --out /tmp/clean-install-shot' && ls -la /tmp/clean-install-shot*
 CMD
 }
 step_05_screenshot_DOC="README.md: the app renders, not only answers."
@@ -100,14 +100,14 @@ step_07_app_after_reboot() {
   cat <<'CMD'
 # Nothing is run by hand: only wait for what launchd brings back at login
 # (gateway → Postgres → backend), up to 5 minutes.
-APP=$(zsh -l -i -c 'cd ~/equin && ./equin url')   # this account's gateway port, as equin recorded it
+APP=$(zsh -l -i -c 'cd ~/muxos && ./muxos url')   # this account's gateway port, as muxos recorded it
 for i in $(seq 1 100); do
   code=$(curl -sS -o /dev/null -m 5 -w '%{http_code}' "$APP/" 2>/dev/null || true)
   [ "$code" = 200 ] && { echo "http 200 after ~$((i * 3))s"; exit 0; }
   sleep 3
 done
 echo "http ${code:-none} — the app did not come back"
-launchctl print "gui/$(id -u)/dev.equin.gateway" 2>&1 | head -20
+launchctl print "gui/$(id -u)/dev.muxos.gateway" 2>&1 | head -20
 exit 1
 CMD
 }
@@ -116,7 +116,7 @@ step_07_app_after_reboot_TAG="from-docs"
 
 step_08_doctor() {
   cat <<'CMD'
-zsh -l -i -c 'cd ~/equin && mise run doctor'
+zsh -l -i -c 'cd ~/muxos && mise run doctor'
 CMD
 }
 step_08_doctor_DOC="docs/setup.md: \`mise run doctor\` says all required present; Claude Code is named as recommended until signed in."

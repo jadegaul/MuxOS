@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-build-build-termination",
+  "name": "@muxos/plugin-build-build-termination",
   "private": true,
   "version": "0.0.1"
 }

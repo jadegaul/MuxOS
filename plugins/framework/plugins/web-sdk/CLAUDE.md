@@ -1,6 +1,6 @@
 # Plugin Core
 
-Framework for equin's plugin system. Every feature is a plugin — including the app shell.
+Framework for muxos's plugin system. Every feature is a plugin — including the app shell.
 
 ## Concepts
 
@@ -32,7 +32,7 @@ Slots are grouped in a namespace object per plugin (`export const MyPlugin = { P
 for data read as data, never for anything drawn. Contributions that paint UI go
 through `defineRenderSlot` (or `defineOrderedDispatchSlot`), and their order is
 the slot's reorder config layout (`config/<plugin>/<slotId>.jsonc`, seeded by
-`./equin build`). A host that draws the rows itself — a menu, a report, a
+`./muxos build`). A host that draws the rows itself — a menu, a report, a
 segmented control — reads that order with `useSlotOrder(slot)` and wraps each row it draws in
 `renderAsContribution` (both `slot-render/web`).
 "The host owns the order" is not an exemption: the config layout IS that
@@ -77,7 +77,7 @@ depended on which symbols a barrel happened to re-export) and what makes it
 reorder config file lands. Two plugins declaring one slot is an error.
 
 You cannot forget it: every slot is recorded at construction (`defineSlot` is
-the single funnel), and `./equin build` fails naming any slot no plugin
+the single funnel), and `./muxos build` fails naming any slot no plugin
 declared, plus the directory whose source constructed it.
 
 `defineSlot` also stamps `slot.meta` — `{ kind, reorderable }` — so what a slot
@@ -130,17 +130,17 @@ export const MyPlugin = {
 build plus one edit — you never author the file, locate an origin, or type a hash:
 
 1. write the `defineRenderSlot`
-2. `./equin build` → seeds `config/<defining-plugin>/<slotId>.jsonc` (real `// @hash`,
+2. `./muxos build` → seeds `config/<defining-plugin>/<slotId>.jsonc` (real `// @hash`,
    full catalog, a `// @review` marker), then fails `config:overrides-authored` on the marker
 3. arrange `"items"` for how the slot renders, DELETE the `// @review` line
-4. `./equin build`
+4. `./muxos build`
 
 That file is also where a slot's items are **positioned**: a `{ "type": "spacer", "id": "…" }`
 node pushes every item after it to the far end of the row. Splitting one row across two
 slots to right-align some items is the wrong tool (`spacer/no-split-slot-row` flags it) —
 the node forms are listed in the `// @legend` block the build keeps at the top of the file.
 
-`./equin check list-catalog-in-sync` names the exact override path a newly
+`./muxos check list-catalog-in-sync` names the exact override path a newly
 reorderable list will owe, before any build. If the order should never be user-curated the slot is headless —
 use `defineMountSlot`, which is not reorderable and owes nothing. Details:
 [`plugins/reorder/authoring-overrides.md`](../../../reorder/authoring-overrides.md).
@@ -221,7 +221,7 @@ carry a `// UNSAFE: <reason>` comment. Import from `@plugins/framework/plugins/w
 
 ### Registering a plugin
 
-Nothing to register by hand (root `CLAUDE.md` → "Registry exclusivity"). `./equin
+Nothing to register by hand (root `CLAUDE.md` → "Registry exclusivity"). `./muxos
 build` regenerates `core/web.generated.ts` — a `CollectedEntry[]` of `() => import(...)`
 loaders with `dependsOn` inferred from import statements. Same discovery substrate for every
 collected folder (`server`, `central`, `check`, `lint`, `facet`, …), each marked with
@@ -307,7 +307,7 @@ and an out-of-composition read has no spelling inside the demo.
 - **A `"page"` host of an on-demand plugin runs nowhere on that page.** The
   check `page-hosts-on-demand` (composition-closure) lists, per composition,
   every `scope: "page"` root mount of a plugin the composition holds only on
-  demand. It fails unless the plugin exempts itself with a reason (`./equin
+  demand. It fails unless the plugin exempts itself with a reason (`./muxos
   exempt list --rule page-hosts-on-demand`). The other answers: the
   composition holds the plugin as its own (the website holds the error
   collectors, `research/2026-11-11-global-website-demo-error-reports.md`), or
@@ -351,7 +351,7 @@ contributions: [Pane.Register({ pane: terminalPane })]
 - `useReconnectingWebSocket`, `SharedWebSocket`, `fetchWithRetry`, `subscribeWsStatus` → `@plugins/primitives/plugins/networking/web`
 - `useEditableField` → `@plugins/primitives/plugins/editable-field/web`
 
-Raw `new EventSource(...)` is forbidden (`./equin check no-raw-event-source`) — stream server data through a live value (`useLive`). Any raw same-origin `/api` · `/ws` · `/gateway` request from page code (fetch, XHR, sendBeacon, EventSource, WebSocket) is also refused at runtime by the page request guard (`primitives/networking/plugins/request-guard`).
+Raw `new EventSource(...)` is forbidden (`./muxos check no-raw-event-source`) — stream server data through a live value (`useLive`). Any raw same-origin `/api` · `/ws` · `/gateway` request from page code (fetch, XHR, sendBeacon, EventSource, WebSocket) is also refused at runtime by the page request guard (`primitives/networking/plugins/request-guard`).
 
 Server READS are live resources — a `liveValue` / `liveCollection` read with `useLive` (`plugins/network/plugins/live/CLAUDE.md`); there is no request/response read hook. For WRITES, use the endpoints primitive (`@plugins/infra/plugins/endpoints/web`): `useEndpointMutation` (POST/PATCH/DELETE — a live read is pushed when the write lands, so nothing is invalidated by hand) or `fetchEndpoint` (imperative, from `useFetchEndpoint()`). Endpoint contracts are declared once in `core/endpoints.ts` with `defineEndpoint`; the server implements them with `implement()` from `@plugins/infra/plugins/endpoints/server`. See [`plugins/infra/plugins/endpoints/CLAUDE.md`](../../../infra/plugins/endpoints/CLAUDE.md).
 
@@ -380,12 +380,12 @@ plugins/{name}/
 ## Adding a New Plugin
 
 Create `plugins/{name}/web/index.ts`, default-export a `PluginDefinition` whose
-contributions target slots imported from the plugins you extend, run `./equin build`.
+contributions target slots imported from the plugins you extend, run `./muxos build`.
 Optionally define your own slots in `web/slots.ts`.
 
 Every plugin also has a `package.json` (its `"description"`, `"private": true`, and its
-own dependencies). Its `"name"` is **derived from the folder path** — `./equin build`
-(and `./equin regen-generated`) writes it, and the `plugin-boundaries` check (R1)
+own dependencies). Its `"name"` is **derived from the folder path** — `./muxos build`
+(and `./muxos regen-generated`) writes it, and the `plugin-boundaries` check (R1)
 fails while it is stale. You still have to put *some* name there, because `bun install`
 rejects a workspace member without one and runs before the build's codegen: any placeholder
 that no other plugin uses is fine (don't copy a sibling's unchanged — a duplicate name also
@@ -404,17 +404,17 @@ see [`ui-kit/CLAUDE.md`](../../../primitives/plugins/css/plugins/ui-kit/CLAUDE.m
 
 ## Umbrella Plugins
 
-An umbrella is a grouping shell that nests related sub-plugins under `plugins/`. It needs only a `package.json` with a `"description"`, the `plugins/` subdirectory, and its `CLAUDE.md` (auto-generated by `./equin build`). No `web/index.ts` or `server/index.ts` unless the umbrella itself has contributions, exports, or routes.
+An umbrella is a grouping shell that nests related sub-plugins under `plugins/`. It needs only a `package.json` with a `"description"`, the `plugins/` subdirectory, and its `CLAUDE.md` (auto-generated by `./muxos build`). No `web/index.ts` or `server/index.ts` unless the umbrella itself has contributions, exports, or routes.
 
 ## Key Design Decisions
 
 - **Per-plugin error isolation (web)** — web plugins use dynamic `import()` for per-plugin error isolation; server/central use static imports. All plugins are known at build time (the generated registry lists them)
-- **A chunk lost to the page's own reach is loaded again** — `loadPlugins` wraps each import in `loadAcrossReachLoss` (`core/page-reach.ts`): an import that failed after the tab was hidden, went offline, slept or began leaving is asked again once the page is visible and online (no timer); one that failed while the page kept its reach fails, and is reported, as before. A sleep fires no event (a laptop closed with the tab in front stays visible and online), so it is read from the page's two clocks: the wall clock runs on through it while the performance timeline pauses (`primitives/perfs/page-clock`). Visitors' "Failed to fetch dynamically imported module" on equin.ai was this — the edge saw their browsers cancel, go silent, or stop mid-load and resume 39 minutes later, never an unanswered request. `lazyComponent` loads its chunk through `loadAcrossReachLoss`, `SharedWebSocket` re-attaches when its worker failed to load across a loss, and `DemoScope` applies the same rule to its host's boot (`markPageReach` / `pageReachLostSince` / `whenPageCanFetch`). In a worker (the demo's SharedWorker host) there is no visibility, but going offline and sleeping are seen the same way (its `offline` / `online` events, its two clocks), so a worker's own chunk loads — the bundled icon sets — take the same wrapper; off a browser (bun) it is a plain call.
+- **A chunk lost to the page's own reach is loaded again** — `loadPlugins` wraps each import in `loadAcrossReachLoss` (`core/page-reach.ts`): an import that failed after the tab was hidden, went offline, slept or began leaving is asked again once the page is visible and online (no timer); one that failed while the page kept its reach fails, and is reported, as before. A sleep fires no event (a laptop closed with the tab in front stays visible and online), so it is read from the page's two clocks: the wall clock runs on through it while the performance timeline pauses (`primitives/perfs/page-clock`). Visitors' "Failed to fetch dynamically imported module" on MuxOS.app was this — the edge saw their browsers cancel, go silent, or stop mid-load and resume 39 minutes later, never an unanswered request. `lazyComponent` loads its chunk through `loadAcrossReachLoss`, `SharedWebSocket` re-attaches when its worker failed to load across a loss, and `DemoScope` applies the same rule to its host's boot (`markPageReach` / `pageReachLostSince` / `whenPageCanFetch`). In a worker (the demo's SharedWorker host) there is no visibility, but going offline and sleeping are seen the same way (its `offline` / `online` events, its two clocks), so a worker's own chunk loads — the bundled icon sets — take the same wrapper; off a browser (bun) it is a plain call.
 - **No dependencies field** — import statements enforce dependency at build time
 - **No lifecycle hooks** — plugins use React's own lifecycle (useEffect, etc.)
 - **Slots are the only extension mechanism** — no special `root`, `background`, or other fields
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 

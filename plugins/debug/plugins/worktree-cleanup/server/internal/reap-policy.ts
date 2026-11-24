@@ -312,9 +312,9 @@ export function classifyStampedNamespace(
 export const IDLE_STAMPED_DATABASE_MS = 7 * 24 * 60 * 60 * 1000;
 
 // The database half of a stamped namespace whose checkout is still here — a
-// checkout equin did not launch (a Claude Code subagent's `isolation:
+// checkout muxos did not launch (a Claude Code subagent's `isolation:
 // "worktree"` checkout, a desktop-app worktree, a hand-made `git worktree add`)
-// that once ran `./equin db fork` + `./equin build`. No attempt row will ever
+// that once ran `./muxos db fork` + `./muxos build`. No attempt row will ever
 // finish it, and its checkout is the user's, not ours to remove; so before this
 // rule its fork DB lived exactly as long as the checkout — which nothing
 // removes. On 2026-11-15 seven such databases (~1 GB) sat on the shared cluster,
@@ -326,8 +326,8 @@ export const IDLE_STAMPED_DATABASE_MS = 7 * 24 * 60 * 60 * 1000;
 // same "nothing reads it" evidence a finished task gives an attempt's fork DB.
 // The caller additionally requires no active connection (a backend serving it
 // right now is a use the stamp cannot see). Every non-main namespace's database
-// is a fork of main (`./equin build` only ever waits for one — `db fork`
-// mints it), so the loss is a fork: the next build says to run `./equin db
+// is a fork of main (`./muxos build` only ever waits for one — `db fork`
+// mints it), so the loss is a fork: the next build says to run `./muxos db
 // fork`. PURE: the caller supplies whether the database exists.
 //
 // Never a target: MAIN; an unstamped or unreadable owner (unknown is not idle);

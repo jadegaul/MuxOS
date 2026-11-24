@@ -5,8 +5,8 @@
 // arrived by then hold, the ones whose init ran, and the ones with another
 // function called.
 //
-//   ./equin run plugins/debug/plugins/profiling/plugins/cold-start/e2e/used-at.ts \
-//     [--url http://equin.localhost:<port>] [--path /agents] [--at content|fcp] [--dump <file.json>]
+//   ./muxos run plugins/debug/plugins/profiling/plugins/cold-start/e2e/used-at.ts \
+//     [--url http://muxos.localhost:<port>] [--path /agents] [--at content|fcp] [--dump <file.json>]
 //
 // Fresh browser context (empty HTTP cache), desktop viewport, no network
 // shaping or CPU throttling: the set of scripts that land before the moment

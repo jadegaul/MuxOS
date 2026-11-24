@@ -32,11 +32,11 @@ export const FileDragOutcomeSchema = z.enum(["dropped", "cancelled", "denied"]);
 export type FileDragOutcome = z.infer<typeof FileDragOutcomeSchema>;
 
 /**
- * The bridge the helper injects as `window.equinWindow` — in an installed
+ * The bridge the helper injects as `window.muxosWindow` — in an installed
  * app's window only, on its own origin's pages, main frame only
  * (`rust/src/window_bridge.js`). Every method is asynchronous IPC.
  */
-export interface EquinWindowBridge {
+export interface MuxOSWindowBridge {
   hostInfo(): Promise<unknown>;
   /**
    * Drag `paths` (absolute, existing) as real files, starting under the
@@ -46,8 +46,8 @@ export interface EquinWindowBridge {
   startFileDrag(paths: readonly string[]): Promise<unknown>;
 }
 
-/** The method names {@link EquinWindowBridge} must carry, checked at the boundary. */
+/** The method names {@link MuxOSWindowBridge} must carry, checked at the boundary. */
 export const WINDOW_BRIDGE_METHODS = [
   "hostInfo",
   "startFileDrag",
-] as const satisfies readonly (keyof EquinWindowBridge)[];
+] as const satisfies readonly (keyof MuxOSWindowBridge)[];

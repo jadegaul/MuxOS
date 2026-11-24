@@ -1,14 +1,14 @@
 # Server
 
-Shared backend for equin. A single Bun process that routes HTTP requests and WebSocket connections to handlers provided by plugins.
+Shared backend for muxos. A single Bun process that routes HTTP requests and WebSocket connections to handlers provided by plugins.
 
 See the top-level [`CLAUDE.md`](../../../../CLAUDE.md) for overall architecture and [`plugins/framework/plugins/web-sdk/CLAUDE.md`](../web-sdk/CLAUDE.md) for the frontend plugin system.
 
 ## How It Works
 
-1. `bin/index.ts` starts `Bun.serve({ unix })` on the per-worktree Unix socket the gateway hands it as `--socket <path>` (e.g. `~/.equin/sockets/<name>.sock`), read by `readServingSocket()` (`infra/runtime-identity`). The backend errors out if it was given no socket — there is no standalone dev mode.
+1. `bin/index.ts` starts `Bun.serve({ unix })` on the per-worktree Unix socket the gateway hands it as `--socket <path>` (e.g. `~/.muxos/sockets/<name>.sock`), read by `readServingSocket()` (`infra/runtime-identity`). The backend errors out if it was given no socket — there is no standalone dev mode.
 2. Each plugin declares its routes via a `ServerPluginDefinition` (`core/types.ts`). At startup the entry point flattens them into two lookup tables: `httpRoutes` (`"METHOD /path"` → handler) and `wsRoutes` (`"/path"` → `WsHandler`).
-3. Plugins also serve live state (see "Live state" below). Append-only firehoses (terminal, log tails) use a dedicated WS route. There is no SSE path — raw `text/event-stream` in TS is forbidden (`./equin check no-raw-sse`).
+3. Plugins also serve live state (see "Live state" below). Append-only firehoses (terminal, log tails) use a dedicated WS route. There is no SSE path — raw `text/event-stream` in TS is forbidden (`./muxos check no-raw-sse`).
 
 ## Boot modes: `serve`, `exec` and `browser`
 
@@ -391,7 +391,7 @@ two and no row lists them. Today's services: `database.driver`,
   } satisfies ServerPluginDefinition;
   ```
 
-  `./equin build` writes its `package.json` (and the `CLAUDE.md` reference);
+  `./muxos build` writes its `package.json` (and the `CLAUDE.md` reference);
   nothing else names it — no composition row, no host list.
 - **Placement is checked** (`check/`, `host-services:provider-placement`):
   every service has exactly one `machine/` provider; a service declared in a
@@ -470,7 +470,7 @@ static options shape what the build does with a kind:
   STARTED plugins declare must equal what the build wrote for them, so an
   entry computed from something only known at run time fails boot loudly
   rather than being read wrong. A process that boots nothing reads them with
-  `installDeclaredListEntries(namespace)` (`server-core/cli`, `./equin db
+  `installDeclaredListEntries(namespace)` (`server-core/cli`, `./muxos db
   fork`'s probe). `Kind.from(plugins)` still reads the code side (a check).
 - `companions: true` — opens the kind to **companions**: a contribution passing
   `companion: true` ships wherever the kind's declaring plugin ships (the
@@ -526,7 +526,7 @@ Each served resource gets `GET /api/resources/<key>/...` (HTTP fallback for WS-d
 - **`mode` is required** on a non-keyed resource — `push` (the value rides the WS) or `invalidate` (a version stamp; each tab refetches over HTTP). It is what `liveValue`'s `load` compiles to, and there is no default.
 - The two-arg form `defineResource(descriptor, serverOpts)` reads `key`, `schema` and keyed-ness (`mode: "keyed"` + `keyOf`) from the client descriptor; a keyed descriptor takes `KeyedServerResourceOptions` plus a `ScopePolicy` (a compiler-minted `routes` plan and a membership — a keyed entry is always routed), which has no `mode`, and `ServerResourceOptions.mode` excludes `"keyed"`, so a keyed resource cannot drift from its client. The flat one-arg form is push/invalidate only.
 - A DB-backed resource has no `notify()` (the change feed routes commits by the loader's read-set); `defineExternalResource` is the only way to get one.
-- **The loader read-set is runtime-owned** (`core/read-set.ts`): the tables each loader read, captured at the DB pool chokepoint inside the profiler's ambient loader entry and handed here by the sink runtime-profiler's install wires (`recordLoaderReadSet`). No change is routed through it — every DB-backed resource declares its reads (`routes` / `reach`), and change-feed refuses one that declares none (D6); the union is display (`_debug`), and the per-run capture is what the drift guard and the persisted `tables_read` use — so the profiler's `EQUIN_PROFILING=0` kill-switch and its profile reset leave it alone. The relation bases change-feed installs (`setRelationBases`, which throws-until-set) index every reach plan's relation reads (`indexRelationReads`). Tests read it (`getReadSetIndex`) and evict from it (`removeReadSetTable`) through `core/testing`. Its per-run capture also feeds the runtime's route drift guard (A8 — each run's own capture, handed back through `wrapLoad`'s `capture`, which `recordEntrySpan`'s `onReads` fills; `lastReadSet` for a host that hands none): a ROUTED resource (`routes` / `reach`) whose loader reads a table none of its routes names is reported once per table — and fails the load under a test runner (`strictRoutes`, on when `NODE_ENV === "test"`, which bun:test sets).
+- **The loader read-set is runtime-owned** (`core/read-set.ts`): the tables each loader read, captured at the DB pool chokepoint inside the profiler's ambient loader entry and handed here by the sink runtime-profiler's install wires (`recordLoaderReadSet`). No change is routed through it — every DB-backed resource declares its reads (`routes` / `reach`), and change-feed refuses one that declares none (D6); the union is display (`_debug`), and the per-run capture is what the drift guard and the persisted `tables_read` use — so the profiler's `MUXOS_PROFILING=0` kill-switch and its profile reset leave it alone. The relation bases change-feed installs (`setRelationBases`, which throws-until-set) index every reach plan's relation reads (`indexRelationReads`). Tests read it (`getReadSetIndex`) and evict from it (`removeReadSetTable`) through `core/testing`. Its per-run capture also feeds the runtime's route drift guard (A8 — each run's own capture, handed back through `wrapLoad`'s `capture`, which `recordEntrySpan`'s `onReads` fills; `lastReadSet` for a host that hands none): a ROUTED resource (`routes` / `reach`) whose loader reads a table none of its routes names is reported once per table — and fails the load under a test runner (`strictRoutes`, on when `NODE_ENV === "test"`, which bun:test sets).
 - **`Resource.Declare`'s payload** is `{ key, mode, preload?, preloadTuples?, code? }`. `code` (`PersistedCode[]`, source-digest sets read structurally) is the code a persisted value comes from: live-state-snapshot persists a preloaded key only when its Declare names it, and stamps the row with its digest. `preloadTuples` is set only by `network/live`'s `serveValue`, for a PARAMETERIZED value declared `preload`: it names and loads the tuples the boot snapshot ships (`tuples[key]`). A Declare carrying it is an enumerated preload — the boot snapshot loads it through that function, and L2 (`live-state-snapshot`) neither persists nor force-recomputes the key.
 
 ### Handlers
@@ -538,7 +538,7 @@ Each served resource gets `GET /api/resources/<key>/...` (HTTP fallback for WS-d
 ## Adding a Plugin's Server Component
 
 Create `plugins/{name}/server/index.ts` default-exporting the `ServerPluginDefinition`, put
-the implementations in `server/internal/`, and run `./equin build` — the registry is
+the implementations in `server/internal/`, and run `./muxos build` — the registry is
 generated, never hand-edited (root `CLAUDE.md` → "Registry exclusivity").
 
 `server/` may import its own `core/`, `shared/` and `data-dirs/` (relative) and other
@@ -570,7 +570,7 @@ Drizzle ORM + Postgres, one DB per namespace — the process's own runtime names
 
 ### Schema change workflow
 
-Edit `plugins/{name}/server/internal/tables.ts` (or `schema.ts` for views) → run `./equin build`. The build runs `drizzle-kit generate` (writes a new SQL migration if any plugin schema changed, renamed to `YYYYMMDD_HHMMSS_<hash>__<slug>.sql`) and restarts the server, which applies pending migrations on startup. There is no separate `db:generate` step — always go through `./equin build`. First build after a schema change requires `--migration-name <slug>`; subsequent builds with no schema change don't.
+Edit `plugins/{name}/server/internal/tables.ts` (or `schema.ts` for views) → run `./muxos build`. The build runs `drizzle-kit generate` (writes a new SQL migration if any plugin schema changed, renamed to `YYYYMMDD_HHMMSS_<hash>__<slug>.sql`) and restarts the server, which applies pending migrations on startup. There is no separate `db:generate` step — always go through `./muxos build`. First build after a schema change requires `--migration-name <slug>`; subsequent builds with no schema change don't.
 
 ### Migration runner
 
@@ -580,7 +580,7 @@ A worktree's DB is a `pg_dump | pg_restore` fork of main (`plugins/database/plug
 
 ### Gotchas
 
-- **Forks copy data, not just schema.** A migration running _after_ a fork sees whatever rows the source DB had at fork time. Drizzle-generated DDL is idempotent, but hand-written DML (seed inserts, backfills) can double-apply — write it idempotent (`INSERT … ON CONFLICT DO NOTHING`, `UPDATE … WHERE` guarded on current state). Data migrations are DML-only, enforced by `./equin check data-migration-dml-only`.
+- **Forks copy data, not just schema.** A migration running _after_ a fork sees whatever rows the source DB had at fork time. Drizzle-generated DDL is idempotent, but hand-written DML (seed inserts, backfills) can double-apply — write it idempotent (`INSERT … ON CONFLICT DO NOTHING`, `UPDATE … WHERE` guarded on current state). Data migrations are DML-only, enforced by `./muxos check data-migration-dml-only`.
 - **Rebased-away migrations drift silently.** Apply locally, then rebase onto a main that never merged it, and the DB keeps whatever it did. The runner warns (`applied hash X has no matching file on disk`) but does not roll back. Reinstate the file, or drop + refork.
 - **Keep migrations additive** — new tables, new columns. Two agents reshaping the same object in order-dependent ways can land in reverse order in one worktree.
 - **Don't hand-edit the `YYYYMMDD_HHMMSS_<hash>` prefix** — it determines sort order and the hash is content-addressed.
@@ -591,7 +591,7 @@ Do **not** hand-edit `the applied-migrations table (`__<prefix>_migrations`)` to
 
 ```bash
 psql -d postgres -c 'DROP DATABASE IF EXISTS "claude-<timestamp>" WITH (FORCE)'
-./equin build    # recreates the worktree DB via fork + migrations
+./muxos build    # recreates the worktree DB via fork + migrations
 ```
 
 The server itself is spawned and supervised by the gateway; never start it manually.
@@ -604,7 +604,7 @@ The server itself is spawned and supervised by the gateway; never start it manua
 - **Shared web/server code defaults to `core/`**, not a slot — see [`web-sdk/CLAUDE.md`](../web-sdk/CLAUDE.md) → "Sharing code between web and server"
 - **Bun runs TypeScript directly** — no build step needed
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 

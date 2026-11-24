@@ -25,7 +25,7 @@ function isLintRuleSource(filename: string): boolean {
  * A lint rule names the plugins it matches as STRINGS, never as patterns.
  * plugin-meta/plugin-refs locates a rule's `@plugins/…` string (and any
  * `plugins/…` path literal), so `plugin-refs-resolve` fails when the barrel or
- * path is gone and `./equin plugin move` rewrites it. A regex is located by
+ * path is gone and `./muxos plugin move` rewrites it. A regex is located by
  * nothing: after a move it keeps matching the old path, and the rule silently
  * catches nothing — `no-adhoc-caret-trigger` matched `floating-surface`'s
  * pre-move specifier for two months.
@@ -43,7 +43,7 @@ export default createRule({
       regex:
         "This regex names a plugin by its path, which nothing locates: once the plugin moves it matches the old path and the rule silently catches nothing. " +
         'Spell it as a string — an import source as the exact `"@plugins/…/<runtime>"` compared with `===`, a file path as a `"plugins/…"` literal tested with `startsWith` / `includes` — ' +
-        "so plugin-meta/plugin-refs locates it: `plugin-refs-resolve` fails when it goes stale, `./equin plugin move` rewrites it.",
+        "so plugin-meta/plugin-refs locates it: `plugin-refs-resolve` fails when it goes stale, `./muxos plugin move` rewrites it.",
     },
   },
   defaultOptions: [],

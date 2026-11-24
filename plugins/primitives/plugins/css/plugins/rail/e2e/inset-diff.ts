@@ -3,8 +3,8 @@
 // so a review lists every surface as changed or identical from measurement,
 // not from eyeballing.
 //
-//   ./equin run plugins/primitives/plugins/css/plugins/rail/e2e/inset-diff.ts \
-//     --dir "$EQUIN_SCRATCH/inset-review"
+//   ./muxos run plugins/primitives/plugins/css/plugins/rail/e2e/inset-diff.ts \
+//     --dir "$MUXOS_SCRATCH/inset-review"
 //
 // Pairs `<name>-before.png` / `<name>-after.png` and
 // `ex-before-<id>.png` / `ex-after-<id>.png` in `--dir`.

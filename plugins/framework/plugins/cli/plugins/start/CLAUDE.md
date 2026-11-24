@@ -1,11 +1,11 @@
 # start
 
-`./equin start` — ensure the gateway binary and make it the machine's
+`./muxos start` — ensure the gateway binary and make it the machine's
 running, self-restarting gateway daemon; then bring up every login service a
 plugin declares (see *Declared login services* below).
 
 A system-level host operation, run once at install. It is **not** part of the
-agent workflow: agents run `./equin build`, never this (nor `stop`).
+agent workflow: agents run `./muxos build`, never this (nor `stop`).
 
 After install, the gateway follows main without it: main's convergence run
 rebuilds and restarts it whenever what this command would install differs
@@ -18,16 +18,16 @@ by-hand path.
 
 Every message here that stops the install, asks for a permission or leaves
 something out follows the installer message rules —
-[`infra/launcher/installer-notice`](../../../../../infra/plugins/launcher/plugins/installer-notice/CLAUDE.md) (no internal names; what equin was
+[`infra/launcher/installer-notice`](../../../../../infra/plugins/launcher/plugins/installer-notice/CLAUDE.md) (no internal names; what muxos was
 doing and why; why it was blocked; what to do now and what skipping costs; raw
-facts only as evidence). `start` runs inside `install.sh`, so its own output is a person's: each line says what they got ("equin is running", "Added the equin icon in your menu bar") in the services' `forUser` words, and the label, manager, PID and paths go on an indented `details:` line under it. An optional service the Mac refused is one `appsBlockedNotice` for all of them; the gateway refused stops `start` with the same notice, marked needed.
+facts only as evidence). `start` runs inside `install.sh`, so its own output is a person's: each line says what they got ("muxos is running", "Added the muxos icon in your menu bar") in the services' `forUser` words, and the label, manager, PID and paths go on an indented `details:` line under it. An optional service the Mac refused is one `appsBlockedNotice` for all of them; the gateway refused stops `start` with the same notice, marked needed.
 
-The modules `start` drives — `ensureDep`, the macOS app bundle (`machineMacosAppHost`), `reconcileLoginService`, `prepareMainGateway` / `adoptGatewayLaunch` — narrate their steps in internal terms ("Installed gateway (<identity>) into …/equin.app", "Kept <dir>: still running …"). None of that reaches the terminal: `run.ts` hands every one of them the same `log` (`Steps`), which appends to the last run's start log (`startLogs`, this plugin's `data-dirs`, `~/.equin/logs/start/start.log`, emptied on every run) and is named on the last `details:` line however the run ends (done, refused or failed). `--verbose` echoes those lines too, for a developer. A new module `start` calls takes that `log`, never `console.log`.
+The modules `start` drives — `ensureDep`, the macOS app bundle (`machineMacosAppHost`), `reconcileLoginService`, `prepareMainGateway` / `adoptGatewayLaunch` — narrate their steps in internal terms ("Installed gateway (<identity>) into …/muxos.app", "Kept <dir>: still running …"). None of that reaches the terminal: `run.ts` hands every one of them the same `log` (`Steps`), which appends to the last run's start log (`startLogs`, this plugin's `data-dirs`, `~/.muxos/logs/start/start.log`, emptied on every run) and is named on the last `details:` line however the run ends (done, refused or failed). `--verbose` echoes those lines too, for a developer. A new module `start` calls takes that `log`, never `console.log`.
 
-## One equin per account
+## One muxos per account
 
 Before anything is built, registered or restarted, `start` refuses when another
-checkout already holds this account's equin — main's deploy or the installed
+checkout already holds this account's muxos — main's deploy or the installed
 background service names it (`infra/launcher/instance-owner`,
 `assertThisInstance`). A second clone shares the account's data root, service
 label and Keychain entry, so starting it would take over the running app. The
@@ -45,7 +45,7 @@ of a fresh install looked exactly like the install had broken — and relaunches
 it when it exits non-zero. Everything else follows from the gateway: its
 supervisor brings Postgres / PgBouncer back up, and backends spawn on demand.
 
-(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.equin.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./equin data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
+(`<gateway-label>` is the gateway's launchd label / systemd unit name, `dev.muxos.gateway` (`GATEWAY_SERVICE` in `infra/launcher/core`); an install from before the rename keeps `LEGACY_IDS.launchdLabel` until `./muxos data-dir migrate` relabels it — the service stays bound to whichever label is installed (`installedAs`).)
 
 A LaunchAgent (login) rather than a boot-time LaunchDaemon because the secrets
 master key is in the login keychain, locked until the user logs in.
@@ -72,7 +72,7 @@ the two launch paths cannot drift. Consequences worth knowing:
 - **A gateway started before this existed** (detached, pidfile only) is left
   running by a plain `start`, which only registers the plist so the next login
   picks it up; `start --force` stops it and hands over to launchd now.
-- Stopping is `./equin stop` — a `kill` of a crashing gateway is followed
+- Stopping is `./muxos stop` — a `kill` of a crashing gateway is followed
   by a relaunch. `stop --disable` also removes the plist.
 - `launchctl bootstrap gui/<uid>` needs a GUI login session for the user; on a
   Mac nobody is logged into (bare SSH) it fails, loudly, with launchctl's error.
@@ -112,7 +112,7 @@ manager and no desktop session installed — a headless server; not
 `systemctl get-default`, which is `graphical.target` on Ubuntu Server too) is
 left out: nothing built,
 registered or asked of the OS, one line saying so. `--leave-out <ids>` (and an
-install's Skip, `EQUIN_INSTALL_LEFT_OUT`) leaves out the named ones; a later
+install's Skip, `MUXOS_INSTALL_LEFT_OUT`) leaves out the named ones; a later
 plain `start` adds them. `--system-packages` prints, and exits, what the OS
 still lacks for the services this start would add and for the dependencies
 every install prepares (`Dep.systemPackages`, `everyInstall`): the apt
@@ -128,14 +128,14 @@ evidence; how to skip it), written also as the install step's own diagnosis.
 nothing else running — started, the gateway's first boot would deploy main
 and the retry would wait behind that build for the host's slot (32 s to
 5 min, 2026-11-18 Linux VMs) — and Skip re-runs `start` without it. **Run by
-hand, equin comes first**: the gateway starts (or restarts, `--force`), the
+hand, muxos comes first**: the gateway starts (or restarts, `--force`), the
 other services are added, and only then does `start` fail on the part — an
 optional part never holds the app.
 
 `--only <ids>` (comma-separated: `<gateway-label>` and/or declared ids)
 restricts `start` to those services — the gateway half runs only when it is
 named — and with `--force` restarts just them:
-`./equin start --only dev.equin.menu-bar --force` leaves the gateway (and every
+`./muxos start --only dev.muxos.menu-bar --force` leaves the gateway (and every
 backend) alone. An unknown id fails before anything runs, listing the known
 ones.
 
@@ -143,11 +143,11 @@ ones.
 
 The account's gateway port (`launcher/gateway-port`): kept once recorded; on
 the first start (or an install still on the old port 9000) the first free one
-of 8700–8709, probed on both loopbacks, said in plain words ("equin chose port
+of 8700–8709, probed on both loopbacks, said in plain words ("muxos chose port
 8701: 8700 (php-fpm, pid 412) is taken"). It is recorded only once the gateway
 answers on it. A move off 9000 keeps 9000 answering (`-legacy-listen`, which
 redirects page loads). `--port <n>` moves it by hand (a restart). A recorded
-port held by anything else — another account's equin included, told apart by
+port held by anything else — another account's muxos included, told apart by
 `GET /gateway/identity` — is a loud refusal naming the holder, never a silent
 move: bookmarks and OAuth redirect URIs name the port.
 
@@ -157,10 +157,10 @@ Loopback only by default: the gateway's `-listen loopback:<port>` binds
 `127.0.0.1` and `[::1]` (a host without IPv6 gets the first alone, with
 a warning; `[::1]` held by someone else is fatal). So the agent manager is
 unreachable off-box, and macOS never asks to "accept incoming network
-connections", unless someone asked for it: `EQUIN_LISTEN=:<port> ./equin start`
-binds every interface, and `EQUIN_LISTEN=<host>:<port>` one address. Only the
+connections", unless someone asked for it: `MUXOS_LISTEN=:<port> ./muxos start`
+binds every interface, and `MUXOS_LISTEN=<host>:<port>` one address. Only the
 host may change; the port stays the account's. The bind is baked into the plist, so a
-change reaches the running gateway on `./equin start --force`.
+change reaches the running gateway on `./muxos start --force`.
 
 ## Other hosts: a detached spawn
 
@@ -174,24 +174,24 @@ The binary is the `gateway-binary` dependency (`infra/launcher/deps`, a `build`
 kind of `infra/deps`): `start` runs `ensureDep(gatewayBinary, cliExecContext(),
 { root: <main checkout> })`. Its identity is main's Go source + `go version` +
 the platform, so a Go change is built on the next `start` (no flag) into
-`~/.equin/cache/deps/gateway-binary/<identity>/env/gateway`, and an
+`~/.muxos/cache/deps/gateway-binary/<identity>/env/gateway`, and an
 unchanged one costs a hash. It does NOT reach a running gateway: with the
 gateway already running under the manager and no `--force`, `start` only asks
 `LoginService.isCurrent(job)` and, when the written job differs, prints a stale
-notice with `./equin start --only <gateway-label> --force` — the plist
+notice with `./muxos start --only <gateway-label> --force` — the plist
 is not rewritten, the binary neither signed nor held, so the plist keeps naming
 the binary that runs and the sweep keeps off it. The health report's Gateway row
 (`infra/launcher/gateway-drift`) says the same from the app, with
-`./equin start --force`. When `start` launches, the
+`./muxos start --force`. When `start` launches, the
 plist (or the detached spawn) names that path and it
 `holdDep`s the install as `machine-gateway`, so the daily deps sweep never
 deletes the binary launchd will relaunch, however long main has moved on; the
 next `start` moves the hold to the new build. On macOS the plist does not
-name the cache path: `start` installs the build into the equin app bundle
+name the cache path: `start` installs the build into the muxos app bundle
 (`installServiceExecutable`, `infra/launcher/login-services`) and the plist runs
-`~/.equin/state/macos-app/equin.app/Contents/MacOS/gateway`, its build
-named in the job's `EQUIN_APP_COMPONENT` — so macOS asks for, grants and resets
-the gateway's permissions as one app, "equin" (`dev.equin`). The install is a
+`~/.muxos/state/macos-app/muxos.app/Contents/MacOS/gateway`, its build
+named in the job's `MUXOS_APP_COMPONENT` — so macOS asks for, grants and resets
+the gateway's permissions as one app, "muxos" (`dev.muxos`). The install is a
 no-op when the bundle already holds that build signed by this machine's
 identity, a re-sign when the identity changed. A configured identity that does
 not resolve fails `start`. A release never builds: its launcher reads the
@@ -212,11 +212,11 @@ hands it over, and waits —
 so if the invoking shell dies, killing the readiness wait is the right outcome.
 There is nobody left for it to report to, and the daemon it spawned is unaffected.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: `./equin start` — build the gateway and register it as a per-user OS service (launchd on macOS, a systemd user unit on Linux) so it comes back after a reboot, then wait for it to actually serve before reporting success.
+- Description: `./muxos start` — build the gateway and register it as a per-user OS service (launchd on macOS, a systemd user unit on Linux) so it comes back after a reboot, then wait for it to actually serve before reporting success.
 - Cli:
   - Uses:
     - `framework/cli/doctor.assertPrerequisites`

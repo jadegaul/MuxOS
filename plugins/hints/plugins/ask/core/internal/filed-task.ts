@@ -29,7 +29,7 @@ export const AskFiledTaskSchema = z.object({
 const AskFiledTaskOutputSchema = z.object({ taskId: taskIdKind.schema });
 
 /**
- * The result kind of an Ask equin thread: a task it filed (`ask_file_task`).
+ * The result kind of an Ask muxos thread: a task it filed (`ask_file_task`).
  * `multiple`: every task one turn files is its own card.
  */
 export const askFiledTask = defineThreadResult({

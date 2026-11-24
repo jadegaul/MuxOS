@@ -15,8 +15,8 @@
  * `"9"` as text — the `$key` order).
  *
  * Runs against a throwaway database (`db-test-fixture`) with graphile's own
- * schema. Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * schema. Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

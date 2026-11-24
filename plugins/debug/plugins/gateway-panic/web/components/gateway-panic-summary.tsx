@@ -12,7 +12,7 @@ export function GatewayPanicSummary({ report }: { report: Report }) {
   return (
     <Inline gap="xs">
       <Badge variant="destructive" mono>
-        {d.site.replace(/^equin\/gateway\./, "")}
+        {d.site.replace(/^muxos\/gateway\./, "")}
       </Badge>
       <span>
         {d.method} {d.path}

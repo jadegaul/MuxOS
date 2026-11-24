@@ -42,7 +42,7 @@ export const APP_DEMO_PLACES: Readonly<Record<string, AppDemoPlace>> = {
     shot: "/files/browse/~;fs=browser/preview/This%20week.md",
   },
   maps: { home: "/places", shot: "/places" },
-  // The two ways to use equin as a whole surface. The desktop is shot with
+  // The two ways to use muxos as a whole surface. The desktop is shot with
   // Sonata's window open on the nocturne (two more windows join it in the
   // screenshot script's setup); the island at its home, Start pressed by the
   // same setup, the buildings around the square in view.

@@ -1,8 +1,8 @@
 /**
- * `./equin deploy restart <composition> --server <server>` — restart the
+ * `./muxos deploy restart <composition> --server <server>` — restart the
  * installed service and hold the ship's health gate.
  *
- * For a site whose server answers but whose equin is not running (the box
+ * For a site whose server answers but whose muxos is not running (the box
  * link's `down`). It converges nothing and ships nothing: the unit restarts on
  * the release `current` already names, and the gate proves that release is the
  * one answering, settled. Nothing to revert — a release that will not come back
@@ -24,7 +24,7 @@ const run: CliAction<[string], { server: string }> = async (
   );
   await runScript(target, {
     script: restartScript({ install, loopbackPort: deployment.loopbackPort }),
-    remoteName: `equin-restart-${composition}.sh`,
+    remoteName: `muxos-restart-${composition}.sh`,
     timeoutMs: RESTART_MS,
     what: "restart",
   });

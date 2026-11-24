@@ -87,7 +87,7 @@ describe("search-scope guard", () => {
       expect(blocks(`rg foo /tmp`)).toBe(true);
     });
     test("…while a glob over its entries names one dir below it each", () => {
-      expect(blocks(`rg foo ${tmpdir()}/equin-test-*/output.log`)).toBe(false);
+      expect(blocks(`rg foo ${tmpdir()}/muxos-test-*/output.log`)).toBe(false);
     });
   });
 

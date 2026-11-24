@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /**
  * One-time backfill: insert push records for commits that have a push
- * trailer but are missing the conversation trailer (EQUIN_CONVERSATION_ID was
+ * trailer but are missing the conversation trailer (MUXOS_CONVERSATION_ID was
  * unset at commit time, so the hook never wrote the trailer).
  *
  * Strategy: the local worktree directory is named after the conversation ID, and
@@ -10,8 +10,8 @@
  * trailer, and insert the missing push records.
  *
  * Usage (the namespace whose database to write is stated, never inherited):
- *   ./equin run scripts/backfill-pushes.ts --namespace equin          # dry run
- *   ./equin run scripts/backfill-pushes.ts --namespace equin --write  # apply
+ *   ./muxos run scripts/backfill-pushes.ts --namespace muxos          # dry run
+ *   ./muxos run scripts/backfill-pushes.ts --namespace muxos --write  # apply
  */
 
 import { drizzle } from "drizzle-orm/node-postgres";

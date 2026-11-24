@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-cli-op-runtime",
+  "name": "@muxos/plugin-framework-cli-op-runtime",
   "private": true,
   "version": "0.0.1",
   "description": "Shared machinery of the op commands (build / check / test / push / run): broadcasts, deploy receipt, fatal-signal exits, lane, op profiler, progress log, admission valve, nested check, build output, and the direct-op lifecycle (withDirectOp)."

@@ -22,7 +22,7 @@
  * Leaves the worktree's queue as it found it (sections deleted; the pinned
  * row moved back out of Pinned).
  *
- *   ./equin run plugins/conversations/plugins/conversations-view/plugins/data-view/plugins/queue/e2e/queue-sections.ts [--out <prefix>] [--headed]
+ *   ./muxos run plugins/conversations/plugins/conversations-view/plugins/data-view/plugins/queue/e2e/queue-sections.ts [--out <prefix>] [--headed]
  */
 import type { Page } from "playwright";
 import {

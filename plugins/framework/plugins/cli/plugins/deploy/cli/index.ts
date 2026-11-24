@@ -1,5 +1,5 @@
 /**
- * `./equin deploy converge|ship|restart` — the verbs over a deployment.
+ * `./muxos deploy converge|ship|restart` — the verbs over a deployment.
  *
  * **converge** makes a host serve a composition: run user, dir layout, the
  * `env` EnvironmentFile, Caddy, the systemd unit, the firewall.
@@ -102,7 +102,7 @@ export default defineCliCommand({
     defineCliCommand<[string], { server: string }>({
       name: "restart",
       description:
-        "Restart a composition's installed service on its server and hold the ship's health gate (for a site whose server answers but whose equin has stopped)",
+        "Restart a composition's installed service on its server and hold the ship's health gate (for a site whose server answers but whose muxos has stopped)",
       arguments: [
         {
           name: "<composition>",

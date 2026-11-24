@@ -36,7 +36,7 @@ describe("paintedTokenGroups", () => {
     expect(painted.map((g) => g.id)).toEqual([palette.id, scale.id]);
   });
 
-  // The equin.ai burst: every token-group plugin failed to load while the
+  // The MuxOS.app burst: every token-group plugin failed to load while the
   // site's themes did — no group registered at all.
   it("lets a code theme resolve with no group registered, dropping nothing", () => {
     const groups = paintedTokenGroups([], [site, page]);

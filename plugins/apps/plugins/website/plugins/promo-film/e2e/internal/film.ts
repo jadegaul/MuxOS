@@ -1,5 +1,5 @@
 // The whole film (Script v4), from the recordings (record.ts): one continuous
-// session of the real app, ending on equin's desktop mode, then a direct fade
+// session of the real app, ending on muxos's desktop mode, then a direct fade
 // to the end card. The timeline is derived from the recordings — each segment
 // plays at its real speed except its time-lapses — so re-recording a segment
 // re-times everything after it.
@@ -551,7 +551,7 @@ export async function buildFilm(opts: {
     captions.push(["Create any app", from, t]);
   }
 
-  // 6. Desktop: the camera pulls back from the gallery to equin's desktop
+  // 6. Desktop: the camera pulls back from the gallery to muxos's desktop
   //    mode, where it is the one window. The prototype segment's last frame
   //    (the full-screen gallery) is drawn so it lies exactly on the window's
   //    content, and gives way to the window's own pixels as the camera pulls

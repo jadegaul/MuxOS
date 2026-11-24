@@ -8,7 +8,7 @@ import type { PrototypeMeta } from "../../core";
 import { prototypeRecords } from "./tree-records";
 import { ensurePrototypeRecords } from "./watcher";
 
-// The lister (`shared/list-metas.ts`, shared with `./equin prototype list`)
+// The lister (`shared/list-metas.ts`, shared with `./muxos prototype list`)
 // over the app's file root — the server's spelling of it. `handlers.ts`,
 // `resources.ts` and the server barrel (which `thumbnails` and `active-data`
 // read from) call these.

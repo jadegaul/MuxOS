@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-css-working-dots",
+  "name": "@muxos/plugin-primitives-css-working-dots",
   "description": "Three-dot working indicator with organic, mood-driven motion.",
   "private": true,
   "version": "0.0.1"

@@ -1,6 +1,6 @@
 # Gateway
 
-Reverse proxy that multiplexes multiple equin app instances (one per agent worktree) behind a single port using subdomain-based routing.
+Reverse proxy that multiplexes multiple muxos app instances (one per agent worktree) behind a single port using subdomain-based routing.
 
 See the top-level [`CLAUDE.md`](../CLAUDE.md) for overall architecture and [`server-core/CLAUDE.md`](../plugins/framework/plugins/server-core/CLAUDE.md) for the backend.
 
@@ -9,15 +9,15 @@ See the top-level [`CLAUDE.md`](../CLAUDE.md) for overall architecture and [`ser
 - Listens on this account's loopback port (`-listen loopback:<port>`, required — see "The port": one listener on `127.0.0.1:<port>`, one on `[::1]:<port>`), routes `<name>.localhost:<port>` → that worktree's backend
 - Serves each worktree's `web/dist` as static files directly (no backend spawn needed for page loads)
 - Lazy-spawns the backend on a page load (in the background, beside the SPA shell) or the first `/api/*` or `/ws/*` request; tears it down after 10 minutes idle — except central and main (`Worktree.AlwaysOn`) and the namespace it serves to the public (below)
-- **Never sweeps main's backend** (`Worktree.AlwaysOn`, by `mainNamespace`): it hosts the main-only jobs, schedules, automations and samplers, which must run with no browser open — host admission's owner sampler among them, whose fleet memory reading (leased 120 s) every host CPU grant is sized from. Swept, main stayed down until a request woke it, and every `./equin build/check/test` meanwhile ran "unmeasured" on the admission floor (77 sweeps on one Mac, 2026-06-05 → 11-12, ~348 h down). The gateway also starts it at boot, beside central (the main deployer's boot edge restarts it only when a build is due). Not pinned: `/stop` and `?hold=1` still stop it.
+- **Never sweeps main's backend** (`Worktree.AlwaysOn`, by `mainNamespace`): it hosts the main-only jobs, schedules, automations and samplers, which must run with no browser open — host admission's owner sampler among them, whose fleet memory reading (leased 120 s) every host CPU grant is sized from. Swept, main stayed down until a request woke it, and every `./muxos build/check/test` meanwhile ran "unmeasured" on the admission floor (77 sweeps on one Mac, 2026-06-05 → 11-12, ~348 h down). The gateway also starts it at boot, beside central (the main deployer's boot edge restarts it only when a build is due). Not pinned: `/stop` and `?hold=1` still stop it.
 - **Never sweeps a deployed site's backend.** The namespace a gateway serves at its `-public-hosts` is derived, never named: a public host has no `<name>.localhost` label, so it can only reach `-default-namespace` (`Config.publicNamespace`; public hosts without a default namespace are fatal at boot). Idle sweeping frees memory from backends nobody uses; a public site's one backend being "idle" only moves its cold start (~0.8 s) onto the next visitor — about five times a day on the website box before this (2026-11-13). A dev gateway, desktop app or preview passes no public hosts and is swept as before. `/stop` and `?hold=1` still stop it (a data reset must be able to).
-- Hands each backend a Unix domain socket at `~/.equin/sockets/<name>.sock` as `--socket <path>` on its argv. Gateway dials the socket directly — no TCP between gateway and backend.
+- Hands each backend a Unix domain socket at `~/.muxos/sockets/<name>.sock` as `--socket <path>` on its argv. Gateway dials the socket directly — no TCP between gateway and backend.
 - Starts every child (backends, supervised services) from a **declared** environment, never its own: see "Backend Contract", item 2.
-- Discovers worktrees from `~/.equin/worktrees/<name>/spec.json`
+- Discovers worktrees from `~/.muxos/worktrees/<name>/spec.json`
 - Exposes `/gateway/*` on every host as an API for apps to query gateway state
 - **Supervises configured services** (e.g. embedded Postgres) via a generic process supervisor. See "Service supervision" below.
-- **Triggers main's deploy** (`-main-checkout`): on every advance of `refs/heads/main` it runs `./equin build --allow-main --converge` from main's served slot (the checkout before any exists), one run at a time. See "Main's deploy" below.
-- **Is replaced by main's deploy when main changes it**: that same run rebuilds this binary and hands the running gateway over to it — no one runs `./equin start --force` for a pushed gateway change, and no backend restarts. See "The gateway follows main" below.
+- **Triggers main's deploy** (`-main-checkout`): on every advance of `refs/heads/main` it runs `./muxos build --allow-main --converge` from main's served slot (the checkout before any exists), one run at a time. See "Main's deploy" below.
+- **Is replaced by main's deploy when main changes it**: that same run rebuilds this binary and hands the running gateway over to it — no one runs `./muxos start --force` for a pushed gateway change, and no backend restarts. See "The gateway follows main" below.
 - **Runs as a keeper and its generations** (`keeper.go`): the process a service manager or launcher starts holds the listening sockets and is the parent of every backend; the gateway proper is its child, replaced by `POST /gateway/handover` with no request refused and no backend stopped. See "The keeper: a gateway update is a handover" below.
 
 ## The port
@@ -25,15 +25,15 @@ See the top-level [`CLAUDE.md`](../CLAUDE.md) for overall architecture and [`ser
 **`-listen` is required, with no default**: a gateway started without it exits
 at once (`gateway: fatal: -listen is required …`, before the keeper starts
 anything). The port is per account — 8700 by default, the first free one of
-8700..8709 — chosen once by `./equin start`, recorded in
-`~/.equin/state/gateway/port` and owned by
-`plugins/infra/plugins/launcher/plugins/gateway-port` (`./equin url` prints this
+8700..8709 — chosen once by `./muxos start`, recorded in
+`~/.muxos/state/gateway/port` and owned by
+`plugins/infra/plugins/launcher/plugins/gateway-port` (`./muxos url` prints this
 account's). A Go default would be a second copy of that choice. The port must
 be a real one (1..65535; `0` is refused — there would be nothing to tell a
 child or a browser).
 
 **Every child learns it from the gateway**: `env.go` (`runtimeChildEnv`) adds
-`EQUIN_GATEWAY_PORT=<port>` (decimal, -listen's port) to every child's base —
+`MUXOS_GATEWAY_PORT=<port>` (decimal, -listen's port) to every child's base —
 backends, central, supervised services, main's deploy run — replacing any value
 the starter carried. A backend dials the gateway it runs under, never a port a
 file or a constant names; absent (a gateway older than this), a backend reads
@@ -42,7 +42,7 @@ the old fixed port, the only one such a gateway listened on.
 **`-legacy-listen <addr>`** (same grammar as `-listen`, e.g. `loopback:9000`;
 empty = none) is the port an install moved off, served while it migrates
 (design: [`research/2026-11-17-global-gateway-port-v2.md`](../research/2026-11-17-global-gateway-port-v2.md) § 4;
-`listen.go`). Running agents (`EQUIN_PARENT_URL`), unrebased worktree builds
+`listen.go`). Running agents (`MUXOS_PARENT_URL`), unrebased worktree builds
 and open tabs still hold the old origin, so it serves EXACTLY as the main port
 does — API, WebSockets, `/gateway/*`, MCP — on its own `http.Server` over the
 same handler, shut down and drained with the main one (`serverSet`). One
@@ -66,8 +66,8 @@ tools); any `/gateway`, `/api` or `/ws` path.
   push triggers drops the port.
 
 **`GET /gateway/identity`** — whose gateway this is:
-`{"product":"equin","uid":<uid>,"dataDir":"<data root>","port":<main port>,"legacyListen":{"addr":"<-legacy-listen>","held":<bool>}|null}`.
-`./equin start` tells its own gateway from another account's (or a foreign
+`{"product":"muxos","uid":<uid>,"dataDir":"<data root>","port":<main port>,"legacyListen":{"addr":"<-legacy-listen>","held":<bool>}|null}`.
+`./muxos start` tells its own gateway from another account's (or a foreign
 server on the port) by it; the health read shows `legacyListen.held`.
 Owner-only, like every `/gateway/*` route.
 
@@ -76,9 +76,9 @@ Owner-only, like every `/gateway/*` route.
 - **Subdomain routing, not path-prefix** — each instance thinks it's at `/`, so no base-path rewriting. `*.localhost` resolves natively in Chrome and Firefox
 - **Gateway serves statics, backend serves API/WS** — separating the cheap thing (files) from the expensive thing (process) means page loads are instant and backends only exist when needed. A page load still *starts* the backend (without waiting on it), so its boot overlaps the browser loading the app instead of following it
 - **Gateway owns backend lifecycles** — backends are spawned, supervised, and killed by the gateway. They never know the gateway exists. The convention is `bun bin/index.ts --namespace <name> --socket <path> --principal-stamped` in the `server` directory, with the declared runtime environment and nothing else (`backendLaunch` in `worktree.go`)
-- **Children get a declared environment, not an inherited one** — the gateway used to hand every child its own environment, i.e. whatever its starter carried. Started from an agent shell, that put the shell's `EQUIN_CONVERSATION_ID`, `TMUX` and `CLAUDE_*` into every backend on the host. Now the launcher declares the names (`-child-env`), `env.go` captures that subset once at boot, and `env.go` is the only file allowed to call `os.Environ()` or `exec.Command` (the `launcher:gateway-env-explicit` check) — so no exec site can fall back to Go's nil-`Env` "inherit everything"
+- **Children get a declared environment, not an inherited one** — the gateway used to hand every child its own environment, i.e. whatever its starter carried. Started from an agent shell, that put the shell's `MUXOS_CONVERSATION_ID`, `TMUX` and `CLAUDE_*` into every backend on the host. Now the launcher declares the names (`-child-env`), `env.go` captures that subset once at boot, and `env.go` is the only file allowed to call `os.Environ()` or `exec.Command` (the `launcher:gateway-env-explicit` check) — so no exec site can fall back to Go's nil-`Env` "inherit everything"
 - **Unix domain sockets, not TCP loopback** — eliminates the IPv4/IPv6 bind-shape asymmetry that allowed unrelated processes to silently steal traffic on macOS (an IPv4-loopback squatter could coexist with a dual-stack listener on the same port). UDS scopes the gateway↔backend channel by filesystem path, removes the port allocator entirely, and removes any LAN-exposure surface.
-- **Loopback front door, both families** — the gateway's own port binds `127.0.0.1` and `[::1]` as two listeners (`listenAddrs` in `main.go`), never one dual-stack wildcard, so it is unreachable off-box (and trips no macOS incoming-connections prompt) and no IPv4- or IPv6-loopback squatter can coexist with it on the port: `[::1]` in use is fatal, like `127.0.0.1`; only `[::1]` *unavailable* (no IPv6) degrades to IPv4 with a warning. Every interface is the explicit `-listen :<port>` (`EQUIN_LISTEN=:<port>`).
+- **Loopback front door, both families** — the gateway's own port binds `127.0.0.1` and `[::1]` as two listeners (`listenAddrs` in `main.go`), never one dual-stack wildcard, so it is unreachable off-box (and trips no macOS incoming-connections prompt) and no IPv4- or IPv6-loopback squatter can coexist with it on the port: `[::1]` in use is fatal, like `127.0.0.1`; only `[::1]` *unavailable* (no IPv6) degrades to IPv4 with a warning. Every interface is the explicit `-listen :<port>` (`MUXOS_LISTEN=:<port>`).
 - **`/gateway/*` is a reserved path** on every host — the gateway intercepts it before proxying, and answers the owner only (see "Principal"). Local tools call `GET /gateway/worktrees` to list instances. This is an official API, not internal plumbing
 
 ## Routing Rules
@@ -117,9 +117,9 @@ mirrored strictly: unknown fields refused) lists the request path — cleaned,
 trailing slash dropped, query ignored — `serveShell` replaces the shell's
 `<title>`, adds `<meta name="description">`, `<link rel="canonical">` (origin
 from `Host` + `X-Forwarded-Proto`, http by default; the href is the manifest
-key) and the hiding rule (`html.js #equin-snapshot{display:none}` plus the
+key) and the hiding rule (`html.js #muxos-snapshot{display:none}` plus the
 script setting `js`) before `</head>`, and the fragment file wrapped in
-`<div id="equin-snapshot">` right after `<div id="root"></div>`. Title,
+`<div id="muxos-snapshot">` right after `<div id="root"></div>`. Title,
 description and href are HTML-escaped; the fragment is the build's own HTML,
 inserted verbatim (UTF-8). It composes with the document head (both splices,
 one ETag over the final bytes, prefix `sh-`). The manifest and every fragment
@@ -153,7 +153,7 @@ overwriting a client value — the backend itself is addressed as `backend`) and
 `X-Forwarded-Proto` (a front proxy's value kept, else `http`); see
 `newReverseProxy`.
 
-The running gateway is main's: a worktree's `./equin build` does not rebuild
+The running gateway is main's: a worktree's `./muxos build` does not rebuild
 it, so a gateway change takes effect once it lands on main — main's deploy
 restarts the gateway on its own (see "The gateway follows main"; a release
 bundle carries its own gateway).
@@ -175,10 +175,10 @@ the shell is `no-cache`.
 
 ## Principal (who a request is)
 
-`principal.go` turns every request into `owner`, `visitor` or `anonymous` (`principalOf`) and `Proxy.ServeHTTP` stamps it as `X-Equin-Principal` first thing, deleting any client-sent value (the HTTP reverse proxy and the WebSocket `r.Write` replay both carry it). The gateway's own direct-socket calls (`/api/health/ready`, `/api/boot/gateway-report`) stamp `owner`. The backends enforce per-route access from the header; the gateway itself refuses two things, `403 {"reason":"cross-site-refused",...}`: **every `/gateway/*` request from anyone but the owner** (any method — `gatewayAPIRefused`, checked in the one branch that dispatches to `handleGatewayAPI`), and any anonymous WebSocket upgrade. Same-origin, not same-site:
+`principal.go` turns every request into `owner`, `visitor` or `anonymous` (`principalOf`) and `Proxy.ServeHTTP` stamps it as `X-MuxOS-Principal` first thing, deleting any client-sent value (the HTTP reverse proxy and the WebSocket `r.Write` replay both carry it). The gateway's own direct-socket calls (`/api/health/ready`, `/api/boot/gateway-report`) stamp `owner`. The backends enforce per-route access from the header; the gateway itself refuses two things, `403 {"reason":"cross-site-refused",...}`: **every `/gateway/*` request from anyone but the owner** (any method — `gatewayAPIRefused`, checked in the one branch that dispatches to `handleGatewayAPI`), and any anonymous WebSocket upgrade. Same-origin, not same-site:
 
-1. Host not an equin host (no namespace, not `localhost`/`127.0.0.1`/`::1`, not in `-public-hosts`) -> anonymous (DNS rebinding). `-public-hosts` (comma-separated) is how a deployed site, whose Caddy forwards the public Host unchanged, names its own hostnames; the launcher passes it from `EQUIN_PUBLIC_HOSTS`.
-2. Came through an edge -> **visitor**: the Host is one of `-public-hosts`, or the request carries a forwarding header (`X-Forwarded-For`, `X-Forwarded-Host`, `X-Forwarded-Proto`, `Forwarded` — Caddy sets them; a local tool dialling the gateway sends none, nor does a handover's hop). The rules below read headers a browser cannot forge — but a stranger's `curl` can send any of them, or none ("a local tool"), so on the internet they prove nothing. A deployed site's owner reaches it on the box (SSH → loopback), never through Caddy. Before 2026-11-15 a public host fell through to rule 3, so `curl -X POST https://equin.ai/gateway/worktrees/<site>/stop?hold=1` was the owner.
+1. Host not an muxos host (no namespace, not `localhost`/`127.0.0.1`/`::1`, not in `-public-hosts`) -> anonymous (DNS rebinding). `-public-hosts` (comma-separated) is how a deployed site, whose Caddy forwards the public Host unchanged, names its own hostnames; the launcher passes it from `MUXOS_PUBLIC_HOSTS`.
+2. Came through an edge -> **visitor**: the Host is one of `-public-hosts`, or the request carries a forwarding header (`X-Forwarded-For`, `X-Forwarded-Host`, `X-Forwarded-Proto`, `Forwarded` — Caddy sets them; a local tool dialling the gateway sends none, nor does a handover's hop). The rules below read headers a browser cannot forge — but a stranger's `curl` can send any of them, or none ("a local tool"), so on the internet they prove nothing. A deployed site's owner reaches it on the box (SSH → loopback), never through Caddy. Before 2026-11-15 a public host fell through to rule 3, so `curl -X POST https://MuxOS.app/gateway/worktrees/<site>/stop?hold=1` was the owner.
 3. `Sec-Fetch-Site` `same-origin` or `none` -> owner.
 4. No `Sec-Fetch-Site` and no `Origin` -> owner (local tools).
 5. No `Sec-Fetch-Site`, `Origin` == `http://<Host>` or `https://<Host>` -> owner (old browsers).
@@ -188,14 +188,14 @@ Any proxy in front of a gateway makes its callers visitors — a tunnel (Tailsca
 
 The deployed site's Caddy also refuses `/gateway/*` (`caddySite`, a second layer). `TestGatewayAPIRefusesEveryoneButTheOwner` reads every `/gateway/…` literal out of the gateway's sources and asserts each, under every method, is refused to a public curl, a forged same-origin visitor, a proxied loopback request and a cross-site page — a route added later is covered the day it is written.
 
-**The handshake.** Every backend (central included) gets the bare `--principal-stamped` at the end of its argv (`principalStampedFlag`, `backendLaunch`): "this gateway stamps the header". A backend enforces fail-closed — a missing header is anonymous — only when it sees the flag (`readPrincipalStamp`, `plugins/framework/plugins/principal`). The gateway binary is a shared dependency a worktree's `./equin build` neither rebuilds nor restarts (main's deploy restarts it once a change lands — "The gateway follows main"), so a backend can boot behind a gateway older than the stamp; without the handshake it would refuse everything, this gateway's own readiness probe included, and every namespace would stay down. Behind such a gateway the backend serves ungated (the pre-principal status quo), logs `[principal] this gateway predates the principal stamp …` at boot, and the health report's Gateway row turns stale. **The protection takes effect once the gateway is restarted — which main's deploy does by itself after the push that changes it (by hand: `./equin start --force`).** The flag and the Go constant are pinned to the TS one by `principal:header-in-sync`.
+**The handshake.** Every backend (central included) gets the bare `--principal-stamped` at the end of its argv (`principalStampedFlag`, `backendLaunch`): "this gateway stamps the header". A backend enforces fail-closed — a missing header is anonymous — only when it sees the flag (`readPrincipalStamp`, `plugins/framework/plugins/principal`). The gateway binary is a shared dependency a worktree's `./muxos build` neither rebuilds nor restarts (main's deploy restarts it once a change lands — "The gateway follows main"), so a backend can boot behind a gateway older than the stamp; without the handshake it would refuse everything, this gateway's own readiness probe included, and every namespace would stay down. Behind such a gateway the backend serves ungated (the pre-principal status quo), logs `[principal] this gateway predates the principal stamp …` at boot, and the health report's Gateway row turns stale. **The protection takes effect once the gateway is restarted — which main's deploy does by itself after the push that changes it (by hand: `./muxos start --force`).** The flag and the Go constant are pinned to the TS one by `principal:header-in-sync`.
 
 Design: [`research/2026-10-28-global-http-edge-principal.md`](../research/2026-10-28-global-http-edge-principal.md).
 
 ## Content host
 
 `content.go`: `http://<item>.content.localhost:<port>/<ns-label>/api/…` is where
-equin serves untrusted CONTENT (an agent-written prototype) off every app
+muxos serves untrusted CONTENT (an agent-written prototype) off every app
 origin — one origin per `<item>` (one DNS label, not otherwise read), the
 namespace in the first path segment (alias-resolved like a Host). Handled
 first in `ServeHTTP`, before `parseWorktree` and central routes. The gateway
@@ -212,7 +212,7 @@ Design: [`research/2026-10-29-global-content-isolation.md`](../research/2026-10-
 
 ## Worktree Registry
 
-Location: `~/.equin/worktrees/<name>/spec.json`. Directory name = worktree identifier = subdomain.
+Location: `~/.muxos/worktrees/<name>/spec.json`. Directory name = worktree identifier = subdomain.
 
 ```json
 {
@@ -223,7 +223,7 @@ Location: `~/.equin/worktrees/<name>/spec.json`. Directory name = worktree ident
 
 `server` is required and absolute; `web` is absolute when present (central has none). Optional `command` (argv to spawn instead of the bun convention) and `env` (full variable names → values, applied on top of the declared child env when the backend is spawned — a same-named entry is replaced; keys non-empty, no `=`, else the spec is rejected). `env` is how what belongs to the code a spec runs (a release bundle's own paths) travels with that spec instead of being inherited from whoever started the gateway. The gateway hardcodes the launch convention (`bun bin/index.ts --namespace <name> --socket <path> --principal-stamped`, escalating readiness timeout — see "Backend Contract"). No per-worktree overrides in v1. Other per-worktree files (build logs, profiling data) also live in the same subdirectory.
 
-Composition namespaces (`http://<composition>.<checkout>.localhost:<port>`, or `http://<composition>.localhost:<port>` when the checkout is main — `./equin build --composition <name>`) are ordinary spec dirs written by the build: `server` points at the checkout that built it, `web` at a composed dist, plus a `composition.json` provenance marker the gateway ignores. No gateway changes; namespace identity flows the same way (dir name → the backend's `--namespace`). The `composition` field on the spec is carried through the gateway's round-trip but never interpreted or forwarded — the backend reads it back off the same file.
+Composition namespaces (`http://<composition>.<checkout>.localhost:<port>`, or `http://<composition>.localhost:<port>` when the checkout is main — `./muxos build --composition <name>`) are ordinary spec dirs written by the build: `server` points at the checkout that built it, `web` at a composed dist, plus a `composition.json` provenance marker the gateway ignores. No gateway changes; namespace identity flows the same way (dir name → the backend's `--namespace`). The `composition` field on the spec is carried through the gateway's round-trip but never interpreted or forwarded — the backend reads it back off the same file.
 
 ### Discovery: dir-level watch + lazy resolve + periodic reconcile
 
@@ -261,7 +261,7 @@ On a gateway that deploys main (`-main-checkout`), once main's `current` link (`
 
 ### Self-healing stale registrations (dead `spec.Server`)
 
-The registry subdir (`~/.equin/worktrees/<name>/`, holding `spec.json` + logs) is a *different* path from `spec.Server` (the git worktree's server dir, e.g. `<repo>/.claude/worktrees/<name>/plugins/.../server-core`). The subdir can outlive the worktree it points at — `worktree-cleanup` or a manual `git worktree remove` can delete the git worktree while leaving the registry subdir behind. Such a registration is born-dead: it can only ever fail to spawn (`cmd.Dir = spec.Server` does not exist).
+The registry subdir (`~/.muxos/worktrees/<name>/`, holding `spec.json` + logs) is a *different* path from `spec.Server` (the git worktree's server dir, e.g. `<repo>/.claude/worktrees/<name>/plugins/.../server-core`). The subdir can outlive the worktree it points at — `worktree-cleanup` or a manual `git worktree remove` can delete the git worktree while leaving the registry subdir behind. Such a registration is born-dead: it can only ever fail to spawn (`cmd.Dir = spec.Server` does not exist).
 
 `registry.go` evicts these defensively (`serverPathMissing`, ENOENT-only so a transient stat error never evicts a live worktree):
 
@@ -299,7 +299,7 @@ gateway/
 ├── document_head.go # The backend-rendered <head> fragment spliced into the SPA shell
 ├── snapshot.go    # A crawlable dist's static page snapshot (manifest + fragments) spliced into the shell
 ├── encoding.go    # Content-encoding of statics: precompressed-sidecar negotiation, on-the-fly gzip of the spliced shell
-├── principal.go   # principalOf: owner/visitor/anonymous verdict, X-Equin-Principal stamp, cross-site refusal
+├── principal.go   # principalOf: owner/visitor/anonymous verdict, X-MuxOS-Principal stamp, cross-site refusal
 ├── content.go     # the content host: <item>.content.localhost/<ns>/api/… stamped `content`, nothing else served
 ├── crash_report.go # The report outbox writer; a backend's signal death as a backend-crash entry
 ├── exit_report.go # Every unrequested backend death filed (backend-exit for an exit code) and counted into crash loops (backend-crash-loop)
@@ -342,7 +342,7 @@ Every `Ensure` names a `StartReason`, which sets the spawn's priority:
 - **Browser** — a document navigation (`Sec-Fetch-Dest: document`), or a WebSocket with `Sec-Fetch-Mode: websocket` and an `Origin` (agents' Playwright browsers included). Spawns at default priority.
 - **Background** — everything else: the app's own `fetch()`es, MCP tools, scripts, other servers. Spawns darwinbg (`taskpolicy -b`). Main and central are never demoted.
 - **Deploy** — the restart route a build POSTs, and the eager always-on start (central, main): background priority too, and the one background start that retries a failed boot (see "A failed boot is not retried by traffic").
-- **Promotion is the backend's own act, on the gateway's word.** A process can leave darwinbg itself, but `taskpolicy -B -p <pid>` from outside exits 0 and changes nothing (measured 2026-10-31 and 2026-11-05), so the gateway does not call it. Every readiness probe carries `X-Equin-Boot-Tier: background | foreground` (`bootTierHeader`) — the tier the gateway wants the boot in — and the backend leaves darwinbg on the first probe that says `foreground` (spawn-priority's `followGatewayBootTier`, logged `[boot] scheduling tier on the gateway's word: …`, journaled as the `left-darwinbg` checkpoint). It says so once a browser joins the start or the boot escalates (`promoteBackend` flips `bk.demoted` under the worktree's `mu`; the probe reads it). Once ready the backend leaves on its own regardless (`[boot] scheduling tier once ready: …`). The header is stripped from every proxied request, and pinned to the TypeScript constant by `spawn-priority:boot-tier-in-sync`. Before this, a demoted boot ran darwinbg to the end: on 2026-11-04 worktree boots spent 60–100 s importing their plugins (2–9 s in the foreground; file reads measured 6–15× slower under darwinbg at load 25–30) and were SIGKILLed at the deadline.
+- **Promotion is the backend's own act, on the gateway's word.** A process can leave darwinbg itself, but `taskpolicy -B -p <pid>` from outside exits 0 and changes nothing (measured 2026-10-31 and 2026-11-05), so the gateway does not call it. Every readiness probe carries `X-MuxOS-Boot-Tier: background | foreground` (`bootTierHeader`) — the tier the gateway wants the boot in — and the backend leaves darwinbg on the first probe that says `foreground` (spawn-priority's `followGatewayBootTier`, logged `[boot] scheduling tier on the gateway's word: …`, journaled as the `left-darwinbg` checkpoint). It says so once a browser joins the start or the boot escalates (`promoteBackend` flips `bk.demoted` under the worktree's `mu`; the probe reads it). Once ready the backend leaves on its own regardless (`[boot] scheduling tier once ready: …`). The header is stripped from every proxied request, and pinned to the TypeScript constant by `spawn-priority:boot-tier-in-sync`. Before this, a demoted boot ran darwinbg to the end: on 2026-11-04 worktree boots spent 60–100 s importing their plugins (2–9 s in the foreground; file reads measured 6–15× slower under darwinbg at load 25–30) and were SIGKILLed at the deadline.
 - Every start that spawns logs `backend start requested … reason=… cause=…` — which request asked (kind, method, path, fetch metadata, Origin, User-Agent): the one record of who keeps asking for a worktree.
 
 **Page-load start** (`serveShell` → `prestartBackend`): when `handleStatic` serves the SPA shell (directly or as the fallback) to a document navigation, it starts the backend with a browser reason in a goroutine, on a context that outlives the request. The response never waits on it and never fails because of it; a failed spawn is logged, and the app's own `/api` or `/ws` request reports it. Without this, the server is first asked for only after the browser has loaded and run the app (~4.5 s), and then the whole boot follows. Assets never start anything, and neither do headless worktrees (they have no shell). A running or starting backend is deduped by `Ensure`. A page load counts as activity, so a backend nothing else uses is swept after the usual idle timeout.
@@ -361,7 +361,7 @@ Before, the next request after the 10 s cooldown respawned it, whoever sent it �
 - `409` for a pinned worktree (`Worktree.Pinned`, today `central`) — the same rule that keeps the sweeper off it. Main (`mainNamespace`) is not pinned: a stop on request reaches it, though the sweeper never does (`AlwaysOn`).
 - `503` when another stop is already tearing it down (not yet exited — retry); `404` for an unknown worktree; `500` if the stop fails. The stop runs on the request's context without its cancellation: a caller hanging up must not turn the SIGTERM grace into an instant SIGKILL, so a stop that arrives mid-spawn waits that spawn out even if its caller has gone. The idle sweeper stops the same way, and stops sweeping once shutdown begins (shutdown's `StopAll` takes the rest, inside its budget).
 
-**`?hold=1` — stop and hold it down** (`Worktree.StopHeld`): the same stop, but the worktree is left `idle` with `held: true` in its status, and traffic cannot leave it — a browser or background `Ensure` gets `ErrHeld` (`502`), never a cold start. Only a **deploy start** (the restart route, `deployRestart` → `Ensure(StartDeploy)`) releases it. It is the step before destroying a namespace's data — taken by `holdBackendDown` (`plugins/infra/plugins/worktree/plugins/backend-hold`), whose `HeldBackend` is what `database/admin`'s `dropDatabase` / `recreateDatabase` require for a namespace's database: a composition reset, a namespace reclaim, a checkout reap and `./equin db fork --replace` drop the database the backend booted on, and must have no backend alive — or able to come alive — while it does (report-1794167098-q99s8d: the reset used to drop it under the serving backend and then hot-restart, which by design kept the OLD backend serving against the empty database until it crashed). The hold is set in the same critical section that ends the stop; holding an already-idle or broken worktree holds it too; a hold requested while another stop is mid-teardown answers `503` rather than lose the hold. In memory only: a gateway restart releases it.
+**`?hold=1` — stop and hold it down** (`Worktree.StopHeld`): the same stop, but the worktree is left `idle` with `held: true` in its status, and traffic cannot leave it — a browser or background `Ensure` gets `ErrHeld` (`502`), never a cold start. Only a **deploy start** (the restart route, `deployRestart` → `Ensure(StartDeploy)`) releases it. It is the step before destroying a namespace's data — taken by `holdBackendDown` (`plugins/infra/plugins/worktree/plugins/backend-hold`), whose `HeldBackend` is what `database/admin`'s `dropDatabase` / `recreateDatabase` require for a namespace's database: a composition reset, a namespace reclaim, a checkout reap and `./muxos db fork --replace` drop the database the backend booted on, and must have no backend alive — or able to come alive — while it does (report-1794167098-q99s8d: the reset used to drop it under the serving backend and then hot-restart, which by design kept the OLD backend serving against the empty database until it crashed). The hold is set in the same critical section that ends the stop; holding an already-idle or broken worktree holds it too; a hold requested while another stop is mid-teardown answers `503` rather than lose the hold. In memory only: a gateway restart releases it.
 
 ## Shutdown fits one budget
 
@@ -449,7 +449,7 @@ non-ready one stopped) — a gateway crash no longer kills a backend, and
 requests queue on the keeper's sockets meanwhile. The keeper exits non-zero
 (its service manager restarts everything, loudly) when the FIRST generation
 fails its boot (that generation's exit code — a service that would not start
-still fails `./equin start` fast), or three generations in a row die before
+still fails `./muxos start` fast), or three generations in a row die before
 ready.
 
 **What still restarts the service:** a change to the keeper itself (its code
@@ -482,13 +482,13 @@ and the runner lived in main's own backend, so a main that could not serve
 could not deploy the commit that fixed it (2026-11-08: the fix sat eleven
 minutes until a person reloaded this gateway).
 
-- **Enabled by `-main-checkout <path>`**, which only `./equin start`'s dev launch
+- **Enabled by `-main-checkout <path>`**, which only `./muxos start`'s dev launch
   passes (`devGatewayLaunchOptions`): a release, `serve-app` or a hand-run
   gateway deploys nothing. A path that is not a main checkout (a `.git` dir and
-  an `equin` CLI) is fatal at boot, after the services start.
+  an `muxos` CLI) is fatal at boot, after the services start.
 - **No policy.** On an edge, with no run going, it starts ONE
-  `<dir>/equin build --allow-main --converge` (cwd `<dir>`, the declared child
-  env plus `EQUIN_BUILD_DETACHED=1`). `<dir>` is resolved before every run
+  `<dir>/muxos build --allow-main --converge` (cwd `<dir>`, the declared child
+  env plus `MUXOS_BUILD_DETACHED=1`). `<dir>` is resolved before every run
   (`convergeDir`): the main slot `-main-slots-current` links to — main's own
   `current/<main namespace>` link in the slot pool (default
   `<data root>/services/main-slots/current/<main namespace>`; one link per
@@ -514,7 +514,7 @@ minutes until a person reloaded this gateway).
 - **The run outlives the gateway.** It is a deploy: its own process group, its
   output written straight into `<log-dir>/deploy/main.log` (rotated to `.1`
   past 16 MB before a run starts; not a pipe into this process), and
-  `EQUIN_BUILD_DETACHED` keeps the CLI's orphan guard from exiting it. A
+  `MUXOS_BUILD_DETACHED` keeps the CLI's orphan guard from exiting it. A
   restarted gateway's boot edge starts a run that waits behind it on the
   checkout's build lock.
 - **Nothing retries.** A run that exits non-zero, is killed, or cannot start is
@@ -533,7 +533,7 @@ minutes until a person reloaded this gateway).
 Main's deploy also replaces the gateway itself — by a handover (see "The
 keeper"), so no backend stops — no person, no approval
 (decided 2026-11-11: fixes in `gateway/` sat inert for days until someone ran
-`./equin start --force`). After its builds, whatever their verdict, the
+`./muxos start --force`). After its builds, whatever their verdict, the
 convergence run calls `followMainGateway` (`plugins/infra/plugins/launcher/plugins/gateway-drift`,
 `cli/`):
 
@@ -548,7 +548,7 @@ convergence run calls `followMainGateway` (`plugins/infra/plugins/launcher/plugi
   or its launch spec is built from: `gateway/**/*.go`, `go.mod`/`go.sum`, Go
   itself, and any flag derivation (`gatewayLaunchFlags` — a new `-child-env`
   name, a new data dir flag, the PATH rule).
-- **How.** Install main's build into the equin app, write the job (what the
+- **How.** Install main's build into the muxos app, write the job (what the
   NEXT start of the service runs), then `POST /gateway/handover` with the job's
   binary, argv, environment and cwd: the keeper replaces the gateway process,
   every backend keeps running. A gateway from before the keeper answers `404`,
@@ -582,14 +582,14 @@ convergence run calls `followMainGateway` (`plugins/infra/plugins/launcher/plugi
   run, so a failing launch would otherwise be retried by its own rollback's
   boot forever. A machine-wide flock (`follow.lock`) makes the successor's
   boot-edge run wait for this one, then find the gateway current.
-- **Serialized with `start`.** `./equin start` takes the same `follow.lock`
+- **Serialized with `start`.** `./muxos start` takes the same `follow.lock`
   around its gateway half.
 - **Loud.** A refusal or failure files a `gateway-restart-failed` report itself
   (the gateway that would have filed the run's exit is the one it replaced),
   and the health report's Gateway row stays Out of date until a later launch
   succeeds.
 
-`./equin start --force` remains the by-hand path (first install, a
+`./muxos start --force` remains the by-hand path (first install, a
 `gateway-restart-failed` fixed outside main, a host with main's deploy off).
 
 ## One gateway per data root
@@ -600,9 +600,9 @@ A gateway owns its data root's runtime — the supervised services, the registry
 
 The gateway includes a generic service supervisor (`supervisor.go`) that manages long-lived daemons defined in the `-db-config` file. The gateway knows nothing about what services are — it just executes start commands, probes readiness, and runs watchdogs.
 
-### Config file: `-db-config` (default `~/.equin/state/db-config/database.json`)
+### Config file: `-db-config` (default `~/.muxos/state/db-config/database.json`)
 
-Auto-generated on first `./equin start`. Contains two sections:
+Auto-generated on first `./muxos start`. Contains two sections:
 - `connection` — database host/port/user, read by the server and CLI (not by the gateway)
 - `services` — array of processes the gateway should supervise
 
@@ -615,7 +615,7 @@ A supervised daemon never owns a log file. Every start (boot and watchdog re-sta
 - **Outlives the gateway**, like the daemon: the relay reads until every process holding the write end has exited, so a gateway restart that reattaches leaves both running (verified: relays reparent to pid 1 and keep writing). Not a pipe into the gateway process, which the first restart would cut.
 - **A start that only reattaches** never hands the fd on, so its relay reads EOF at once and exits without opening the file.
 - **The trade**, shared with Postgres's own `logging_collector`: a relay that stopped reading would block the daemon's stderr writes once the pipe buffer fills (the relay only appends to a local file), and lines over `PIPE_BUF` (512 B on macOS) from concurrent Postgres backends can interleave. A dead relay costs log lines, not the daemon: Postgres and PgBouncer ignore SIGPIPE.
-- **Behind an older gateway** (no `--log-fd`), the start scripts say so and fall back: Postgres to its old unrotated `postgres/postgres.log`, PgBouncer to `-d` with no log. Restart the gateway (main's deploy does once the change lands; by hand `./equin start --force`) and then the cluster.
+- **Behind an older gateway** (no `--log-fd`), the start scripts say so and fall back: Postgres to its old unrotated `postgres/postgres.log`, PgBouncer to `-d` with no log. Restart the gateway (main's deploy does once the change lands; by hand `./muxos start --force`) and then the cluster.
 
 `serviceLogsSubdir`, `serviceLogFdFlag`, `maxLogBytes` and `maxLogBackups` are pinned to their TypeScript twins (`infra/launcher/gateway-logs`) by `gateway-logs:in-sync`.
 
@@ -651,12 +651,12 @@ If `database.json` is missing or has an empty `services` array, the supervisor d
 
 ## Logging
 
-Each channel gets its own size-rotated file under `-log-dir` (default `~/.equin/logs/gateway/`), so one channel's volume can't bury another:
+Each channel gets its own size-rotated file under `-log-dir` (default `~/.muxos/logs/gateway/`), so one channel's volume can't bury another:
 
 - `gateway.log` — the gateway's own `slog` output (lifecycle, routing, supervisor). Written directly by the Go process via a rotating writer. Every backend the gateway kills or abandons leaves a line here: `backend abandoned: not ready by its deadline` (cold start or hot restart — pid, socket, deadline, waited, escalated, outcome, error; `abandonUnreadyBackend`), `backend killed: still running after SIGTERM grace` (stop / drain; `terminateBackend`), and `hot restart failed; old backend intact`. The backend's own log just stops at a kill, so this is the only record of it.
 - `<name>.log` — one file per worktree, holding that backend's stdout/stderr (`central.log`, `<worktree>.log`, …). Each line is `<RFC3339> [stdout|stderr] <line>`. Backend output never lands in `gateway.log`. This is the durable counterpart to the in-memory `logRing` that feeds the live UI. **Deleted with the namespace** (`namespace_logs.go`): once a namespace's registry dir is gone, its unregistration removes `<name>.log` and its rotations after the backend's last lines are written; and at boot `LoadAll` sweeps the files of every namespace whose registry dir is gone (reaped while no gateway ran). A per-file bound is not a bound on the folder while the number of files is unbounded — 2,898 dead namespaces' logs (1.9 GB) had piled up by 2026-11-04. A registration evicted only because its server dir vanished keeps its logs.
 - `services/<service>.log` — each supervised daemon's stdout/stderr (`postgres.log`, `pgbouncer.log`), written by its log relay (see "Service supervision").
-- `gateway-stdio.log` — the daemon's raw stdout/stderr (Go panics, any crash before `slog` is wired up). Owned by the launcher (`./equin start`), truncated on each start.
+- `gateway-stdio.log` — the daemon's raw stdout/stderr (Go panics, any crash before `slog` is wired up). Owned by the launcher (`./muxos start`), truncated on each start.
 
 Rotation (`logwriter.go`, `rotatingWriter`) is size-based: at `maxLogBytes` (50 MB) the active file becomes `<file>.1`, older backups shift up, and the oldest past `maxLogBackups` (5) is dropped — so each channel is capped at ~300 MB with no external dependency. The per-worktree writer opens lazily and is closed when the worktree is unregistered. Every file here is claimed on the `logs/gateway` data dir (`infra/launcher/gateway-logs`) for `paths:logs-claimed`.
 
@@ -664,33 +664,33 @@ Rotation (`logwriter.go`, `rotatingWriter`) is size-based: at `maxLogBytes` (50 
 
 The machine's gateway binary is the `gateway-binary` dependency
 (`plugins/infra/plugins/launcher/deps`, an `infra/deps` `build` kind): built from
-this directory's Go source into `~/.equin/cache/deps/gateway-binary/<identity>/env/gateway`
-by `./equin start` (or `./equin deps install gateway-binary`), rebuilt
+this directory's Go source into `~/.muxos/cache/deps/gateway-binary/<identity>/env/gateway`
+by `./muxos start` (or `./muxos deps install gateway-binary`), rebuilt
 whenever a `.go` file, `go.mod`/`go.sum` or Go itself changes, and sealed into
 every release bundle (`deps/gateway-binary/gateway`, cross-compiled for its
 platform). By hand, for a debugger:
 
 ```sh
 go build -o /tmp/gateway .
-/tmp/gateway -listen loopback:8080 -child-env HOME,USER,PATH              # minimal hand-run (a keeper + its generation); default registry: ~/.equin/worktrees/
+/tmp/gateway -listen loopback:8080 -child-env HOME,USER,PATH              # minimal hand-run (a keeper + its generation); default registry: ~/.muxos/worktrees/
 /tmp/gateway -no-keeper -listen loopback:8080 -child-env HOME,USER,PATH   # one process, for a debugger (cannot hand over)
 /tmp/gateway -listen loopback:8080 -child-env HOME,USER,PATH -idle-timeout 5m -log-level debug
 ```
 
-`-listen` and `-child-env` are **required** (`./equin start` passes both; pick a port this account's gateway does not hold — `./equin url` names it). `-child-env`: a comma-separated list of the environment variable names children may receive (an entry ending in `*`, like `EQUIN_AUTH_*`, matches a prefix). Without it the gateway exits non-zero before doing anything. It has no Go-side default on purpose — the declaration lives in one place, `runtimeEnvNames()` in `plugins/infra/plugins/launcher/plugins/runtime-env/core`, and `./equin start` passes exactly that. The minimal form above is enough to poke at routing under a debugger; a backend that needs more (the app's installation settings, OAuth credentials) needs the full list (`readEnv` in `env.go` reads `EQUIN_<key>`). At boot `gateway.log` records the forwarded names at info and, at warn, every name in the gateway's own environment it is NOT forwarding — the normal path drops nothing, so a warn line means a hand-run gateway. Names only, never values.
+`-listen` and `-child-env` are **required** (`./muxos start` passes both; pick a port this account's gateway does not hold — `./muxos url` names it). `-child-env`: a comma-separated list of the environment variable names children may receive (an entry ending in `*`, like `MUXOS_AUTH_*`, matches a prefix). Without it the gateway exits non-zero before doing anything. It has no Go-side default on purpose — the declaration lives in one place, `runtimeEnvNames()` in `plugins/infra/plugins/launcher/plugins/runtime-env/core`, and `./muxos start` passes exactly that. The minimal form above is enough to poke at routing under a debugger; a backend that needs more (the app's installation settings, OAuth credentials) needs the full list (`readEnv` in `env.go` reads `MUXOS_<key>`). At boot `gateway.log` records the forwarded names at info and, at warn, every name in the gateway's own environment it is NOT forwarding — the normal path drops nothing, so a warn line means a hand-run gateway. Names only, never values.
 
 ## Backend Contract
 
 The gateway expects backends to:
 
 1. Read their socket path from `--socket <path>` on argv (required; backends should error out if missing). A socket is per process, so it must not ride in the environment, where every process the backend starts would inherit it. The server-side reader is `readServingSocket()` in `plugins/infra/plugins/runtime-identity/core`. (A spec written while the transition ran may still carry a `socketTransport` key; the gateway ignores it.)
-2. **Expect a declared environment, nothing ambient.** A backend receives exactly the declared runtime environment — the names the launcher passes via `-child-env` (`runtimeEnvNames()` in `plugins/infra/plugins/launcher/plugins/runtime-env/core`), with the values the gateway itself was started with — and nothing else. Nothing is inherited from whoever started the gateway: an undeclared variable in the starting shell never reaches a backend. A per-child value overrides a same-named base entry. Supervised-service start commands (Postgres, PgBouncer) and the gateway's own helper execs (`taskpolicy`, `ps`) get the base alone. The base also carries what the gateway decides for every child itself: `EQUIN_DATA_ROOT_LAYOUT` and `EQUIN_GATEWAY_PORT` (see "The port"). A new variable a backend must read goes on the launcher's list — declaring it there is the whole change: `-child-env` changes, so main's deploy restarts the gateway once it lands (the value is the one the gateway was started with).
+2. **Expect a declared environment, nothing ambient.** A backend receives exactly the declared runtime environment — the names the launcher passes via `-child-env` (`runtimeEnvNames()` in `plugins/infra/plugins/launcher/plugins/runtime-env/core`), with the values the gateway itself was started with — and nothing else. Nothing is inherited from whoever started the gateway: an undeclared variable in the starting shell never reaches a backend. A per-child value overrides a same-named base entry. Supervised-service start commands (Postgres, PgBouncer) and the gateway's own helper execs (`taskpolicy`, `ps`) get the base alone. The base also carries what the gateway decides for every child itself: `MUXOS_DATA_ROOT_LAYOUT` and `MUXOS_GATEWAY_PORT` (see "The port"). A new variable a backend must read goes on the launcher's list — declaring it there is the whole change: `-child-env` changes, so main's deploy restarts the gateway once it lands (the value is the one the gateway was started with).
 3. Bind that Unix socket and accept HTTP/1.1 + WebSocket connections on it. The gateway polls readiness via `GET /api/health/ready` over the socket — it hot-swaps only once that returns `200` (backend fully ready: migrations applied, DB warm, registry built), not on a bare socket accept. A `404` (backend predates the readiness endpoint) falls back to "HTTP-reachable = ready"; `503` means still booting.
 
    **Wedge detection is progress-aware and escalates before it kills.** The base deadline (`-ready-timeout`, load-adaptive up to `-ready-timeout-max`) is only the wedge *threshold*: when it expires but the backend has answered HTTP at all (even `503`), or was spawned darwinbg-demoted (an E-core boot legitimately exceeds base under host load — even to first socket bind), the gateway tells the backend to leave darwinbg (its next readiness probe says `foreground`, see "Start priority") and extends the wait by `-ready-timeout-max` instead of SIGKILLing near-complete boot work. Only a silent, never-demoted backend is declared wedged at base; a crashed backend is always caught instantly via its exit channel. This closes the 2026-07-07 spawn-kill loop, where healthy demoted boots were killed at 15s four times in a row under load, turning a slow cold start into a ~2-minute outage.
 4. Use relative redirects (gateway does not rewrite `Location` headers)
 5. Handle `/api/*` and `/ws/*` routes
-6. Gate routes on `X-Equin-Principal` only when given `--principal-stamped` (see "Principal" → the handshake); without it, serve ungated and say so.
+6. Gate routes on `X-MuxOS-Principal` only when given `--principal-stamped` (see "Principal" → the handshake); without it, serve ungated and say so.
 
 In Bun: `Bun.serve({ unix: readServingSocket(), fetch, websocket })`. There is no standalone dev mode — the backend is always spawned by the gateway.
 
@@ -741,7 +741,7 @@ writer's test and by `plugins/debug/plugins/backend-crash`'s schema test.
 
 Under a keeper a generation that replaces another ADOPTS its backends (see "The keeper"): its boot reconcile (`reconcileOrphanBackendsKeeping`) leaves alone every socket whose sidecar names an adopted pid, and reaps the rest as below. The rest of this section is a keeper's first generation, and a gateway run with `-no-keeper`.
 
-The gateway owns backend lifecycles, but tracks live backends only in memory — so a gateway crash/restart (or `./equin start` re-launch) could leave the previous generation's backends orphaned. Cleanup has three layers:
+The gateway owns backend lifecycles, but tracks live backends only in memory — so a gateway crash/restart (or `./muxos start` re-launch) could leave the previous generation's backends orphaned. Cleanup has three layers:
 
 1. **Durable pid sidecar** — at spawn, `startBackend` writes `<socket>.pid` (JSON: `pid`, `pgid`, `wallStart`, `worktree`) next to the socket, atomically (temp + rename). It is removed with the socket everywhere via `removeBackendArtifacts(socketPath)` (socket-first, then sidecar). This makes the gateway's ownership of a backend survive its own restart.
 2. **Per-spawn unlink-before-bind** — `removeBackendArtifacts(socketPath)` immediately before each spawn, clearing any socket + sidecar a crashed predecessor left on that path.
@@ -753,9 +753,9 @@ The backend's own ppid-poll escape hatch (`server-core/bin/index.ts` — self-ex
 
 ## Path-length limit
 
-macOS `sun_path` is 104 bytes. With the standard prefix (`/Users/<user>/.equin/sockets/`) and `.next.sock` suffix (the longer of the two per-worktree sockets), worktree names up to ~62 chars fit. If a worktree's name produces an overlong path, `NewWorktree` returns an error and the worktree is rejected at registration. Rename or shorten the worktree to recover.
+macOS `sun_path` is 104 bytes. With the standard prefix (`/Users/<user>/.muxos/sockets/`) and `.next.sock` suffix (the longer of the two per-worktree sockets), worktree names up to ~62 chars fit. If a worktree's name produces an overlong path, `NewWorktree` returns an error and the worktree is rejected at registration. Rename or shorten the worktree to recover.
 
-This ~62-char budget applies to the dev `~/.equin/sockets/` prefix. A packaged release stages its data root at a deep versioned path (`releases/<wt>/<comp>-<target>/<run-id>/data`) that would blow the cap, so `launch.ts` reroots the sockets dir to a short `/tmp` path via `EQUIN_SOCKETS_DIR` (the env override read by `-sockets-dir`'s default) — a deep release data root therefore does not constrain worktree names. The dev limit itself is unchanged.
+This ~62-char budget applies to the dev `~/.muxos/sockets/` prefix. A packaged release stages its data root at a deep versioned path (`releases/<wt>/<comp>-<target>/<run-id>/data`) that would blow the cap, so `launch.ts` reroots the sockets dir to a short `/tmp` path via `MUXOS_SOCKETS_DIR` (the env override read by `-sockets-dir`'s default) — a deep release data root therefore does not constrain worktree names. The dev limit itself is unchanged.
 
 ## File permissions
 

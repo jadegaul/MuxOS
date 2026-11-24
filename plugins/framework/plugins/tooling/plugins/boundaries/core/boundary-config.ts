@@ -78,7 +78,7 @@ export default defineBoundaries({
     // whole failure mode the registry exists to end. Importing a declaration
     // reads a path; it does not import the code under test.
     e2e: ["e2e", "core", "data-dirs", "deps"],
-    // cli/ — a plugin's `./equin <verb>` contribution. A CLI command is a
+    // cli/ — a plugin's `./muxos <verb>` contribution. A CLI command is a
     // host process like a server, so it may reach `core`, its own `shared`,
     // declared `data-dirs`, other plugins' `server` barrels, and other plugins'
     // `cli` barrels. That last edge is the point: shared CLI machinery lives in
@@ -92,7 +92,7 @@ export default defineBoundaries({
     // a component.
     //
     // THIS ROW DOES NOT CARRY THE EAGER-WEIGHT RULE, and must not be read as
-    // doing so. Every plugin's `cli/index.ts` is loaded on EVERY `./equin`
+    // doing so. Every plugin's `cli/index.ts` is loaded on EVERY `./muxos`
     // invocation (commander needs names and flags before it parses), while the
     // command's implementation must not be. That constraint is a property of one
     // file, not of the runtime, so it is enforced by
@@ -106,7 +106,7 @@ export default defineBoundaries({
     // `data-dirs`, so `web` and `core` do not list it — which is also why the
     // engine is a barrel of its own rather than `core/`. Every host-process row
     // (server, central, cli, check, e2e, scripts, bin) lists it, so a CLI op, a
-    // check or `./equin start` reaches a declaration and `ensureDep`
+    // check or `./muxos start` reaches a declaration and `ensureDep`
     // without booting a backend. Host admission, a server barrel, is injected
     // through the `ExecContext` rather than imported.
     deps: ["deps", "core", "data-dirs"],
@@ -118,7 +118,7 @@ export default defineBoundaries({
     check: ["core", "shared", "data-dirs", "server", "machine", "deps"],
     facet: ["core"],
     bin: ["core", "shared", "data-dirs", "server", "central", "cli", "deps"],
-    // A script is a host process run by path (`./equin run`), like `bin`: it
+    // A script is a host process run by path (`./muxos run`), like `bin`: it
     // may drive the same CLI machinery a command does (a measurement script
     // running the build's pooled artifact builder).
     scripts: ["core", "shared", "data-dirs", "server", "cli", "deps"],
@@ -141,7 +141,7 @@ export default defineBoundaries({
     // a host process, so a guard may read its owner's data-dir declaration.
     guard: ["core", "data-dirs"],
     // Login-service declarations (`infra/launcher/login-services`): read only by
-    // `./equin start` / `stop`, host processes. A declaration names the
+    // `./muxos start` / `stop`, host processes. A declaration names the
     // dependency it runs (`deps`), where its stdio goes (`data-dirs`), and is
     // typed by `defineLoginService`, which lives in a `machine` barrel beside
     // the service managers it feeds.
@@ -152,7 +152,7 @@ export default defineBoundaries({
     // shares with the page); nothing imports it.
     "browser-extension": ["core"],
     // Contributed build steps (`framework/cli/build/build-steps`): run inside
-    // the `./equin build` process at their phase, so a step reaches what a CLI
+    // the `./muxos build` process at their phase, so a step reaches what a CLI
     // command body does — typically its own plugin's `cli/` machinery.
     "build-step": [
       "cli",

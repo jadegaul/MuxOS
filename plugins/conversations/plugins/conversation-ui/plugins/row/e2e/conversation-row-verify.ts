@@ -14,7 +14,7 @@
 //   GROUP BY a.task_id ORDER BY count(*) DESC LIMIT 1;
 //
 // Usage:
-//   ./equin run plugins/conversations/plugins/conversation-ui/plugins/row/e2e/conversation-row-verify.ts --task <taskId>
+//   ./muxos run plugins/conversations/plugins/conversation-ui/plugins/row/e2e/conversation-row-verify.ts --task <taskId>
 
 import {
   pathUrl,

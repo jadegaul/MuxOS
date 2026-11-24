@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-core-app-launcher",
-  "description": "The app brand every app shell draws (AppShell.Brand): the launcher — the current app's own mark — click for the app gallery, hover for a grid of every installed app — and, in a sidebar, the current app's name linking to its home.",
+  "name": "@muxos/plugin-apps-core-app-launcher",
+  "description": "The app brand every app shell draws (AppShell.Brand): the launcher \u2014 the current app's own mark \u2014 click for the app gallery, hover for a grid of every installed app \u2014 and, in a sidebar, the current app's name linking to its home.",
   "private": true,
   "version": "0.0.1"
 }

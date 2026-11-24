@@ -81,7 +81,7 @@ function setDarwinBg(lib: Lib, background: boolean): void {
  * `withHostGrant`, for a grant's body in either lane — every op queued for the
  * grant waits out its holder, and the grant bounds what is lifted — the
  * Browser app's engine host, for its whole life (a human watches and types
- * into its pages), and `./equin run` for an e2e script holding its `e2e`
+ * into its pages), and `./muxos run` for an e2e script holding its `e2e`
  * slot (the pool bounds it to two runs; a demoted Chromium's frame times
  * measure scheduler waits, not the page).
  *

@@ -77,7 +77,7 @@ function behind(served: string, head: string): string {
 }
 
 /**
- * `./equin version cut` — make the commit main SERVES a release.
+ * `./muxos version cut` — make the commit main SERVES a release.
  *
  * Not HEAD: main moves many times a day, so "main serves HEAD" is true only in
  * the windows between a build finishing and the next push, and a cut that
@@ -114,7 +114,7 @@ const run: CliAction<[], { message?: string; dryRun?: boolean }> = async (
   const root = await getWorktreeRoot();
   if ((await checkoutRef(root)).kind !== "main")
     refuse(
-      `Run \`./equin version cut\` in main's checkout: a release is the commit main serves, checked against ` +
+      `Run \`./muxos version cut\` in main's checkout: a release is the commit main serves, checked against ` +
         `main's own build of it.`,
     );
 

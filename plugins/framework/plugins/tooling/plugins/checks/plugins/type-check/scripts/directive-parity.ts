@@ -7,7 +7,7 @@
  * `reportUnusedDisableDirectives: "error"` from the config builder). Prints
  * every file whose two answers differ, and exits 1 when one does.
  *
- *   ./equin run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/directive-parity.ts [--chunk 40] [--only <substring>]
+ *   ./muxos run plugins/framework/plugins/tooling/plugins/checks/plugins/type-check/scripts/directive-parity.ts [--chunk 40] [--only <substring>]
  *
  * Files are checked in programs of `--chunk` roots (their import closures as
  * source): a one-off proof, not a check — it builds programs the check would

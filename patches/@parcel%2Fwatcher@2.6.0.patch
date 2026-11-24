@@ -6,7 +6,7 @@ index 78ee744d74900c39a839cafa46b295258fc86307..690aefff5f2bb2d4499b46d6bafe8e90
    }
  }
  
-+// equin: on macOS only the patched addon loads. infra/file-watcher's
++// muxos: on macOS only the patched addon loads. infra/file-watcher's
 +// `parcel-watcher-addon` dependency compiles this patched source, and every
 +// install links it into build/Release (parcel-addon's provision, run by the
 +// root postinstall), so it exists wherever this package does. Upstream's darwin
@@ -27,7 +27,7 @@ index 78ee744d74900c39a839cafa46b295258fc86307..690aefff5f2bb2d4499b46d6bafe8e90
 +  } catch (err) {
 +    handleError(err);
 +    throw new Error(
-+      `@parcel/watcher: the patched addon is not linked into this checkout (${__dirname}/build/Release/watcher.node is missing; every install links it, so something removed it or an install skipped its scripts). Run \`./equin run plugins/infra/plugins/file-watcher/plugins/parcel-addon/scripts/link-addon.ts\` to link it. Upstream's prebuild is never loaded on macOS: its kqueue backend races and leaks descriptors.`,
++      `@parcel/watcher: the patched addon is not linked into this checkout (${__dirname}/build/Release/watcher.node is missing; every install links it, so something removed it or an install skipped its scripts). Run \`./muxos run plugins/infra/plugins/file-watcher/plugins/parcel-addon/scripts/link-addon.ts\` to link it. Upstream's prebuild is never loaded on macOS: its kqueue backend races and leaks descriptors.`,
 +    );
 +  }
 +} else {
@@ -75,7 +75,7 @@ index 328f469965d3bc248c99e8a50752c549c631e20a..d3d0eb17c52c07e8db400657153e49f9
  #define DIR_SEP "/"
  #endif
  
-+// equin: what every path below `path` starts with. `path + DIR_SEP` is `//`
++// muxos: what every path below `path` starts with. `path + DIR_SEP` is `//`
 +// for the root `/`, which no path below it starts with: a watch of `/` then
 +// ignored nothing (its kqueue open walked the whole disk) and diffed `/` as
 +// entries named `//bin`, never found in its tree.
@@ -104,7 +104,7 @@ diff --git a/src/Event.hh b/src/Event.hh
      for(auto it = mEvents.begin(); it != mEvents.end(); ++it) {
 -      if (!(it->second.isCreated && it->second.isDeleted)) {
 +      if (it->second.isCreated && it->second.isDeleted) {
-+        // equin: created and deleted since the last batch nets to nothing
++        // muxos: created and deleted since the last batch nets to nothing
 +        // only if the path is gone. One that is there now was replaced (git
 +        // rewrites a file as unlink + create) and is reported as an update.
 +        // Upstream dropped it whatever was on disk, so FSEvents' history
@@ -168,7 +168,7 @@ index a58ff3722d0d4a85dbef822f7cd4a078cb4278ff..f7e965de2964d094dbfc8f6e2099bc50
  
    auto relativePath = path.substr(basePath.size());
  
-+  // equin: deeper than this watcher sees.
++  // muxos: deeper than this watcher sees.
 +  if (mMaxDepth > 0 && std::count(relativePath.begin(), relativePath.end(), DIR_SEP[0]) >= mMaxDepth) {
 +    return true;
 +  }
@@ -201,7 +201,7 @@ index f89e9f5dca4531b5c7cdf524252973dc2c568d6a..d7c2fe349f11d184e74367d6e887f11f
    std::string mDir;
    std::unordered_set<std::string> mIgnorePaths;
    std::unordered_set<Glob> mIgnoreGlobs;
-+  // equin: how deep below mDir this watcher sees — 1 is the dir's own
++  // muxos: how deep below mDir this watcher sees — 1 is the dir's own
 +  // entries, 0 no limit. Part of the watcher's identity. The kqueue backend
 +  // never lists a folder nothing of which the watcher can see (readTree,
 +  // compareDir): spelled as a regex ignore instead (`[/]`), every child
@@ -227,7 +227,7 @@ index f89e9f5dca4531b5c7cdf524252973dc2c568d6a..d7c2fe349f11d184e74367d6e887f11f
    bool unwatch(Function callback);
    void unref();
    bool isIgnored(std::string path);
-+  // equin: whether any path below `dir` (mDir or a folder under it) is within
++  // muxos: whether any path below `dir` (mDir or a folder under it) is within
 +  // this watcher's depth — false means listing `dir` finds only ignored
 +  // entries, so it is never listed.
 +  bool seesBelow(const std::string &dir);
@@ -246,7 +246,7 @@ index 057b61b83385793a2f13c7adc8c2e983bef67538..9f3f89517fcfcba15e1c36ad127b61ab
    return result;
  }
  
-+// equin: how deep below the dir the watcher sees (Watcher::mMaxDepth) — a
++// muxos: how deep below the dir the watcher sees (Watcher::mMaxDepth) — a
 +// positive integer, or 0 / absent for no limit.
 +int getMaxDepth(Env env, Value opts) {
 +  if (!opts.IsObject()) {
@@ -259,7 +259,7 @@ index 057b61b83385793a2f13c7adc8c2e983bef67538..9f3f89517fcfcba15e1c36ad127b61ab
 +  return v.As<Number>().Int32Value(); // validated by depthIsValid before any runner
 +}
 +
-+// equin: refused before a runner is built — a runner's constructor has already
++// muxos: refused before a runner is built — a runner's constructor has already
 +// registered the callback and queued its work, so a throw from inside it would
 +// leave a watcher of no limit subscribed with no handle to unsubscribe it.
 +bool depthIsValid(Env env, Value opts) {
@@ -363,7 +363,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
 +    std::unordered_set<int> closing;
 +    bool stopping = false;
 +
-+    // equin: the batch is handled under the backend's mutex, which `subscribe`
++    // muxos: the batch is handled under the backend's mutex, which `subscribe`
 +    // and `unsubscribe` hold (Backend::watch / unwatch). Upstream ran it
 +    // unlocked: a directory diff here added entries to a tree a `subscribe` on
 +    // another thread was iterating, and read subscriptions an `unsubscribe` was
@@ -371,7 +371,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
 +    // crashed. Watchers are notified after it is released.
 +    {
 +    std::unique_lock<std::mutex> lock(mMutex);
-+    // equin: two passes — every delete or rename of the batch first, then the
++    // muxos: two passes — every delete or rename of the batch first, then the
 +    // writes and directory diffs. An atomic rewrite (write a sibling, rename
 +    // it over the file) reports the folder's NOTE_WRITE and the old file's
 +    // NOTE_DELETE in one batch, in either order; diffing the folder first
@@ -475,20 +475,20 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
    mEndedSignal.notify();
  }
  
-+// equin: an entry open(2) refuses for its permissions (EACCES) or macOS
++// muxos: an entry open(2) refuses for its permissions (EACCES) or macOS
 +// privacy protection (EPERM) — listed, never watched.
 +static bool unopenable(int err) {
 +  return err == EACCES || err == EPERM;
 +}
 +
-+// equin: an entry removed between its folder's listing and a call on its path
++// muxos: an entry removed between its folder's listing and a call on its path
 +// (ENOENT; ENOTDIR when a folder on the way was replaced by a file). A race
 +// every diff can meet, handled as the entry not being there — never a failure.
 +static bool vanished(int err) {
 +  return err == ENOENT || err == ENOTDIR;
 +}
 +
-+// equin: whether kqueue's vnode filter can watch what `path` is, decided by
++// muxos: whether kqueue's vnode filter can watch what `path` is, decided by
 +// its kind before any open(2). Only a regular file or a folder (a symlink
 +// followed to one) is opened. A socket refuses the open (EOPNOTSUPP: "error
 +// watching ~/.equin/sockets: Operation not supported on socket", which failed
@@ -521,7 +521,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
 -  // Build a full directory tree recursively, and watch each directory.
 -  std::shared_ptr<DirTree> tree = getTree(watcher);
 -
-+  // equin: a tree of its own, read through this watcher's own ignore. Upstream
++  // muxos: a tree of its own, read through this watcher's own ignore. Upstream
 +  // took the one cached per directory path (getTree), shared by every
 +  // subscription of the directory whatever its ignore: read through the first
 +  // one's, and grown by every directory diff with entries no ignore filtered —
@@ -548,7 +548,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
 +      continue;
 +    }
 +    if (result == WatchResult::Unwatched && it->second.path != watcher->mDir) {
-+      // equin: an entry kqueue cannot watch (`watchableKind`), or this account
++      // muxos: an entry kqueue cannot watch (`watchableKind`), or this account
 +      // may not open (macOS privacy protection: ~/.Trash without Full Disk
 +      // Access), stays in the tree with no descriptor: its coming and going is
 +      // still heard by its folder's diff, its own writes are not. Upstream
@@ -651,7 +651,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
 +  return WatchResult::Watched;
 +}
 +
-+// equin: the one way a subscription leaves the table other than `unsubscribe`:
++// muxos: the one way a subscription leaves the table other than `unsubscribe`:
 +// a path's subscriptions in ONE tree. Subscriptions are keyed by path, and a
 +// path is held by every tree that watches it — a watcher rooted at a folder
 +// keeps a tree of its own beside the tree of a watcher above it. Upstream
@@ -673,7 +673,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
  
 -std::vector<KqueueSubscription *> KqueueBackend::findSubscriptions(std::string &path) {
 -  // Find the subscriptions affected by this path.
-+// equin: the subscriptions an event on descriptor `fd` (watching `path`)
++// muxos: the subscriptions an event on descriptor `fd` (watching `path`)
 +// speaks for — those holding that descriptor, never every subscription of the
 +// path. Each tree opens its own descriptor of an entry, so another tree
 +// holding the path hears the same change on its own descriptor; and after a
@@ -699,7 +699,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
  }
  
 -bool KqueueBackend::compareDir(int fd, std::string &path, std::unordered_set<WatcherRef> &watchers) {
-+// equin: a diff that cannot see the folder whole is a loss for each watcher it
++// muxos: a diff that cannot see the folder whole is a loss for each watcher it
 +// leaves behind: an error delivered with the batch (EventList::error, the
 +// channel FSEvents reports its dropped events on), so the consumer hears it
 +// and re-reads what it watches. Upstream returned false and start() ignored it:
@@ -712,7 +712,7 @@ index 2991c32fa320cd61d5b575a49ace19cb8a940d03..efabce6b1bb54b3bb97e1033d96cf843
 +
 +void KqueueBackend::compareDir(int fd, std::string &path, std::unordered_set<WatcherRef> &watchers, std::unordered_set<int> &closing) {
 +  std::vector<KqueueSubscription *> subs = findSubscriptions(path, fd);
-+  // equin: a folder at its watcher's depth (an entry of a children watch) is
++  // muxos: a folder at its watcher's depth (an entry of a children watch) is
 +  // not listed: every entry the diff could find is one the watcher ignores,
 +  // and a tree that never held them has nothing to remove. Listed, a write in
 +  // a big folder stat'ed each of its entries into a tree that wanted none
@@ -996,19 +996,19 @@ index 3c6a9cdd5c1de26b0eb5c5f2835409098fb601ae..b6c35db185009c0fa7c950f2ab684723
 -  bool watchDir(WatcherRef watcher, std::string path, std::shared_ptr<DirTree> tree);
 -  bool compareDir(int fd, std::string &dir, std::unordered_set<WatcherRef> &watchers);
 -  std::vector<KqueueSubscription *> findSubscriptions(std::string &path);
-+  // equin: what watching one entry came to — a descriptor on it, the entry
++  // muxos: what watching one entry came to — a descriptor on it, the entry
 +  // kept with none (a kind or a permission kqueue cannot watch: listed, its
 +  // coming and going heard by its folder's diff), the entry gone since it was
 +  // listed (ENOENT / ENOTDIR: removed in between — a race, not a failure), or
 +  // a failure (errno says why).
 +  enum class WatchResult { Watched, Unwatched, Gone, Failed };
 +  WatchResult watchDir(WatcherRef watcher, std::string path, std::shared_ptr<DirTree> tree);
-+  // equin: no answer to ignore — a diff that cannot finish (the folder
++  // muxos: no answer to ignore — a diff that cannot finish (the folder
 +  // unreadable, an entry that cannot be stat'ed or watched) reports it to each
 +  // watcher it leaves behind, as an error delivered with the batch.
 +  void compareDir(int fd, std::string &dir, std::unordered_set<WatcherRef> &watchers, std::unordered_set<int> &closing);
 +  std::vector<KqueueSubscription *> findSubscriptions(const std::string &path, int fd);
-+  // equin: drop `path`'s subscriptions of one tree — never the path's key,
++  // muxos: drop `path`'s subscriptions of one tree — never the path's key,
 +  // which other trees' subscriptions share (see the definition).
 +  void forgetSubscriptions(const std::string &path, const std::shared_ptr<DirTree> &tree);
 +  void forgetDescendants(std::shared_ptr<DirTree> tree, const std::string &path, std::vector<KqueueSubscription *> &subs, std::unordered_set<WatcherRef> &watchers, std::unordered_set<int> &closing);
@@ -1023,7 +1023,7 @@ index cfda9625fc7d9beb00a0014d87333bf97c130c84..f8bf09e4403c8f82050b6fe874f3eee2
  
    FSEventStreamSetExclusionPaths(stream, exclusions);
  
-+  // equin: the state is complete BEFORE the stream starts. Upstream set the
++  // muxos: the state is complete BEFORE the stream starts. Upstream set the
 +  // tree and stream after FSEventStreamStart, so a first callback (on the run
 +  // loop thread) could read a null tree, and a stop could read no stream.
 +  auto stateGuard = watcher->state;
@@ -1057,7 +1057,7 @@ index cfda9625fc7d9beb00a0014d87333bf97c130c84..f8bf09e4403c8f82050b6fe874f3eee2
 +  // the teardown below uses the thread's own reference.
 +  CFRunLoopRef runLoop = mRunLoop;
 +
-+  // equin: a source that never fires keeps the run loop running for the
++  // muxos: a source that never fires keeps the run loop running for the
 +  // backend's whole life. CFRunLoopRun returns once the loop has no source,
 +  // so upstream's thread exited when the last stream was unscheduled (its
 +  // callback stops a stream whose root was deleted) while the backend lived
@@ -1085,7 +1085,7 @@ index cfda9625fc7d9beb00a0014d87333bf97c130c84..f8bf09e4403c8f82050b6fe874f3eee2
  
  // This function is called by Backend::unwatch which takes a lock on mMutex
 +//
-+// equin: the stop runs ON the run loop thread, where every stream callback
++// muxos: the stop runs ON the run loop thread, where every stream callback
 +// runs, and this waits for it. Upstream stopped the stream here, on a pool
 +// thread, while a callback could be running on the run loop thread — and a
 +// callback that sees its root deleted stops the same stream itself
@@ -1131,7 +1131,7 @@ index de7a73d1e9549300408fbb56dec837720eed80d1..46e7462bcdc77891eec59ad80d9fa59d
    std::shared_ptr<DirTree> getTree(WatcherRef watcher, bool shouldRead = true);
 -private:
 +protected:
-+  // equin: protected, so the kqueue backend reads a tree of its own per subscription.
++  // muxos: protected, so the kqueue backend reads a tree of its own per subscription.
    void readTree(WatcherRef watcher, std::shared_ptr<DirTree> tree);
  };
  
@@ -1143,14 +1143,14 @@ index d50c3e4931eb29a408ea29c1394a3fc977349455..707e8ff0cd74c63c6b0ee5cb46a66395
  
    while ((node = fts_read(fts)) != NULL) {
      if (node->fts_errno) {
-+      // equin: an entry below the root that went between the directory's
++      // muxos: an entry below the root that went between the directory's
 +      // listing and its stat (another process pruning it), or that this watcher
 +      // ignores, is simply not part of the tree — upstream failed the whole
 +      // subscription on it ("No such file or directory").
 +      if (!isRoot && (node->fts_errno == ENOENT || watcher->isIgnored(std::string(node->fts_path)))) {
 +        continue;
 +      }
-+      // equin: a folder below the root this account may not list (macOS
++      // muxos: a folder below the root this account may not list (macOS
 +      // privacy protection: ~/.Trash without Full Disk Access) is still an
 +      // entry — added at its preorder visit — with no entries of its own
 +      // known. Upstream failed the whole subscription on it ("Operation not
@@ -1166,7 +1166,7 @@ index d50c3e4931eb29a408ea29c1394a3fc977349455..707e8ff0cd74c63c6b0ee5cb46a66395
      tree->add(node->fts_path, CONVERT_TIME(node->fts_statp->st_mtim), (node->fts_info & FTS_D) == FTS_D);
      isRoot = false;
 +
-+    // equin: a folder at the watcher's depth is an entry, never listed — fts
++    // muxos: a folder at the watcher's depth is an entry, never listed — fts
 +    // would read it and stat every entry in it before the ignore dropped them.
 +    if ((node->fts_info & FTS_D) && !watcher->seesBelow(std::string(node->fts_path))) {
 +      fts_set(fts, node, FTS_SKIP);

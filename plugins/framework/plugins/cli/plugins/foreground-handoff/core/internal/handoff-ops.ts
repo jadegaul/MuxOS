@@ -31,7 +31,7 @@ export function isHandoffOp(name: string): name is HandoffOp {
  * How long before the call's limit the op hands off. Covers the CLI's own start
  * (dependency check, re-exec), the gap between the guard stamping the deadline
  * and the harness starting its clock, and the last output drain — with room to
- * spare, since handing off a minute early costs one `./equin await`, while
+ * spare, since handing off a minute early costs one `./muxos await`, while
  * missing the limit costs the handle.
  */
 export const HANDOFF_MARGIN_MS = 60_000;

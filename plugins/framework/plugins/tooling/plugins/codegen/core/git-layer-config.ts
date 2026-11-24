@@ -111,7 +111,7 @@ function nonStaleOriginProxy(
  * a failing repo green — or a passing one red on one machine only.
  *
  * `readTypedConfig` returns `descriptor.defaults` when neither file exists, so a
- * fresh checkout (before any `./equin build` materializes the origin) still
+ * fresh checkout (before any `./muxos build` materializes the origin) still
  * validates the SEEDED defaults. That is intentional — no existence guard — and
  * it is the same document {@link nonStaleOriginProxy} reads a stale origin as.
  *

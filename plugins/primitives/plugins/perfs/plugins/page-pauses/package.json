@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-primitives-perfs-page-pauses",
-  "description": "Was this page paused during a span of wall-clock time? pausesDuring(start, end): how long it was hidden or frozen inside it, and how long its main thread was stalled (long animation frames ≥ 1 s) outside that — the one record every client latency consumer reads instead of tracking visibility itself.",
+  "name": "@muxos/plugin-primitives-perfs-page-pauses",
+  "description": "Was this page paused during a span of wall-clock time? pausesDuring(start, end): how long it was hidden or frozen inside it, and how long its main thread was stalled (long animation frames \u2265 1 s) outside that \u2014 the one record every client latency consumer reads instead of tracking visibility itself.",
   "private": true,
   "version": "0.0.1"
 }

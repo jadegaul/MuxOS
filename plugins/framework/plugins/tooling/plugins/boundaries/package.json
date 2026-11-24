@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-boundaries",
+  "name": "@muxos/plugin-framework-tooling-boundaries",
   "version": "0.0.1",
   "private": true,
   "description": "Boundary-rules checker: zone DSL, edge evaluator, and project boundary config"

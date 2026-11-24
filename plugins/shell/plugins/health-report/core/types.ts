@@ -39,7 +39,7 @@ export type HealthState = "ok" | "info" | "attention" | "critical";
  * reconnecting): the dot pulses while it is set.
  *
  * `title` (known states only) is what the row is called in this state, for a
- * row whose state IS its name ("equin is out of date" / "equin is up to
+ * row whose state IS its name ("muxos is out of date" / "muxos is up to
  * date"); unset, the row's own `title`. It is also the report's verdict when
  * this row is the one that needs a look.
  */

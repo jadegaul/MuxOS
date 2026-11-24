@@ -10,7 +10,7 @@ export function StoryNavItem() {
   return (
     <WebsiteLearnLink
       label="Story"
-      gloss="How equin came to be"
+      gloss="How muxos came to be"
       {...openPane.link(storyPane, {}, { mode: "root" })}
     />
   );

@@ -13,7 +13,7 @@
 //   2. The CLI command declaration (`defineCliCommand` and friends), which every
 //      contributing plugin's `cli/index.ts` imports. Node builtins only, and
 //      NOTHING here may grow an npm import: a declaration loads on every single
-//      `./equin` invocation, and `cli:command-declarations-light` measures
+//      `./muxos` invocation, and `cli:command-declarations-light` measures
 //      that closure.
 
 export { resolveGitDir } from "./internal/git-dir";

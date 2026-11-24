@@ -12,8 +12,8 @@
  * The expression is evaluated over a parameter rather than over `release_runs`,
  * so the suite needs no table, no migration chain and no fixture rows.
  *
- * Run: `./equin test plugins/release/plugins/runs-arm`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/release/plugins/runs-arm`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

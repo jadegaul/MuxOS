@@ -35,14 +35,14 @@ describe("describeErrorEvent", () => {
     img.id = "hero";
     img.setAttribute("src", "/a.png");
     const e = new ErrorEvent("error", {
-      filename: "https://equin.ai/assets/x.js",
+      filename: "https://MuxOS.app/assets/x.js",
       lineno: 3,
       colno: 9,
       error: "",
     });
     img.dispatchEvent(e);
     expect(describeErrorEvent(e)).toBe(
-      "error event on <img#hero> /a.png with no message at https://equin.ai/assets/x.js:3:9, thrown value an empty string",
+      "error event on <img#hero> /a.png with no message at https://MuxOS.app/assets/x.js:3:9, thrown value an empty string",
     );
   });
 

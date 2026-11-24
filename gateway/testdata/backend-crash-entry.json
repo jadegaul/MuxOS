@@ -10,7 +10,7 @@
     "coreDumped": false,
     "startedAt": 1794150000000,
     "exitedAt": 1794153877965,
-    "executable": "equin · server · alpha",
+    "executable": "muxos · server · alpha",
     "stderrTail": [
       "Bun v1.4.4 (38afee6c8) macOS Silicon",
       "panic: Segmentation fault at address 0x7BC138",

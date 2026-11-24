@@ -2,16 +2,16 @@
 //! (`../standalone-page/`), bundled into ONE self-contained HTML file before
 //! cargo runs — by the `installer-window` dependency's build
 //! (`../deps/internal/window.ts`), which names the file in
-//! `EQUIN_INSTALLER_PAGE`. Nothing is fetched at run time.
+//! `MUXOS_INSTALLER_PAGE`. Nothing is fetched at run time.
 
 use std::path::Path;
 
 fn main() {
-    println!("cargo:rerun-if-env-changed=EQUIN_INSTALLER_PAGE");
-    let page = std::env::var("EQUIN_INSTALLER_PAGE").unwrap_or_else(|_| {
+    println!("cargo:rerun-if-env-changed=MUXOS_INSTALLER_PAGE");
+    let page = std::env::var("MUXOS_INSTALLER_PAGE").unwrap_or_else(|_| {
         panic!(
-            "EQUIN_INSTALLER_PAGE is not set: the installer page is bundled before cargo runs. \
-             Build this crate with `./equin deps install installer-window`, not bare cargo."
+            "MUXOS_INSTALLER_PAGE is not set: the installer page is bundled before cargo runs. \
+             Build this crate with `./muxos deps install installer-window`, not bare cargo."
         )
     });
     let page = Path::new(&page);

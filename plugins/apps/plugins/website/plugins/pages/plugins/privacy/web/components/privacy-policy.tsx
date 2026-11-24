@@ -65,7 +65,7 @@ export function PrivacyPolicy() {
             <h3>A random id in this browser</h3>
             <p>
               A meaningless number, kept in this browser&rsquo;s storage for 13
-              months and read only by equin.ai.
+              months and read only by MuxOS.app.
             </p>
             <p>
               It works on any network, so coming back from your phone on 4G

@@ -72,7 +72,7 @@ async function renderSection(
 }
 
 /**
- * Everything equin appends to Claude Code's own system prompt for one spawn of
+ * Everything muxos appends to Claude Code's own system prompt for one spawn of
  * the conversation's agent: its preprompt (`<special_instructions>`, first),
  * then every `SystemPrompt.Section` in id order. `undefined` when there is
  * nothing to append.
@@ -120,7 +120,7 @@ export async function composeSystemPromptAppend(
 
 /** One section, as a change notice re-sends it to a running agent. */
 export type SectionRefresh =
-  /** What it says now, wrapped as in the system prompt (`<equin-context>`). */
+  /** What it says now, wrapped as in the system prompt (`<muxos-context>`). */
   | { kind: "current"; id: string; label: string; text: string }
   /** It was in the agent's system prompt and now renders nothing: drop it. */
   | { kind: "withdrawn"; id: string; label: string };

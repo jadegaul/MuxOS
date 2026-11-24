@@ -8,7 +8,7 @@
  * here against a throwaway Postgres (db-test-fixture) seeded with the REAL
  * migration chain, rather than restated in the test.
  *
- * Run: `./equin test plugins/shell/plugins/notifications`
+ * Run: `./muxos test plugins/shell/plugins/notifications`
  */
 
 import {

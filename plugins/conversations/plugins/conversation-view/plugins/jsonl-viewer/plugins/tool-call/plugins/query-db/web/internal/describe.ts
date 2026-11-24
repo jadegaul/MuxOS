@@ -10,7 +10,7 @@ function rowsWords(shown: number, total: number | null): string {
   return `${shown} row${shown === 1 ? "" : "s"}`;
 }
 
-/** The card's note: `· 12 rows`, `· 200 of 1,431 rows · equin` (the database
+/** The card's note: `· 12 rows`, `· 200 of 1,431 rows · muxos` (the database
  *  only when the call named one). Undefined when there is nothing to say. */
 export function queryNote(
   rows: { shown: number; total: number | null } | undefined,

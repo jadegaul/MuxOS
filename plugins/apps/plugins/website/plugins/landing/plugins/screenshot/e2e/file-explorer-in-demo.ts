@@ -8,7 +8,7 @@
  *     folder, holding Demo's Documents, Music and Pictures and a few loose
  *     files;
  *  2. checks the Places sidebar lists Home and no place of the computer's
- *     disk (Downloads, the equin checkout, the startup volume, Trash), no
+ *     disk (Downloads, the muxos checkout, the startup volume, Trash), no
  *     empty Locations heading, and no failed row;
  *  3. opens each kind of file the seed wrote, from Home down, in the same
  *     browser the desktop has — markdown rendered, plain text and code as
@@ -16,7 +16,7 @@
  *     in the browser's viewer, the video and the recording loaded in the
  *     player (from the worker's storage, as blobs the transport fetched), the
  *     MIDI in Sonata's own preview — never an error;
- *  4. shows hidden files and opens `~/.equin/apps/prototypes`: the apps' own
+ *  4. shows hidden files and opens `~/.muxos/apps/prototypes`: the apps' own
  *     folders are folders of the same file system, where the desktop keeps
  *     them.
  *
@@ -29,7 +29,7 @@
  * no page socket, no page or console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/file-explorer-in-demo.ts [--out /tmp/demo-files] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/file-explorer-in-demo.ts [--out /tmp/demo-files] [--headed]
  */
 import type { Locator, Page, WebSocket } from "playwright";
 import { pickFromLauncher } from "@plugins/apps-core/plugins/app-launcher/e2e";
@@ -60,7 +60,7 @@ const OUT = arg("out") ?? "/tmp/demo-files";
 const APP_NAME = /^\s*Files\s*$/;
 const APP_ID = "file-explorer";
 /** The places of the computer's disk (`apps/file-explorer/places`). */
-const MACHINE_PLACES = ["Downloads", "equin", "Trash"] as const;
+const MACHINE_PLACES = ["Downloads", "muxos", "Trash"] as const;
 /**
  * What Demo's Home holds (`apps/website/demos/workspace`'s `data/home/`): three
  * folders and a few loose files, each a different preview.
@@ -344,9 +344,9 @@ await withBrowser(async (h) => {
   );
   // Documents.
   await view(
-    "~/Documents/Notes/Ideas for equin.md",
+    "~/Documents/Notes/Ideas for muxos.md",
     "the markdown is rendered (its heading, no `#`)",
-    markdown("Ideas for equin"),
+    markdown("Ideas for muxos"),
   );
   await view(
     "~/Documents/Notes/groceries.txt",
@@ -374,7 +374,7 @@ await withBrowser(async (h) => {
     pdf,
   );
 
-  // ── 4. the apps' folders, under the hidden ~/.equin ─────────────────────
+  // ── 4. the apps' folders, under the hidden ~/.muxos ─────────────────────
   await toolbarButton(page, "Show hidden files").click();
   for (const path of [DATA, `${DATA}/apps`, `${DATA}/apps/prototypes`]) {
     await renders(

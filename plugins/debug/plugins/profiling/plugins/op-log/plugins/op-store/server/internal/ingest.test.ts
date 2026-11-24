@@ -8,7 +8,7 @@ import {
  * last line, re-drain idempotency, the seed tail's headless ops, and the
  * reconciler with injected liveness.
  *
- * Requires the running embedded cluster (`./equin build` first).
+ * Requires the running embedded cluster (`./muxos build` first).
  */
 import {
   afterAll,

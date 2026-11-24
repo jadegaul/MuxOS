@@ -58,13 +58,13 @@ function targetsOf(input: BuildJobInput): string[] {
 }
 
 /**
- * One `./equin build`, as an ordinary durable job.
+ * One `./muxos build`, as an ordinary durable job.
  *
  * The handler claims this namespace's single in-flight slot, spawns a detached
  * child and SUSPENDS — it holds a worker slot for milliseconds, not for the
  * length of a build. It is woken by the child's exit marker in whichever backend
  * is alive by then, which matters more here than for any other supervised kind:
- * **`./equin build` restarts the very backend that spawned it**, so the
+ * **`./muxos build` restarts the very backend that spawned it**, so the
  * process that started a build is routinely not the one that sees it end.
  *
  * Nothing waits on a build. A caller enqueues and returns, and everything a
@@ -118,7 +118,7 @@ export const buildJob = defineSupervisedJob({
       ) {
         return null;
       }
-      // No "started" bell: only the result is sent (equin was updated / Build
+      // No "started" bell: only the result is sent (muxos was updated / Build
       // failed) — research/2026-10-25-global-notifications-in-user-terms.md.
       return buildId;
     },
@@ -145,7 +145,7 @@ export const buildJob = defineSupervisedJob({
       // installation settings), plus these two. That environment is a closed
       // list, so spreading it hands the build no stray session state.
       //
-      // EQUIN_BUILD_DETACHED is load-bearing: the CLI's orphan guard
+      // MUXOS_BUILD_DETACHED is load-bearing: the CLI's orphan guard
       // exits a command whose invoking shell dies, and a supervised build is
       // MEANT to outlive the backend it restarts. (It is also what keeps the
       // build out of the admission valve's background lane.)

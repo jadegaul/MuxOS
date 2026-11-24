@@ -967,7 +967,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "equin-desktop"
+name = "muxos-desktop"
 version = "0.1.0"
 dependencies = [
  "block2",

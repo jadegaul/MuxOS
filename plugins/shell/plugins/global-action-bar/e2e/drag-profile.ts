@@ -6,7 +6,7 @@
 // time on a busy host) and how many recalcs were whole-document.
 //
 // Usage:
-//   ./equin run plugins/shell/plugins/global-action-bar/e2e/drag-profile.ts \
+//   ./muxos run plugins/shell/plugins/global-action-bar/e2e/drag-profile.ts \
 //     [--path /sonata] [--rounds 3] [--steps 30]
 
 import {

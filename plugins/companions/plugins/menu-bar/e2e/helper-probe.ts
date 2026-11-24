@@ -1,7 +1,7 @@
 /**
  * The runner both native-helper probes share (`bridge-probe.ts`,
- * `window-probe.ts`): builds this checkout's `equin-desktop` when its build is
- * missing or stale (`./equin deps install menu-bar-helper`), runs it in a
+ * `window-probe.ts`): builds this checkout's `muxos-desktop` when its build is
+ * missing or stale (`./muxos deps install menu-bar-helper`), runs it in a
  * probe mode on this checkout's deploy, and reports each JSON row it prints
  * (`{ row, expected, held, detail }`) and its verdict.
  */
@@ -24,7 +24,7 @@ const RowSchema = z.object({
 });
 const VerdictSchema = z.object({ verdict: z.string() }).passthrough();
 
-/** Run `equin-desktop <mode> --namespace <this deploy's> …extra` and report it. */
+/** Run `muxos-desktop <mode> --namespace <this deploy's> …extra` and report it. */
 export async function runHelperProbe(opts: {
   title: string;
   mode: string;

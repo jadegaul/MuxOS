@@ -94,7 +94,7 @@ export interface Theme {
 
 /**
  * Ids are a two-part grammar. A code theme's id is a bare word (`default`,
- * `equin`); a stored theme's is `<source>:<key>` (`tweakcn:catppuccin`,
+ * `muxos`); a stored theme's is `<source>:<key>` (`tweakcn:catppuccin`,
  * `custom:<uuid>`). The colon is reserved for stored themes, so the two can
  * never collide, and a server that sees only the stored half can still tell
  * which ids it is responsible for.

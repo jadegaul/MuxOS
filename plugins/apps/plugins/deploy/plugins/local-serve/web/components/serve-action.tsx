@@ -104,7 +104,7 @@ function ServeRowAction({
     );
   }
   // The only composition that can never be served: main's, whose namespace is
-  // where this checkout's own `./equin build` deploys. Every other one is
+  // where this checkout's own `./muxos build` deploys. Every other one is
   // servable from wherever you are — a serve is an ordinary build of THIS
   // checkout now, not a stage inside main's, so there is no backend-shaped
   // refusal left to render.
@@ -116,7 +116,7 @@ function ServeRowAction({
       tooltip={
         canServe
           ? action.tooltip
-          : "The main app is built by ./equin build — it is not served as a composition."
+          : "The main app is built by ./muxos build — it is not served as a composition."
       }
       disabled={!canServe}
       onClick={(e) => {

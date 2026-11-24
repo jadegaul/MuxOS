@@ -224,7 +224,7 @@ function parseDataViewIds(webDir: AppPath): string[] {
 /**
  * The view types a DataView's authored config shows: each row's `view.type`
  * in `config/<plugin path>/<id>.jsonc` — config being the single source of
- * truth for a surface's views. No file yet ⇒ no rows (`./equin build`
+ * truth for a surface's views. No file yet ⇒ no rows (`./muxos build`
  * seeds one).
  */
 function authoredViewTypes(
@@ -378,7 +378,7 @@ export default createFacet<CrossRefsData>({
           // build/push time — or a transient artifact of building this tree at
           // runtime over a live, mid-mutation working dir: review.plugin-changes
           // diffs against the `main` checkout, which is half-written during a
-          // `./equin push` merge, and the studio/plugin-view panes read
+          // `./muxos push` merge, and the studio/plugin-view panes read
           // live dirs too. A hard throw here turns that transient half-written
           // state into a resource-loader crash for an unrelated baseline tree,
           // so skip the use instead — the genuine-bug case still fails loudly at

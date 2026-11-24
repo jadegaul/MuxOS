@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-browser-recordings",
+  "name": "@muxos/plugin-debug-browser-recordings",
   "private": true,
   "version": "0.0.1"
 }

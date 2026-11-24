@@ -4,7 +4,7 @@
 // anonymous) only when its gateway DECLARES that it stamps one: the bare
 // `--principal-stamped` on the backend's launch argv (`backendLaunch` in
 // `gateway/worktree.go`, central included). The gateway binary is a shared
-// dependency that `./equin build` does not rebuild or restart, so a backend can
+// dependency that `./muxos build` does not rebuild or restart, so a backend can
 // boot behind a gateway older than the stamp. Fail-closed there would refuse
 // everything — the gateway's own readiness probe included — and take down
 // every namespace until someone restarts it. Without the flag the host serves
@@ -22,7 +22,7 @@ export const PRINCIPAL_STAMPED_FLAG = "--principal-stamped";
 export const UNSTAMPED_GATEWAY_WARNING =
   "this gateway predates the principal stamp (no --principal-stamped on this " +
   "backend's argv): cross-site requests are NOT refused until it is " +
-  "restarted: ./equin start --force";
+  "restarted: ./muxos start --force";
 
 /**
  * Where this process stands: `stamped` / `unstamped` once its serving entry

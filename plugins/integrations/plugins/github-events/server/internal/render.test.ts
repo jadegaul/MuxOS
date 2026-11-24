@@ -12,7 +12,7 @@ describe("the github-run-failed task", () => {
     const task = renderGitHubRunFailedTask(
       row,
       {
-        repo: "equinai/equin",
+        repo: "jadegaul/MuxOS",
         workflow: "installer-release.yml",
         workflowName: "Installer release",
         event: "push",
@@ -21,7 +21,7 @@ describe("the github-run-failed task", () => {
         runId: "19456123987",
         attempt: 1,
         conclusion: "failure",
-        url: "https://github.com/equinai/equin/actions/runs/19456123987",
+        url: "https://github.com/jadegaul/MuxOS/actions/runs/19456123987",
         failedJobs: [
           {
             id: "1",
@@ -33,23 +33,23 @@ describe("the github-run-failed task", () => {
         ],
       },
       [
-        "Re-publish: `gh workflow run installer-release.yml -R equinai/equin -f ref=v2026.11.18 -f replace=true`.",
+        "Re-publish: `gh workflow run installer-release.yml -R jadegaul/MuxOS -f ref=v2026.11.18 -f replace=true`.",
       ],
     );
     expect(task.title).toBe(
-      "[github-run-failed] equinai/equin · Installer release failed on v2026.11.18 — Linux (linux-arm64)",
+      "[github-run-failed] jadegaul/MuxOS · Installer release failed on v2026.11.18 — Linux (linux-arm64)",
     );
     expect(task.description).toContain(
       "- [Linux (linux-arm64)](https://job) (failure) — step `Smoke test`",
     );
     expect(task.description).toContain(
-      "**Run:** https://github.com/equinai/equin/actions/runs/19456123987",
+      "**Run:** https://github.com/jadegaul/MuxOS/actions/runs/19456123987",
     );
     expect(task.description).toContain(
-      "`gh run view 19456123987 -R equinai/equin --log-failed`",
+      "`gh run view 19456123987 -R jadegaul/MuxOS --log-failed`",
     );
     expect(task.description).toContain(
-      "3. Re-publish: `gh workflow run installer-release.yml -R equinai/equin -f ref=v2026.11.18 -f replace=true`.",
+      "3. Re-publish: `gh workflow run installer-release.yml -R jadegaul/MuxOS -f ref=v2026.11.18 -f replace=true`.",
     );
     expect(task.description).toContain("**Occurrences:** 2");
   });

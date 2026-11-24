@@ -36,7 +36,7 @@
 //
 // A persistent storage needs ONE owner (`ownership.ts`: an exclusive Web
 // Lock). Where the worker has no Web Locks (`webLocks()` unsupported — iOS
-// Lockdown Mode, some in-app webviews; equin.ai's demo on Safari,
+// Lockdown Mode, some in-app webviews; MuxOS.app's demo on Safari,
 // report-1795088221-b1uksj) no owner can be established, and two workers
 // writing one IndexedDB PGlite would corrupt it. So such a storage opens IN
 // MEMORY (`openInMemory`), filled from its snapshot as a fresh one would be:

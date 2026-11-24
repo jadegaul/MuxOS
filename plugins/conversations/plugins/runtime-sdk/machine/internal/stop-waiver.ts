@@ -20,7 +20,7 @@ const CATCH_UP_BUDGET_MS = 5_000;
 
 /** What the agent reads, on a blocked stop, about this way of stopping. */
 export const BACKGROUND_WORK_WHEN =
-  "you have background work running that will wake you when it finishes — a command started with `run_in_background: true` (an `./equin` build, push or run included), a Monitor, a background subagent or a workflow. Start what you are waiting for that way and end your turn; never watch it in the foreground";
+  "you have background work running that will wake you when it finishes — a command started with `run_in_background: true` (an `./muxos` build, push or run included), a Monitor, a background subagent or a workflow. Start what you are waiting for that way and end your turn; never watch it in the foreground";
 
 /** The waiver over a reader of the agent's in-flight background task count (null: not an sdk agent). */
 export function backgroundWorkWaiver(

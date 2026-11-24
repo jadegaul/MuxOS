@@ -23,12 +23,12 @@ function memoryStore(): MarkStore {
 }
 
 describe("owner mark", () => {
-  it("#equin-me marks the browser, #equin-not-me unmarks it", () => {
+  it("#muxos-me marks the browser, #muxos-not-me unmarks it", () => {
     const store = memoryStore();
     expect(isOwnerMarked(store)).toBe(false);
-    applyOwnerFragment("#equin-me", store);
+    applyOwnerFragment("#muxos-me", store);
     expect(isOwnerMarked(store)).toBe(true);
-    applyOwnerFragment("#equin-not-me", store);
+    applyOwnerFragment("#muxos-not-me", store);
     expect(isOwnerMarked(store)).toBe(false);
   });
 

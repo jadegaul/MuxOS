@@ -13,11 +13,11 @@ describe("query_db row words", () => {
   test("queryNote", () => {
     expect(queryNote({ shown: 0, total: 0 }, undefined)).toBe("· no rows");
     expect(queryNote({ shown: 1, total: 1 }, undefined)).toBe("· 1 row");
-    expect(queryNote({ shown: 3, total: 3 }, "equin")).toBe("· 3 rows · equin");
+    expect(queryNote({ shown: 3, total: 3 }, "muxos")).toBe("· 3 rows · muxos");
     expect(queryNote({ shown: 200, total: 1431 }, undefined)).toBe(
       "· 200 of 1,431 rows",
     );
-    expect(queryNote(undefined, "equin")).toBe("· equin");
+    expect(queryNote(undefined, "muxos")).toBe("· muxos");
     expect(queryNote(undefined, undefined)).toBeUndefined();
   });
 

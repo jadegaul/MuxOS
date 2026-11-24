@@ -17,7 +17,7 @@
  *
  * Run by `.github/workflows/installer-release.yml` from the workflow's own
  * checkout (a manual rebuild of an older tag still uses this code); locally,
- * `./equin run` it.
+ * `./muxos run` it.
  */
 import { createHash } from "node:crypto";
 import { writeFileSync } from "node:fs";

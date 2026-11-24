@@ -73,14 +73,14 @@ export const SLOT_DRAIN_LOG_DIR = "drain-log";
  *
  * - `backend` — a namespace's serving runtime, for its whole life;
  * - `central` — THE central runtime (one per machine), for its whole life;
- * - `exec-child` — a `./equin` process running from the slot (a supervised
+ * - `exec-child` — a `./muxos` process running from the slot (a supervised
  *   child of the backend, main's convergence run), for its whole life;
  * - `agent-boot` / `guard` — an agent host booting, a guard hook loading:
  *   only while they load code;
  * - `build` — a build checking out and building into the slot (exclusive),
  *   then — once it hands the slot to the backend it is about to restart —
  *   shared until it exits;
- * - `build-relay` — a `./equin build` running from a slot it was not handed
+ * - `build-relay` — a `./muxos build` running from a slot it was not handed
  *   (main's convergence run, a relayed Build-button or hand-run build): it
  *   hands the build to another slot and waits for it, so it holds the slot it
  *   runs from past the switch it causes, by design, until it exits — never a
@@ -145,7 +145,7 @@ export interface SlotHolder {
   /**
    * What the holder is, in words a report names it by: a supervised child's
    * job name (`worktree.prepare`), a CLI process's verb (`run <script>` for
-   * a `./equin run`), a backend's namespace, a build's id. `null` on a record written without one (the
+   * a `./muxos run`), a backend's namespace, a build's id. `null` on a record written without one (the
    * guard bootstrap's copy).
    */
   label: string | null;

@@ -15,7 +15,7 @@
  *   C. normal (warm) reload → the waiting state fades in only if the boot
  *      outlives its grace; a boot inside the grace never shows it.
  *
- *   ./equin run plugins/network/plugins/live/plugins/boot-snapshot/e2e/boot-stall.ts [--out /tmp/boot-stall]
+ *   ./muxos run plugins/network/plugins/live/plugins/boot-snapshot/e2e/boot-stall.ts [--out /tmp/boot-stall]
  */
 import {
   arg,

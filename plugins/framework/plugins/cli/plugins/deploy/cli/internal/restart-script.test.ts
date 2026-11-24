@@ -53,7 +53,7 @@ async function runRestart(opts: {
     dataDir: join(dir, "data"),
   };
   writeFileSync(install.envFile, "");
-  const unitTemplate = join(dir, "equin@.service");
+  const unitTemplate = join(dir, "muxos@.service");
   writeFileSync(unitTemplate, "");
   if (opts.shipped !== null) {
     mkdirSync(join(dir, "releases", opts.shipped), { recursive: true });
@@ -144,10 +144,10 @@ test("restarts the unit and passes once the release current names settles", asyn
     health: health("run-7", "settled"),
   });
   expect(r.stderr).toContain(
-    "[ok] equin@website.service is serving runId run-7",
+    "[ok] muxos@website.service is serving runId run-7",
   );
   expect(r.code).toBe(0);
-  expect(r.calls).toContain("systemctl restart equin@website.service");
+  expect(r.calls).toContain("systemctl restart muxos@website.service");
 });
 
 test("refuses, restarting nothing, when nothing was ever shipped", async () => {
@@ -160,7 +160,7 @@ test("refuses, restarting nothing, when nothing was ever shipped", async () => {
 test("fails with the journal when systemctl cannot restart the unit", async () => {
   const r = await runRestart({ shipped: "run-7", restartFails: true });
   expect(r.code).toBe(1);
-  expect(r.stderr).toContain("systemctl restart equin@website.service failed");
+  expect(r.stderr).toContain("systemctl restart muxos@website.service failed");
   expect(r.stderr).toContain("journal line");
 });
 

@@ -47,8 +47,8 @@
  * whole set `pages.tree`, or the legacy push resource `pages` — is refused
  * `unknown-key`, a `skew` verdict (the Reload prompt).
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/page/plugins/editor`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/page/plugins/editor`.
  */
 
 import {

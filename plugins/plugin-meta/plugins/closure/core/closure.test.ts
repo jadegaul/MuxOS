@@ -1250,7 +1250,7 @@ test("e2e / provision / cli imports are not hard closure edges", () => {
 test("token use is a hard edge: a plugin painting with a group's var bundles the group", () => {
   // `primitives.avatar` paints `from-categorical-1-deep`/`bg-categorical-N/15`
   // and imports nothing of `ui.tokens.categorical`, whose `web/` alone
-  // registers `--categorical-*` (equin.ai once shipped blank app tiles so).
+  // registers `--categorical-*` (MuxOS.app once shipped blank app tiles so).
   const AVATAR = asPluginId("primitives.avatar");
   const CATEGORICAL = asPluginId("ui.tokens.categorical");
   const use = getFacet(
@@ -1291,7 +1291,7 @@ test("the website bundles the token groups it paints with, none listed by name",
 // A contribution flagged `companion: true` to a slot whose owner opened it with
 // `companions: true` ships wherever the owner does — a hard owner → contributor
 // edge. Asserted on the real tree: these are the plugins `served-baseline` used
-// to hand-list after equin.ai shipped without them (blank icons, slots ignoring
+// to hand-list after MuxOS.app shipped without them (blank icons, slots ignoring
 // their committed layouts).
 test("a companion contribution is a hard edge from the slot's owner", () => {
   const pairs: [string, string][] = [

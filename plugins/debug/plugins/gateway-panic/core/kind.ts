@@ -10,7 +10,7 @@ import {
 // is what the Go writer produces, and kind.test.ts parses it with this schema.
 // Strict: a field the Go writer adds must be added here too.
 export const GatewayPanicPayloadSchema = z.strictObject({
-  /** The function the panic was raised in, e.g. `equin/gateway.(*backend).incHTTP`. */
+  /** The function the panic was raised in, e.g. `muxos/gateway.(*backend).incHTTP`. */
   site: z.string(),
   /** The recovered value, as text (one bounded line). */
   value: CrashLineSchema,
@@ -30,7 +30,7 @@ export type GatewayPanicPayload = z.infer<typeof GatewayPanicPayloadSchema>;
 
 /** One line: `gateway panicked in (*backend).incHTTP serving GET /api/health (240×)`. */
 export function describeGatewayPanic(d: GatewayPanicPayload): string {
-  const site = d.site.replace(/^equin\/gateway\./, "");
+  const site = d.site.replace(/^muxos\/gateway\./, "");
   const times = d.count > 1 ? ` (${d.count}×)` : "";
   return `gateway panicked in ${site} serving ${d.method} ${d.path}${times}`;
 }

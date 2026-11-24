@@ -157,7 +157,7 @@ function FilledEmbedBlock({
           </button>
         </Stack>
         <Overlay fill className="w-full aspect-video">
-          {/* Another site's page, on its own origin. An equin page, this
+          {/* Another site's page, on its own origin. An muxos page, this
               computer or a non-web address is refused, not framed: inside a
               frame it would run with the owner's authority. */}
           <ForeignFrame

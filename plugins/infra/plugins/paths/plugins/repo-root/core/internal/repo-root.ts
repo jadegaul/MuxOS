@@ -6,7 +6,7 @@ import {
 
 /**
  * This module's own directory, relative to the checkout root. A path mention
- * of this plugin, so `./equin plugin move` rewrites it with the plugin (and
+ * of this plugin, so `./muxos plugin move` rewrites it with the plugin (and
  * `relocate:moved-plugins-unnamed` fails on a stale one); a value that does
  * not end this module's real location throws at load (`repoRootOf`).
  */
@@ -100,7 +100,7 @@ export function bundledScriptName(rel: string): string {
  *
  * Always call it with a string literal: the bundler reads the literal to know
  * which scripts a bundle must carry (and refuses a call it cannot read), and
- * `./equin plugin move` rewrites it like any path mention.
+ * `./muxos plugin move` rewrites it like any path mention.
  */
 export function scriptPath(rel: string): AppPath {
   return joinAppPath(

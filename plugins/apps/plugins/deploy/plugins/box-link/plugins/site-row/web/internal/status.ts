@@ -202,7 +202,7 @@ export function siteAlert(site: SiteHealth): SiteAlert | null {
       case "down":
         return {
           tone: "critical",
-          lead: "The server answers SSH, but equin is not running on it",
+          lead: "The server answers SSH, but muxos is not running on it",
         };
       case "unreachable":
         return {

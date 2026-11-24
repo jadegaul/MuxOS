@@ -33,7 +33,7 @@ function usage(window: number, messages: number): ContextUsage {
       { path: "/repo/CLAUDE.md", tokens: 14_000 },
       { path: "/repo/docs/plugins-compact.md", tokens: 14_000 },
     ],
-    mcpTools: [{ name: "query_db", serverName: "equin", tokens: 1_300 }],
+    mcpTools: [{ name: "query_db", serverName: "muxos", tokens: 1_300 }],
     messageBreakdown: {
       toolCallTokens: 0.14 * messages,
       toolResultTokens: 0.58 * messages,

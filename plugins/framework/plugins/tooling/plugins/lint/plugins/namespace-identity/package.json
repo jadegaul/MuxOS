@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-lint-namespace-identity",
+  "name": "@muxos/plugin-framework-tooling-lint-namespace-identity",
   "version": "0.0.1",
   "private": true,
   "description": "One lint rule against answering 'which namespace?' with something that is not one: no-laundered-checkout-namespace bans casting a checkout directory name to a Namespace."

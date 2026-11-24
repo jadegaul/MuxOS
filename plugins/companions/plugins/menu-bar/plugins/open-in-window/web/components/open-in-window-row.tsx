@@ -5,8 +5,8 @@ import { navIcons } from "@plugins/ui/plugins/icons/core";
 import { Icon } from "@plugins/ui/plugins/icons/web";
 
 /**
- * A desktop whose helper handles `equin://`: macOS (`equin.app` declares it)
- * and desktop Linux (`dev.equin.open-link.desktop`) — not Android or ChromeOS,
+ * A desktop whose helper handles `muxos://`: macOS (`muxos.app` declares it)
+ * and desktop Linux (`dev.muxos.open-link.desktop`) — not Android or ChromeOS,
  * whose user agents also say Linux.
  */
 const handlesLinks =
@@ -15,9 +15,9 @@ const handlesLinks =
   !/android|cros/i.test(navigator.userAgent);
 
 /**
- * Hand this page to the helper: the browser asks once whether to open equin,
+ * Hand this page to the helper: the browser asks once whether to open muxos,
  * then the OS delivers the link (macOS: to the running tray; Linux: to
- * `equin-desktop open-link`). Read at click time, so
+ * `muxos-desktop open-link`). Read at click time, so
  * the page is the one shown now.
  */
 function openInWindow() {

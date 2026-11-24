@@ -12,7 +12,7 @@
 // selector head), so a theme-scope swap shows up by name.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/desktop/plugins/windows/e2e/fullscreen-switch-profile.ts \
+//   ./muxos run plugins/apps/plugins/desktop/plugins/windows/e2e/fullscreen-switch-profile.ts \
 //     [--path /desktop/sonata] [--rounds 3] [--top 25] [--out <prefix>] \
 //     [--windows 3] [--init counterfactual.js] [--invalidations] \
 //     [--settle 1500] [--quiet]

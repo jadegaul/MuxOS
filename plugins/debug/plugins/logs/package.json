@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-logs",
+  "name": "@muxos/plugin-debug-logs",
   "private": true,
   "version": "0.0.1"
 }

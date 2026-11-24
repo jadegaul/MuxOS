@@ -62,17 +62,17 @@ const harness: JsonlEvent[] = [
 const firstTurn: JsonlEvent[] = [
   user("chinese restaurant open tuesday"),
   call(
-    "mcp__equin__places_search_text",
+    "mcp__muxos__places_search_text",
     { query: "chinese restaurant", openOn: "tuesday" },
     { content: "12 places" },
   ),
   call(
-    "mcp__equin__places_details",
+    "mcp__muxos__places_details",
     { ids: ["ChIJa1", "ChIJb2", "ChIJc3"] },
     { content: "3 places" },
   ),
   call(
-    "mcp__equin__places_show_picks",
+    "mcp__muxos__places_show_picks",
     {
       picks: [
         {
@@ -97,7 +97,7 @@ const firstTurn: JsonlEvent[] = [
 const secondTurnStart: JsonlEvent[] = [
   user("cheaper"),
   call(
-    "mcp__equin__places_search_text",
+    "mcp__muxos__places_search_text",
     { query: "cheap chinese restaurant", priceLevel: 1 },
     { content: "8 places" },
   ),
@@ -107,17 +107,17 @@ const secondTurnStart: JsonlEvent[] = [
 const secondTurnDone: JsonlEvent[] = [
   user("cheaper"),
   call(
-    "mcp__equin__places_search_text",
+    "mcp__muxos__places_search_text",
     { query: "cheap chinese restaurant", priceLevel: 1 },
     { content: "8 places" },
   ),
   call(
-    "mcp__equin__places_show_picks",
+    "mcp__muxos__places_show_picks",
     { picks: "Lan Zhou" },
     { content: "Invalid input: picks must be an array", isError: true },
   ),
   call(
-    "mcp__equin__places_show_picks",
+    "mcp__muxos__places_show_picks",
     {
       picks: [
         {
@@ -152,11 +152,11 @@ export const FAILED: ThreadFixture = {
     ...harness,
     user("ramen near the office"),
     call(
-      "mcp__equin__places_search_text",
+      "mcp__muxos__places_search_text",
       { query: "ramen" },
       { content: "Google Places API key is not configured", isError: true },
     ),
-    call("mcp__equin__places_details", { ids: [] }),
+    call("mcp__muxos__places_details", { ids: [] }),
   ],
   conversation: { status: "gone", waitingFor: null },
 };
@@ -166,7 +166,7 @@ export const QUESTION: ThreadFixture = {
     ...harness,
     user("somewhere for a date"),
     call(
-      "mcp__equin__places_search_text",
+      "mcp__muxos__places_search_text",
       { query: "romantic restaurant" },
       { content: "20 places" },
     ),

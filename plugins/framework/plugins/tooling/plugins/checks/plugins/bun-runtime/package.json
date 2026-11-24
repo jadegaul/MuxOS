@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-checks-bun-runtime",
+  "name": "@muxos/plugin-framework-tooling-checks-bun-runtime",
   "version": "0.0.1",
   "private": true
 }

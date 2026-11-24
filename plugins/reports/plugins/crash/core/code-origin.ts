@@ -6,7 +6,7 @@ import { z } from "zod";
 //
 // An extension's page-world script is attributed to the page itself: Firefox
 // gives its frames the document's own URL (Dark Reader's stylesheet proxy,
-// `overrideProperty/<@https://equin.ai/demo:51:24`, 2026-11-19), WebKit does
+// `overrideProperty/<@https://MuxOS.app/demo:51:24`, 2026-11-19), WebKit does
 // the same for any injected `<script>`. So "on our origin" proves nothing. What
 // does: every script the page loads from a file has its own URL, and the only
 // code the page runs AT the document URL is the inline `<script>`s the server

@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-tasks-mandate-presets",
+  "name": "@muxos/plugin-tasks-mandate-presets",
   "private": true,
   "version": "0.0.1",
-  "description": "The named presets — interactiveMandate (a task a person starts by hand) and supervisorMandate (a supervisor's tree): refs in core, their grants defined in server and computed at every resolution, so a change here reaches every tree under them."
+  "description": "The named presets \u2014 interactiveMandate (a task a person starts by hand) and supervisorMandate (a supervisor's tree): refs in core, their grants defined in server and computed at every resolution, so a change here reaches every tree under them."
 }

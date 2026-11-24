@@ -23,8 +23,8 @@
  * (501 runs) the reading windows recompute FULL. Raw ids containing `:` key
  * and decode like any other.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/network/plugins/live`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

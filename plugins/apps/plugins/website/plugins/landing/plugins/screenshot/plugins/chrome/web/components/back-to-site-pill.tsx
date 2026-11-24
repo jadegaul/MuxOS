@@ -10,7 +10,7 @@ import "./back-to-site-pill.css";
  * The way back from the demo page to the homepage it was maximized from: a
  * small pill hanging from the top edge, centred — between the demo's own
  * launcher (top-left) and the page's floating action bar (top-right) — that
- * says what this is ("Demo · made-up data") and offers Back to equin. Always
+ * says what this is ("Demo · made-up data") and offers Back to muxos. Always
  * shown, never on hover, so a touch screen has it too; on a narrow screen
  * only the button stays. The visitor can drag it off whatever it covers
  * (`Movable`, inside `bounds`); a double-click sends it home.
@@ -43,7 +43,7 @@ export function BackToSitePill({
       </Text>
       <Button variant="ghost" onClick={onBack}>
         <Icon icon={symbol("arrow-back")} />
-        Back to equin
+        Back to muxos
       </Button>
     </Movable>
   );

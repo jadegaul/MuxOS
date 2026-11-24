@@ -7,7 +7,7 @@
 // overtaking the play (AbortError), or a source that failed to load
 // (NotSupportedError, with the element's `error` set and its `error` event —
 // the player's onError — already reporting it). A caller that rethrew those
-// filed a stack-less crash for each (equin.ai's hero film on iPhone Safari,
+// filed a stack-less crash for each (MuxOS.app's hero film on iPhone Safari,
 // report-1795099021-lq0l6y, 2026-11-19).
 //
 // So `playMedia` answers what happened as a value, and only a rejection it

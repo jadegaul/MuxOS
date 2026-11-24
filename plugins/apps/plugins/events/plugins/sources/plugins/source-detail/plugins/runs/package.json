@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-events-sources-source-detail-runs",
+  "name": "@muxos/plugin-apps-events-sources-source-detail-runs",
   "description": "Runs section of the source side-pane: the run ledger as a DataView, unchanged runs included.",
   "private": true,
   "version": "0.0.1"

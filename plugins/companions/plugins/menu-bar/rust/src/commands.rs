@@ -1,5 +1,5 @@
-//! The bridge's commands (`window.equinNative`, src/bridge.js), an app
-//! window's (`window.equinWindow`, src/window_bridge.js) and the offline
+//! The bridge's commands (`window.muxosNative`, src/bridge.js), an app
+//! window's (`window.muxosWindow`, src/window_bridge.js) and the offline
 //! page's Start. Each is ACL-gated — the bridge to the panel window on the
 //! pinned origin (granted at runtime, `panel::Pin::capability`), the app
 //! window's to that window on its origin (`window::Scope::capability`),
@@ -170,7 +170,7 @@ pub struct WindowInfo {
     capabilities: WindowCapabilities,
 }
 
-/// `equinWindow.hostInfo()`: what this app window can do.
+/// `muxosWindow.hostInfo()`: what this app window can do.
 #[tauri::command]
 fn window_info() -> WindowInfo {
     WindowInfo {
@@ -180,7 +180,7 @@ fn window_info() -> WindowInfo {
     }
 }
 
-/// `equinWindow.startFileDrag(paths)`: drag host paths out of the window as
+/// `muxosWindow.startFileDrag(paths)`: drag host paths out of the window as
 /// real files; resolves `"dropped"` / `"cancelled"` once the drag ends.
 #[tauri::command]
 async fn start_file_drag(window: WebviewWindow, paths: Vec<String>) -> Result<file_drag::Outcome, String> {
@@ -262,7 +262,7 @@ pub fn handler() -> impl Fn(Invoke) -> bool + Send + Sync + 'static {
         match verdict {
             Ok(()) => dispatch(invoke),
             Err(why) => {
-                eprintln!("equin-desktop: refused {why}");
+                eprintln!("muxos-desktop: refused {why}");
                 invoke.resolver.reject(why);
                 true
             }
@@ -280,55 +280,55 @@ mod tests {
 
     #[test]
     fn the_bridge_answers_the_pinned_page_only() {
-        let pin = panel::Pin::new("equin", 9000);
+        let pin = panel::Pin::new("muxos", 9000);
         let pin = &Caller::Panel(Some(&pin));
-        assert!(admitted(pin, "host_info", &u("http://equin.localhost:9000/home/menu-bar?embed=1")).is_ok());
-        assert!(admitted(pin, "notify", &u("http://equin.localhost:9000/home/menu-bar/x")).is_ok());
-        assert!(admitted(pin, "pin_app", &u("http://equin.localhost:9000/home/menu-bar?embed=1")).is_ok());
+        assert!(admitted(pin, "host_info", &u("http://muxos.localhost:9000/home/menu-bar?embed=1")).is_ok());
+        assert!(admitted(pin, "notify", &u("http://muxos.localhost:9000/home/menu-bar/x")).is_ok());
+        assert!(admitted(pin, "pin_app", &u("http://muxos.localhost:9000/home/menu-bar?embed=1")).is_ok());
         assert!(admitted(pin, "pin_app", &u("http://other.localhost:9000/home/menu-bar")).is_err());
-        assert!(admitted(pin, "apps", &u("http://equin.localhost:9000/agents")).is_err());
+        assert!(admitted(pin, "apps", &u("http://muxos.localhost:9000/agents")).is_err());
         // An in-document route change away from the panel.
-        assert!(admitted(pin, "host_info", &u("http://equin.localhost:9000/agents")).is_err());
-        assert!(admitted(pin, "host_info", &u("http://equin.localhost:9000/home/menu-barx")).is_err());
+        assert!(admitted(pin, "host_info", &u("http://muxos.localhost:9000/agents")).is_err());
+        assert!(admitted(pin, "host_info", &u("http://muxos.localhost:9000/home/menu-barx")).is_err());
         // Another namespace, scheme or port.
         assert!(admitted(pin, "host_info", &u("http://other.localhost:9000/home/menu-bar")).is_err());
-        assert!(admitted(pin, "host_info", &u("https://equin.localhost:9000/home/menu-bar")).is_err());
-        assert!(admitted(pin, "host_info", &u("http://equin.localhost:9001/home/menu-bar")).is_err());
+        assert!(admitted(pin, "host_info", &u("https://muxos.localhost:9000/home/menu-bar")).is_err());
+        assert!(admitted(pin, "host_info", &u("http://muxos.localhost:9001/home/menu-bar")).is_err());
         // The offline page gets Start only; the panel page never gets Start.
         assert!(admitted(pin, "host_info", &u("tauri://localhost/index.html")).is_err());
         assert!(admitted(pin, "start_gateway", &u("tauri://localhost/index.html")).is_ok());
-        assert!(admitted(pin, "start_gateway", &u("http://equin.localhost:9000/home/menu-bar")).is_err());
+        assert!(admitted(pin, "start_gateway", &u("http://muxos.localhost:9000/home/menu-bar")).is_err());
         // A command outside the table.
-        assert!(admitted(pin, "unknown", &u("http://equin.localhost:9000/home/menu-bar")).is_err());
+        assert!(admitted(pin, "unknown", &u("http://muxos.localhost:9000/home/menu-bar")).is_err());
         // The panel never gets an app window's commands.
-        assert!(admitted(pin, "start_file_drag", &u("http://equin.localhost:9000/home/menu-bar")).is_err());
+        assert!(admitted(pin, "start_file_drag", &u("http://muxos.localhost:9000/home/menu-bar")).is_err());
     }
 
     #[test]
     fn after_a_port_move_the_old_origin_is_refused() {
         // The old origin's ACL grant cannot be withdrawn; the gate holds.
-        let moved = panel::Pin::new("equin", 8700);
+        let moved = panel::Pin::new("muxos", 8700);
         let moved = &Caller::Panel(Some(&moved));
-        assert!(admitted(moved, "host_info", &u("http://equin.localhost:8700/home/menu-bar?embed=1")).is_ok());
-        assert!(admitted(moved, "host_info", &u("http://equin.localhost:9000/home/menu-bar?embed=1")).is_err());
+        assert!(admitted(moved, "host_info", &u("http://muxos.localhost:8700/home/menu-bar?embed=1")).is_ok());
+        assert!(admitted(moved, "host_info", &u("http://muxos.localhost:9000/home/menu-bar?embed=1")).is_err());
         // Built without a pin (an unreadable port file): Start only.
         let none = &Caller::Panel(None);
-        assert!(admitted(none, "host_info", &u("http://equin.localhost:8700/home/menu-bar?embed=1")).is_err());
+        assert!(admitted(none, "host_info", &u("http://muxos.localhost:8700/home/menu-bar?embed=1")).is_err());
         assert!(admitted(none, "start_gateway", &u("tauri://localhost/index.html?error=x")).is_ok());
     }
 
     #[test]
     fn an_app_window_answers_its_origin_only() {
-        let scope = window::Scope::of(&u("http://equin.localhost:9000/files"));
+        let scope = window::Scope::of(&u("http://muxos.localhost:9000/files"));
         let app = &Caller::AppWindow(&scope);
-        assert!(admitted(app, "start_file_drag", &u("http://equin.localhost:9000/files/at/x")).is_ok());
+        assert!(admitted(app, "start_file_drag", &u("http://muxos.localhost:9000/files/at/x")).is_ok());
         // Anywhere in its namespace: the window roams it.
-        assert!(admitted(app, "window_info", &u("http://equin.localhost:9000/agents")).is_ok());
+        assert!(admitted(app, "window_info", &u("http://muxos.localhost:9000/agents")).is_ok());
         assert!(admitted(app, "start_file_drag", &u("http://other.localhost:9000/files")).is_err());
         assert!(admitted(app, "start_file_drag", &u("https://example.com/")).is_err());
         // Never the panel's or the offline page's commands.
-        assert!(admitted(app, "pin_app", &u("http://equin.localhost:9000/home/menu-bar")).is_err());
+        assert!(admitted(app, "pin_app", &u("http://muxos.localhost:9000/home/menu-bar")).is_err());
         assert!(admitted(app, "start_gateway", &u("tauri://localhost/index.html")).is_err());
-        assert!(admitted(&Caller::Other, "window_info", &u("http://equin.localhost:9000/files")).is_err());
+        assert!(admitted(&Caller::Other, "window_info", &u("http://muxos.localhost:9000/files")).is_err());
     }
 }

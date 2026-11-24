@@ -1,6 +1,6 @@
 /**
  * `readServedDeployment` as the process it exists for runs it: a CLI, which
- * declares NO runtime namespace (`./equin version cut`, main's convergence
+ * declares NO runtime namespace (`./muxos version cut`, main's convergence
  * run). It once read the dist through `webDistDir()`, which throws there, and
  * the trailer read swallowed the throw — every cut was refused with "the
  * served dist carries no .build-commit" on a dist that carried one.

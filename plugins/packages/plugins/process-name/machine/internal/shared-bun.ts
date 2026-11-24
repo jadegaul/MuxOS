@@ -9,7 +9,7 @@ import { cloneNamedBinary, type NamedBinary } from "./process-name";
 
 // The machine-wide named Buns: `process-names/bun-<version>/`, one APFS clone
 // per name and Bun version, shared by every checkout and backend. The CLI
-// verbs sit in it directly (the `./equin` script names them from its argv);
+// verbs sit in it directly (the `./muxos` script names them from its argv);
 // the processes a backend starts (`cloneSharedBun`) in its `processes/`
 // subdirectory, so no verb can ever be given one of their names.
 //

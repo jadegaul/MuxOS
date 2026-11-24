@@ -10,7 +10,7 @@
  * `check/` is outside that graph (imperative-create-table-allowlisted.ts uses
  * the fixture the same way).
  *
- * Requires the running embedded cluster (`./equin build` first).
+ * Requires the running embedded cluster (`./muxos build` first).
  */
 
 import { testSchemaOwner } from "@plugins/framework/plugins/server-core/core/testing";

@@ -9,7 +9,7 @@ import { readFile } from "@plugins/packages/plugins/timed-fs/core";
  * dist composed before that trailer existed). Every other failure throws:
  * these reads once swallowed everything, and a CLI's `webDistDir()` — which
  * throws in a process with no runtime namespace — was read as "the served
- * dist carries no .build-commit", so `./equin version cut` refused every
+ * dist carries no .build-commit", so `./muxos version cut` refused every
  * release while main served exactly the commit it wanted.
  */
 export async function readDistTrailer(

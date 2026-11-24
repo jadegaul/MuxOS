@@ -8,7 +8,7 @@
 // a packed ref deleted (packed-refs rewritten), and the nested dir removed by
 // `pack-refs` and re-created by the next advance (a re-plan).
 //
-//   ./equin run plugins/infra/plugins/git/plugins/git-watcher/scripts/measure-ref-delivery.ts [--rounds 30]
+//   ./muxos run plugins/infra/plugins/git/plugins/git-watcher/scripts/measure-ref-delivery.ts [--rounds 30]
 import { mkdtemp, rm } from "node:fs/promises";
 import { realpath } from "@plugins/packages/plugins/timed-fs/core";
 import { tmpdir } from "node:os";

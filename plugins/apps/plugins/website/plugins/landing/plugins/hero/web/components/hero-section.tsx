@@ -10,7 +10,7 @@ import "./hero-section.css";
 
 const HEADLINE_LEAD = "A personal OS that ";
 const HEADLINE_ACCENT = "evolves on request";
-const LEDE_BRAND = "equin";
+const LEDE_BRAND = "muxos";
 const LEDE_TAIL =
   " is an experimental open-source platform to rebuild custom versions of every application, tailored to each user's unique needs. An exploration of the new kind of software that agents unlock.";
 
@@ -34,7 +34,7 @@ const PROPERTIES = [
 ];
 
 /**
- * The homepage's opening: one sentence saying what equin is, the paragraph that
+ * The homepage's opening: one sentence saying what muxos is, the paragraph that
  * says what that means, the showcase film, and the three properties it rests on.
  *
  * The heading, its lede and the glow behind them are the shell's

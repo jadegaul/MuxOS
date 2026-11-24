@@ -12,7 +12,7 @@ import type { McpHealth } from "@plugins/infra/plugins/mcp/core";
  *   `not-applicable` with the sentence saying so;
  * - still loading → `unknown`, no summary ("Checking…"), never `ok`;
  * - the latest request failed → `critical`: agents launched from here have
- *   no equin tools (not even `flag_raise` to say so);
+ *   no muxos tools (not even `flag_raise` to say so);
  * - a contribution's latest run threw → `attention`: the server answers, with
  *   that tool hidden or its live description replaced by a notice;
  * - otherwise `ok` — including before any agent connected, since a server

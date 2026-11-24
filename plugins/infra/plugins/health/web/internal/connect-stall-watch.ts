@@ -32,7 +32,7 @@ export interface ConnectStallWatch {
  * A health answer proves the link works when it arrives, not before: a
  * visitor whose link drops has its health request hang, answered the instant
  * the link returns — while the handshake that stalled was dialed into the
- * dead link (equin.ai, 2026-11-19 05:21:47–05:22:02 UTC: attempt 3 never
+ * dead link (MuxOS.app, 2026-11-19 05:21:47–05:22:02 UTC: attempt 3 never
  * reached the box, the page's health requests queued through the outage were
  * all answered at 05:22:01.95, and a wedge was filed). So the first answered
  * stall only records when the host answered; the next attempt, dialed after

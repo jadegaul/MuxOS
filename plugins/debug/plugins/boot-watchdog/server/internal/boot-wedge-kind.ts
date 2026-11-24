@@ -52,7 +52,7 @@ function renderDescription(row: ReportRow, d: BootWedgePayload): string {
     booting:
       "is still booting past its budget — the gateway is still waiting on it (fleet state `starting`)",
     failed:
-      "was killed before it became ready, and the gateway gave up on it (fleet state `broken`: killed at its readiness deadline, a SIGKILL, so it wrote no exit line). No backend runs, nothing has become ready since, and the gateway retries it only on a deploy (`./equin build`) or a browser start — the worktree is unusable until then",
+      "was killed before it became ready, and the gateway gave up on it (fleet state `broken`: killed at its readiness deadline, a SIGKILL, so it wrote no exit line). No backend runs, nothing has become ready since, and the gateway retries it only on a deploy (`./muxos build`) or a browser start — the worktree is unusable until then",
     killed:
       "was killed before it became ready; the gateway now runs nothing for the worktree and no longer holds the failure (it restarted, or swept the worktree idle), so the next request boots it again",
     "restart-failed":

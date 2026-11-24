@@ -50,7 +50,7 @@ export const gatewayLogs = defineDataDir({
       bound: {
         kind: "truncate-on-start",
         reason:
-          "the daemon's raw stdout/stderr: emptied by `./equin start` and by the login service's install, and only a Go panic or a pre-logging crash lands here",
+          "the daemon's raw stdout/stderr: emptied by `./muxos start` and by the login service's install, and only a Go panic or a pre-logging crash lands here",
       },
     },
     // gateway.log and each namespace's channel (deleted with the namespace).

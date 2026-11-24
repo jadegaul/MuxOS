@@ -4,7 +4,7 @@
 // moved with no event naming it (or a dir above it), and no `onLost` since the
 // previous walk, is a change only a timer could have caught.
 //
-//   ./equin run plugins/infra/plugins/file-watcher/scripts/measure-reconcile.ts \
+//   ./muxos run plugins/infra/plugins/file-watcher/scripts/measure-reconcile.ts \
 //     --minutes 20 --every 30 <dir> [<dir> …]
 //
 // Research: research/2026-10-25-infra-file-watcher-reconcile-to-onlost.md

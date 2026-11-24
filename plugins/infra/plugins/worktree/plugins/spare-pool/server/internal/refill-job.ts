@@ -34,7 +34,7 @@ const refillLog = defineLogSink({
  * ready. Enqueued after every launch's checkout, at main's boot, and daily.
  *
  * Supervised, so the checkout and its install run in a detached child
- * (`./equin supervised-exec worktree.spare-refill`) a backend restart does not
+ * (`./muxos supervised-exec worktree.spare-refill`) a backend restart does not
  * kill — an in-process refill died with every deploy and left a cut-off add
  * behind. Built-in ledger with no `lock`: one run of the job at a time, so an
  * enqueue while one runs loses its claim and returns — the running loop tops up

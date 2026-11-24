@@ -17,7 +17,7 @@ import {
 import { testRunRecordsDir } from "@plugins/framework/plugins/cli/plugins/test/data-dirs";
 import { ingestedOpIds, ingestRunRecord } from "../../server";
 
-// The harvest's ingest on THIS backend: every `./equin test` run on the host
+// The harvest's ingest on THIS backend: every `./muxos test` run on the host
 // leaves a record in the host-global records dir; each serving backend reads
 // the ones its database has not seen into its own tables. One serialized pass
 // on every change in the dir, when the watch reports lost events, and once

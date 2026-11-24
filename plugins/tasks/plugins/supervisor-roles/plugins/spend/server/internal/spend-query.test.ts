@@ -122,7 +122,7 @@ beforeAll(async () => {
     "system",
     "tasks.task-triage",
   );
-  // A Claude Code session equin did not launch, with its source row.
+  // A Claude Code session muxos did not launch, with its source row.
   await t.db.execute(sql`
     INSERT INTO claude_usage_sources (source, project_dir, is_repo, title)
     VALUES ('session:abcdef1234', '-Users-me-elsewhere', false, 'Terminal chat')`);

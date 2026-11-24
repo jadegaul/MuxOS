@@ -5,7 +5,7 @@ import { shapeGroup } from "@plugins/ui/plugins/tokens/plugins/shape/core";
 
 /**
  * The gallery's sizes, worn by the chips and the app cards over the site's
- * `equin-document`. A catalogue is read up close, card by card, so it sets in a
+ * `muxos-document`. A catalogue is read up close, card by card, so it sets in a
  * smaller hand than the site's essay pages. Each role re-valued here is the one
  * the gallery's text already speaks through:
  *
@@ -21,9 +21,9 @@ import { shapeGroup } from "@plugins/ui/plugins/tokens/plugins/shape/core";
  * 18px inset, the chip and Install heights and paddings, and a 10px radius step
  * that puts the card corner (`rounded-2xl`, 1.8×) on 18px.
  */
-export const equinGalleryTheme = defineSubTheme({
-  id: "equin-gallery",
-  label: "equin gallery",
+export const muxosGalleryTheme = defineSubTheme({
+  id: "muxos-gallery",
+  label: "muxos gallery",
   fragments: [
     typeScaleGroup.fragment(
       both({
@@ -79,15 +79,15 @@ export const equinGalleryTheme = defineSubTheme({
 
 /**
  * The page's end — "Missing an app?" and the two read-next cards — over the
- * site's `equin-document`: a 20px heading, 15px running text, a 19px question
+ * site's `muxos-document`: a 20px heading, 15px running text, a 19px question
  * on a tight 1.35 line, the 42px field (`control-sm`, its 14px text on the
  * `caption` role) beside the 44px Build it (`control-md`, 14px `control`, 18px
  * inline), 14px field padding, and a 10px radius step (the field and the
  * button at 10px, the dashed card's `rounded-3xl` at 22px).
  */
-export const equinClosingTheme = defineSubTheme({
-  id: "equin-closing",
-  label: "equin closing",
+export const muxosClosingTheme = defineSubTheme({
+  id: "muxos-closing",
+  label: "muxos closing",
   fragments: [
     typeScaleGroup.fragment(
       both({

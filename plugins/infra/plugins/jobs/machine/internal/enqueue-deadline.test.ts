@@ -13,8 +13,8 @@
  * Against a throwaway database with the queue schema installed, so graphile's
  * migration check at `makeWorkerUtils` is a read and the insert has a table.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

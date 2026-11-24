@@ -73,11 +73,11 @@ function focusOnMount(el: HTMLElement | null) {
 }
 
 /**
- * The Improve popover's body: write an idea, watch what equin would do with it,
+ * The Improve popover's body: write an idea, watch what muxos would do with it,
  * then file it on GitHub.
  *
  * Two views. **Compose** is the idea and the auto-deploy choice. **Replay** is a
- * scripted, sped-up run of equin's loop on that idea, and the link that files it.
+ * scripted, sped-up run of muxos's loop on that idea, and the link that files it.
  * Nothing here posts anywhere: no agent runs on the public site, so the only
  * place the idea can honestly land is a GitHub issue the visitor opens
  * themselves.
@@ -301,7 +301,7 @@ function ReplayView({
     pageUrl: replay.pageUrl,
     notes: [
       `Auto-deploy: ${replay.autoDeploy ? "yes" : "no (review first)"}`,
-      "Filed from the Wish button on equin.ai",
+      "Filed from the Wish button on MuxOS.app",
     ],
     labels: ["idea"],
   });
@@ -316,7 +316,7 @@ function ReplayView({
               variant="subheading"
               className="font-semibold tracking-tight"
             >
-              What equin would do now
+              What muxos would do now
             </Text>
           </Fill>
           <Badge shape="pill">Replay</Badge>

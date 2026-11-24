@@ -28,7 +28,7 @@ export type LinkEvent =
   | { kind: "heard"; at: number }
   /**
    * The link failed in a way a retry may fix, and the driver has the
-   * evidence for which way: `down` (SSH answered while equin did not — the
+   * evidence for which way: `down` (SSH answered while muxos did not — the
    * box answered HTTP with an error or closed the stream, or ssh said the
    * forward's target refused the connection) or `unreachable` (the SSH
    * transport failed, `sshKind` when ssh said why).
@@ -42,7 +42,7 @@ export type LinkEvent =
     }
   /**
    * The stream got NO answer through the tunnel (the request or the
-   * connection broke, nothing came back): the tunnel dying and equin not
+   * connection broke, nothing came back): the tunnel dying and muxos not
    * listening look the same from here, so it concludes nothing — whichever
    * evidence follows (the tunnel's exit, or ssh answering) does.
    */
@@ -121,7 +121,7 @@ function excuse(env: LinkEnv): ReconnectCause | null {
  * only a placeholder until the grace runs out (2 min), and by then it is
  * backed: a dying tunnel reports its exit at once (overwriting it with
  * `unreachable`), and one still up past ssh's keep-alive bound (~45 s) has
- * answered — SSH answers, equin does not.
+ * answered — SSH answers, muxos does not.
  */
 function pendingClass(s: LinkState): {
   then: LinkFailureClass;

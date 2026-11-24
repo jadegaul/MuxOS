@@ -40,7 +40,7 @@ async function trackedGitlinks(root: string): Promise<string[]> {
 /**
  * Untracked, un-ignored directories that hold their own repository — a clone,
  * a `git init`, or a `git worktree add` target — which `git add -A` (the
- * staging step of `./equin push -m`) would record as gitlinks.
+ * staging step of `./muxos push -m`) would record as gitlinks.
  *
  * Read off the run's tree: it IS `git add -A` over this checkout, so its
  * gitlinks are exactly these, with no walk of our own. Except when there is no
@@ -121,7 +121,7 @@ const check: Check = {
       return {
         ok: false,
         message:
-          `${nested.length} untracked directory(ies) hold their own git repository, and \`./equin push -m\` ` +
+          `${nested.length} untracked directory(ies) hold their own git repository, and \`./muxos push -m\` ` +
           `(which stages with \`git add -A\`) would commit each as a gitlink:\n${bulleted(nested)}\n${WHY}`,
         hint:
           "Move the checkout outside the repo (agent worktrees belong under `.claude/worktrees/`, which is gitignored), " +

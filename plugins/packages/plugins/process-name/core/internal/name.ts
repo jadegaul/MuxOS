@@ -6,7 +6,7 @@ const MAX_NAME_BYTES = 200;
 const SEPARATOR = " · ";
 
 /**
- * `equin · <kind> · <id>`, as a file name: no `/`, no control characters,
+ * `muxos · <kind> · <id>`, as a file name: no `/`, no control characters,
  * bounded. Kind first, so a list sorted by name groups every build, every
  * agent, every server together.
  */

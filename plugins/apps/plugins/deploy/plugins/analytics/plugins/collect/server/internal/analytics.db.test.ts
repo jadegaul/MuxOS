@@ -167,7 +167,7 @@ function pageviewId(res: CollectResponse): string {
 const A = { ip: "203.0.113.1", ua: UA.chromeMac };
 const B = { ip: "203.0.113.2", ua: UA.safariIphone, lang: "fr-FR,fr;q=0.9" };
 const C = { ip: "203.0.113.3", ua: UA.firefoxLinux };
-const host = "equin.dev";
+const host = "muxos.dev";
 
 beforeAll(async () => {
   // A DB-IP snapshot fixture: A's address is in France, B's is reserved (ZZ),

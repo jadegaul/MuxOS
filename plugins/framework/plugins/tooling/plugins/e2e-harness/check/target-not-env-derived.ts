@@ -44,7 +44,7 @@ import type {
 
 /**
  * Any READ of the app's own environment variables (`readEnv`, the one reader;
- * a hand-spelled `process.env.EQUIN_…` fails `launcher:env-names`) — the
+ * a hand-spelled `process.env.MUXOS_…` fails `launcher:env-names`) — the
  * family, not one variable. Setting one for a child the script spawns
  * (`envEntries`) chooses nothing about this run's target, so it is allowed.
  */

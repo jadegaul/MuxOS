@@ -34,7 +34,7 @@ import { FS_WAIT_CHANNEL, type FsWaitLine } from "../../core";
 // exactly when the disk is slow, and a synchronous append then froze the
 // backend's thread a second time for the same stall. The one synchronous write
 // is the episode summary from the `exit` handler, which cannot wait. Measured on the first build
-// that recorded per call: one `./equin check` wrote 17,089 lines, every one a
+// that recorded per call: one `./muxos check` wrote 17,089 lines, every one a
 // readFile queued behind the same pass's thousands of others.
 // timed-fs never dispatches the sink's own file calls back here.
 

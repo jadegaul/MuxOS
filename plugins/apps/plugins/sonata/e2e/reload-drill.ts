@@ -11,7 +11,7 @@
 // Only reads: the song is picked from the deploy's database (any MIDI song with
 // notes) unless --song names one.
 //
-// Usage: ./equin run plugins/apps/plugins/sonata/e2e/reload-drill.ts [--song <songId>] [--no-record] [--headed]
+// Usage: ./muxos run plugins/apps/plugins/sonata/e2e/reload-drill.ts [--song <songId>] [--no-record] [--headed]
 import type { Page } from "playwright";
 import {
   arg,

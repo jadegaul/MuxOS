@@ -59,7 +59,7 @@ const check: Check = {
         ok: false,
         message:
           "no `ThemeEngine.TokenGroup` contribution was read from the bundled web barrels, so nothing was checked",
-        hint: "The evaluated-barrel read (codegen's collectWebSlotContributions) returned nothing for ui.theme-engine.token-group: check the slot id and that `./equin build` regenerated the records.",
+        hint: "The evaluated-barrel read (codegen's collectWebSlotContributions) returned nothing for ui.theme-engine.token-group: check the slot id and that `./muxos build` regenerated the records.",
       };
     const slotsByPlugin = new Map<string, Set<string>>();
     for (const [section, list] of Object.entries(contributed)) {

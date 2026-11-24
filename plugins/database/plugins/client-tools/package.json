@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-database-client-tools",
+  "name": "@muxos/plugin-database-client-tools",
   "description": "Postgres client tools (pg_dump, pg_restore) from the same release as the embedded server.",
   "private": true,
   "version": "0.0.1",
@@ -46,7 +46,7 @@
         ],
         "agree": "major.minor",
         "reason": "pg_dump / pg_restore must come from the same Postgres release (major.minor) as the embedded server",
-        "prerequisite": "the daily auto-publish of github.com/equinai/pg-client-embedded has not published @equin/pg-client-* for the new @embedded-postgres release: check its latest Build and Publish run (`gh run list -R equinai/pg-client-embedded -w 'Build and Publish'`; `gh workflow enable` it if GitHub disabled it after 60 days without activity), fix it and re-run, then upgrade again — the two move together"
+        "prerequisite": "the daily auto-publish of github.com/equinai/pg-client-embedded has not published @equin/pg-client-* for the new @embedded-postgres release: check its latest Build and Publish run (`gh run list -R equinai/pg-client-embedded -w 'Build and Publish'`; `gh workflow enable` it if GitHub disabled it after 60 days without activity), fix it and re-run, then upgrade again \u2014 the two move together"
       }
     ]
   }

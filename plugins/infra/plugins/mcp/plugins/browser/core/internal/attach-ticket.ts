@@ -4,7 +4,7 @@ import { z } from "zod";
  * The handoff from a conversation's browser session to an e2e script.
  *
  * `browser_attach` opens a tab in the session, marks it, and hands the agent a
- * ticket; `./equin run <script>.ts --attach <ticket>` connects to the
+ * ticket; `./muxos run <script>.ts --attach <ticket>` connects to the
  * shared browser through `endpoint` (Playwright's `browser.bind()` pipe, whose
  * connections share every context and leave them open on disconnect), finds
  * the tab by `marker`, drives it, and leaves it there for the agent to pick up.

@@ -151,7 +151,7 @@ export async function computeTreeHash(root: AppPath): Promise<string | null> {
     const realIndex = asAppPath(indexPath);
     const hashBytes = objectFormat === "sha256" ? 32 : 20;
     const nonce = `${process.pid}-${randomBytes(4).toString("hex")}`;
-    const tmpIndex = besideIndex(realIndex, `equin-tree-hash-${nonce}`);
+    const tmpIndex = besideIndex(realIndex, `muxos-tree-hash-${nonce}`);
     scratch.push(tmpIndex);
     const env = { ...process.env, GIT_INDEX_FILE: tmpIndex };
     sweepDeadScratch(realIndex);
@@ -178,7 +178,7 @@ export async function computeTreeHash(root: AppPath): Promise<string | null> {
         // index, so neither this walk nor any later git read pays for it
         // again; hash on a copy. Status never stages: the published index
         // differs from the real one in caches only.
-        const learned = besideIndex(realIndex, `equin-refreshed-${nonce}`);
+        const learned = besideIndex(realIndex, `muxos-refreshed-${nonce}`);
         scratch.push(learned);
         writeIndexCopySync(
           readFileSync(tmpIndex),
@@ -327,7 +327,7 @@ async function listScratchPathspec(
   const nonce = `${process.pid}-${randomBytes(4).toString("hex")}`;
   const scratch = besideIndex(
     asAppPath(indexPath),
-    `equin-tree-domain-${nonce}`,
+    `muxos-tree-domain-${nonce}`,
   );
   try {
     const { GIT_INDEX_FILE: _ignored, ...inherited } = process.env;
@@ -476,7 +476,7 @@ function besideIndex(index: AppPath, suffix: string): AppPath {
   return joinAppPath(appPathParent(index), `${name}.${suffix}`);
 }
 
-// What follows `<index>.equin-` in a scratch index's name (see `nonce`).
+// What follows `<index>.muxos-` in a scratch index's name (see `nonce`).
 const SCRATCH_SUFFIX = /^(?:tree-hash|refreshed|tree-domain)-(\d+)-[0-9a-f]+$/;
 
 /**
@@ -488,7 +488,7 @@ const SCRATCH_SUFFIX = /^(?:tree-hash|refreshed|tree-domain)-(\d+)-[0-9a-f]+$/;
 function sweepDeadScratch(realIndex: AppPath): void {
   const dir = appPathParent(realIndex);
   const name = realIndex.slice(realIndex.lastIndexOf("/") + 1);
-  const prefix = `${name}.equin-`;
+  const prefix = `${name}.muxos-`;
   for (const entry of readdirSync(dir)) {
     if (!entry.startsWith(prefix)) continue;
     const pid = SCRATCH_SUFFIX.exec(entry.slice(prefix.length))?.[1];

@@ -301,12 +301,12 @@ async function databaseReady(name: string): Promise<boolean> {
  *
  * INTENTIONAL BEHAVIOR DELTA (recorded, not accidental): this used to call the
  * CLI's own ENOENT-throwing copy of `readDatabaseConfigSync`, so a missing
- * `~/.equin/state/db-config/database.json` crashed HERE with a bare filesystem error.
+ * `~/.muxos/state/db-config/database.json` crashed HERE with a bare filesystem error.
  * Against the single tolerant reader it now falls through the
  * `services.length === 0` branch above ("externally managed DB") and the real,
  * actionable error comes from `waitForWorktreeDatabase` further down — which
  * knows *which* database it wanted and why. On any dev host `database.json`
- * always exists (`./equin start` writes it), so no dev-loop invocation
+ * always exists (`./muxos start` writes it), so no dev-loop invocation
  * changes; the delta only shows up on a bare host, where the old error named
  * the wrong problem.
  */
@@ -403,7 +403,7 @@ async function waitForWorktreeDatabase(name: string): Promise<void> {
   }
 
   // No DB and no restore in flight. Either a standard-path job is still queued/
-  // gated, or this worktree was created outside equin and has no job at
+  // gated, or this worktree was created outside muxos and has no job at
   // all. Grace-poll for the queued case, then fail actionably. 60 s, not less:
   // the fork runs in a detached `supervised-exec` child, which spends an exec
   // boot of the whole plugin graph (then the fork plan) before it creates the
@@ -422,15 +422,15 @@ async function waitForWorktreeDatabase(name: string): Promise<void> {
     [
       `ERROR: no database for "${name}" and no fork in flight after 60s.`,
       "",
-      "If this worktree was created from equin, its fork may have failed.",
+      "If this worktree was created from muxos, its fork may have failed.",
       forkDiagnosisHint(),
       "",
-      "If this worktree was created outside equin (git worktree add),",
+      "If this worktree was created outside muxos (git worktree add),",
       "create its database with:",
       "",
-      "    ./equin db fork",
+      "    ./muxos db fork",
       "",
-      "Then re-run ./equin build.",
+      "Then re-run ./muxos build.",
     ].join("\n"),
   );
   process.exit(1);
@@ -469,10 +469,10 @@ async function requireBaseDatabase(name: string): Promise<void> {
         : [
             "The bundled Postgres creates it when the cluster starts. Start it with:",
             "",
-            "    ./equin start",
+            "    ./muxos start",
           ]),
       "",
-      "Then re-run ./equin build.",
+      "Then re-run ./muxos build.",
     ].join("\n"),
   );
   process.exit(1);
@@ -541,7 +541,7 @@ interface BuildOptions {
  * served app in place. With nothing served there is nothing for it to keep —
  * it can only turn "an app" into "no app", after the longest step of the
  * build. And main's tree passed the full pass where it was authored
- * (`./equin push` runs it first; a release tag is cut from such a main). On a
+ * (`./muxos push` runs it first; a release tag is cut from such a main). On a
  * fresh install the full pass sat on the person's critical path for ~20
  * minutes (2026-11-17 Tart VM runs); once that was skipped, the `--skip-checks`
  * set's whole-repo type-check — nothing cached, one batch at a time to bound
@@ -675,10 +675,10 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
   // A main build (`--allow-main` from one of main's checkouts) builds in a
   // SLOT (`infra/git/main-slots`): a checkout of exactly one commit no push
   // writes into and nothing runs from while it is built. One handed a slot
-  // (`EQUIN_BUILD_SLOT`: main's convergence run, or the relay below) takes its
+  // (`MUXOS_BUILD_SLOT`: main's convergence run, or the relay below) takes its
   // exclusive lease here and holds it to the end — turned shared when it hands
   // the slot to the backend it restarts there (`handOver`). Any other — the
-  // Build button's (`build/machine`'s build job runs `./equin build
+  // Build button's (`build/machine`'s build job runs `./muxos build
   // --allow-main` in the checkout its backend serves from), a hand-run one on
   // the repo root — relays itself into a slot at `refs/heads/main`: never
   // into the slot main is served from, whose code every process of main runs.
@@ -767,7 +767,7 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
         "If you are inside a worktree conversation, make sure you are running",
         "this command from the worktree directory, not the main repo.",
         "",
-        "To override (only with explicit user permission): ./equin build --allow-main",
+        "To override (only with explicit user permission): ./muxos build --allow-main",
       ].join("\n"),
     );
     process.exit(1);
@@ -782,7 +782,7 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
   await checkBroadcasts("build");
   endSpan();
 
-  // Main deploys this account's one equin: only from the checkout that holds
+  // Main deploys this account's one muxos: only from the checkout that holds
   // it. Asked of a build of `main` and of any checkout that would mint the
   // main namespace — a second clone's main checkout with no deploy record yet
   // (only the background service names the first) would otherwise deploy over
@@ -825,7 +825,7 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
   // Open the durable, crash-safe build-progress log now that `name` (the same
   // namespace key the op marker and writeBuildProfile use) is known. Every
   // buildProfilerStart span from here on records an enter/leave + RSS to
-  // ~/.equin/logs/build-progress/build-progress.jsonl, so a wedged build names its phase and
+  // ~/.muxos/logs/build-progress/build-progress.jsonl, so a wedged build names its phase and
   // heap trend even after SIGKILL. See research/2026-07-21-global-cli-op-wedge-gc-sink.md.
   //
   // ONE progress run per PROCESS, keyed on the checkout's namespace: the
@@ -874,7 +874,7 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
   // recorded as their own segments instead.
   //
   // `opId` is `buildId`: unique and non-null on every path (a UI build gets
-  // EQUIN_BUILD_ID from run-build.ts, a manual CLI build the minted
+  // MUXOS_BUILD_ID from run-build.ts, a manual CLI build the minted
   // `build-<s>-<6>` above). `buildId` is passed AGAIN, separately, because
   // it means something else there — the join key to build-profile-<id>.json,
   // which is what makes a bar's span breakdown openable.
@@ -1189,7 +1189,7 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
   // no fork, no job — so it is checked once and never waited for. The predicate
   // is git's answer (`checkoutRef`), never a comparison against the namespace
   // string: a linked worktree whose directory happens to be named
-  // `equin` mints the same namespace as main.
+  // `muxos` mints the same namespace as main.
   if (targets.some((t) => t.isMainComposition)) {
     const isMainCheckout = checkout.kind === "main";
     endSpan = buildProfilerStart(
@@ -1636,7 +1636,7 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
       }
 
       // 4c. Config propagation is PER TARGET now — each namespace gets its own
-      //     `~/.equin/state/config/<namespace>/` — so it lives inside
+      //     `~/.muxos/state/config/<namespace>/` — so it lives inside
       //     `deployNamespace` rather than here. It still runs after the
       //     freshly-seeded git layer above, because every target's deploy does.
 
@@ -1682,7 +1682,7 @@ const run: CliAction<[], BuildOptions> = async (opts) => {
         // the process that produces the dist those checks inspect.
         //
         // It does NOT assert `host`. That scope is about the machine: the shared
-        // `~/.equin` data root, which every checkout on the box writes to and
+        // `~/.muxos` data root, which every checkout on the box writes to and
         // which runs ahead of any one branch. A build observing it sees state some
         // other live worktree created — state it did not cause and cannot repair.
         // This used to be spelled as NO filter at all, which is a different claim

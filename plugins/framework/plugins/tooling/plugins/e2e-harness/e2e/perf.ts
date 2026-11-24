@@ -1,11 +1,11 @@
-// Standalone Playwright perf harness for equin — agent-readable frontend metrics.
+// Standalone Playwright perf harness for muxos — agent-readable frontend metrics.
 //
 // Installs PerformanceObservers before navigation (to catch LCP/CLS/longtask
 // from the very first paint), then collects navigation timings, resource
 // waterfall, and web vitals after the page settles.
 //
 // Usage:
-//   ./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/perf.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/perf.ts \
 //     [--url <url>] [--out <path>] [--wait-for-timeout <ms>] [--viewport-size "W,H"]
 //
 // --url takes a full page URL: its origin says which deploy, its path says which

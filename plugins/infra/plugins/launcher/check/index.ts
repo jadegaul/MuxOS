@@ -39,7 +39,7 @@ function isTestFile(path: string): boolean {
 // through the key-typed helpers (`readEnv`, `envEntries`, …), so an undeclared
 // key is a type error. What a type cannot see, this check holds:
 //
-//  1. No TypeScript CODE spells a full name (`EQUIN_<key>`). A full name
+//  1. No TypeScript CODE spells a full name (`MUXOS_<key>`). A full name
 //     written by hand bypasses the declaration. Comments may name one;
 //     strings, identifiers and template text may not.
 //  2. Every full name ANY tracked file spells — a mirror that cannot import the
@@ -62,7 +62,7 @@ const ENV_NAMES_CORE = `${LAUNCHER}/plugins/env-names/core`;
 const DECLARATION_FILE = `${ENV_NAMES_CORE}/internal/env-keys.ts`;
 
 // A full variable name, not the tail of a longer identifier: the lookbehind is
-// what leaves out globals like `__EQUIN_SCOPE__` (a menu-bar script
+// what leaves out globals like `__MUXOS_SCOPE__` (a menu-bar script
 // placeholder) and the web-artifact globals, which no environment holds.
 const FULL_NAME_RE = new RegExp(
   `(?<![A-Za-z0-9_])${ENV_PREFIX}[A-Z0-9_]+`,
@@ -89,7 +89,7 @@ function namesKey(code: string, key: string): boolean {
 const envNamesCheck: Check = {
   id: ENV_NAMES_RULE,
   description:
-    "The app's environment variables are spelled by key: no full EQUIN_* name in TypeScript code, every full name a mirror or doc spells is declared in launcher/env-names, and every declared key is still used",
+    "The app's environment variables are spelled by key: no full MUXOS_* name in TypeScript code, every full name a mirror or doc spells is declared in launcher/env-names, and every declared key is still used",
   exemptable: {
     [ENV_NAMES_RULE]:
       "spells a full variable name on purpose (a fixture of the rule itself)",
@@ -133,7 +133,7 @@ const envNamesCheck: Check = {
         if (ts) {
           for (const match of code[i]!.matchAll(FULL_NAME_RE)) {
             // Name the exact replacement: a generic example (`readEnv("LANE")`)
-            // once left an agent rewriting `process.env.EQUIN_SCRATCH` to a
+            // once left an agent rewriting `process.env.MUXOS_SCRATCH` to a
             // hard-coded path under the data root instead (2026-11-10).
             const key = envKeyOf(match[0]);
             handSpelled.push(
@@ -212,7 +212,7 @@ const envNamesCheck: Check = {
 // one forgetful exec site. So the gateway has one file that reads its own
 // environment and builds commands (gateway/env.go, which always sets Env from
 // the declared names), and every other file goes through it. Go tests do not
-// run in `./equin check`, so the guard lives here.
+// run in `./muxos check`, so the guard lives here.
 const GATEWAY_ENV_FILE = "gateway/env.go";
 
 // The calls that either read the gateway's own environment or start a process

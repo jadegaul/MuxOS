@@ -50,7 +50,7 @@ import {
 /* ============================== the app ==============================
    <notion-dataview>, <claude-before> and <claude-after>, ported verbatim from the prototype's `claude.js`
    (`proto-1794207359-w7ez6h`).
-   notion: a Notion-like database page (a reading list) drawn by the SAME data view as equin's Artifacts page
+   notion: a Notion-like database page (a reading list) drawn by the SAME data view as muxos's Artifacts page
    below: same toolbar, same menus, same rows and cards, only its records, fields and views are its own.
    before / after: the Claude app's sidebar (chats) and Artifacts page, cloned from claude.ai in its light theme,
    then the same two surfaces rebuilt on ONE data-view primitive (DataView) that both mount with the same toolbar.

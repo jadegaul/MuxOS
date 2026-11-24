@@ -3,7 +3,7 @@
  * dir that holds it (`transcript-key.ts`): the data-root move renamed the
  * dirs under the rows that had counted their files.
  *
- * Run: `./equin test plugins/conversations/plugins/usage`
+ * Run: `./muxos test plugins/conversations/plugins/usage`
  */
 import { describe, expect, test } from "bun:test";
 import type { FileScan } from "./scan";

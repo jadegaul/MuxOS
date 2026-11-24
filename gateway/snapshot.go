@@ -35,7 +35,7 @@ const snapshotRootTag = `<div id="root"></div>`
 // script marks the document before the body is parsed, so the snapshot is
 // never painted (no flash). A stylesheet rule rather than `hidden` or
 // <noscript>, which Readability-style extractors drop.
-const snapshotHideHead = `<style>html.js #equin-snapshot{display:none}</style>` +
+const snapshotHideHead = `<style>html.js #muxos-snapshot{display:none}</style>` +
 	`<script>document.documentElement.classList.add("js")</script>`
 
 // snapshotManifest mirrors crawlable's SnapshotManifestSchema — strictly: an
@@ -360,7 +360,7 @@ func requestOrigin(host, forwardedProto string) string {
 // spliceSnapshot puts one page's snapshot into the shell: its title (replacing
 // the shell's own <title>, or added when the shell has none), description,
 // canonical link and the hiding rule before </head>, and the fragment, wrapped
-// in #equin-snapshot, right after the root div. Errors when the shell lacks a
+// in #muxos-snapshot, right after the root div. Errors when the shell lacks a
 // </head> or the root div: a listed page that cannot carry its snapshot fails.
 func spliceSnapshot(index []byte, page snapshotPage, canonical string) ([]byte, error) {
 	headEnd := bytes.Index(index, []byte("</head>"))
@@ -396,7 +396,7 @@ func spliceSnapshot(index []byte, page snapshotPage, canonical string) ([]byte, 
 	}
 	out.WriteString(headAdd)
 	out.Write(index[headEnd:rootEnd])
-	out.WriteString(`<div id="equin-snapshot">`)
+	out.WriteString(`<div id="muxos-snapshot">`)
 	out.Write(page.fragment)
 	out.WriteString(`</div>`)
 	out.Write(index[rootEnd:])

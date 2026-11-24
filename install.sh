@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# One-command install of equin, from a clean machine to a running app.
+# One-command install of muxos, from a clean machine to a running app.
 #
-#   curl -fsSL https://raw.githubusercontent.com/equinai/equin/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh | bash
 #   ./install.sh                  # from inside a clone or fork you already have
 #
 # Options (after `bash -s --` when piped):
-#   --dir <path>     where to clone (default ~/equin; ignored inside a checkout)
+#   --dir <path>     where to clone (default ~/muxos; ignored inside a checkout)
 #   --repo <url>     what to clone (default the canonical repo — pass your fork;
 #                    a fork installs its own main)
 #   --no-shell-rc    do not add the `mise activate` line to your shell rc
-#   --ref <tag|main> which equin to install: a release tag, or main's newest
+#   --ref <tag|main> which muxos to install: a release tag, or main's newest
 #                    commit (default: the newest release)
 #   --terminal       show the install in this terminal (the default: see
 #                    DEFAULT_VIEW below)
@@ -49,7 +49,7 @@
 # installer-handoff: 1
 #
 # An install of ref X runs X's own steps. This script runs the steps that
-# need nothing from equin's code (the system tools, mise, the clone); once the
+# need nothing from muxos's code (the system tools, mise, the clone); once the
 # checkout exists, the rest — the toolchain, start, build, done — run from the
 # CHECKOUT's install.sh, attached to this run's event stream (--attach), so
 # the steps and the code they install always come from the same commit, even
@@ -60,12 +60,12 @@
 # installer-attach: 2
 #
 # The install's internal arguments (--release, --checkout, --attach, --mode,
-# --since) are read from EQUIN_INSTALL_INTERNAL_ARGS (one per line) too, so
+# --since) are read from MUXOS_INSTALL_INTERNAL_ARGS (one per line) too, so
 # they stay off the command line a terminal shows in its title bar; a script
 # hands them that way only to one carrying the line below (internal_args).
 # installer-internal-args: env
 #
-# Every run keeps its events in ~/.equin/logs/install/<run>/events.jsonl
+# Every run keeps its events in ~/.muxos/logs/install/<run>/events.jsonl
 # (`latest` links to the newest run). Without a window (the default), the terminal draws
 # them: a status block redrawn in place on a terminal, timestamped lines
 # otherwise (CI, a pipe, TERM=dumb).
@@ -77,7 +77,7 @@
 #
 # Every message it prints to the person installing follows the installer
 # message rules (plugins/infra/plugins/launcher/plugins/installer-notice/CLAUDE.md):
-# no internal names, what equin was doing and why, why it was blocked, what to
+# no internal names, what muxos was doing and why, why it was blocked, what to
 # do now and what skipping costs — raw facts only on a `details:` line (fail).
 #
 # This file lives at the repo root on purpose: its URL above is the documented
@@ -86,13 +86,13 @@
 set -euo pipefail
 
 # The data root, by paths/data-root-layout's rule (data-root-layout.ts): the legacy dir
-# while an install not yet migrated has it (`./equin data-dir migrate` moves
-# it), else ~/.equin.
+# while an install not yet migrated has it (`./muxos data-dir migrate` moves
+# it), else ~/.muxos.
 data_root() {
-  if { [ -e "$HOME/.singularity" ] || [ -L "$HOME/.singularity" ]; } && ! [ "$HOME/.singularity" -ef "$HOME/.equin" ]; then
-    printf '%s\n' "$HOME/.singularity"
-  else
+  if { [ -e "$HOME/.equin" ] || [ -L "$HOME/.equin" ]; } && ! [ "$HOME/.equin" -ef "$HOME/.muxos" ]; then
     printf '%s\n' "$HOME/.equin"
+  else
+    printf '%s\n' "$HOME/.muxos"
   fi
 }
 
@@ -105,7 +105,7 @@ data_root() {
 refused_write_dir() {
   for dir in "$(data_root)" "${CARGO_HOME:-$HOME/.cargo}"; do
     [ -d "$dir" ] || dir="$HOME"
-    probe="$dir/.equin-write-probe.$$"
+    probe="$dir/.muxos-write-probe.$$"
     if ! { : > "$probe" && mv "$probe" "$probe.moved" && rm -f "$probe.moved"; } 2>/dev/null; then
       rm -f "$probe" "$probe.moved" 2>/dev/null || true
       printf '%s\n' "$dir"
@@ -136,7 +136,7 @@ DEFAULT_VIEW=terminal
 # not match its sums file stops the install: nothing unverified ever runs.
 stage0() {
   local base want manifest tag dir key bin
-  base="${EQUIN_RELEASES_URL:-https://github.com/equinai/equin/releases}"
+  base="${MUXOS_RELEASES_URL:-https://github.com/jadegaul/MuxOS/releases}"
   base="${base%/}"
   want="${REF:-latest}"
   # A fork installs its own main: the releases are the canonical repo's.
@@ -149,7 +149,7 @@ stage0() {
     return 0
   fi
 
-  manifest="$(mktemp "${TMPDIR:-/tmp}/equin-release.XXXXXX")"
+  manifest="$(mktemp "${TMPDIR:-/tmp}/muxos-release.XXXXXX")"
   case "$want" in
     latest|main) STAGE0_URL="$base/latest/download/release.json" ;;
     *) STAGE0_URL="$base/download/$want/release.json" ;;
@@ -207,9 +207,9 @@ stage0() {
       rm -f "$dir/INSTALLER-SHA256SUMS"
       if ! stage0_get "$base/download/$tag" INSTALLER-SHA256SUMS "$dir"; then
         STAGE0_NO_WINDOW="this release's installer window isn't published (yet)"
-      elif grep -qE "^[0-9a-f]{64}  \*?equin-installer-$key\$" "$dir/INSTALLER-SHA256SUMS"; then
-        # release-assets' INSTALLER_BINARIES: equin-installer-<platform key>.
-        bin="equin-installer-$key"
+      elif grep -qE "^[0-9a-f]{64}  \*?muxos-installer-$key\$" "$dir/INSTALLER-SHA256SUMS"; then
+        # release-assets' INSTALLER_BINARIES: muxos-installer-<platform key>.
+        bin="muxos-installer-$key"
       fi
       stage0_window "$bin" INSTALLER-SHA256SUMS
     else
@@ -225,7 +225,7 @@ stage0() {
   if choose_view "$bin" "$dir"; then
     stage0_exec "$bin" --script "$dir/install.sh" -- ${IA_ARGV[@]+"${IA_ARGV[@]}"} ${INSTALL_ARGS[@]+"${INSTALL_ARGS[@]}"}
   fi
-  echo "  Installing equin ${tag#v} in this terminal${VIEW_WHY:+ ($VIEW_WHY)}."
+  echo "  Installing muxos ${tag#v} in this terminal${VIEW_WHY:+ ($VIEW_WHY)}."
   stage0_exec bash "$dir/install.sh" ${IA_ARGV[@]+"${IA_ARGV[@]}"} ${INSTALL_ARGS[@]+"${INSTALL_ARGS[@]}"}
 }
 
@@ -253,12 +253,12 @@ stage0_exec() {
     echo "stage0: exec $*"
     exit 0
   fi
-  [ -z "$IA_ENV" ] || export EQUIN_INSTALL_INTERNAL_ARGS="$IA_ENV"
+  [ -z "$IA_ENV" ] || export MUXOS_INSTALL_INTERNAL_ARGS="$IA_ENV"
   exec "$@"
 }
 
 # internal_args <script> <arg…>: how to hand the install's internal arguments
-# to <script> — in IA_ENV (one per line, for EQUIN_INSTALL_INTERNAL_ARGS) when
+# to <script> — in IA_ENV (one per line, for MUXOS_INSTALL_INTERNAL_ARGS) when
 # it reads them there (its `# installer-internal-args: env` line), else in
 # IA_ARGV for its command line, as an older script reads them. A terminal
 # shows the running command line in its title bar: the install's plumbing
@@ -278,7 +278,7 @@ internal_args() {
 # in this terminal. Sets CHECKOUT: the tag when one is known, else main.
 stage0_fallback() {
   if [ "$VIEW" = window ]; then
-    fail "equin's install window can't open: the release could not be prepared, because $3. Run the installer again without --window to install in this terminal." \
+    fail "muxos's install window can't open: the release could not be prepared, because $3. Run the installer again without --window to install in this terminal." \
       "release ${2:-unknown}; from ${STAGE0_URL:-}"
   fi
   if [ "$1" = main ]; then
@@ -291,9 +291,9 @@ stage0_fallback() {
     CHECKOUT=main
   fi
   if [ "$CHECKOUT" = main ]; then
-    echo "  Installing main's newest version of equin in this terminal: the newest release could not be used, because $3."
+    echo "  Installing main's newest version of muxos in this terminal: the newest release could not be used, because $3."
   else
-    echo "  Installing equin ${CHECKOUT#v} in this terminal, with the steps of the installer you downloaded: that release's own installer can't be used, because $3."
+    echo "  Installing muxos ${CHECKOUT#v} in this terminal, with the steps of the installer you downloaded: that release's own installer can't be used, because $3."
   fi
 }
 
@@ -313,12 +313,12 @@ stage0_verify() {
   line="$(grep -E "^[0-9a-f]{64}  \*?$2\$" "$1/$sums" || true)"
   if [ -z "$line" ] || ! (cd "$1" && printf '%s\n' "$line" | $sum -c --status >/dev/null 2>&1); then
     rm -f "$1/$2"
-    fail "The download was damaged or changed, so the installer stopped. Nothing was installed. Run the installer again; if it stops here again, tell us: https://github.com/equinai/equin/issues" \
+    fail "The download was damaged or changed, so the installer stopped. Nothing was installed. Run the installer again; if it stops here again, tell us: https://github.com/jadegaul/MuxOS/issues" \
       "$2 does not match the release's $sums (${line:-no entry for it}), in $1"
   fi
 }
 
-# other_instance: prints the checkout this account's equin already runs from,
+# other_instance: prints the checkout this account's muxos already runs from,
 # and succeeds, when that is not the folder this run installs into. The same
 # two records `instance-owner` reads: the checkout main's deploy names, and the
 # one the background service is registered to follow. A record naming a folder
@@ -331,10 +331,10 @@ other_instance() {
   spec="$(data_root)/worktrees/singularity/spec.json"
   for claim in \
     "$( [ -f "$spec" ] && json_field server "$spec" | sed 's|/plugins/framework/plugins/server-core$||' )" \
-    "$(for unit in "$HOME/Library/LaunchAgents/dev.equin.gateway.plist" "$HOME/Library/LaunchAgents/dev.singularity.gateway.plist"; do
+    "$(for unit in "$HOME/Library/LaunchAgents/dev.muxos.gateway.plist" "$HOME/Library/LaunchAgents/dev.equin.gateway.plist" "$HOME/Library/LaunchAgents/dev.singularity.gateway.plist"; do
          [ -f "$unit" ] && awk 'f { sub(/.*<string>/, ""); sub(/<\/string>.*/, ""); print; exit } /<string>-main-checkout<\/string>/ { f = 1 }' "$unit"
        done | head -n 1)" \
-    "$(for unit in "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/dev.equin.gateway.service" "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/dev.singularity.gateway.service"; do
+    "$(for unit in "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/dev.muxos.gateway.service" "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/dev.equin.gateway.service" "${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user/dev.singularity.gateway.service"; do
          [ -f "$unit" ] && sed -n 's/^ExecStart=.*"-main-checkout" "\([^"]*\)".*/\1/p' "$unit"
        done | head -n 1)"; do
     [ -n "$claim" ] && [ -d "$claim" ] || continue
@@ -397,7 +397,7 @@ choose_view() {
   fi
   [ -z "$VIEW_WHY" ] && return 0
   if [ "$VIEW" = window ]; then
-    fail "equin's install window can't open: $VIEW_WHY. Run the installer again without --window to install in this terminal." \
+    fail "muxos's install window can't open: $VIEW_WHY. Run the installer again without --window to install in this terminal." \
       "--window; ${1:-no window binary}"
   fi
   return 1
@@ -412,16 +412,16 @@ main() {
   ARGS="$*"
   # The internal arguments the script that started this one handed over off
   # the command line (internal_args): read first, never passed on.
-  if [ -n "${EQUIN_INSTALL_INTERNAL_ARGS:-}" ]; then
+  if [ -n "${MUXOS_INSTALL_INTERNAL_ARGS:-}" ]; then
     local internal=() a
-    while IFS= read -r a; do internal+=("$a"); done <<<"$EQUIN_INSTALL_INTERNAL_ARGS"
-    unset EQUIN_INSTALL_INTERNAL_ARGS
+    while IFS= read -r a; do internal+=("$a"); done <<<"$MUXOS_INSTALL_INTERNAL_ARGS"
+    unset MUXOS_INSTALL_INTERNAL_ARGS
     set -- "${internal[@]}" "$@"
   fi
 
-  CANONICAL_REPO_URL="https://github.com/equinai/equin"
+  CANONICAL_REPO_URL="https://github.com/jadegaul/MuxOS"
   REPO_URL="$CANONICAL_REPO_URL"
-  INSTALL_DIR="$HOME/equin"
+  INSTALL_DIR="$HOME/muxos"
   EDIT_RC=1
   DRY_RUN=0
   REF=""
@@ -485,7 +485,7 @@ main() {
   SELF_DIR=""
   if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
     SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    if [ -x "$SELF_DIR/equin" ] && [ -f "$SELF_DIR/mise.toml" ]; then
+    if [ -x "$SELF_DIR/muxos" ] && [ -f "$SELF_DIR/mise.toml" ]; then
       INSTALL_DIR="$SELF_DIR"
     else
       SELF_DIR=""
@@ -515,27 +515,27 @@ main() {
   if [ -n "$ATTACH" ]; then
     attach_streams
     cd "$INSTALL_DIR"
-    if [ "$CHECKOUT" = main ]; then WHAT="main's newest version of equin"; else WHAT="equin ${CHECKOUT#v}"; fi
-    plan_data "Download equin"
+    if [ "$CHECKOUT" = main ]; then WHAT="main's newest version of muxos"; else WHAT="muxos ${CHECKOUT#v}"; fi
+    plan_data "Download muxos"
     if [ "$DRY_RUN" = "1" ]; then dry_checkout_steps; else checkout_steps; fi
     exit 0
   fi
 
   # ── 0. Say what will happen, before anything does ──────────────────────────
   if [ "$(id -u)" = "0" ]; then
-    fail "equin can't be installed from the administrator (root) account: its database refuses to run as root, so equin could never start. Run the installer from your normal account. On a server with only root, create one first: adduser --disabled-password --gecos '' equin && su - equin" \
+    fail "muxos can't be installed from the administrator (root) account: its database refuses to run as root, so muxos could never start. Run the installer from your normal account. On a server with only root, create one first: adduser --disabled-password --gecos '' muxos && su - muxos" \
       "id -u = 0; initdb refuses to run as root"
   fi
 
-  # ── One equin per account ─────────────────────────────────────────────────
+  # ── One muxos per account ─────────────────────────────────────────────────
   # Before anything is downloaded: a second checkout would share this account's
   # database, address and background service, and its build would replace the
-  # equin running from the first. `./equin start` and a main `./equin build`
+  # muxos running from the first. `./muxos start` and a main `./muxos build`
   # refuse the same way (infra/launcher/instance-owner); this is the early,
   # cheap read of the same two records.
   if held="$(other_instance)"; then
-    fail "equin is already installed on this account, from another folder (named below). A second one would share its database, its address and its background service, so installing it would replace the equin you use, possibly with an older version than your data. Nothing was changed. To update the equin you have, run ./install.sh from that folder. To try a second equin, use another account on this computer, or a virtual machine. If that folder is a leftover copy you no longer use, run ./equin stop --disable there, move it away, then run this again." \
-      "this account's equin runs from $held; this install: $INSTALL_DIR"
+    fail "muxos is already installed on this account, from another folder (named below). A second one would share its database, its address and its background service, so installing it would replace the muxos you use, possibly with an older version than your data. Nothing was changed. To update the muxos you have, run ./install.sh from that folder. To try a second muxos, use another account on this computer, or a virtual machine. If that folder is a leftover copy you no longer use, run ./muxos stop --disable there, move it away, then run this again." \
+      "this account's muxos runs from $held; this install: $INSTALL_DIR"
   fi
 
   # ── Stage 0: piped from main → the release's own script takes over ─────────
@@ -546,15 +546,15 @@ main() {
       exit 0
     fi
   elif [ -n "$SELF_DIR" ] && [ -n "$REF$VIEW_ASKED" ]; then
-    echo "  --ref, --terminal and --window apply to a downloaded install; this installs the copy of equin at $INSTALL_DIR, in this terminal."
+    echo "  --ref, --terminal and --window apply to a downloaded install; this installs the copy of muxos at $INSTALL_DIR, in this terminal."
   fi
   if [ "$CHECKOUT" != main ] && ! [[ $CHECKOUT =~ $RELEASE_TAG_ERE ]]; then
     echo "install.sh: --checkout takes a release tag or main (got '$CHECKOUT')" >&2; exit 2
   fi
   if [ "$CHECKOUT" = main ]; then
-    WHAT="main's newest version of equin"
+    WHAT="main's newest version of muxos"
   else
-    WHAT="equin ${CHECKOUT#v}"
+    WHAT="muxos ${CHECKOUT#v}"
   fi
 
   # Step 1 is this system's own: each OS reads only what it will do.
@@ -563,24 +563,24 @@ main() {
     prep1="install Apple's command-line developer tools, if missing"
     if [ "$MODE" = "window" ]; then prep2="(Apple's own window asks you to confirm)"; else prep2="(asks for your password once)"; fi
   else
-    prep1="install git and a C compiler with apt, and let equin keep running"
+    prep1="install git and a C compiler with apt, and let muxos keep running"
     prep2="while nobody is logged in; asks for your password once"
   fi
   # The plan's arrays first: step 5's time is their measured estimates (the
   # same medians the live bar counts down from), never a number written here.
-  plan_data "$( [ -n "$SELF_DIR" ] && echo "Use your copy of equin" || echo "Download equin" )"
+  plan_data "$( [ -n "$SELF_DIR" ] && echo "Use your copy of muxos" || echo "Download muxos" )"
   local build_time
   build_time="$(est_minutes start build)"
   cat <<EOF
 
-  equin installer. This will:
+  muxos installer. This will:
     1. $prep1
        $prep2
-    2. install mise (it installs the exact Bun, Go and Rust versions equin is
+    2. install mise (it installs the exact Bun, Go and Rust versions muxos is
        built with), and add one line to $RC so new terminals find them
-    3. $( [ -n "$SELF_DIR" ] && echo "use the copy of equin at $INSTALL_DIR" || echo "download $WHAT into $INSTALL_DIR" )
+    3. $( [ -n "$SELF_DIR" ] && echo "use the copy of muxos at $INSTALL_DIR" || echo "download $WHAT into $INSTALL_DIR" )
     4. install those exact Bun, Go and Rust versions
-    5. start equin in the background (with its own database) and build it${build_time:+:
+    5. start muxos in the background (with its own database) and build it${build_time:+:
        $build_time}
 EOF
   # Lines kept under 80 columns: a terminal that wide wraps them mid-word.
@@ -609,7 +609,7 @@ EOF
       ev_step tools skipped
     else
       run_step tools install_xcode_tools
-      xcode-select -p >/dev/null 2>&1 || fail "Apple's command-line tools did not install. equin needs them to download its code and build parts of itself on your Mac. Install them with: xcode-select --install — then run the installer again; it picks up where it stopped." \
+      xcode-select -p >/dev/null 2>&1 || fail "Apple's command-line tools did not install. muxos needs them to download its code and build parts of itself on your Mac. Install them with: xcode-select --install — then run the installer again; it picks up where it stopped." \
         "xcode-select -p finds no developer directory"
     fi
   else
@@ -621,19 +621,19 @@ EOF
     command -v curl >/dev/null 2>&1 || pkgs="$pkgs curl"
     command -v cc >/dev/null 2>&1 || pkgs="$pkgs build-essential"
     if [ -n "$pkgs" ]; then
-      command -v apt-get >/dev/null 2>&1 || fail "equin needs git, curl and a C compiler to download its code and build parts of itself, and this system has no apt to install them with. Install them with your system's package manager, then run the installer again." \
+      command -v apt-get >/dev/null 2>&1 || fail "muxos needs git, curl and a C compiler to download its code and build parts of itself, and this system has no apt to install them with. Install them with your system's package manager, then run the installer again." \
         "missing:$pkgs; no apt-get on PATH"
     fi
     # Lingering: without it systemd stops the user's services — the gateway,
     # and with it every agent — when the last session closes, and never starts
-    # them at boot. `./equin start` refuses without it.
+    # them at boot. `./muxos start` refuses without it.
     linger=1
     [ "$(loginctl show-user "$(id -un)" -p Linger --value 2>/dev/null)" = "yes" ] || linger=0
     if [ -z "$pkgs" ] && [ "$linger" = "1" ]; then
       ev_step tools skipped
     else
       run_step tools prepare_linux "$pkgs" "$linger"
-      [ "$STEP_RC" = "0" ] || fail "equin could not install what it needs from your system (git, curl, a C compiler) or let itself keep running while nobody is logged in; what went wrong is just above. Once that is sorted, run the installer again: it picks up where it stopped." \
+      [ "$STEP_RC" = "0" ] || fail "muxos could not install what it needs from your system (git, curl, a C compiler) or let itself keep running while nobody is logged in; what went wrong is just above. Once that is sorted, run the installer again: it picks up where it stopped." \
         "apt-get install$pkgs / loginctl enable-linger exited non-zero"
     fi
   fi
@@ -646,14 +646,14 @@ EOF
     ev_step mise skipped
   fi
   command -v mise >/dev/null 2>&1 && MISE="$(command -v mise)"
-  [ -x "$MISE" ] || fail "mise did not install. equin needs it to install the exact Bun, Go and Rust versions it is built with. Check your internet connection, then run the installer again." \
+  [ -x "$MISE" ] || fail "mise did not install. muxos needs it to install the exact Bun, Go and Rust versions it is built with. Check your internet connection, then run the installer again." \
     "no executable at $MISE after: curl -fsSL https://mise.run | sh"
 
   ACTIVATE="eval \"\$($MISE activate $SH_NAME)\""
   if [ "$EDIT_RC" = "1" ]; then
     if ! grep -qs "mise activate" "$RC"; then
-      say "Letting new terminals find equin's tools (one line added to $RC)"
-      printf '\n# mise: the Bun/Go/Rust releases equin runs on\n%s\n' "$ACTIVATE" >> "$RC"
+      say "Letting new terminals find muxos's tools (one line added to $RC)"
+      printf '\n# mise: the Bun/Go/Rust releases muxos runs on\n%s\n' "$ACTIVATE" >> "$RC"
     fi
   fi
   # This process: mise's shims on PATH, which is what the doctor calls active.
@@ -664,15 +664,15 @@ EOF
   if [ -n "$SELF_DIR" ]; then
     ev_step clone skipped
   elif [ -d "$INSTALL_DIR/.git" ]; then
-    say "Using the copy of equin already at $INSTALL_DIR"
+    say "Using the copy of muxos already at $INSTALL_DIR"
     ev_step clone skipped
   elif [ -e "$INSTALL_DIR" ]; then
-    fail "The folder $INSTALL_DIR already holds something else, so equin will not install over it. Move it away, or install somewhere else with --dir <another folder>." \
+    fail "The folder $INSTALL_DIR already holds something else, so muxos will not install over it. Move it away, or install somewhere else with --dir <another folder>." \
       "$INSTALL_DIR exists and has no .git"
   else
     say "Downloading $WHAT into $INSTALL_DIR"
     run_step clone clone_repo
-    [ "$STEP_RC" = "0" ] || fail "equin's code did not download into $INSTALL_DIR; what went wrong is just above. Check your internet connection, then run the installer again." \
+    [ "$STEP_RC" = "0" ] || fail "muxos's code did not download into $INSTALL_DIR; what went wrong is just above. Check your internet connection, then run the installer again." \
       "git clone $REPO_URL exited non-zero"
   fi
   cd "$INSTALL_DIR"
@@ -683,7 +683,7 @@ EOF
   checkout_steps
 }
 
-# checkout_steps: the steps that need equin's code — run by the checkout's
+# checkout_steps: the steps that need muxos's code — run by the checkout's
 # own install.sh, in its folder, with mise's tools on PATH.
 checkout_steps() {
   MISE="$HOME/.local/bin/mise"
@@ -692,7 +692,7 @@ checkout_steps() {
   # ── 4. Toolchain ───────────────────────────────────────────────────────────
   # Its postinstall runs the repo's `setup` (trust, git hooks) and the doctor,
   # which fails this step if anything required is still missing.
-  say "Installing Bun, Go and Rust (the exact versions equin is built with)"
+  say "Installing Bun, Go and Rust (the exact versions muxos is built with)"
   # A failed install keeps every release it did install, so re-running resumes.
   run_step toolchain install_toolchain
   if [ "$STEP_RC" != "0" ]; then
@@ -703,22 +703,22 @@ checkout_steps() {
   # ── 5. Start, 6. build ─────────────────────────────────────────────────────
   # No Claude Code install: the app runs the build the Agent SDK ships (with
   # the toolchain's dependencies), and the user signs in from the app.
-  say "Starting equin in the background, with its own database"
+  say "Starting muxos in the background, with its own database"
   run_step start start_services
   if [ "$STEP_RC" != "0" ]; then
-    fail "equin could not start; what stopped it is just above. Once that is sorted, run the installer again: it picks up where it stopped (cd $INSTALL_DIR && ./install.sh)." \
-      "./equin start exited non-zero"
+    fail "muxos could not start; what stopped it is just above. Once that is sorted, run the installer again: it picks up where it stopped (cd $INSTALL_DIR && ./install.sh)." \
+      "./muxos start exited non-zero"
   fi
   APP_URL=""
   [ ! -f "$RUN_DIR/app-url" ] || APP_URL="$(cat "$RUN_DIR/app-url")"
-  [ -n "$APP_URL" ] || fail "equin started but could not say where it answers. Run the installer again (cd $INSTALL_DIR && ./install.sh)." \
-    "./equin url printed nothing"
+  [ -n "$APP_URL" ] || fail "muxos started but could not say where it answers. Run the installer again (cd $INSTALL_DIR && ./install.sh)." \
+    "./muxos url printed nothing"
 
   STATUS="$(data_root)/worktrees/singularity/build-status.json"
-  say "Building equin"
-  # ONE build of this tree, not two. `./equin start` brought equin's
+  say "Building muxos"
+  # ONE build of this tree, not two. `./muxos start` brought muxos's
   # background service up, and its first boot already deploys main the way
-  # every later update is deployed: a convergence run (`./equin build
+  # every later update is deployed: a convergence run (`./muxos build
   # --allow-main --converge`; a first deploy runs without the full check pass,
   # build/converge cli/internal/plan.ts). This step is that same run: it waits
   # for the service's (its deploy lock — a wait naming the build that holds
@@ -727,11 +727,11 @@ checkout_steps() {
   # build failed: a convergence run decides a commit once) does the step build
   # it here, so the failure is this step's own output.
   run_step build deploy_main "$STATUS"
-  [ "$STEP_RC" = "0" ] || fail "equin did not finish building, so it cannot open yet; what went wrong is in the output above. Run the installer again to retry (cd $INSTALL_DIR && ./install.sh)." \
-    "./equin build exited non-zero"
+  [ "$STEP_RC" = "0" ] || fail "muxos did not finish building, so it cannot open yet; what went wrong is in the output above. Run the installer again to retry (cd $INSTALL_DIR && ./install.sh)." \
+    "./muxos build exited non-zero"
   # The receipt is the authority on whether it deployed, not the exit code.
   if ! deployed_at_head "$STATUS"; then
-    fail "equin did not finish building, so it cannot open yet; what went wrong is in the output above. Run the installer again to retry (cd $INSTALL_DIR && ./install.sh)." \
+    fail "muxos did not finish building, so it cannot open yet; what went wrong is in the output above. Run the installer again to retry (cd $INSTALL_DIR && ./install.sh)." \
       "no ok deploy receipt for $(git rev-parse HEAD) in $STATUS"
   fi
 
@@ -740,10 +740,10 @@ checkout_steps() {
   done_wait
   # Without a window (the default) the terminal view draws the same in its done state.
   if [ "$MODE" = "window" ]; then
-    say "equin is running: $APP_URL"
-    echo "  equin's code is in $INSTALL_DIR"
+    say "muxos is running: $APP_URL"
+    echo "  muxos's code is in $INSTALL_DIR"
     if [ "$EDIT_RC" = "1" ]; then
-      echo "  To use ./equin: open a new terminal, then cd $INSTALL_DIR (its tools are found inside that folder)."
+      echo "  To use ./muxos: open a new terminal, then cd $INSTALL_DIR (its tools are found inside that folder)."
     fi
   fi
 }
@@ -767,7 +767,7 @@ deploy_main() {
   before="$(grep -o '"buildId": *"[^"]*"' "$1" 2>/dev/null || true)"
   # Its own failure (the gateway follow after the builds, say) is not the
   # install's verdict: the receipt is.
-  ./equin build --allow-main --converge || echo "The deploy run exited non-zero; checking whether equin deployed anyway."
+  ./muxos build --allow-main --converge || echo "The deploy run exited non-zero; checking whether muxos deployed anyway."
   deployed_at_head "$1" && return 0
   # A build of this version ran during this step and did not deploy (here,
   # or in the background service's run): building the same tree again would
@@ -777,12 +777,12 @@ deploy_main() {
     echo "The build of this version did not deploy. Its log: $(grep -o '"logPath": *"[^"]*"' "$1" | sed 's/.*: *"//; s/"$//')"
     return 1
   fi
-  echo "This version of equin is not deployed yet; building it here."
+  echo "This version of muxos is not deployed yet; building it here."
   # --skip-checks: this deploys main, whose tree already passed the full check
   # pass when it was pushed. With nothing served yet the build runs no
   # validation at all (firstMainDeploy, build's cli/run.ts) — the same as the
   # service's first build.
-  ./equin build --allow-main --skip-checks
+  ./muxos build --allow-main --skip-checks
 }
 
 install_xcode_tools() {
@@ -792,7 +792,7 @@ install_xcode_tools() {
     xcode_dialog
     return 0
   fi
-  say "Installing Apple's command-line tools, which equin needs to download its code and build parts of itself"
+  say "Installing Apple's command-line tools, which muxos needs to download its code and build parts of itself"
   # The headless route (the one Homebrew's installer uses): the marker file
   # makes softwareupdate list the tools, so this works over ssh too, where
   # `xcode-select --install`'s dialog has nobody to click it.
@@ -843,15 +843,15 @@ xcode_dialog() {
 sudo_once() {
   local rc=0
   if sudo -n true 2>/dev/null; then return 0; fi
-  step_ev "\"type\":\"wait\",\"step\":\"$EQUIN_INSTALL_STEP\",\"state\":\"start\",\"on\":\"password\""
-  if [ "$MODE" = "window" ] && [ -n "${EQUIN_INSTALLER_BIN:-}" ] && [ -n "${EQUIN_INSTALLER_ASKPASS:-}" ]; then
-    printf '#!/bin/sh\nexec %s --askpass "$@"\n' "$(q "$EQUIN_INSTALLER_BIN")" >"$RUN_DIR/askpass"
+  step_ev "\"type\":\"wait\",\"step\":\"$MUXOS_INSTALL_STEP\",\"state\":\"start\",\"on\":\"password\""
+  if [ "$MODE" = "window" ] && [ -n "${MUXOS_INSTALLER_BIN:-}" ] && [ -n "${MUXOS_INSTALLER_ASKPASS:-}" ]; then
+    printf '#!/bin/sh\nexec %s --askpass "$@"\n' "$(q "$MUXOS_INSTALLER_BIN")" >"$RUN_DIR/askpass"
     chmod +x "$RUN_DIR/askpass"
-    SUDO_ASKPASS="$RUN_DIR/askpass" sudo -A -p "${1:-equin needs your password to install git and a C compiler, and to keep running while nobody is logged in.} It is used for this only and never stored." -v || rc=$?
+    SUDO_ASKPASS="$RUN_DIR/askpass" sudo -A -p "${1:-muxos needs your password to install git and a C compiler, and to keep running while nobody is logged in.} It is used for this only and never stored." -v || rc=$?
   else
     sudo -v || rc=$?
   fi
-  step_ev "\"type\":\"wait\",\"step\":\"$EQUIN_INSTALL_STEP\",\"state\":\"end\",\"on\":\"password\""
+  step_ev "\"type\":\"wait\",\"step\":\"$MUXOS_INSTALL_STEP\",\"state\":\"end\",\"on\":\"password\""
   return "$rc"
 }
 
@@ -859,22 +859,22 @@ sudo_once() {
 prepare_linux() {
   sudo_once
   if [ -n "$1" ]; then
-    say "Installing$1, which equin needs to download its code and build parts of itself (asks for your password)"
+    say "Installing$1, which muxos needs to download its code and build parts of itself (asks for your password)"
     sudo apt-get update -qq
     # shellcheck disable=SC2086 # one word per package
     sudo DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get install -y -qq $1
   fi
   if [ "$2" = "0" ]; then
-    say "Letting equin keep running while nobody is logged in, and start when the machine boots (asks for your password)"
+    say "Letting muxos keep running while nobody is logged in, and start when the machine boots (asks for your password)"
     sudo loginctl enable-linger "$(id -un)"
   fi
 }
 
 # start_services: the start step's body. First what the OS must provide for
-# the parts `./equin start` adds here, and for the dependencies every install
+# the parts `./muxos start` adds here, and for the dependencies every install
 # prepares — declared by those parts and dependencies themselves
 # (Dep.systemPackages: the menu-bar icon's GTK and WebKitGTK on a desktop,
-# the libraries Chromium runs on), asked of `./equin start --system-packages`,
+# the libraries Chromium runs on), asked of `./muxos start --system-packages`,
 # never listed here — then start. It answers one `system-packages:` line (apt
 # names, installed in one apt call) and a `system-setup:` line per command a
 # dependency's own tool installs its libraries with (what it is, then the
@@ -887,52 +887,52 @@ start_services() {
   local -a fields
   tab="$(printf '\t')"
   if [ "$OS" != "Darwin" ] && command -v apt-get >/dev/null 2>&1; then
-    out="$(./equin start --system-packages)"
+    out="$(./muxos start --system-packages)"
     # Its marked lines; any other output (a dependency install's) is not a
     # package name or a command.
     pkgs="$(printf '%s\n' "$out" | sed -n 's/^system-packages://p' | tail -n 1)"
     setups="$(printf '%s\n' "$out" | sed -n 's/^system-setup://p')"
     printf '%s\n' "$out" | grep -q '^system-packages:' || {
-      echo "./equin start --system-packages answered no system-packages: line:"; printf '%s\n' "$out"; return 1; }
+      echo "./muxos start --system-packages answered no system-packages: line:"; printf '%s\n' "$out"; return 1; }
     for p in $pkgs; do
       case "$p" in
-        *[!a-z0-9.+:-]*|[!a-z0-9]*) echo "./equin start --system-packages named \"$p\", which is not a package name"; return 1 ;;
+        *[!a-z0-9.+:-]*|[!a-z0-9]*) echo "./muxos start --system-packages named \"$p\", which is not a package name"; return 1 ;;
       esac
     done
   fi
   if [ -n "$pkgs" ]; then
-    say "Installing the libraries equin's desktop icon is built with (asks for your password)"
+    say "Installing the libraries muxos's desktop icon is built with (asks for your password)"
     echo "apt packages: $pkgs"
     # A lock held by the system's own updates on a fresh machine is waited
     # out; an update error from another source does not stop the install.
     # shellcheck disable=SC2086 # one word per package
-    if sudo_once "equin needs your password to install the libraries its desktop icon is built with." &&
+    if sudo_once "muxos needs your password to install the libraries its desktop icon is built with." &&
       { sudo apt-get -o DPkg::Lock::Timeout=300 update -qq || echo "apt-get update reported errors; installing anyway."; } &&
       sudo DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get -o DPkg::Lock::Timeout=300 install -y -qq $pkgs; then :
     else
-      echo "Those packages did not install; equin starts anyway and says what is missing."
+      echo "Those packages did not install; muxos starts anyway and says what is missing."
     fi
   fi
   while IFS= read -r line; do
     [ -n "$line" ] || continue
     IFS="$tab" read -r -a fields <<<"$line"
     if [ "${#fields[@]}" -lt 2 ]; then
-      echo "./equin start --system-packages answered a system-setup line with no command: $line"; return 1
+      echo "./muxos start --system-packages answered a system-setup line with no command: $line"; return 1
     fi
     for_user="${fields[0]}"
     say "Installing $for_user (asks for your password)"
     echo "command: ${fields[*]:1}"
-    if sudo_once "equin needs your password to install $for_user." &&
+    if sudo_once "muxos needs your password to install $for_user." &&
       sudo -- env DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 "${fields[@]:1}"; then :
     else
-      echo "That did not install; equin starts anyway, and what needs $for_user says what is missing."
+      echo "That did not install; muxos starts anyway, and what needs $for_user says what is missing."
     fi
   done <<<"$setups"
-  ./equin start
+  ./muxos start
   # The address, asked in the step (the port is chosen by the start just
   # above; never spelled here): its run is the step's output, timed with it,
   # never a bare command between two steps writing over the view.
-  ./equin url >"$RUN_DIR/app-url"
+  ./muxos url >"$RUN_DIR/app-url"
 }
 
 install_mise() {
@@ -964,13 +964,13 @@ install_toolchain() {
 # cli) parses this emitter's output against the schema, so the two cannot drift.
 #
 # Every event goes through ONE hub (start_hub): a FIFO in this run's dir,
-# ~/.equin/logs/install/<run>/events.fifo, read by a background process that
+# ~/.muxos/logs/install/<run>/events.fifo, read by a background process that
 # appends each line to events.jsonl beside it and hands it on — to the
 # window's fd (--events-fd), else to the terminal view (render). Its writers:
 #   - this script (`ev`), on a write end it keeps open for its whole life;
-#   - the `./equin` commands it runs as steps (installer/cli
+#   - the `./muxos` commands it runs as steps (installer/cli
 #     emitInstallEvent), which open the FIFO BY PATH, named by
-#     EQUIN_INSTALL_EVENTS, and file what they report under EQUIN_INSTALL_STEP
+#     MUXOS_INSTALL_EVENTS, and file what they report under MUXOS_INSTALL_STEP
 #     (both exported into a step's subshell only). A step's commands never
 #     inherit an fd of the stream (CLOSE_FDS): a daemon one of them starts must
 #     not hold it open after the install has ended.
@@ -980,8 +980,8 @@ install_toolchain() {
 # (on_exit) writes `exit`, closes this script's write end and waits for the
 # hub to drain, so `exit` is always the last line a reader sees.
 
-# Where equin answers once it runs: main's address on this account's gateway
-# port, read from `./equin url` after the start step chose and recorded it
+# Where muxos answers once it runs: main's address on this account's gateway
+# port, read from `./muxos url` after the start step chose and recorded it
 # (the first free port of the range). Empty until then.
 APP_URL=""
 EV_FD=""
@@ -1003,7 +1003,7 @@ FIFO=""
 CFIFO=""
 PAUSE_QUIT=0
 # The optional parts the person skipped (comma-separated ids), handed to every
-# later step attempt as EQUIN_INSTALL_LEFT_OUT (run_step).
+# later step attempt as MUXOS_INSTALL_LEFT_OUT (run_step).
 LEFT_OUT=""
 DONE_SENT=0
 FAIL_MSG=""
@@ -1012,7 +1012,7 @@ EST_SET=""
 IA_ENV=""
 IA_ARGV=()
 
-# BEGIN estimates — generated by `./equin installer estimates` from plugins/installer/core/estimates.json; do not edit
+# BEGIN estimates — generated by `./muxos installer estimates` from plugins/installer/core/estimates.json; do not edit
 # est_s <set> <step id>: the step's median in seconds, or null.
 est_s() {
   case "$1:$2" in
@@ -1282,17 +1282,17 @@ hand_to_checkout() {
   rm -f "$RUN_DIR/attached-done" "$RUN_DIR/attached-fail" "$RUN_DIR/attached-pid"
   marker="$(grep -m 1 '^# installer-attach: ' "$script" 2>/dev/null || true)"
   if [ -z "$marker" ]; then
-    say "This version of equin is older than this installer, so the installer's own steps install it."
+    say "This version of muxos is older than this installer, so the installer's own steps install it."
     return 0
   fi
-  [ "$marker" = "# installer-attach: 2" ] || fail "This version of equin installs itself with newer steps than this installer can show, so the installer stopped. What it did so far is kept: finish the install from equin's folder with: cd $INSTALL_DIR && ./install.sh" \
+  [ "$marker" = "# installer-attach: 2" ] || fail "This version of muxos installs itself with newer steps than this installer can show, so the installer stopped. What it did so far is kept: finish the install from muxos's folder with: cd $INSTALL_DIR && ./install.sh" \
     "$script says '$marker'; this installer speaks '# installer-attach: 2'"
   internal_args "$script" --attach "$RUN_DIR" --mode "$MODE" --since "$SECONDS" \
     --checkout "$CHECKOUT" ${RELEASE:+--release "$RELEASE"}
   set +e
   (
     eval "exec $CLOSE_FDS"
-    [ -z "$IA_ENV" ] || export EQUIN_INSTALL_INTERNAL_ARGS="$IA_ENV"
+    [ -z "$IA_ENV" ] || export MUXOS_INSTALL_INTERNAL_ARGS="$IA_ENV"
     exec bash "$script" ${IA_ARGV[@]+"${IA_ARGV[@]}"} "$@" ${INSTALL_ARGS[@]+"${INSTALL_ARGS[@]}"}
   )
   rc=$?
@@ -1367,11 +1367,11 @@ ev_done() {
 }
 
 # step_ev <fields, without braces>: an event from inside a step, written the
-# way a `./equin` command writes its own (installer/cli emitInstallEvent):
+# way a `./muxos` command writes its own (installer/cli emitInstallEvent):
 # the FIFO opened by path, one write. A no-op outside an install's step.
 step_ev() {
-  [ -n "${EQUIN_INSTALL_EVENTS:-}" ] || return 0
-  printf '{"v":2,"t":"%s",%s}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$1" > "$EQUIN_INSTALL_EVENTS"
+  [ -n "${MUXOS_INSTALL_EVENTS:-}" ] || return 0
+  printf '{"v":2,"t":"%s",%s}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$1" > "$MUXOS_INSTALL_EVENTS"
 }
 
 # log_line <step id> <text>: one log event. The line is cut so the whole event
@@ -1419,7 +1419,7 @@ read_tick() {
 # ev_lines <step id>: each line of stdin, as a log event of that step — with
 # the no-progress watchdog. A step that prints nothing and reports nothing
 # (no event reached events.jsonl) for STALL_S seconds (10 min, or 3 × its
-# median when that is longer; EQUIN_INSTALL_STALL_S overrides it to reproduce
+# median when that is longer; MUXOS_INSTALL_STALL_S overrides it to reproduce
 # one) gets a stall pause that does not stop it: the person sees it is stuck
 # and can Fix with Claude, and the pause ends (`resolved progress`) with the
 # next line. A deadline on work this script cannot otherwise observe, re-armed
@@ -1430,7 +1430,7 @@ ev_lines() {
   est="$(est_s "$EST_SET" "$1")"
   quiet=600
   [ "$est" = "null" ] || [ $((est * 3)) -le "$quiet" ] || quiet=$((est * 3))
-  quiet=${EQUIN_INSTALL_STALL_S:-$quiet}
+  quiet=${MUXOS_INSTALL_STALL_S:-$quiet}
   RL_PART=""
   while :; do
     if read_tick "$quiet"; then
@@ -1440,7 +1440,7 @@ ev_lines() {
       [ -z "$RL_LINE" ] || log_line "$1" "$RL_LINE"
       break
     else
-      # Quiet here, but the step's own `./equin` may have reported (its
+      # Quiet here, but the step's own `./muxos` may have reported (its
       # events skip this reader): stalled only when events.jsonl is as old.
       # GNU stat first: its `-f` is the file system's status, not BSD's format.
       age=$(($(date +%s) - $(stat -c %Y "$RUN_DIR/events.jsonl" 2>/dev/null || stat -f %m "$RUN_DIR/events.jsonl")))
@@ -1461,8 +1461,8 @@ stall_pause() {
   r_idx_plan "$1"; doing=$PD_DOING_CAP
   if [ "$mins" -ge 2 ]; then quiet="$mins minutes"; elif [ "$mins" = 1 ]; then quiet="a minute"; elif [ "$2" = 1 ]; then quiet="a second"; else quiet="$2 seconds"; fi
   P_STEP=$1 P_KIND=stall P_TITLE="No progress for $quiet" P_OPT=0 P_MANUAL=""
-  # Its subject is the step's own words ("Starting equin's services"), never
-  # "equin is <doing>": the doing already names equin.
+  # Its subject is the step's own words ("Starting muxos's services"), never
+  # "muxos is <doing>": the doing already names muxos.
   P_TEXT="${doing:-This step} hasn't shown any progress for $quiet. It may still finish, so the install keeps going. If it stays stuck, Fix with Claude can look at what it is doing."
   P_EV=("no output and no progress for ${2}s")
   write_pause_files
@@ -1548,7 +1548,7 @@ plan_data() {
   local prep="Prepare your Mac" tools_doing="Installing Apple's developer tools"
   if [ "$OS" != "Darwin" ]; then
     prep="Prepare your system"
-    tools_doing="Installing what equin needs from your system"
+    tools_doing="Installing what muxos needs from your system"
   fi
   PLATFORM="$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m)"
   if [ "$OS" = "Darwin" ]; then
@@ -1565,19 +1565,19 @@ plan_data() {
     EST_SET=linux
   fi
   G_ID=(prepare download tools services build)
-  G_LABEL=("$prep" "$1" "Install tools" "Start services" "Build equin")
+  G_LABEL=("$prep" "$1" "Install tools" "Start services" "Build muxos")
   P_N=0
   plan_add tools "" prepare "$prep" "$tools_doing"
   plan_add mise "" prepare "Install the tool manager" "Installing the tool manager"
-  plan_add clone "" download "$1" "Downloading equin"
+  plan_add clone "" download "$1" "Downloading muxos"
   plan_add toolchain "" tools "Install Bun, Go and Rust" "Installing Bun, Go and Rust"
-  plan_add start "" services "Start equin's services" "Starting equin's services"
-  plan_add build "" build "Build equin" "Building equin"
+  plan_add start "" services "Start muxos's services" "Starting muxos's services"
+  plan_add build "" build "Build muxos" "Building muxos"
   plan_add build.database build build "Prepare the database" "Preparing the database"
   plan_add build.deps build build "Install dependencies" "Installing dependencies"
   plan_add build.codegen build build "Generate code" "Generating code"
   plan_add build.interface build build "Build the interface" "Building the interface"
-  plan_add build.deploy build build "Start equin" "Starting equin"
+  plan_add build.deploy build build "Start muxos" "Starting muxos"
 }
 
 # est_minutes <step id>...: the steps' measured estimates added up, in words
@@ -1644,12 +1644,12 @@ plan_json() {
 
 # write_timing: <run dir>/timing.json (installer/core InstallTiming) — how long
 # every step that ran to done took, read back from events.jsonl (this
-# script's step events and the `./equin` commands' share one shape:
+# script's step events and the `./muxos` commands' share one shape:
 # {"v":2,"t":…,"type":"step","id":…,"state":"done","ms":…}). A step done twice
 # (a retry) keeps its last time. A build sub-step (`build.*`) whose last word
 # is skipped took 0 when the build ran to done — a fresh install's build finds
 # main already built, and those zeros are what lets the window show a time
-# left (timingFromEvents reads a stream the same way). `./equin installer
+# left (timingFromEvents reads a stream the same way). `./muxos installer
 # estimates` takes the medians over these files.
 write_timing() {
   local steps dry=false
@@ -1665,7 +1665,7 @@ write_timing() {
         }
       }')"
   # The release and view the plan named: they tie the times to what ran
-  # (`./equin installer estimates` keeps each view's apart).
+  # (`./muxos installer estimates` keeps each view's apart).
   local release=null
   [ -z "$RELEASE" ] || release="\"$RELEASE\""
   printf '{"v":1,"dryRun":%s,"release":%s,"platform":"%s","mode":"%s","at":"%s","steps":{%s}}\n' \
@@ -1676,11 +1676,11 @@ write_timing() {
 # log lines, then done or failed with how long it ran. A failed step is
 # diagnosed and paused (`pause`): the person decides — retry runs it again
 # (every step checks before it acts), quit gives up, skip leaves out an
-# optional step (STEP_OPTIONAL=1). The command's own `./equin` reports
-# (sub-steps, progress, waits) reach the hub through EQUIN_INSTALL_EVENTS; its
-# own diagnosis of a failure through EQUIN_INSTALL_DIAGNOSIS (`own_diagnosis`)
+# optional step (STEP_OPTIONAL=1). The command's own `./muxos` reports
+# (sub-steps, progress, waits) reach the hub through MUXOS_INSTALL_EVENTS; its
+# own diagnosis of a failure through MUXOS_INSTALL_DIAGNOSIS (`own_diagnosis`)
 # — when that names optional parts, Skip runs the step again without them
-# (EQUIN_INSTALL_LEFT_OUT, which accumulates in LEFT_OUT).
+# (MUXOS_INSTALL_LEFT_OUT, which accumulates in LEFT_OUT).
 #
 # Its status is STEP_RC, and run_step itself always returns 0: NEVER call it
 # as a condition (`run_step … || fail`, `if run_step …`). There bash ignores
@@ -1703,8 +1703,8 @@ run_step() {
     set +e
     (
       eval "exec $CLOSE_FDS"
-      export EQUIN_INSTALL_EVENTS="$FIFO" EQUIN_INSTALL_STEP="$id" \
-        EQUIN_INSTALL_DIAGNOSIS="$RUN_DIR/step-diagnosis" EQUIN_INSTALL_LEFT_OUT="$LEFT_OUT"
+      export MUXOS_INSTALL_EVENTS="$FIFO" MUXOS_INSTALL_STEP="$id" \
+        MUXOS_INSTALL_DIAGNOSIS="$RUN_DIR/step-diagnosis" MUXOS_INSTALL_LEFT_OUT="$LEFT_OUT"
       set -e
       "$@"
     ) 2>&1 | "$reader" "$id"
@@ -1811,7 +1811,7 @@ diagnose() {
   if [ "$step" = "tools" ] && [ "$OS" = "Darwin" ] && ! xcode-select -p >/dev/null 2>&1; then
     D_KIND=unknown
     D_TITLE="Apple's developer tools weren't installed"
-    D_TEXT="equin needs Apple's developer tools to download its code and build parts of itself, and Apple's installer closed before installing them. Try again opens it again: click Install and wait until it finishes (5 to 20 minutes). equin can't be installed without them."
+    D_TEXT="muxos needs Apple's developer tools to download its code and build parts of itself, and Apple's installer closed before installing them. Try again opens it again: click Install and wait until it finishes (5 to 20 minutes). muxos can't be installed without them."
     evidence_lines "$tail" 8
     D_EV+=("xcode-select -p: no developer tools found (step exit $rc)")
     return 0
@@ -1830,14 +1830,14 @@ diagnose() {
       return 0
     fi
   fi
-  # security: one of equin's own programs vanished or was refused right after
+  # security: one of muxos's own programs vanished or was refused right after
   # it was made, with a security product running.
-  if printf '%s\n' "$tail" | grep -qE '(\.equin|/equin)[^ ]*.*(no such file or directory|No such file or directory|Operation not permitted|ENOENT|EPERM)'; then
+  if printf '%s\n' "$tail" | grep -qE '(\.equin|\.muxos|/muxos)[^ ]*.*(no such file or directory|No such file or directory|Operation not permitted|ENOENT|EPERM)'; then
     agent="$(security_agent)"
     if [ -n "$agent" ]; then
       D_KIND=security
-      D_TITLE="Your company's security software removed part of equin"
-      D_TEXT="equin builds small programs on this computer to run itself, and $agent, which your organisation runs here, removed or blocked one right after it was made, so equin can't start. Your IT team can allow equin's folders: Copy request for IT gives you a message to send them. Until then equin can't be installed."
+      D_TITLE="Your company's security software removed part of muxos"
+      D_TEXT="muxos builds small programs on this computer to run itself, and $agent, which your organisation runs here, removed or blocked one right after it was made, so muxos can't start. Your IT team can allow muxos's folders: Copy request for IT gives you a message to send them. Until then muxos can't be installed."
       D_MANUAL="copy-it-request|Copy request for IT"
       evidence_lines "$(printf '%s\n' "$tail" | grep -E 'no such file or directory|No such file or directory|Operation not permitted|ENOENT|EPERM' | tail -n 3 || true)" 3
       D_EV+=("security software running: $agent")
@@ -1847,14 +1847,14 @@ diagnose() {
   D_KIND=unknown
   r_idx_plan "$step"
   D_TITLE="${PD_DOING_CAP:-$PD_LABEL} didn't finish"
-  D_TEXT="equin stopped while ${doing:-working}: the last lines it printed are below. Fix with Claude reads the whole log and explains what went wrong before changing anything. Trying again picks up where it stopped."
+  D_TEXT="muxos stopped while ${doing:-working}: the last lines it printed are below. Fix with Claude reads the whole log and explains what went wrong before changing anything. Trying again picks up where it stopped."
   evidence_lines "$tail" 20
   D_EV+=("step exit $rc")
 }
 
 # own_diagnosis: the failed step's command's own diagnosis, when it wrote one
 # (installer/cli reportInstallDiagnosis: `key<TAB>value` lines — title, text,
-# leave-out, evidence…) into EQUIN_INSTALL_DIAGNOSIS. Sets D_* like diagnose;
+# leave-out, evidence…) into MUXOS_INSTALL_DIAGNOSIS. Sets D_* like diagnose;
 # 1 when there is none. Its title and text already follow the message rules.
 own_diagnosis() {
   local file="$RUN_DIR/step-diagnosis" k v
@@ -1886,7 +1886,7 @@ ev_left_out() {
   without=${without:0:90} later=${later:0:200}
   json_str "$D_LEAVE_OUT"; local id=$JSON_STR
   json_str "Installed without $without"; local title=$JSON_STR
-  json_str "${later:-equin works without it, in your browser.}"; local text=$JSON_STR
+  json_str "${later:-muxos works without it, in your browser.}"; local text=$JSON_STR
   json_str "$without"; local w=$JSON_STR
   ev notice "\"id\":$id,\"state\":\"skipped\",\"title\":$title,\"text\":$text,\"without\":$w"
 }
@@ -1925,7 +1925,7 @@ after_pause() {
   local run url dir="$HOME"
   run="$(data_root)/logs/install/latest"
   if [ ! -f "$run/diagnosis.json" ]; then
-    echo "The last equin install didn't stop on a problem, so there is nothing to $1. To install equin, run the installer again." >&2
+    echo "The last muxos install didn't stop on a problem, so there is nothing to $1. To install muxos, run the installer again." >&2
     exit 1
   fi
   if [ "$1" = report ]; then
@@ -1951,7 +1951,7 @@ after_pause() {
 sandbox_message() {
   D_KIND=sandbox
   D_TITLE="Blocked by the app you started it from"
-  D_TEXT="The install builds parts of equin on your computer, and the app you ran it from runs commands in a protected mode that doesn't allow that, so it would stop part-way. Run it from the Terminal app instead: Continue in Terminal does it for you, and the install picks up where it stopped."
+  D_TEXT="The install builds parts of muxos on your computer, and the app you ran it from runs commands in a protected mode that doesn't allow that, so it would stop part-way. Run it from the Terminal app instead: Continue in Terminal does it for you, and the install picks up where it stopped."
   D_MANUAL="continue-in-terminal|Continue in Terminal"
 }
 
@@ -2104,9 +2104,9 @@ write_pause_files() {
     printf ']}\n'
   } >"$RUN_DIR/diagnosis.json"
   {
-    echo "# Help me finish installing equin"
+    echo "# Help me finish installing muxos"
     echo
-    echo "I was installing equin ($CANONICAL_REPO_URL), an app that runs on my computer, and its installer stopped."
+    echo "I was installing muxos ($CANONICAL_REPO_URL), an app that runs on my computer, and its installer stopped."
     echo
     echo "## What the installer says"
     echo
@@ -2121,7 +2121,7 @@ write_pause_files() {
     echo "## Where it stopped"
     echo
     if [ -n "$P_STEP" ]; then echo "- Step: $label ($doing)"; else echo "- Before the first step"; fi
-    echo "- System: ${SYS_DESC:-$OS}; installing ${WHAT:-equin} into ${INSTALL_DIR:-~/equin}"
+    echo "- System: ${SYS_DESC:-$OS}; installing ${WHAT:-muxos} into ${INSTALL_DIR:-~/muxos}"
     echo "- The full log: $RUN_DIR/install.log (every install event: $RUN_DIR/events.jsonl). Its last 150 lines:"
     echo
     echo '```'
@@ -2139,7 +2139,7 @@ write_pause_files() {
   [ ! -d "${INSTALL_DIR:-}" ] || dir=$INSTALL_DIR
   {
     echo '#!/bin/bash'
-    echo "# Fix with Claude: Claude Code, started with what stopped the equin install."
+    echo "# Fix with Claude: Claude Code, started with what stopped the muxos install."
     echo "cd $(q "$dir") || exit 1"
     echo 'export PATH="$HOME/.local/bin:$PATH"'
     echo 'if ! command -v claude >/dev/null 2>&1; then'
@@ -2156,7 +2156,7 @@ write_pause_files() {
 # q <text>: the text single-quoted for a shell.
 q() { printf "'%s'" "${1//\'/\'\\\'\'}"; }
 
-# write_resume: ~/.equin/logs/install/resume — what Claude runs once it fixed
+# write_resume: ~/.muxos/logs/install/resume — what Claude runs once it fixed
 # the problem: `retry` to the install waiting now, or the install run again
 # when none is (it resumes where the last one stopped).
 write_resume() {
@@ -2168,18 +2168,18 @@ write_resume() {
   if [ -n "${SELF_DIR:-}" ] || [ -d "${INSTALL_DIR:-/nonexistent}/.git" ]; then
     again="cd $(q "$INSTALL_DIR") && exec ./install.sh"
   else
-    again="curl -fsSL https://raw.githubusercontent.com/equinai/equin/main/install.sh | bash"
+    again="curl -fsSL https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh | bash"
   fi
   cat >"$RESUME" <<EOF_RESUME
 #!/bin/bash
-# Continue the equin install: tell the one waiting to try again, or run it again.
+# Continue the muxos install: tell the one waiting to try again, or run it again.
 run=$(q "$root")/latest
 pid="\$(cat "\$run/pid" 2>/dev/null)"
 if [ -n "\$pid" ] && kill -0 "\$pid" 2>/dev/null && [ -p "\$run/control.fifo" ]; then
   printf 'retry\n' >"\$run/control.fifo"
-  echo "The equin installer is trying again; its window (or terminal) shows how it goes."
+  echo "The muxos installer is trying again; its window (or terminal) shows how it goes."
 else
-  echo "The equin installer isn't running: starting it again. It picks up where it stopped."
+  echo "The muxos installer isn't running: starting it again. It picks up where it stopped."
   $again
 fi
 EOF_RESUME
@@ -2245,7 +2245,7 @@ do_manual() {
     continue-in-terminal)
       local again
       if [ -n "${SELF_DIR:-}" ]; then again="cd $(q "$INSTALL_DIR") && ./install.sh"
-      else again="curl -fsSL https://raw.githubusercontent.com/equinai/equin/main/install.sh | bash"; fi
+      else again="curl -fsSL https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh | bash"; fi
       printf '#!/bin/bash\n%s\n' "$again" >"$RUN_DIR/continue.command"
       chmod +x "$RUN_DIR/continue.command"
       if [ "$OS" = "Darwin" ] && open "$RUN_DIR/continue.command" 2>/dev/null; then
@@ -2255,7 +2255,7 @@ do_manual() {
       fi ;;
     copy-it-request)
       local msg
-      msg="Hi, I'm installing equin (an open-source app that runs on my computer, $CANONICAL_REPO_URL). Our security software removes the programs it builds on my machine. Could you allow the folders $(data_root) and ${INSTALL_DIR:-~/equin} for my account? System: ${SYS_DESC:-$OS}. What the installer saw: ${P_EV[*]:-}"
+      msg="Hi, I'm installing muxos (an open-source app that runs on my computer, $CANONICAL_REPO_URL). Our security software removes the programs it builds on my machine. Could you allow the folders $(data_root) and ${INSTALL_DIR:-~/muxos} for my account? System: ${SYS_DESC:-$OS}. What the installer saw: ${P_EV[*]:-}"
       redact "$msg"; msg=$RD
       printf '%s\n' "$msg" >"$RUN_DIR/it-request.txt"
       if printf '%s\n' "$msg" | clipboard_put 2>/dev/null; then
@@ -2320,7 +2320,7 @@ report_url() {
   local body e
   body="$P_TEXT"$'\n\n```\n'
   for e in ${P_EV[@]+"${P_EV[@]}"}; do body="$body$e"$'\n'; done
-  body="$body"$'```\n\n'"System: ${SYS_DESC:-$OS} · release ${RELEASE:-main}"$'\n'"The full log is at ~/.equin/logs/install/latest/install.log: drag it here to attach it."
+  body="$body"$'```\n\n'"System: ${SYS_DESC:-$OS} · release ${RELEASE:-main}"$'\n'"The full log is at ~/.muxos/logs/install/latest/install.log: drag it here to attach it."
   redact "$body"; body=${RD:0:2500}
   urlencode "Install: $P_TITLE"; local t=$UE
   urlencode "$body"
@@ -2344,8 +2344,8 @@ urlencode() {
 }
 
 # done_wait: in the window, after done, while an optional part the install
-# went on without (a `notice`, from `./equin start`) is still left out: Add it
-# now opens the setting that allows it, then adds it (`./equin start --only
+# went on without (a `notice`, from `./muxos start`) is still left out: Add it
+# now opens the setting that allows it, then adds it (`./muxos start --only
 # <id>`). Closing the window (quit) ends the install, which is done anyway.
 done_wait() {
   [ "$MODE" = "window" ] || return 0
@@ -2369,7 +2369,7 @@ done_wait() {
       if [ "$DRY_RUN" = "1" ]; then dry_notice settings-opened
       else
         open_thing "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_AppBundles" 2>/dev/null || true
-        ev notice "\"id\":\"$id\",\"state\":\"settings-opened\",\"title\":\"macOS blocked equin from adding its apps\",\"text\":\"Turn on Terminal in Privacy & Security, App Management, then click Add them.\",\"without\":\"the menu-bar icon and app shortcuts\""
+        ev notice "\"id\":\"$id\",\"state\":\"settings-opened\",\"title\":\"macOS blocked muxos from adding its apps\",\"text\":\"Turn on Terminal in Privacy & Security, App Management, then click Add them.\",\"without\":\"the menu-bar icon and app shortcuts\""
       fi
       opened=1
       continue
@@ -2379,13 +2379,13 @@ done_wait() {
     set +e
     (
       eval "exec $CLOSE_FDS"
-      export EQUIN_INSTALL_EVENTS="$FIFO" EQUIN_INSTALL_STEP=start
-      ./equin start --only "$id"
+      export MUXOS_INSTALL_EVENTS="$FIFO" MUXOS_INSTALL_STEP=start
+      ./muxos start --only "$id"
     ) 2>&1 | while IFS= read -r line; do log_line "" "$line"; done
     set -e
     # Refused again: start said so with a new notice (skipped); else it's in.
     if [ "$(grep -c '"type":"notice"' "$RUN_DIR/events.jsonl" || true)" = "$before" ]; then
-      ev notice "\"id\":\"$id\",\"state\":\"added\",\"title\":\"macOS blocked equin from adding its apps\",\"text\":\"Added after all.\",\"without\":\"the menu-bar icon and app shortcuts\""
+      ev notice "\"id\":\"$id\",\"state\":\"added\",\"title\":\"macOS blocked muxos from adding its apps\",\"text\":\"Added after all.\",\"without\":\"the menu-bar icon and app shortcuts\""
       return 0
     fi
     opened=0
@@ -2413,7 +2413,7 @@ render() {
   # The dry run's view exits (status 7) at that step's start, to prove a
   # view that dies stops the install loudly (view_ended).
   local dry_exit=""
-  [ "$DRY_RUN" != "1" ] || dry_exit=${EQUIN_INSTALL_DRY_RUN_VIEW_EXIT:-}
+  [ "$DRY_RUN" != "1" ] || dry_exit=${MUXOS_INSTALL_DRY_RUN_VIEW_EXIT:-}
   r_init
   RL_PART=""
   while :; do
@@ -2478,7 +2478,7 @@ r_init() {
   R_P_OPEN=0; R_N_STATE=""; R_SKIPPING=0; R_LO=(); R_LOT=()
   # What the person runs to act on a stop: the checkout's script, or the curl.
   if [ -n "${SELF_DIR:-}" ]; then R_AGAIN="./install.sh"
-  else R_AGAIN="curl -fsSL https://raw.githubusercontent.com/equinai/equin/main/install.sh | bash -s --"; fi
+  else R_AGAIN="curl -fsSL https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh | bash -s --"; fi
   r_tilde "$(data_root)"; R_DATA=$TL
   R_LOGPATH="$R_DATA/logs/install/latest/events.jsonl"
   r_tilde "$INSTALL_DIR"; R_DIR=$TL
@@ -2493,7 +2493,7 @@ r_init() {
   if [ "$MODE" = "interactive" ]; then
     # The terminal's title says what runs, not the script's command line
     # (the terminal's own title saved on its title stack, restored at the end).
-    printf '\033[22;0t\033]0;equin installer\007'
+    printf '\033[22;0t\033]0;muxos installer\007'
     C_B=$'\033[1m' C_D=$'\033[2m' C_G=$'\033[32m' C_R=$'\033[31m' C_Y=$'\033[33m' C_A=$'\033[36m' C_0=$'\033[0m'
   else
     C_B="" C_D="" C_G="" C_R="" C_Y="" C_A="" C_0=""
@@ -2529,8 +2529,8 @@ r_event() {
     done)
       r_num ms "$l"; R_DONE_MS=$F; r_str url "$l"; R_DONE_URL=$F; R_FORCE=1
       if [ "$MODE" = "plain" ]; then
-        r_fmt $((R_DONE_MS / 1000)); r_plain "equin is ready · installed in $FM · $R_DONE_URL"
-        [ "$R_N_STATE" != "skipped" ] || r_plain "installed without $R_N_WITHOUT · once Terminal is allowed in App Management: ./equin start --only $R_N_ID"
+        r_fmt $((R_DONE_MS / 1000)); r_plain "muxos is ready · installed in $FM · $R_DONE_URL"
+        [ "$R_N_STATE" != "skipped" ] || r_plain "installed without $R_N_WITHOUT · once Terminal is allowed in App Management: ./muxos start --only $R_N_ID"
       fi ;;
     exit) r_num code "$l"; R_EXIT=$F ;;
     pause) r_on_pause "$l" ;;
@@ -2794,7 +2794,7 @@ r_on_step() {
 
 # unit_words <unit>: UW = what a count counts, in the user's words — the
 # window's page says the same (model.ts UNIT_WORDS): cargo's crates are the
-# "components" equin compiles (no internal names).
+# "components" muxos compiles (no internal names).
 unit_words() {
   case "$1" in
     crates) UW="components compiled" ;;
@@ -3049,7 +3049,7 @@ r_plain() {
 
 r_plain_header() {
   local i tot=0 all=1 text
-  text="equin installer · $SYS_DESC · $R_DIR · plain output"
+  text="muxos installer · $SYS_DESC · $R_DIR · plain output"
   [ "$DRY_RUN" != "1" ] || text="$text · dry run: nothing is changed"
   r_plain "$text"
   for ((i = 0; i < P_N; i++)); do
@@ -3133,7 +3133,7 @@ r_draw() {
   r_pace
   local dry=""
   [ "$DRY_RUN" != "1" ] || dry="  ·  dry run: nothing is changed"
-  r_ln "${C_B}  equin installer${C_0}${C_D}  ·  $SYS_DESC  ·  $R_DIR$dry${C_0}"
+  r_ln "${C_B}  muxos installer${C_0}${C_D}  ·  $SYS_DESC  ·  $R_DIR$dry${C_0}"
   r_ln ""
   for ((j = 0; j < G_N; j++)); do
     r_group "$j"
@@ -3177,7 +3177,7 @@ r_draw() {
   r_ln ""
   if [ -n "$R_DONE_URL" ]; then
     r_fmt $((R_DONE_MS / 1000))
-    r_ln "  ${C_G}✓${C_0} ${C_B}equin is ready${C_0}${C_D}  · installed in $FM${C_0}"
+    r_ln "  ${C_G}✓${C_0} ${C_B}muxos is ready${C_0}${C_D}  · installed in $FM${C_0}"
     r_ln ""
     r_ln "    open      ${C_A}$R_DONE_URL${C_0}"
     r_ln "    code      $R_DIR"
@@ -3192,14 +3192,14 @@ r_draw() {
     [ "${#R_LO[@]}" = 0 ] || r_ln ""
     if [ "$R_N_STATE" = "skipped" ]; then
       r_ln "  ${C_Y}!${C_0} Installed without $R_N_WITHOUT. To add them once Terminal is allowed in"
-      r_ln "    Privacy & Security, App Management: ${C_B}./equin start --only $R_N_ID${C_0}"
+      r_ln "    Privacy & Security, App Management: ${C_B}./muxos start --only $R_N_ID${C_0}"
       r_ln ""
     fi
     if [ "$DRY_RUN" = "1" ]; then r_ln "${C_D}  Dry run: nothing on this machine was changed.${C_0}"
     elif [ "$EDIT_RC" = "1" ]; then
       # Bun and Go are found only inside the install folder (its mise.toml;
       # mise has no global config), so a new terminal must go there first.
-      r_ln "${C_D}  To use ./equin: open a new terminal, then ${C_0}cd $R_DIR"
+      r_ln "${C_D}  To use ./muxos: open a new terminal, then ${C_0}cd $R_DIR"
     fi
   elif [ -n "$R_EXIT" ] || [ "$R_ENDED" = "1" ]; then
     if [ "$R_EXIT" = "130" ] || [ "$R_EXIT" = "143" ] || [ "$R_EXIT" = "129" ]; then
@@ -3324,14 +3324,14 @@ r_finish() {
 # every event type, a skipped step, output that needs escaping, git's CR
 # progress (clone), counted progress (start: crates; build.interface:
 # plugins), a wait with its holder, and the build's sub-steps reported the
-# way `./equin build` reports them — through the FIFO opened by path
-# (step_ev), which is what proves that path. EQUIN_INSTALL_DRY_RUN_PACE
+# way `./muxos build` reports them — through the FIFO opened by path
+# (step_ev), which is what proves that path. MUXOS_INSTALL_DRY_RUN_PACE
 # (seconds between lines, default 0) slows it down for watching a renderer;
-# EQUIN_INSTALL_DRY_RUN_FAIL=<step id> fails that step's first attempt, so a
+# MUXOS_INSTALL_DRY_RUN_FAIL=<step id> fails that step's first attempt, so a
 # retry decision on the control fd can be exercised.
 
 dry_pace() {
-  local pace="${EQUIN_INSTALL_DRY_RUN_PACE:-0}"
+  local pace="${MUXOS_INSTALL_DRY_RUN_PACE:-0}"
   [ "$pace" = "0" ] || sleep "$pace"
 }
 
@@ -3357,24 +3357,24 @@ dry_step() {
     echo >&2
     echo "this line went to stderr" >&2
   fi
-  if [ "$1" = "start" ] && [ -n "${EQUIN_INSTALL_DRY_RUN_NOTICE:-}" ]; then
+  if [ "$1" = "start" ] && [ -n "${MUXOS_INSTALL_DRY_RUN_NOTICE:-}" ]; then
     dry_notice skipped
   fi
-  local fail=${EQUIN_INSTALL_DRY_RUN_FAIL:-}
+  local fail=${MUXOS_INSTALL_DRY_RUN_FAIL:-}
   # <step>:part — an optional part of the step fails on every attempt until
-  # it is left out, with the step's own diagnosis, as `./equin start` writes
+  # it is left out, with the step's own diagnosis, as `./muxos start` writes
   # it (installer/cli reportInstallDiagnosis).
   if [ "$fail" = "$1:part" ]; then
-    case ",${EQUIN_INSTALL_LEFT_OUT:-}," in
-      *,dev.equin.menu-bar,*) ;;
+    case ",${MUXOS_INSTALL_LEFT_OUT:-}," in
+      *,dev.muxos.menu-bar,*) ;;
       *)
         printf 'title\t%s\ntext\t%s\nleave-out\t%s\nwithout\t%s\nlater\t%s\nevidence\t%s\n' \
-          "equin couldn't add the equin icon in your menu bar" \
-          "It was adding the equin icon in your menu bar. It needs the GTK and WebKitGTK libraries, which aren't installed on this computer. It's optional: Skip starts equin without it." \
-          "dev.equin.menu-bar" \
-          "the equin icon in your menu bar" \
-          "equin works without it, in your browser. To add it later, run \`./equin start\` again in equin's folder." \
-          "dev.equin.menu-bar (menu-bar-helper): missing libgtk-3-dev (dry run)" >"$EQUIN_INSTALL_DIAGNOSIS"
+          "muxos couldn't add the muxos icon in your menu bar" \
+          "It was adding the muxos icon in your menu bar. It needs the GTK and WebKitGTK libraries, which aren't installed on this computer. It's optional: Skip starts muxos without it." \
+          "dev.muxos.menu-bar" \
+          "the muxos icon in your menu bar" \
+          "muxos works without it, in your browser. To add it later, run \`./muxos start\` again in muxos's folder." \
+          "dev.muxos.menu-bar (menu-bar-helper): missing libgtk-3-dev (dry run)" >"$MUXOS_INSTALL_DIAGNOSIS"
         echo "$1: an optional part failed (dry run)" >&2
         false ;;
     esac
@@ -3385,14 +3385,14 @@ dry_step() {
       *:sigkill) # killed outright, as a protected shell kills a compiler
         echo "$1: error: could not compile \`ring\` (build script)"
         exec sh -c 'kill -9 $$' ;; # bash 3.2 has no BASHPID: the step's own process dies
-      *:vanish) # one of equin's programs removed right after it was made
+      *:vanish) # one of muxos's programs removed right after it was made
         mkdir -p "$RUN_DIR/bin"
         printf '#!/bin/sh\n' >"$RUN_DIR/bin/gateway"
         chmod +x "$RUN_DIR/bin/gateway"
         rm -f "$RUN_DIR/bin/gateway"
         "$RUN_DIR/bin/gateway" ;;
       *:quiet) # stuck: no output, no progress, past the watchdog's deadline
-        sleep $((${EQUIN_INSTALL_STALL_S:-600} * 2 + 1)) ;;
+        sleep $((${MUXOS_INSTALL_STALL_S:-600} * 2 + 1)) ;;
       *)
         echo "$1: failed (dry run, first attempt)" >&2
         false ;; # mid-body: only `set -e` ends the step here (see run_step)
@@ -3413,11 +3413,11 @@ dry_clone() {
   printf 'Resolving deltas:  50%% (900/1800)\rResolving deltas: 100%% (1800/1800), done.\n' >&2
 }
 
-# dry_count <total> <unit>: the step's own count, as `./equin` reports it.
+# dry_count <total> <unit>: the step's own count, as `./muxos` reports it.
 dry_count() {
   local k
   for k in 0 1 2 3 4; do
-    step_ev "\"type\":\"progress\",\"id\":\"${DRY_SUB:-$EQUIN_INSTALL_STEP}\",\"done\":$(($1 * k / 4)),\"total\":$1,\"unit\":\"$2\""
+    step_ev "\"type\":\"progress\",\"id\":\"${DRY_SUB:-$MUXOS_INSTALL_STEP}\",\"done\":$(($1 * k / 4)),\"total\":$1,\"unit\":\"$2\""
     dry_pace
   done
 }
@@ -3445,8 +3445,8 @@ dry_build() {
 }
 
 dry_run() {
-  echo "  equin installer (dry run: nothing on this machine is changed)"
-  plan_data "Download equin"
+  echo "  muxos installer (dry run: nothing on this machine is changed)"
+  plan_data "Download muxos"
   start_hub
   ev_plan
   sandbox_check
@@ -3456,7 +3456,7 @@ dry_run() {
   # the script beside this one (a dry run plays from a checkout).
   local here=""
   [ -z "${BASH_SOURCE[0]:-}" ] || here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  [ -n "$here" ] && [ -x "$here/equin" ] || fail "The dry run plays from a checkout, which runs its steps after the download." "no ./equin beside install.sh"
+  [ -n "$here" ] && [ -x "$here/muxos" ] || fail "The dry run plays from a checkout, which runs its steps after the download." "no ./muxos beside install.sh"
   hand_to_checkout "$here/install.sh" --dry-run
   fail "The dry run's own steps could not take over after the download." "$here/install.sh carries no attach marker"
 }
@@ -3464,13 +3464,13 @@ dry_run() {
 # dry_checkout_steps: the dry run's attached half (checkout_steps' stand-in).
 dry_checkout_steps() {
   dry_steps toolchain start build
-  # Nothing started here, so the address is the one this account's equin has
+  # Nothing started here, so the address is the one this account's muxos has
   # (or, never started, would get first): asked of the checkout the dry run
   # is played from, never spelled in this script.
   local here
   here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-  [ -x "$here/equin" ] || fail "The dry run plays from a checkout, which names the address." "no ./equin beside install.sh"
-  APP_URL="$(cd "$here" && ./equin url)"
+  [ -x "$here/muxos" ] || fail "The dry run plays from a checkout, which names the address." "no ./muxos beside install.sh"
+  APP_URL="$(cd "$here" && ./muxos url)"
   ev_done
   done_wait
 }
@@ -3479,21 +3479,21 @@ dry_checkout_steps() {
 dry_steps() {
   local id
   for id in "$@"; do
-    [ "$id" != "${EQUIN_INSTALL_DRY_RUN_OPTIONAL:-}" ] || STEP_OPTIONAL=1
+    [ "$id" != "${MUXOS_INSTALL_DRY_RUN_OPTIONAL:-}" ] || STEP_OPTIONAL=1
     run_step "$id" dry_step "$id"
     [ "$STEP_RC" = "0" ] || fail "The $id step of the dry run failed." "dry run, $id"
   done
 }
 
-# dry_notice <state>: the notice `./equin start` writes when macOS refused to
+# dry_notice <state>: the notice `./muxos start` writes when macOS refused to
 # add the login services (its words), through the FIFO by path as start does.
 dry_notice() {
   local text
   case "$1" in
     settings-opened) text="Turn on Terminal in Privacy & Security, App Management, then click Add them." ;;
-    *) text="With them, equin's apps open in their own windows and get a menu-bar icon. To allow it, turn on Terminal in Privacy & Security, App Management. It's optional: skip it and use equin in your browser." ;;
+    *) text="With them, muxos's apps open in their own windows and get a menu-bar icon. To allow it, turn on Terminal in Privacy & Security, App Management. It's optional: skip it and use muxos in your browser." ;;
   esac
-  printf '{"v":2,"t":"%s","type":"notice","id":"dev.equin.menu-bar","state":"%s","title":"macOS blocked equin from adding its apps","text":"%s","without":"the menu-bar icon and app shortcuts"}\n' \
+  printf '{"v":2,"t":"%s","type":"notice","id":"dev.muxos.menu-bar","state":"%s","title":"macOS blocked muxos from adding its apps","text":"%s","without":"the menu-bar icon and app shortcuts"}\n' \
     "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$1" "$text" >"$FIFO"
 }
 
@@ -3505,11 +3505,11 @@ dry_notice() {
 # among the tool output that follows it), and is printed into the step's
 # output too, so the log and a failure's last lines keep it.
 say() {
-  if [ -n "${EQUIN_INSTALL_STEP:-}" ]; then
+  if [ -n "${MUXOS_INSTALL_STEP:-}" ]; then
     json_str "$*"
-    step_ev "\"type\":\"doing\",\"step\":\"$EQUIN_INSTALL_STEP\",\"text\":$JSON_STR"
+    step_ev "\"type\":\"doing\",\"step\":\"$MUXOS_INSTALL_STEP\",\"text\":$JSON_STR"
   fi
-  if [ -n "$RUN_DIR" ] && [ "$MODE" != "window" ] && [ -z "${EQUIN_INSTALL_STEP:-}" ]; then
+  if [ -n "$RUN_DIR" ] && [ "$MODE" != "window" ] && [ -z "${MUXOS_INSTALL_STEP:-}" ]; then
     log_line "" "$*"
   else
     printf '\n\033[1m==> %s\033[0m\n' "$*"
@@ -3518,7 +3518,7 @@ say() {
 
 # fail <message> <details>: stop the install. The message follows the
 # installer message rules (plugins/infra/plugins/launcher/plugins/installer-notice/CLAUDE.md):
-# what equin was doing and why, what blocked it — in the user's words, no
+# what muxos was doing and why, what blocked it — in the user's words, no
 # internal names — and what to do now; the raw facts (paths, exit codes,
 # tool output) go in <details>, printed apart and dimmed. While the terminal
 # view draws, it is printed by the EXIT trap, under the view's last frame.

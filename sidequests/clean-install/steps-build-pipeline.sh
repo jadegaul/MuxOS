@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build pipeline, step 1: what the NON-check ./equin build steps (codegen,
+# Build pipeline, step 1: what the NON-check ./muxos build steps (codegen,
 # migration generation, plugin docs, frontend pipeline) cost, cold and warm, on
 # a quiet 6-core / 12 GB Tart guest. Measurement only, so every step is
 # `harness-only`. Plan: research/2026-10-28-global-build-pipeline-step1-measure.md.
@@ -23,10 +23,10 @@
 #       --upload $R/main.bundle:/tmp/main.bundle --keep --name si-clean-bp
 #
 #   # 3. Copy the results back (run.sh already printed the guest IP; or
-#   #    `~/.local/bin/tart ip si-clean-bp`). The run dir (~/.equin-clean-install/
+#   #    `~/.local/bin/tart ip si-clean-bp`). The run dir (~/.muxos-clean-install/
 #   #    si-clean-bp/) holds one log per step incl. every profile JSON; the raw
 #   #    cpu-profiles are in the last step's tarball:
-#   OUT=~/.equin-clean-install/si-clean-bp
+#   OUT=~/.muxos-clean-install/si-clean-bp
 #   scp -i $OUT/id_ed25519 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
 #     admin@$(~/.local/bin/tart ip si-clean-bp):/tmp/bp-out.tgz $OUT/bp-out.tgz
 #   #    (opts = SSH_OPTS in run.sh.)
@@ -36,7 +36,7 @@
 # Resume after a failure with --keep --name si-clean-bp --from N.
 #
 # ---- What runs -----------------------------------------------------------------
-#  C0   cold x3: ./equin build --hermetic --composition <main> (the main
+#  C0   cold x3: ./muxos build --hermetic --composition <main> (the main
 #       composition), each with a FRESH data root ($HOME/bp-cold-N, a real path:
 #       a /tmp root fails the browser-host build through the /tmp -> /private/tmp
 #       symlink) and a FRESH Bun transpiler cache ($HOME/bp-tcache-N).
@@ -45,7 +45,7 @@
 #       cold, file cache warm). The three are therefore C0, C1, C1.
 #  W0   warm, nothing changed: the first agent-worktree build (primes the
 #       per-worktree fingerprints: labelled W0-prime, it is also W3-like), then
-#       3 x `build --skip-checks`, then one full `./equin build` (with checks).
+#       3 x `build --skip-checks`, then one full `./muxos build` (with checks).
 #  FSU  one more unchanged W0 build under sudo fs_usage (file-system call counts
 #       per process; step 3c, research/2026-11-03-global-build-pipeline-step3c-repo-snapshot.md).
 #  W1   plugin body edit x3: a comment line appended to a keyboard-party web file.
@@ -58,7 +58,7 @@
 #       (web-artifacts/scripts/measure-frontend-cold.ts), without the cold
 #       checks competing for the cores; BUILD_PIPELINE_CF_ARGS is appended
 #       (step 3b, research/2026-10-30-global-build-pipeline-step3b-batched-artifacts-and-repo-snapshot.md).
-#  RUN  $BUILD_PIPELINE_RUN (guest zsh code, run in ~/equin with bp.zsh loaded),
+#  RUN  $BUILD_PIPELINE_RUN (guest zsh code, run in ~/muxos with bp.zsh loaded),
 #       for a spike or measurement script. Skipped when unset.
 #  ISO  measure-build-steps.ts, one run per step-order preset, in a clean worktree.
 #       BUILD_PIPELINE_SKIP_ISO=1 skips it (for a step that leaves codegen alone).
@@ -109,7 +109,7 @@ step_02_install() {
   printf "INSTALL_SH_EOF\n"
   printf "/usr/bin/time -l bash /tmp/install.sh --repo /tmp/main.bundle 2>&1 < /dev/null | %s\n" "$STAMP"
 }
-step_02_install_DOC="install.sh end to end from the uploaded bundle (the tree under test, with history); also leaves the install's own warm stores under ~/.equin."
+step_02_install_DOC="install.sh end to end from the uploaded bundle (the tree under test, with history); also leaves the install's own warm stores under ~/.muxos."
 step_02_install_TAG="harness-only"
 
 step_03_lib() {
@@ -160,14 +160,14 @@ bp_build() {
 
 # bp_worktree NAME : worktree off the checkout's main HEAD + db fork.
 bp_worktree() {
-  export EQUIN_CONVERSATION_ID=conv-bench-$1
-  cd ~/equin
+  export MUXOS_CONVERSATION_ID=conv-bench-$1
+  cd ~/muxos
   # Idempotent: a resumed run (--from) may find a half-made one from before.
   if [ -d .claude/worktrees/att-$1 ]; then git worktree remove --force .claude/worktrees/att-$1; fi
   git branch -D $1 2>/dev/null
   git worktree add -q .claude/worktrees/att-$1 -b $1
   cd .claude/worktrees/att-$1
-  ./equin db fork
+  ./muxos db fork
 }
 # bp_addcol N FILE : add a nullable integer column bpProbeN after lastOpenedAt.
 bp_addcol() {
@@ -184,11 +184,11 @@ step_04_cold_c0() {
   # Cold file cache for the first run only: `sudo purge` (the guest's admin has
   # passwordless sudo). Fresh data root + fresh transpiler cache, real $HOME paths.
   guest_zsh '
-export EQUIN_CONVERSATION_ID=conv-bench-cold
+export MUXOS_CONVERSATION_ID=conv-bench-cold
 sudo purge
 rm -rf $HOME/bp-cold-1 $HOME/bp-tcache-1; mkdir -p $HOME/bp-cold-1 $HOME/bp-tcache-1
-cd ~/equin
-bp_build C0-1 "$HOME/bp-cold-1/worktrees/*/build-profile-*.json" -- env EQUIN_DIR=$HOME/bp-cold-1 BUN_RUNTIME_TRANSPILER_CACHE_PATH=$HOME/bp-tcache-1 ./equin build --hermetic --composition '"$COMPOSITION"'
+cd ~/muxos
+bp_build C0-1 "$HOME/bp-cold-1/worktrees/*/build-profile-*.json" -- env MUXOS_DIR=$HOME/bp-cold-1 BUN_RUNTIME_TRANSPILER_CACHE_PATH=$HOME/bp-tcache-1 ./muxos build --hermetic --composition '"$COMPOSITION"'
 '
 }
 step_04_cold_c0_DOC="C0: hermetic build of the main composition, empty data root, empty transpiler cache, cold OS file cache (sudo purge)."
@@ -196,11 +196,11 @@ step_04_cold_c0_TAG="harness-only"
 
 step_05_cold_c1() {
   guest_zsh '
-export EQUIN_CONVERSATION_ID=conv-bench-cold
-cd ~/equin
+export MUXOS_CONVERSATION_ID=conv-bench-cold
+cd ~/muxos
 for n in 2 3; do
   rm -rf $HOME/bp-cold-$n $HOME/bp-tcache-$n; mkdir -p $HOME/bp-cold-$n $HOME/bp-tcache-$n
-  bp_build C1-$n "$HOME/bp-cold-$n/worktrees/*/build-profile-*.json" -- env EQUIN_DIR=$HOME/bp-cold-$n BUN_RUNTIME_TRANSPILER_CACHE_PATH=$HOME/bp-tcache-$n ./equin build --hermetic --composition '"$COMPOSITION"'
+  bp_build C1-$n "$HOME/bp-cold-$n/worktrees/*/build-profile-*.json" -- env MUXOS_DIR=$HOME/bp-cold-$n BUN_RUNTIME_TRANSPILER_CACHE_PATH=$HOME/bp-tcache-$n ./muxos build --hermetic --composition '"$COMPOSITION"'
 done
 '
 }
@@ -210,10 +210,10 @@ step_05_cold_c1_TAG="harness-only"
 step_06_w0() {
   guest_zsh '
 bp_worktree bp-w0
-P="$HOME/.equin/worktrees/att-bp-w0/build-profile-*.json"
-bp_build W0-prime "$P" -- ./equin build --skip-checks
-for n in 1 2 3; do bp_build W0-$n "$P" -- ./equin build --skip-checks; done
-[ '"${BUILD_PIPELINE_W0_FULL:-1}"' = 0 ] || bp_build W0-full "$P" -- ./equin build
+P="$HOME/.muxos/worktrees/att-bp-w0/build-profile-*.json"
+bp_build W0-prime "$P" -- ./muxos build --skip-checks
+for n in 1 2 3; do bp_build W0-$n "$P" -- ./muxos build --skip-checks; done
+[ '"${BUILD_PIPELINE_W0_FULL:-1}"' = 0 ] || bp_build W0-full "$P" -- ./muxos build
 '
 }
 step_06_w0_DOC="W0: fresh agent worktree + db fork; the priming build (per-worktree fingerprints empty), 3 unchanged --skip-checks builds, one full build with checks (BUILD_PIPELINE_W0_FULL=0 skips it: ~19 min of cold type-check)."
@@ -223,17 +223,17 @@ step_15_fsu() {
   # One more unchanged build in the (still clean) W0 worktree, under a
   # system-wide `fs_usage` — the guest is otherwise idle. Counts every
   # file-system call per (call, process name). The build's processes are bun,
-  # git and the renamed ones (`equin · <kind> · att-…`: the last word is all a
+  # git and the renamed ones (`muxos · <kind> · att-…`: the last word is all a
   # whitespace split keeps, and LC_ALL=C because the `·` is not ASCII).
   # (No single quote in the guest code: guest_zsh wraps it in zsh -c '…'.)
   guest_zsh '
-export EQUIN_CONVERSATION_ID=conv-bench-bp-w0
-cd ~/equin/.claude/worktrees/att-bp-w0
+export MUXOS_CONVERSATION_ID=conv-bench-bp-w0
+cd ~/muxos/.claude/worktrees/att-bp-w0
 git status --short | head
 sudo fs_usage -w -f filesys > $HOME/bp-out/fsu.raw 2>/dev/null &
 FSU=$!
 sleep 3
-bp_build FSU-W0 "$HOME/.equin/worktrees/att-bp-w0/build-profile-*.json" -- ./equin build --skip-checks
+bp_build FSU-W0 "$HOME/.muxos/worktrees/att-bp-w0/build-profile-*.json" -- ./muxos build --skip-checks
 sleep 1
 sudo pkill -INT -x fs_usage; wait $FSU 2>/dev/null
 echo "== fs_usage: calls by process (top 60)"
@@ -248,13 +248,13 @@ step_15_fsu_TAG="harness-only"
 
 step_07_w1() {
   guest_zsh '
-export EQUIN_CONVERSATION_ID=conv-bench-bp-w0
-cd ~/equin/.claude/worktrees/att-bp-w0
-P="$HOME/.equin/worktrees/att-bp-w0/build-profile-*.json"
+export MUXOS_CONVERSATION_ID=conv-bench-bp-w0
+cd ~/muxos/.claude/worktrees/att-bp-w0
+P="$HOME/.muxos/worktrees/att-bp-w0/build-profile-*.json"
 F=plugins/apps/plugins/keyboard-party/plugins/party/web/components/party-controls.tsx
 for n in 1 2 3; do
   echo "// bp-w1-$n" >> $F
-  bp_build W1-$n "$P" -- ./equin build --skip-checks
+  bp_build W1-$n "$P" -- ./muxos build --skip-checks
 done
 '
 }
@@ -263,15 +263,15 @@ step_07_w1_TAG="harness-only"
 
 step_08_w2() {
   guest_zsh '
-export EQUIN_CONVERSATION_ID=conv-bench-bp-w0
-cd ~/equin/.claude/worktrees/att-bp-w0
-P="$HOME/.equin/worktrees/att-bp-w0/build-profile-*.json"
+export MUXOS_CONVERSATION_ID=conv-bench-bp-w0
+cd ~/muxos/.claude/worktrees/att-bp-w0
+P="$HOME/.muxos/worktrees/att-bp-w0/build-profile-*.json"
 F=plugins/apps-core/plugins/app-usage/server/internal/tables.ts
 for n in 1 2 3; do
   bp_addcol $n $F
   git diff --stat -- $F
   # A schema change needs a migration name, or the build refuses it.
-  bp_build W2-$n "$P" -- ./equin build --skip-checks --migration-name bp_probe_$n
+  bp_build W2-$n "$P" -- ./muxos build --skip-checks --migration-name bp_probe_$n
 done
 git status --short | head
 '
@@ -281,13 +281,13 @@ step_08_w2_TAG="harness-only"
 
 step_09_w4() {
   guest_zsh '
-export EQUIN_CONVERSATION_ID=conv-bench-bp-w0
-cd ~/equin/.claude/worktrees/att-bp-w0
-P="$HOME/.equin/worktrees/att-bp-w0/build-profile-*.json"
+export MUXOS_CONVERSATION_ID=conv-bench-bp-w0
+cd ~/muxos/.claude/worktrees/att-bp-w0
+P="$HOME/.muxos/worktrees/att-bp-w0/build-profile-*.json"
 F=plugins/apps-core/plugins/app-usage/server/internal/routes.ts
 for n in 1 2 3; do
   echo "// bp-w4-$n" >> $F
-  bp_build W4-$n "$P" -- ./equin build --skip-checks
+  bp_build W4-$n "$P" -- ./muxos build --skip-checks
 done
 '
 }
@@ -298,7 +298,7 @@ step_10_w3() {
   guest_zsh '
 for n in a b; do
   bp_worktree bp-w3$n
-  bp_build W3-$n "$HOME/.equin/worktrees/att-bp-w3$n/build-profile-*.json" -- ./equin build --skip-checks
+  bp_build W3-$n "$HOME/.muxos/worktrees/att-bp-w3$n/build-profile-*.json" -- ./muxos build --skip-checks
 done
 '
 }
@@ -314,7 +314,7 @@ step_11_iso() {
 bp_worktree bp-iso
 for order in pipeline docs-first guard-first tree-only migrations-only; do
   bp_sys "iso $order before"
-  /usr/bin/time -l ./equin run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-build-steps.ts --order $order --json $HOME/bp-out/steps-$order.json 2>&1 | bp_stamp
+  /usr/bin/time -l ./muxos run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-build-steps.ts --order $order --json $HOME/bp-out/steps-$order.json 2>&1 | bp_stamp
   bp_sys "iso $order after"
   echo "== steps-$order.json"; cat $HOME/bp-out/steps-$order.json; echo
 done
@@ -327,7 +327,7 @@ step_12_collect() {
   cat <<'CMD'
 set -e
 cd "$HOME"
-du -sh "$HOME/bp-out" "$HOME/.equin"/cache/* 2>/dev/null | sort -h | tail -15
+du -sh "$HOME/bp-out" "$HOME/.muxos"/cache/* 2>/dev/null | sort -h | tail -15
 tar czf /tmp/bp-out.tgz bp-out
 ls -l /tmp/bp-out.tgz
 CMD
@@ -341,9 +341,9 @@ step_13_cf() {
   # --skip-checks, so a cold build always ran its checks beside the frontend.
   # BUILD_PIPELINE_CF_ARGS: e.g. "--threads auto" (the build's pooled builder).
   guest_zsh '
-cd ~/equin
+cd ~/muxos
 bp_sys "cf before"
-./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-frontend-cold.ts --runs 3 --json $HOME/bp-out/cf.json '"${BUILD_PIPELINE_CF_ARGS:-}"' 2>&1 | grep -E "cold frontend|^  artifacts:"
+./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-frontend-cold.ts --runs 3 --json $HOME/bp-out/cf.json '"${BUILD_PIPELINE_CF_ARGS:-}"' 2>&1 | grep -E "cold frontend|^  artifacts:"
 bp_sys "cf after"
 echo "== cf.json"; cat $HOME/bp-out/cf.json; echo
 '
@@ -353,9 +353,9 @@ step_13_cf_TAG="harness-only"
 
 step_14_run() {
   if [ -z "${BUILD_PIPELINE_RUN:-}" ]; then echo 'echo "RUN skipped (BUILD_PIPELINE_RUN unset)"'; return; fi
-  guest_zsh "cd ~/equin; $BUILD_PIPELINE_RUN"
+  guest_zsh "cd ~/muxos; $BUILD_PIPELINE_RUN"
 }
-step_14_run_DOC="RUN: \$BUILD_PIPELINE_RUN in ~/equin (a spike or measurement script)."
+step_14_run_DOC="RUN: \$BUILD_PIPELINE_RUN in ~/muxos (a spike or measurement script)."
 step_14_run_TAG="harness-only"
 
 step_16_cc() {
@@ -375,18 +375,18 @@ bp_cc() {
     rm -rf "$out-$n" $HOME/bp-ccd $HOME/bp-cct; mkdir -p "$out-$n/prof" $HOME/bp-ccd $HOME/bp-cct
     bp_sys "$label-$n before" > "$out-$n/sys.txt"
     echo "== cc $label-$n: $*"
-    (cd $dir && /usr/bin/time -l env EQUIN_DIR=$HOME/bp-ccd BUN_RUNTIME_TRANSPILER_CACHE_PATH=$HOME/bp-cct BUN_OPTIONS="--cpu-prof-md --cpu-prof-dir=$out-$n/prof" ./equin run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-build-steps.ts --order pipeline --json "$out-$n/steps.json" "$@") 2>&1 | bp_stamp | tail -40
+    (cd $dir && /usr/bin/time -l env MUXOS_DIR=$HOME/bp-ccd BUN_RUNTIME_TRANSPILER_CACHE_PATH=$HOME/bp-cct BUN_OPTIONS="--cpu-prof-md --cpu-prof-dir=$out-$n/prof" ./muxos run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-build-steps.ts --order pipeline --json "$out-$n/steps.json" "$@") 2>&1 | bp_stamp | tail -40
     echo "== steps.json ($label-$n)"; cat "$out-$n/steps.json"; echo
     (cd $dir && git status --short | head -5)
   done
 }
-cd ~/equin
+cd ~/muxos
 if [ -n "'"${BUILD_PIPELINE_CC_BASE:-}"'" ]; then
-  if [ ! -d $HOME/bp-base ]; then git worktree add -q --detach $HOME/bp-base "'"${BUILD_PIPELINE_CC_BASE:-}"'"; (cd $HOME/bp-base && ./equin install 2>&1 | tail -3); fi
+  if [ ! -d $HOME/bp-base ]; then git worktree add -q --detach $HOME/bp-base "'"${BUILD_PIPELINE_CC_BASE:-}"'"; (cd $HOME/bp-base && ./muxos install 2>&1 | tail -3); fi
   bp_cc CC-base $HOME/bp-base
 fi
-bp_cc CC-records ~/equin --records
-bp_cc CC-pooled ~/equin --records --workers ideal
+bp_cc CC-records ~/muxos --records
+bp_cc CC-pooled ~/muxos --records --workers ideal
 '
 }
 step_16_cc_DOC="CC: cold codegen alone (measure-build-steps --order pipeline, empty data root and transpiler cache, cpu-prof) in the tree under test (--records in-process, and on record workers) and in \$BUILD_PIPELINE_CC_BASE."
@@ -397,13 +397,13 @@ step_17_w5() {
   # (step 5): the drizzle-kit verdict misses, and the load probe's tip
   # comparison answers "nothing to generate" without drizzle-kit.
   guest_zsh '
-export EQUIN_CONVERSATION_ID=conv-bench-bp-w0
-cd ~/equin/.claude/worktrees/att-bp-w0
-P="$HOME/.equin/worktrees/att-bp-w0/build-profile-*.json"
+export MUXOS_CONVERSATION_ID=conv-bench-bp-w0
+cd ~/muxos/.claude/worktrees/att-bp-w0
+P="$HOME/.muxos/worktrees/att-bp-w0/build-profile-*.json"
 F=plugins/fields/plugins/text/plugins/config/core/internal/text.ts
 for n in 1 2 3; do
   echo "// bp-w5-$n" >> $F
-  bp_build W5-$n "$P" -- ./equin build --skip-checks
+  bp_build W5-$n "$P" -- ./muxos build --skip-checks
 done
 '
 }

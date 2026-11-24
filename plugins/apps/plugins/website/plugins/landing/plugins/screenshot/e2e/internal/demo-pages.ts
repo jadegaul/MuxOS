@@ -39,7 +39,7 @@ export const MARKER = AGENT_MANAGER_READY;
 
 /** The seeded root pages (`website/demos/workspace`'s `core/internal/pages.ts`). */
 export const ROOT_PAGES = [
-  "Welcome to equin",
+  "Welcome to muxos",
   "Piano practice",
   "Ideas",
 ] as const;
@@ -52,12 +52,12 @@ export const ROOT_PAGES = [
 export const AGENT_MANAGER_LOCATION = "/agents/c/conv-demo-practice-timer";
 
 /** The gate's button (`DemoScope`'s gate): the plain homepage waits on it. */
-export const ENTER_DEMO = 'button:has-text("Enter equin")';
+export const ENTER_DEMO = 'button:has-text("Enter muxos")';
 
 /**
  * Open the homepage at `url`, enter the demo through the gate when it shows,
  * and wait for `marker`. The plain homepage shows the gate (a browser holding
- * no demo data — every fresh e2e context — starts nothing until Enter equin);
+ * no demo data — every fresh e2e context — starts nothing until Enter muxos);
  * a URL that names a place inside the demo resumes it with no gate
  * (`DemoScope`'s `resume`).
  *
@@ -293,7 +293,7 @@ const DEMO_STORAGE = "demo-workspace";
 
 /**
  * Wait until no worker holds the demo's storage: its owner's Web Lock
- * (`equin-host:<name>`) is released once the worker closed it — after the
+ * (`muxos-host:<name>`) is released once the worker closed it — after the
  * last tab of the demo went away. `page` is any page of the origin that does
  * not open the demo.
  */
@@ -307,7 +307,7 @@ export async function waitForStorageReleased(
       page.evaluate(async (lock) => {
         const { held } = await navigator.locks.query();
         return (held ?? []).some((l) => l.name === lock);
-      }, `equin-host:${DEMO_STORAGE}`),
+      }, `muxos-host:${DEMO_STORAGE}`),
     (held) => !held,
     { timeoutMs: RENDER_TIMEOUT_MS },
   );
@@ -325,7 +325,7 @@ export async function backdateStoredSnapshot(page: Page): Promise<string> {
   return page.evaluate(async (name) => {
     const open = (): Promise<IDBDatabase> =>
       new Promise((resolve, reject) => {
-        const req = indexedDB.open(`equin-host--${name}--stores`);
+        const req = indexedDB.open(`muxos-host--${name}--stores`);
         req.onsuccess = () => resolve(req.result);
         req.onerror = () => reject(req.error);
       });

@@ -17,7 +17,7 @@ import (
 // (`append(os.Environ(), "SOCKET_PATH=…")`), and the exec sites that set no Env
 // at all got the same thing implicitly: a nil Cmd.Env in Go means "inherit
 // everything". The gateway's own environment is whatever its starter carried.
-// Started from an agent shell, that was the shell's EQUIN_CONVERSATION_ID
+// Started from an agent shell, that was the shell's MUXOS_CONVERSATION_ID
 // and CLAUDE_* — so every backend on the host (main, central, each
 // worktree) ran as that one conversation, and so did everything they spawned:
 // op-log records and commit trailers named it.
@@ -46,13 +46,13 @@ type ChildEnv struct {
 // errChildEnvRequired is returned when -child-env is absent or empty. The
 // message names the fix, since the usual way to hit it is hand-running the
 // binary.
-var errChildEnvRequired = errors.New("-child-env is required — start the gateway with ./equin start, " +
+var errChildEnvRequired = errors.New("-child-env is required — start the gateway with ./muxos start, " +
 	"which declares the runtime environment (launcher/core runtimeEnvNames); to hand-run it, " +
 	"pass at least -child-env HOME,USER,PATH")
 
 // parseChildEnvFlag splits the -child-env flag into its declared entries.
 // Each entry is a variable name, or a name prefix ending in `*`
-// (`EQUIN_AUTH_*`).
+// (`MUXOS_AUTH_*`).
 //
 // Every malformed entry is an error rather than skipped: the flag is generated
 // by the launcher, so a bad entry means the declaration and this parser
@@ -128,7 +128,7 @@ func captureChildEnv(declared []string) (ChildEnv, []string) {
 }
 
 // Names returns the names in the base environment, for logging. Names only:
-// values can be credentials (EQUIN_AUTH_*), and the log is not a secret
+// values can be credentials (MUXOS_AUTH_*), and the log is not a secret
 // store.
 func (c ChildEnv) Names() []string {
 	names := make([]string, 0, len(c.base))
@@ -192,7 +192,7 @@ func (c ChildEnv) CommandContext(ctx context.Context, name string, args ...strin
 
 // runtimeChildEnv is the base every child starts from: the captured
 // declared environment plus what the gateway itself decides for every child —
-// the data root's layout (dataroot.go) and EQUIN_GATEWAY_PORT, the port this
+// the data root's layout (dataroot.go) and MUXOS_GATEWAY_PORT, the port this
 // gateway serves on (-listen's). A backend, central and a deploy run read
 // their gateway's port from it, so they always agree with the gateway that
 // spawned them, whatever any file says. Set here, never forwarded: a value
@@ -201,7 +201,7 @@ func runtimeChildEnv(captured ChildEnv, gatewayPort int) ChildEnv {
 	return captured.Plus(append(dataRootLayoutEnv(), gatewayPortEntry(gatewayPort))...)
 }
 
-// gatewayPortEntry is the EQUIN_GATEWAY_PORT entry for port, in decimal.
+// gatewayPortEntry is the MUXOS_GATEWAY_PORT entry for port, in decimal.
 func gatewayPortEntry(port int) string {
 	return envPrefix + "GATEWAY_PORT=" + strconv.Itoa(port)
 }
@@ -209,9 +209,9 @@ func gatewayPortEntry(port int) string {
 // ─── the app's own variables, by key ─────────────────────────
 //
 // The Go twin of readEnv in plugins/infra/plugins/launcher/plugins/env-names
-// (env.ts): each of the app's variables is named EQUIN_<key>. An empty value
+// (env.ts): each of the app's variables is named MUXOS_<key>. An empty value
 // counts as unset, as os.Getenv always did here.
-const envPrefix = "EQUIN_"
+const envPrefix = "MUXOS_"
 
 // readEnv returns the value of the app variable `key`, or "" when it is unset.
 func readEnv(key string) string {

@@ -9,7 +9,7 @@ import {
  * - `foreign` — an http(s) page on another site: framed as that site, which
  *   is its own origin (a video player needs its own storage, so it keeps
  *   `allow-same-origin` — on ITS origin, never ours).
- * - `refused` — anything that would run as, or next to, equin: an equin
+ * - `refused` — anything that would run as, or next to, muxos: an muxos
  *   namespace (the app itself, with the owner's authority), the content host,
  *   loopback or an IP literal (another local server), or a scheme that is not
  *   a web page (`javascript:`, `data:`, `blob:`, `file:`). `reason` is the
@@ -41,7 +41,7 @@ export function classifyFrameUrl(raw: string): FrameUrlClass {
     return {
       kind: "refused",
       reason:
-        "equin pages can't be embedded: inside a frame they would run with your full authority.",
+        "muxos pages can't be embedded: inside a frame they would run with your full authority.",
     };
   }
   if (

@@ -1,9 +1,9 @@
 import { PRODUCT_NAME } from "@plugins/framework/plugins/product-name/core";
 
 /**
- * The browser document title of a page: `<Entity> — <App> — equin`, each part
+ * The browser document title of a page: `<Entity> — <App> — muxos`, each part
  * once and the unknown ones left out — an app named after the product (the
- * website's `equin`) says it once, `Download — equin`.
+ * website's `muxos`) says it once, `Download — muxos`.
  *
  * The one spelling of it: the live app's `DocumentTitleSync` (apps-core
  * layout) writes it into `document.title`, and the crawlable website's static

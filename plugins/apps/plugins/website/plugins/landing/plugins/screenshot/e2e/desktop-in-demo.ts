@@ -9,7 +9,7 @@
  *     window, and the shelf appears — while the page around it stays as it
  *     was (no window outside the embed, the page still the demo);
  *  2. opens Pages from the shelf: a second window, beside the Agent Manager's,
- *     showing the demo's workspace ("Welcome to equin");
+ *     showing the demo's workspace ("Welcome to muxos");
  *  3. takes a window full screen from its titlebar's Full screen
  *     control (as on the real desktop): the windows give way to that one tab,
  *     filling the embed box — the embed is its tab set's viewport — and the
@@ -29,7 +29,7 @@
  * no page socket, no page or console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/desktop-in-demo.ts [--out /tmp/demo-desktop] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/desktop-in-demo.ts [--out /tmp/demo-desktop] [--headed]
  */
 import type { Locator, Page, WebSocket } from "playwright";
 import { pickFromLauncher } from "@plugins/apps-core/plugins/app-launcher/e2e";
@@ -238,7 +238,7 @@ await withBrowser(async (h) => {
   await renders(
     "the Pages window shows the demo's workspace",
     () =>
-      embedRoot(page).getByText("Welcome to equin", { exact: true }).count(),
+      embedRoot(page).getByText("Welcome to muxos", { exact: true }).count(),
     (n) => n > 0,
   );
   r.ok("the page stays on the demo", onDemoPage(page.url()), page.url());

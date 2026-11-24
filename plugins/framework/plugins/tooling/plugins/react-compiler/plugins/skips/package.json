@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-react-compiler-skips",
+  "name": "@muxos/plugin-framework-tooling-react-compiler-skips",
   "version": "0.0.1",
   "private": true,
   "description": "The React Compiler's skips made visible: the react-compiler:no-silent-skips check runs the compiler over every browser-built module with the build's own options and fails on each component or hook it leaves uncompiled, unless the owning plugin declares the file exempt; and render-cost.ts, an e2e that counts what a skip re-renders on a real interaction.",

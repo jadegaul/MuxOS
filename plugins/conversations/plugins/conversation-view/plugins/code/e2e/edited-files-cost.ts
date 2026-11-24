@@ -16,7 +16,7 @@
  *    yet, then insert it (a clone of `--conv`'s row): the value resolves and
  *    the watch opens after the insert — a file change then reaches it.
  *
- *   ./equin run plugins/conversations/plugins/conversation-view/plugins/code/e2e/edited-files-cost.ts \
+ *   ./muxos run plugins/conversations/plugins/conversation-view/plugins/code/e2e/edited-files-cost.ts \
  *     --conv <id> --others conv-a,conv-b,… [--writes-gap-ms 1500] [--race]
  *
  * `--conv` must be a git-workspace conversation of the deploy under test;

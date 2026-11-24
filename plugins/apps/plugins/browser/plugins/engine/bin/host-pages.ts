@@ -215,7 +215,7 @@ async function launch(): Promise<BrowserContext> {
   const installed = await readyNow(chromium);
   if (installed.kind !== "ready") {
     throw new Error(
-      `Chromium is not installed (${installed.kind}). Run \`./equin deps install chromium\`.`,
+      `Chromium is not installed (${installed.kind}). Run \`./muxos deps install chromium\`.`,
     );
   }
   const options = {

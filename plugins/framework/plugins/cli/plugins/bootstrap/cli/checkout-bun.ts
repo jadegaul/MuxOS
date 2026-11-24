@@ -5,8 +5,8 @@ import {
 } from "@plugins/packages/plugins/process-name/machine";
 
 /**
- * Record the Bun this CLI runs on as the checkout's, so the next `./equin` runs
- * as `equin · <verb>` in Activity Monitor rather than `bun`
+ * Record the Bun this CLI runs on as the checkout's, so the next `./muxos` runs
+ * as `muxos · <verb>` in Activity Monitor rather than `bun`
  * (packages/process-name), through the machine-wide clones of this Bun
  * version. Call only on the Bun `mise.lock` picks — the script trusts the
  * record while it is newer than the lock. A filesystem refusing the clone only

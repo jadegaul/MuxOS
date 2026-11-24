@@ -12,6 +12,7 @@ import { getWorktreeRoot } from "@plugins/infra/plugins/spawn/core";
 import {
   CONTENT_HOST_LABEL,
   CONTENT_ITEM_RE,
+  LEGACY_HOST_ALIASES,
   NAMESPACE_HOST_ALIASES,
   NAMESPACE_HOST_LABELS,
   NAMESPACE_HOST_SUFFIX,
@@ -35,7 +36,7 @@ import {
  *    ways; one took `host.split(".")[0]`, which silently yields `sonata` for
  *    `sonata.att-x.localhost`.
  *
- * A hardcoded literal like `http://equin.localhost:<port>` in a test fixture
+ * A hardcoded literal like `http://muxos.localhost:<port>` in a test fixture
  * is deliberately NOT matched. It is sample data rather than a derivation, and
  * it cannot drift from the rule because it names nothing live. (A spelled-out
  * PORT anywhere else is `gateway-port:no-port-literal`'s.)
@@ -204,14 +205,20 @@ const LEGACY_HOST_RULE = "namespace:legacy-host";
 
 /**
  * The hosts a namespace answers on but is no longer handed out under: its own
- * name, wherever `NAMESPACE_HOST_LABELS` gives it a public label instead.
+ * name, wherever `NAMESPACE_HOST_LABELS` gives it a public label instead, plus
+ * the previous generation's public labels (`LEGACY_HOST_ALIASES`) — each
+ * policed toward the host the namespace is handed out under NOW.
  */
-const LEGACY_HOSTS = Object.entries(NAMESPACE_HOST_LABELS).map(
-  ([ns, label]) => ({
+const LEGACY_HOSTS = [
+  ...Object.entries(LEGACY_HOST_ALIASES).map(([alias, target]) => ({
+    host: `${alias}${NAMESPACE_HOST_SUFFIX}`,
+    current: `${NAMESPACE_HOST_LABELS[target] ?? target}${NAMESPACE_HOST_SUFFIX}`,
+  })),
+  ...Object.entries(NAMESPACE_HOST_LABELS).map(([ns, label]) => ({
     host: `${ns}${NAMESPACE_HOST_SUFFIX}`,
     current: `${label}${NAMESPACE_HOST_SUFFIX}`,
-  }),
-);
+  })),
+];
 
 /**
  * People and agents copy the address they read — in a doc, a hint, an e2e
@@ -220,7 +227,9 @@ const LEGACY_HOSTS = Object.entries(NAMESPACE_HOST_LABELS).map(
  * fail on its own: this check is the only thing that notices one. Code cannot
  * spell it at all, since it derives addresses through `namespaceUrl`.
  *
- * Every tracked text file is in scope, prose included.
+ * Every tracked text file is in scope, prose included — except `research/`
+ * (historical records that keep the address they named when they were written)
+ * and the readme (the README.md and docs/readme/** the author keeps as-is).
  */
 const legacyHostCheck: Check = {
   id: LEGACY_HOST_RULE,
@@ -228,11 +237,12 @@ const legacyHostCheck: Check = {
   // candidates' content and the exemption manifests — all recorded.
   inputKeyed: true,
   description:
-    "no tracked file names a namespace by a host it is no longer handed out under (main's old address) — write the public one",
+    "no tracked file names a namespace by a host it is no longer handed out under (its own name or the previous generation's label) — write the public one",
   exemptable: {
     [LEGACY_HOST_RULE]:
       "names a namespace's legacy host on purpose — e.g. a test that the old address still resolves",
   },
+  outOfScope: ["research", "readme"],
   async run(ctx) {
     const exempt = await ctx.exempt(LEGACY_HOST_RULE);
     const offenders: string[] = [];

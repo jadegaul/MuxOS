@@ -1271,7 +1271,7 @@ export class NotificationsClient {
    *    tuple the server did not track yet reports the server's version clock,
    *    and the tuple's first sub-ack — still in flight when the probe starts,
    *    landing inside its window — opens the span at a higher version. That
-   *    is the sub's first answer, not a frame it missed (equin.ai, 2026-11-19
+   *    is the sub's first answer, not a frame it missed (MuxOS.app, 2026-11-19
    *    05:33:51 UTC: a tab 3 s old, its `icons.runtime-symbols` tuples primed
    *    over HTTP at 733, reported missed at 734 — an immutable value);
    *  - its resync sub-ack revealed a higher server version

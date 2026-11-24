@@ -1,4 +1,5 @@
 import { envEntries } from "@plugins/infra/plugins/launcher/plugins/env-names/core";
+import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 import { describe, expect, it } from "bun:test";
 import {
   PgClientToolMissingError,
@@ -17,8 +18,7 @@ function ctx(over: Partial<ResolveContext>, present: string[] = []) {
   } satisfies ResolveContext;
 }
 
-const PKG_BIN =
-  "/repo/plugins/database/plugins/client-tools/node_modules/@equin/pg-client-darwin-arm64/native/bin";
+const PKG_BIN = `/repo/plugins/database/plugins/client-tools/node_modules/${LEGACY_IDS.npmScope}/pg-client-darwin-arm64/native/bin`;
 
 describe("resolvePgClientBin", () => {
   it("resolves the platform package's binary", async () => {
@@ -28,8 +28,7 @@ describe("resolvePgClientBin", () => {
   });
 
   it("maps linux/x64 to its own package", async () => {
-    const bin =
-      "/repo/plugins/database/plugins/client-tools/node_modules/@equin/pg-client-linux-x64/native/bin/pg_restore";
+    const bin = `/repo/plugins/database/plugins/client-tools/node_modules/${LEGACY_IDS.npmScope}/pg-client-linux-x64/native/bin/pg_restore`;
     expect(
       await resolvePgClientBin(
         "pg_restore",

@@ -1,4 +1,4 @@
-# Publishes a release tag's GitHub Release, then builds the equin installer
+# Publishes a release tag's GitHub Release, then builds the muxos installer
 # window for it and attaches the binaries. What each job does, and why:
 # plugins/installer/plugins/release-assets (its CLAUDE.md; the contract —
 # asset names, release.json, the hand-off marker — is its core/).
@@ -21,7 +21,7 @@
 # working over the trees of older tags, and moving the scripts directory is
 # the one logic change that edits this file (SCRIPTS below).
 #
-# - Runs on every pushed tag; only release tags (`./equin version cut`:
+# - Runs on every pushed tag; only release tags (`./muxos version cut`:
 #   v<YYYY.MM.DD>[.N]) go further, any other tag ends here without error.
 # - Run by hand (Actions → Installer release → Run workflow) to (re)attach the
 #   installer to an existing Release (its core files are left alone), with
@@ -33,7 +33,7 @@
 
 name: Installer release
 # The run's title is the ref it builds — a manual run of a tag is dispatched
-# FROM main, and equin's github-events reads the tag from here
+# FROM main, and muxos's github-events reads the tag from here
 # (GitHubWatch.headIsRunName).
 run-name: ${{ inputs.ref || github.ref_name }}
 
@@ -77,14 +77,14 @@ env:
 jobs:
   validate:
     name: Which ref, and what to build
-    # Only the canonical repo publishes equin releases. A clone that tracks
+    # Only the canonical repo publishes muxos releases. A clone that tracks
     # upstream carries this file unchanged (dropping it would conflict with
     # every later upstream merge), so in the clone's own GitHub repo a pushed
     # `v*` tag would otherwise publish a "release" of that copy. Every other
     # job needs this one, so skipping it skips the run. The repository is
     # SOURCE_REPO (plugins/framework/plugins/product-name), spelled out here
     # because a workflow cannot import it.
-    if: github.repository == 'equinai/equin'
+    if: github.repository == 'jadegaul/MuxOS'
     runs-on: ubuntu-latest
     outputs:
       ref: ${{ steps.decide.outputs.ref }}
@@ -202,7 +202,7 @@ jobs:
     needs: [validate, page]
     runs-on: macos-15
     env:
-      ASSET: equin-installer-macos-universal
+      ASSET: muxos-installer-macos-universal
     steps:
       - uses: actions/checkout@v7
         with:
@@ -225,7 +225,7 @@ jobs:
           path: ${{ runner.temp }}/page
       - name: Build both architectures
         env:
-          EQUIN_INSTALLER_PAGE: ${{ runner.temp }}/page/page.html
+          MUXOS_INSTALLER_PAGE: ${{ runner.temp }}/page/page.html
         run: bash "$SCRIPTS/macos-build.sh"
       - name: One universal binary, ad-hoc signed
         run: bash "$SCRIPTS/macos-universal.sh"
@@ -250,7 +250,7 @@ jobs:
             platform: linux-arm64
     runs-on: ${{ matrix.runner }}
     env:
-      ASSET: equin-installer-${{ matrix.platform }}
+      ASSET: muxos-installer-${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -273,7 +273,7 @@ jobs:
           path: ${{ runner.temp }}/page
       - name: Build
         env:
-          EQUIN_INSTALLER_PAGE: ${{ runner.temp }}/page/page.html
+          MUXOS_INSTALLER_PAGE: ${{ runner.temp }}/page/page.html
         run: bash "$SCRIPTS/linux-build.sh"
       - name: Smoke test
         run: bash "$SCRIPTS/linux-smoke.sh"
@@ -316,7 +316,7 @@ jobs:
       - run: bash "$SCRIPTS/bun-install.sh"
       - uses: actions/download-artifact@v8
         with:
-          pattern: equin-installer-*
+          pattern: muxos-installer-*
           merge-multiple: true
           path: ${{ runner.temp }}/installers
       - name: Assemble INSTALLER-SHA256SUMS

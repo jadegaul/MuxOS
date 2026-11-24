@@ -16,8 +16,8 @@
  * - **Scoped ≡ Full ∩ S.** The scoped refill of the routed hosts equals the
  *   full value restricted to them (a deleted or filtered host simply absent).
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/network/plugins/live/plugins/query-resource`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/network/plugins/live/plugins/query-resource`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

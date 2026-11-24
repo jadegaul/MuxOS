@@ -34,7 +34,7 @@ let nextId = 0;
 /**
  * Dev runs the entry from source. A compiled release cannot embed a
  * `new Worker(new URL(...))` entry, so it vendors the worker as a bundled
- * `.js` and the launcher points `EQUIN_FORK_MEMORY_WORKER_JS` at it (the
+ * `.js` and the launcher points `MUXOS_FORK_MEMORY_WORKER_JS` at it (the
  * sentinel worker's pattern).
  */
 function workerUrl(): URL {

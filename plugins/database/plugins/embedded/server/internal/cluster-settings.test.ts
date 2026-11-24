@@ -7,7 +7,7 @@
  * so it changes nothing a gateway start would not — once, then from several
  * sessions at once, then creates a database and opens a fresh session on it.
  *
- * Run: `./equin test plugins/database/plugins/embedded`.
+ * Run: `./muxos test plugins/database/plugins/embedded`.
  */
 import { afterAll, beforeAll, expect, test } from "bun:test";
 import { Client } from "pg";

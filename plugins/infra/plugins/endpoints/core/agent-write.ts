@@ -41,7 +41,7 @@ const refusedBody = z.object({
 export function agentWriteRefusedMessage(route: string): string {
   return (
     `main is read-only for agent sessions: ${route} was refused before it ran. ` +
-    `Reproduce on your own build (./equin build) and drive that instead.`
+    `Reproduce on your own build (./muxos build) and drive that instead.`
   );
 }
 

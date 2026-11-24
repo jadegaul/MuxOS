@@ -2,7 +2,7 @@
  * Sizes what a job process would start if it started only what its job needs,
  * against what it starts today (the whole registry).
  *
- *   ./equin run plugins/framework/plugins/server-core/scripts/measure-job-slice.ts \
+ *   ./muxos run plugins/framework/plugins/server-core/scripts/measure-job-slice.ts \
  *     --root database/plugins/fork \
  *     [--reads fork-data-exclusion,fork-schema-data-exclusion] [--runs 3] [--why <node>]
  *
@@ -72,7 +72,7 @@ interface ChildReport {
 
 async function child(nodes: string[] | "all"): Promise<void> {
   // Modules resolve namespace-scoped paths at module eval; nothing here writes.
-  declareRuntimeNamespace(asNamespace(argValues("--namespace")[0] ?? "equin"));
+  declareRuntimeNamespace(asNamespace(argValues("--namespace")[0] ?? "muxos"));
   const picked = nodes === "all" ? entries : nodes.map((n) => byNode.get(n)!);
   const cpu0 = process.cpuUsage();
   const t0 = performance.now();

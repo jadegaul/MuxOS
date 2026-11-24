@@ -1,4 +1,4 @@
-//! `equin-desktop probe-window --namespace <ns>`: an app window's scope,
+//! `muxos-desktop probe-window --namespace <ns>`: an app window's scope,
 //! checked against the real window (`window::build_window`, its native
 //! main-frame gate and burst gate, on WebKit), hidden, with nothing handed to
 //! the browser. Once the window's page loads, `src/probe_window.js` is
@@ -23,11 +23,11 @@ use crate::window::{self, GateInstalled, Hooks, Launch};
 const PROBE_JS: &str = include_str!("probe_window.js");
 /// The matrix takes ~30 s; past this the probe fails rather than hangs.
 const DEADLINE: Duration = Duration::from_secs(120);
-const TITLE_PREFIX: &str = "equin-probe:";
+const TITLE_PREFIX: &str = "muxos-probe:";
 /// Off the namespace, and nowhere: a load the gate lets through fails rather
 /// than reaching the network.
-const FOREIGN: &str = "https://equin-probe.invalid";
-const HOME_MARKER: &str = "equin-probe=home";
+const FOREIGN: &str = "https://muxos-probe.invalid";
+const HOME_MARKER: &str = "muxos-probe=home";
 
 #[derive(Default)]
 struct Seen {
@@ -67,7 +67,7 @@ enum Report {
 }
 
 fn record_hand_off(url: Url) {
-    eprintln!("equin-desktop: probe: would hand {url} off");
+    eprintln!("muxos-desktop: probe: would hand {url} off");
     seen(|s| s.handed_off.push(url.to_string()));
 }
 
@@ -100,10 +100,10 @@ fn on_loaded(window: &WebviewWindow, url: &Url) {
     let params = json!({
         "foreign": FOREIGN,
         "other": format!("http://{}.localhost:{port}", crate::cli::PROBE_OTHER),
-        "content": format!("http://equin-probe.content.localhost:{port}/{namespace}"),
+        "content": format!("http://muxos-probe.content.localhost:{port}/{namespace}"),
         "home": home.as_str(),
     });
-    let script = PROBE_JS.replace("__EQUIN_PROBE__", &params.to_string());
+    let script = PROBE_JS.replace("__MUXOS_PROBE__", &params.to_string());
     if let Err(e) = window.eval(script) {
         finish(app, Err(format!("cannot run the probe in the window: {e}")));
     }
@@ -117,7 +117,7 @@ fn on_title(window: &WebviewWindow, title: String) {
     };
     match report {
         Report::Row(row) => {
-            eprintln!("equin-desktop: probe: {} {}", row.id, row.outcome);
+            eprintln!("muxos-desktop: probe: {} {}", row.id, row.outcome);
             seen(|s| s.rows.push(row));
         }
         Report::Leaving => seen(|s| s.leaving = true),
@@ -223,20 +223,20 @@ fn finish(app: &AppHandle, result: Result<Vec<Verdict>, String>) {
 
 pub fn run(namespace: String) {
     let port = crate::gateway::listening_port().unwrap_or_else(|e| {
-        eprintln!("equin-desktop: probe: {e}");
+        eprintln!("muxos-desktop: probe: {e}");
         std::process::exit(1);
     });
     let base = Url::parse(&format!("http://{namespace}.localhost:{port}/home")).expect("a namespace makes a URL");
-    eprintln!("equin-desktop: window probe on {base}");
+    eprintln!("muxos-desktop: window probe on {base}");
     *SCOPE.lock().unwrap() = Some((base.clone(), namespace));
-    let launch = Launch { app_id: "equin-probe".into(), name: "equin probe".into(), base: base.clone(), url: base };
+    let launch = Launch { app_id: "muxos-probe".into(), name: "muxos probe".into(), base: base.clone(), url: base };
     let app = tauri::Builder::default()
         .invoke_handler(crate::commands::handler())
         .setup(move |app| {
             #[cfg(target_os = "macos")]
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
             if !crate::gateway::up(port) {
-                eprintln!("equin-desktop: probe: nothing answers on port {port}");
+                eprintln!("muxos-desktop: probe: nothing answers on port {port}");
                 std::process::exit(1);
             }
             let handle: AppHandle = app.handle().clone();
@@ -264,6 +264,6 @@ pub fn run(namespace: String) {
             Ok(())
         })
         .build(crate::context())
-        .expect("equin-desktop: cannot build the window probe");
+        .expect("muxos-desktop: cannot build the window probe");
     app.run(|_, _| {});
 }

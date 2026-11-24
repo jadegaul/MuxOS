@@ -28,7 +28,7 @@
  * And, throughout: the page stays on the demo, no page error, no console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/persistence.ts [--out /tmp/demo-persistence] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/persistence.ts [--out /tmp/demo-persistence] [--headed]
  */
 import type { Locator, Page } from "playwright";
 import {

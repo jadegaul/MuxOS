@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-shell",
+  "name": "@muxos/plugin-shell",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

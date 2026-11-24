@@ -7,7 +7,7 @@
  * on the row beneath and navigates instead. The hover IS the flow under test, so
  * it has to be a script.
  *
- *   ./equin run plugins/apps/plugins/pages/plugins/page-tree/e2e/row-actions-overflow.ts --headed
+ *   ./muxos run plugins/apps/plugins/pages/plugins/page-tree/e2e/row-actions-overflow.ts --headed
  */
 import {
   arg,

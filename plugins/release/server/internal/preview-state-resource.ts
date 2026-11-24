@@ -13,7 +13,7 @@ export interface PreviewEntry {
   daemon: DaemonInstance;
   port: number;
   // The per-instance Postgres TCP port handed to this preview's embedded cluster
-  // (EQUIN_PG_PORT). Kept so teardown can backstop-kill the PG listener.
+  // (MUXOS_PG_PORT). Kept so teardown can backstop-kill the PG listener.
   pgPort: number;
   url: string;
   dataRoot: AppPath;

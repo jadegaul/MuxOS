@@ -101,7 +101,7 @@ export interface PrepareDeps {
  *   that child made (or found), locked and installed it.
  * - Otherwise a run is needed — a resume too, whose checkout already exists:
  *   the child's `setupWorktree` takes its `existing` path (re-lock, non-frozen
- *   install). Never in process: `./equin install` run from here is a child of
+ *   install). Never in process: `./muxos install` run from here is a child of
  *   the BACKEND, and a restart signals the backend's whole process group —
  *   the install died with every deploy that overlapped it, and the spawn
  *   recorded a launch failure for what the next attempt then did fine

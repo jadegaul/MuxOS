@@ -19,7 +19,7 @@ for (const name of RECORDED_BROWSER_TOOLS)
  * page-changing call is recorded under the agent's tool call (when the client
  * named it), so the conversation shows its frame under the call.
  *
- * Also served to a session equin did not launch (`unattached`): it browses
+ * Also served to a session muxos did not launch (`unattached`): it browses
  * under one shared session, keyed `MCP_UNATTACHED_ID` (closed when idle like
  * any other), its routes land on main, and nothing is recorded — a recording
  * is shown under a conversation's tool call, and there is none.

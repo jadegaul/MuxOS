@@ -13,7 +13,7 @@
 //     position across the static → live swap (no flicker, no jump);
 //  F. another writer's edit shows on a line that is dormant here.
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/dormant-lines-verify.ts [--out <dir>]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/dormant-lines-verify.ts [--out <dir>]
 import type { Page } from "playwright";
 import {
   arg,

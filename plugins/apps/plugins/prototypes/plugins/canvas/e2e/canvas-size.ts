@@ -8,7 +8,7 @@
 // Manual only — nothing runs this automatically.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-size.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-size.ts \
 //     [--name <prototype id>] [--out <prefix>] [--headed]
 
 import { DEVICE_SIZES } from "@plugins/primitives/plugins/dom/plugins/device-sizes/core";

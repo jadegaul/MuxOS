@@ -1,5 +1,5 @@
 /**
- * The device screens equin is designed and checked at: each device's SCREEN,
+ * The device screens muxos is designed and checked at: each device's SCREEN,
  * in CSS pixels at its default scaling. One list for the whole app — the
  * prototype canvas's size menu, its `prototype-viewport` tag, Compare and the
  * action bar's phone window all read it, so a size one of them knows is a size

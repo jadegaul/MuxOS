@@ -58,7 +58,7 @@ type WatchdogConfig struct {
 	IntervalSec int `json:"intervalSec"`
 }
 
-// databaseConfigFile is the on-disk shape of ~/.equin/state/db-config/database.json.
+// databaseConfigFile is the on-disk shape of ~/.muxos/state/db-config/database.json.
 // Only the "services" field is read by the supervisor.
 type databaseConfigFile struct {
 	Services []ServiceConfig `json:"services"`

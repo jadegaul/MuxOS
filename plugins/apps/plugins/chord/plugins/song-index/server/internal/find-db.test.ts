@@ -10,10 +10,10 @@
  * videos known to be unplayable (`playableVideoWhere`), which the count
  * deliberately does not — see `nextChordsQuery` — so that part is not compared.
  *
- * Requires the running embedded cluster (`./equin build` first);
+ * Requires the running embedded cluster (`./muxos build` first);
  * `createTestDb` throws loudly rather than skipping when it is not up.
  *
- * Run: `./equin test plugins/apps/plugins/chord`
+ * Run: `./muxos test plugins/apps/plugins/chord`
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

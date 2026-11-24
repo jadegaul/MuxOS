@@ -44,7 +44,7 @@ let armResult: SignalOriginArmResult | null = null;
 
 /**
  * Whether the escape hatch turns the whole mechanism off host-wide
- * (`EQUIN_NO_SIGNAL_ORIGIN=1`, mirroring EQUIN_NO_SPAWN_PRIORITY):
+ * (`MUXOS_NO_SIGNAL_ORIGIN=1`, mirroring MUXOS_NO_SPAWN_PRIORITY):
  * no arm, and a caller ensuring the shim should not build it either.
  */
 export function signalOriginDisabled(): boolean {

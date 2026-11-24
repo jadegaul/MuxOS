@@ -4,8 +4,8 @@
  * C-collation domain), plus a test-only tree and one single-tag carrier
  * created here. Drives the db-parametrized repo functions the handlers call.
  *
- * Requires the running embedded cluster (`./equin build` first).
- * Run: `./equin test plugins/tag-tree`.
+ * Requires the running embedded cluster (`./muxos build` first).
+ * Run: `./muxos test plugins/tag-tree`.
  */
 
 import {

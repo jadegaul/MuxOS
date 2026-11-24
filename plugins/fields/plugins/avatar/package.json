@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-avatar",
+  "name": "@muxos/plugin-fields-avatar",
   "version": "0.0.1",
   "private": true,
-  "description": "Avatar (icon + color) field type: identity only — value is an AvatarSpec."
+  "description": "Avatar (icon + color) field type: identity only \u2014 value is an AvatarSpec."
 }

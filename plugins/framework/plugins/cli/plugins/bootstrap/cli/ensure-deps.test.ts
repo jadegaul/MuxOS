@@ -17,7 +17,7 @@ import { flockTry } from "@plugins/packages/plugins/flock/server";
 import { acquireCheckoutLock } from "./checkout-lock";
 import { ensureDeps, type InstallOutcome } from "./ensure-deps";
 
-const STAMP_REL = join("node_modules", ".equin-deps");
+const STAMP_REL = join("node_modules", ".muxos-deps");
 const PROVISION_REGISTRY_REL =
   "plugins/framework/plugins/tooling/plugins/provision/core/provision.generated.ts";
 

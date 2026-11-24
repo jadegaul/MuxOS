@@ -1,7 +1,7 @@
 // Every command the monitor runs, with an environment of its own: launchd
 // hands a LaunchDaemon no locale at all, and in the C locale `ps` writes each
-// byte of a non-ASCII name in vis(3)'s meta notation (`equin · server · x`
-// comes out `equin M-BM-7 server M-BM-7 x`). A UTF-8 locale makes it print the
+// byte of a non-ASCII name in vis(3)'s meta notation (`muxos · server · x`
+// comes out `muxos M-BM-7 server M-BM-7 x`). A UTF-8 locale makes it print the
 // name's own bytes, so a process is named the same way in every mode.
 
 /** The environment of every command: system tools only, names in UTF-8. */

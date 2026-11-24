@@ -1,6 +1,6 @@
 /**
  * The fs-latency monitor — one tick per run. launchd runs it every 30 s (the
- * `dev.equin.fs-latency-monitor` login service, or a root LaunchDaemon for
+ * `dev.muxos.fs-latency-monitor` login service, or a root LaunchDaemon for
  * attribution); it measures, appends one JSON line to `<dir>/fs-latency.jsonl`,
  * and exits. No in-process timer: launchd's schedule is the clock, and a run
  * that hangs on a stalled disk delays the next instead of piling up.

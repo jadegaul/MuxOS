@@ -13,7 +13,7 @@ import {
 } from "./runner";
 
 /**
- * `./equin deps upgrade [<id>]` (and its alias `toolchain upgrade`) in
+ * `./muxos deps upgrade [<id>]` (and its alias `toolchain upgrade`) in
  * this checkout: refuses the main checkout, writes the receipt in the
  * worktree data dir (`deps-upgrade-<id>.json` for one updater,
  * `deps-upgrade.json` for a batch of several), runs the real gates. Returns the
@@ -31,7 +31,7 @@ export async function upgradeThisWorktree(
   if (await isMainCheckoutOrSlot(root)) {
     throw new Error(
       `Refusing to run the ${selection.map((s) => s.updater.id).join(", ")} upgrade in the main checkout. Main's backend runs on its locks; ` +
-        "a new release is proven in a worktree and reaches main through `./equin push`.",
+        "a new release is proven in a worktree and reaches main through `./muxos push`.",
     );
   }
   const slug = await checkoutNamespace(root);

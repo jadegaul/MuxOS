@@ -29,14 +29,14 @@ describe("messageBody", () => {
       messageBody(
         { message: " hi ", email: " a@b.co ", honeypot: "" },
         4321.7,
-        { host: "equin.ai", page: "/" },
+        { host: "MuxOS.app", page: "/" },
       ),
     ).toEqual({
       message: "hi",
       replyTo: "a@b.co",
       honeypot: "",
       elapsedMs: 4322,
-      host: "equin.ai",
+      host: "MuxOS.app",
       page: "/",
     });
   });

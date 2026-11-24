@@ -18,7 +18,7 @@ const MAX_LISTED = 20;
 const check: Check = {
   id: "format-clean",
   description:
-    "every line of .ts/.tsx this branch changed matches prettier's output (`./equin build` and `./equin format` write exactly this; untouched lines are left as they are)",
+    "every line of .ts/.tsx this branch changed matches prettier's output (`./muxos build` and `./muxos format` write exactly this; untouched lines are left as they are)",
 
   // Deliberately NOT `inputKeyed`: that contract requires the check's ENTIRE
   // transitive read surface to route through the recording FileSystemView, and
@@ -64,7 +64,7 @@ const check: Check = {
     return {
       ok: false,
       message: `${bad.length} changed file(s) have changed lines that do not match prettier's output:\n  ${listed}${more}`,
-      hint: "Run `./equin format` (seconds) and commit the result, or `./equin build`, which runs the same pass.",
+      hint: "Run `./muxos format` (seconds) and commit the result, or `./muxos build`, which runs the same pass.",
     };
   },
 };

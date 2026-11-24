@@ -50,7 +50,7 @@ const boundOf = (sink: FileSink): LogSource["bound"] => ({
  * between their checkouts.
  */
 export async function logSources(typed: string): Promise<LogSource[]> {
-  // A typed name may be a namespace's public label (`equin` for main).
+  // A typed name may be a namespace's public label (`muxos` for main).
   const worktree = resolveNamespaceAlias(typed);
   if (!isNamespace(worktree)) throw new InvalidWorktree(typed);
   const dir = logsDirFor(worktree);

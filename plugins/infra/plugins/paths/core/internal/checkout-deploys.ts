@@ -70,7 +70,7 @@ export interface CheckoutDeploy {
  *
  * The `none` arm carries `others` because "nothing at all" and "everything
  * except the one you asked for" need different fixes, and only the caller
- * rendering the refusal can say so: an empty list means `./equin build`
+ * rendering the refusal can say so: an empty list means `./muxos build`
  * has never run here, while a populated one means this checkout published
  * somebody else's composition and never its own app.
  *
@@ -361,7 +361,7 @@ export function deploysForCheckoutSync(root: AppPath): CheckoutDeploy[] {
  * synchronously: 3–5 s event-loop stalls on main per browser-MCP call under
  * host load).
  *
- * `./equin build` mints the namespace it publishes with `namespaceFor(composition,
+ * `./muxos build` mints the namespace it publishes with `namespaceFor(composition,
  * checkoutRef(root))`, and `checkoutRef` is one of two things: the main
  * checkout, or a worktree named by the checkout's basename. Which one it is
  * takes git and the main namespace's owner to say — so ask both, by the

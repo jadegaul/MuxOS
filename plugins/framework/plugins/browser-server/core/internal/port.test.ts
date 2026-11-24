@@ -170,7 +170,7 @@ describe("a browser server over a port", () => {
     const served = serveOverPort(channel.port2, async () => {
       const err = new Error("ERRORDATA_STACK_SIZE exceeded");
       // Safari's format: no `Name: message` line, frames only.
-      err.stack = "parse@https://equin.ai/a.js:1:2\nwasm-stub@[wasm code]";
+      err.stack = "parse@https://MuxOS.app/a.js:1:2\nwasm-stub@[wasm code]";
       throw err;
     });
     const [, pageErr] = await Promise.all([
@@ -179,7 +179,7 @@ describe("a browser server over a port", () => {
     ]);
     const message = (pageErr as PortHostBootError).message;
     expect(message).toContain("ERRORDATA_STACK_SIZE exceeded");
-    expect(message).toContain("parse@https://equin.ai/a.js:1:2");
+    expect(message).toContain("parse@https://MuxOS.app/a.js:1:2");
   });
 
   test("a failed boot names its cause: one report per cause, not one for every boot failure", async () => {
@@ -275,7 +275,7 @@ describe("a browser server over a port", () => {
 
 describe("a worker the browser restarted under the page", () => {
   test("its new instance, handed the page's port, tells the page so instead of dropping the page's frames", async () => {
-    // 2026-11-18, equin.ai on desktop Safari: subs unanswered on an open
+    // 2026-11-18, MuxOS.app on desktop Safari: subs unanswered on an open
     // in-browser server socket — WebKit relaunched the host's SharedWorker
     // and re-sent `connect` with the page's port, so the frames of a socket
     // the old instance had opened reached one that never opened it.

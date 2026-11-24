@@ -54,7 +54,7 @@ import { currentRecordStore } from "./store";
  * graph says the bundler reads, and only that check proves the two agree.
  *
  * What escapes the key, as for every record: a loaded module that reads a
- * file or the environment at load. Caught by `./equin check --verify-records`,
+ * file or the environment at load. Caught by `./muxos check --verify-records`,
  * not prevented.
  */
 export async function closureRecord<T, E>(

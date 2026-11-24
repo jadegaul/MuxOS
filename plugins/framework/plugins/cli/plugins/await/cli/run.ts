@@ -250,7 +250,7 @@ const run: CliAction<[string[]], { maxWait?: string; arm?: string }> = async (
     const what = wanted.size > 0 ? [...wanted].join(", ") : "op";
     console.error(
       `Nothing to await: no ${what} is running in ${slug}, and none finished recently.\n` +
-        `Start one first (e.g. \`./equin build\` with run_in_background: true), then await it.`,
+        `Start one first (e.g. \`./muxos build\` with run_in_background: true), then await it.`,
     );
     process.exit(AWAIT_EXIT.nothing);
   }
@@ -299,7 +299,7 @@ const run: CliAction<[string[]], { maxWait?: string; arm?: string }> = async (
   if (code === AWAIT_EXIT.stillRunning)
     console.log(
       `\nStill running after ${Math.round((Date.now() - startedAt) / 1000)}s. ` +
-        `This is not a failure — run \`./equin await ${awaited.map((a) => a.op).join(" ")}\` again.`,
+        `This is not a failure — run \`./muxos await ${awaited.map((a) => a.op).join(" ")}\` again.`,
     );
   process.exit(code);
 };

@@ -54,7 +54,7 @@ describe("endpoint env", () => {
     expect(claudeEndpointEnv({ PATH: "/bin" }, openai)).toEqual({
       PATH: "/bin",
       ANTHROPIC_BASE_URL: llmProxyUrl("acct-local"),
-      ANTHROPIC_AUTH_TOKEN: "equin-local",
+      ANTHROPIC_AUTH_TOKEN: "muxos-local",
       CLAUDE_STREAM_FIRST_BYTE_TIMEOUT_MS: "300000",
       CLAUDE_STREAM_IDLE_TIMEOUT_MS: "120000",
       API_TIMEOUT_MS: "600000",

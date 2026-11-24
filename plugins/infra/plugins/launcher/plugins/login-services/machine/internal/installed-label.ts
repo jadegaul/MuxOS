@@ -8,7 +8,7 @@ import type { LoginServiceId } from "../../core";
  * `LoginServiceId.installedAs` for why an installed service keeps its name.
  *
  * Asked afresh on every `LoginServiceManager.service(id)`, never cached: a
- * relabel (`./equin data-dir migrate` removing the old definition, `start`
+ * relabel (`./muxos data-dir migrate` removing the old definition, `start`
  * writing the new one) moves the binding, and a remembered one would act on a
  * label that is no longer installed. An id without `installedAs` (every
  * declared service) binds to itself without touching the disk.

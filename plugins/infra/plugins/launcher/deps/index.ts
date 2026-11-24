@@ -1,6 +1,6 @@
 // The launcher's dependency: the Go gateway binary, collected into infra/deps'
 // registry through the `default` array (Debug → Dependencies,
-// `./equin deps install gateway-binary`). `./equin start` and
+// `./muxos deps install gateway-binary`). `./muxos start` and
 // `serve-app` ensure it; a release seals it into the bundle, and the release
 // launcher reads it from there.
 import { gatewayBinary } from "./internal/gateway";

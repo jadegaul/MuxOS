@@ -504,7 +504,7 @@ export async function generateMigration(opts: {
       `\nError: ${loadFailures.length} schema file(s) cannot be loaded the way drizzle-kit\n` +
         "loads them, so their tables would be SILENTLY DROPPED from migration generation:\n" +
         loadFailures.map((f) => `  ${f.file} — ${f.error}`).join("\n") +
-        "\n\nFix the offending import (`./equin check schema-files-loadable` names\n" +
+        "\n\nFix the offending import (`./muxos check schema-files-loadable` names\n" +
         "the same files); never generate around it.",
     );
     process.exit(1);
@@ -551,7 +551,7 @@ export async function generateMigration(opts: {
       // is a pure snapshot diff against ./data and opens no connection, and
       // drizzle.config.ts reads no database config — passing libpqEnv() here is
       // what made this step ENOENT on a host with no
-      // ~/.equin/state/db-config/database.json. The worktree name used to be
+      // ~/.muxos/state/db-config/database.json. The worktree name used to be
       // passed too; the schema files never needed it (no schema-glob file resolves
       // a namespace at module eval, and the database client defers its identity to
       // the first query), and a namespace in an environment is inherited by
@@ -598,7 +598,7 @@ export async function generateMigration(opts: {
     console.error(
       "\nError: drizzle-kit printed a diagnostic but exited 0. Treating as failure.\n" +
         "If this is a snapshot-chain collision, rebase onto main, then re-run\n" +
-        "  ./equin build --reset-migration --migration-name <slug>\n" +
+        "  ./muxos build --reset-migration --migration-name <slug>\n" +
         "to drop this branch's migration and regenerate it against the new tip.\n" +
         "(drizzle-kit only ever sees the staged single-tip view of data/, so a collision\n" +
         "there means the staging itself is broken: report it, do not work around it.)",
@@ -635,7 +635,7 @@ export async function generateMigration(opts: {
         "defines would be SILENTLY DROPPED from migration generation. A schema-glob file\n" +
         "(server/**/internal/{tables,schema}.ts) has an async-only module (top-level await,\n" +
         "e.g. lexical/@lexical/yjs) in its import graph. Fix the offending import; run\n" +
-        "`./equin check schema-files-loadable` to see exactly which file.",
+        "`./muxos check schema-files-loadable` to see exactly which file.",
     );
     process.exit(1);
   }
@@ -686,7 +686,7 @@ export async function generateMigration(opts: {
       "\nError: DB schema change detected — a new migration is required, but --migration-name was not provided.\n" +
         "\n" +
         "Re-run with:\n" +
-        "  ./equin build --migration-name <short_slug>\n" +
+        "  ./muxos build --migration-name <short_slug>\n" +
         "\n" +
         "Examples:\n" +
         "  --migration-name add_task_priority      (added a column/table)\n" +
@@ -843,7 +843,7 @@ function exitOnUnansweredPrompts(opts: {
       [...unanswered].map((k) => `  ${k}`).join("\n") +
       "\n\nRe-run with one answer per question, in the order listed above " +
       "(the answered ones pre-filled):\n" +
-      `  ./equin build${reset ? " --reset-migration" : ""} --migration-name <slug> --migration-answers '${JSON.stringify(answers)}'\n\n` +
+      `  ./muxos build${reset ? " --reset-migration" : ""} --migration-name <slug> --migration-answers '${JSON.stringify(answers)}'\n\n` +
       'AGENT: Decide each unanswered one yourself from the schema change you made: "rename"\n' +
       "(with its `from`) only when you renamed that entity and its data must carry over,\n" +
       '"create" when it is genuinely new. Never hand-edit an answers sidecar or the\n' +
@@ -1210,7 +1210,7 @@ function warnUnsuperseded(prior: ResetPrior, reason: string): void {
       `does not supersede them: ${reason}.\n` +
       "A database that applied them (this worktree's, if it built them) will fail to apply\n" +
       "the regenerated migration. Re-fork it from main after this build or push:\n" +
-      "  ./equin db fork --replace\n",
+      "  ./muxos db fork --replace\n",
   );
 }
 

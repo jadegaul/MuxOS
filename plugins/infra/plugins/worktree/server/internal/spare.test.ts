@@ -631,7 +631,7 @@ describe("crash convergence", () => {
     // The 2026-10-28 launch failure: main's auto-restart killed the cold
     // `git worktree add` half-way, leaving the attempt's dir with most files
     // (the CLI among them) unwritten and git's "initializing" lock in place.
-    // Every retry adopted it as finished and failed running `<wt>/equin install`.
+    // Every retry adopted it as finished and failed running `<wt>/muxos install`.
     const wt = wtFor("att-12");
     await git(
       repo,

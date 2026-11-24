@@ -67,7 +67,7 @@ export async function createTestDb(
     const detail = err instanceof Error ? err.message : String(err);
     throw new Error(
       `createTestDb: could not provision throwaway database "${name}". ` +
-        `These tests require a running embedded Postgres cluster — run ./equin build first. (${detail})`,
+        `These tests require a running embedded Postgres cluster — run ./muxos build first. (${detail})`,
     );
   }
 

@@ -9,7 +9,7 @@
     "startedAt": 1794157606287,
     "exitedAt": 1794157620456,
     "readyAt": 1794157615000,
-    "executable": "equin · server · main",
+    "executable": "muxos · server · main",
     "stderrTail": [
       "[process-crash] uncaughtException: error: conversations_ext_sdk_agent_stop.updated_at is derived (declared by its touchedBy); do not write it",
       "      at processTicksAndRejections (native:7:39)"

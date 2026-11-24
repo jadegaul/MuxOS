@@ -55,7 +55,7 @@ function Detail({ children }: { children: ReactNode }) {
 }
 
 /**
- * The replay's script — what equin does with an idea, in order. Fixed steps, not
+ * The replay's script — what muxos does with an idea, in order. Fixed steps, not
  * records of anything that happened, which is why this is a literal list and
  * the pacing is authored here rather than measured.
  */
@@ -135,7 +135,7 @@ function script({ text, autoDeploy, branch }: ReplayRun): ScriptStep[] {
 }
 
 /**
- * The scripted replay of equin's loop, played step by step: each step is
+ * The scripted replay of muxos's loop, played step by step: each step is
  * pending, then active (a spinner, and a hairline filling over the step's
  * duration), then done.
  *

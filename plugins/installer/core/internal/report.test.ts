@@ -3,11 +3,11 @@ import { installIssueUrl, redactPaths } from "./report";
 
 describe("installer report link", () => {
   test("home folders become ~, on macOS and Linux", () => {
-    expect(redactPaths("cp /Users/ada/.equin/bin/gateway: denied")).toBe(
-      "cp ~/.equin/bin/gateway: denied",
+    expect(redactPaths("cp /Users/ada/.muxos/bin/gateway: denied")).toBe(
+      "cp ~/.muxos/bin/gateway: denied",
     );
-    expect(redactPaths("open /home/ada/equin/x and /home/bob")).toBe(
-      "open ~/equin/x and ~",
+    expect(redactPaths("open /home/ada/muxos/x and /home/bob")).toBe(
+      "open ~/muxos/x and ~",
     );
   });
 
@@ -15,22 +15,22 @@ describe("installer report link", () => {
     const url = new URL(
       installIssueUrl({
         title: "Blocked by the app you started it from",
-        text: "The install builds parts of equin on your computer.",
+        text: "The install builds parts of muxos on your computer.",
         evidence: [
-          "error in /Users/ada/equin/target",
+          "error in /Users/ada/muxos/target",
           "step exit 137 (killed)",
         ],
         release: "v2026.11.17",
         platform: "darwin-arm64",
       }),
     );
-    expect(url.pathname).toBe("/equinai/equin/issues/new");
+    expect(url.pathname).toBe("/jadegaul/MuxOS/issues/new");
     expect(url.searchParams.get("labels")).toBe("install");
     expect(url.searchParams.get("title")).toBe(
       "Install: Blocked by the app you started it from",
     );
     const body = url.searchParams.get("body") ?? "";
-    expect(body).toContain("error in ~/equin/target");
+    expect(body).toContain("error in ~/muxos/target");
     expect(body).not.toContain("ada");
     expect(body).toContain("Release: v2026.11.17 · system: darwin-arm64");
     expect(body).toContain("install.log");

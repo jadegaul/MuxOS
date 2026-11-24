@@ -69,7 +69,7 @@ plugins/**/rust/target/
 .cache/
 .eslintcache
 
-# Transient dirs created by ./equin check (e.g. migrations-in-sync)
+# Transient dirs created by ./muxos check (e.g. migrations-in-sync)
 .check-*/
 # drizzle-kit's staged out-dir (migrations core `stageDrizzleOut`), removed after each run.
 .drizzle-stage-*/

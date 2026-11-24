@@ -9,7 +9,7 @@
 // database (`--page`, default one of the dev DB's).
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/page-overlay-close.ts \
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/page-overlay-close.ts \
 //     [--page <pageId>] [--out /tmp/places-page-overlay]
 //
 // Writes `<out>-<step>.png`; exits non-zero on any broken expectation.

@@ -3,7 +3,7 @@
 // The Web Speech API's `speechSynthesis` global is not on every browser: some
 // Android browsers, in-app webviews and privacy-hardened builds have none, and
 // a bare `speechSynthesis.cancel()` there throws "speechSynthesis is not
-// defined" (equin.ai's Keyboard Party, 2026-11-19). So speaking is reachable
+// defined" (MuxOS.app's Keyboard Party, 2026-11-19). So speaking is reachable
 // only through `speechSupport(win)`: its `unsupported` arm carries no `speak`,
 // so a caller must branch — and decide what silence means for it.
 //

@@ -1,11 +1,11 @@
 // Tab memory-leak test: repeat a flow, force GC, diff heap snapshots, verdict.
 //
 // Usage:
-//   ./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/leak-test.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/leak-test.ts \
 //     --path /agents --clicks "Automations|Tasks" [--iterations 10] [--warmup 2] \
 //     [--settle 1000] [--step-wait 300] [--max-kb-per-iter 50] \
 //     [--max-detached-per-iter 1] [--max-listeners-per-iter 1] \
-//     [--top 15] [--paths 5] [--out "$EQUIN_SCRATCH/leak"] [--attach <ticket>]
+//     [--top 15] [--paths 5] [--out "$MUXOS_SCRATCH/leak"] [--attach <ticket>]
 //
 // The flow is one iteration, repeated:
 //   --clicks "A|B|…"   click each control by its exact accessible name, in

@@ -7,7 +7,7 @@ import {
 } from "@plugins/apps/plugins/website/plugins/shell/web";
 
 /**
- * The download page at `/about/download` — how to get equin running on your
+ * The download page at `/about/download` — how to get muxos running on your
  * own machine. Wears the shared site header (`actions: WebsiteHeader`); the
  * heading, then the one install band inside `WebsiteChrome`. The body is its
  * own chunk, fetched only where the page is shown.

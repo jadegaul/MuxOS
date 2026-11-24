@@ -7,9 +7,9 @@ export const mcpRequest = defineEndpoint({
 });
 
 /**
- * The `:conversationId` of a session equin did not launch — a `claude` started
+ * The `:conversationId` of a session muxos did not launch — a `claude` started
  * in a terminal, say, to recover a broken main. `.mcp.json` falls back to it
- * when `EQUIN_CONVERSATION_ID` is unset (pinned by the `mcp:mcp-json-in-sync`
+ * when `MUXOS_CONVERSATION_ID` is unset (pinned by the `mcp:mcp-json-in-sync`
  * check). Such a request is served only the tools declared `unattached: true`.
  * It cannot name a conversation: their ids are `conv-…` (legacy `claude-…`).
  */

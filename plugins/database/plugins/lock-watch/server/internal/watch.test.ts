@@ -4,7 +4,7 @@
  * and the watch's own read + analysis names the holder by the origin its
  * statement carries — with the report it would file.
  *
- * Run: `./equin test plugins/database/plugins/lock-watch`
+ * Run: `./muxos test plugins/database/plugins/lock-watch`
  * (requires the running embedded cluster).
  */
 

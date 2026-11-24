@@ -19,7 +19,7 @@ import {
 } from "@plugins/infra/plugins/namespace/core";
 
 /** How a worktree name is shown: a namespace by its public label (main reads
- *  `equin`); anything that is not one, as given. */
+ *  `muxos`); anything that is not one, as given. */
 function shown(w: string): string {
   return isNamespace(w) ? namespaceLabel(asNamespace(w)) : w;
 }

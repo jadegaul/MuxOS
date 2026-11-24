@@ -205,7 +205,7 @@ export function hostPoolsFor(host: HostFacts) {
     // are ≤ ~10 GB (≤ ~12 GB by the maxRSS they were sized on).
     // A CONSTANT: the size names the slot files.
     "type-check-light": { size: 3 },
-    // One e2e script run (`./equin run plugins/…/e2e/x.ts`): one bun
+    // One e2e script run (`./muxos run plugins/…/e2e/x.ts`): one bun
     // process driving one Chromium against a deployed app, held p50 21 s / p90
     // 82 s. It used to take a 1-unit `cpu` grant, which put a 20 s screenshot in
     // the same 6-slot background window as builds holding theirs for 30–60 min:
@@ -275,7 +275,7 @@ export interface CpuPoolBudget extends CpuBudget {
    * - background can never hold more than that one slot on such a host, so
    *   sharing admits at most one background op beside interactive work;
    * - and a one-slot window is the host's steady state, not a passing squeeze.
-   *   A 16 GB Mac (`B = 2`) running macOS, a browser, an editor and equin
+   *   A 16 GB Mac (`B = 2`) running macOS, a browser, an editor and muxos
    *   measures under two quanta left for the fleet — the window sits at 1 for
    *   hours, and a background lane kept off it never ran: every agent build,
    *   check and test, and every dependency install inside a job, waited for

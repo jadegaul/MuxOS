@@ -6,7 +6,7 @@ import type { LoginServiceId, LoginServiceJob } from "../../core";
  * after a reboot (or a login) and relaunches it when it dies.
  *
  * One interface, one implementation per service manager: launchd on macOS
- * (`launchd.ts`), a systemd user unit on Linux (`systemd.ts`). `./equin start`
+ * (`launchd.ts`), a systemd user unit on Linux (`systemd.ts`). `./muxos start`
  * / `stop` drive whichever this host has through it and never name a manager,
  * so a new one is a new implementation, not a new branch in every command.
  *

@@ -7,8 +7,8 @@
  * - `cli:<sourceName>` — a one-shot generation (`runClaudePrint` /
  *   `runClaudeReadOnly`), filed by the call recorder with the caller's
  *   `source.name` (`cli:task-title`, …).
- * - `session:<claudeSessionId>` — a Claude Code session equin did not launch
- *   (no equin conversation owns its transcript), filed by the transcript
+ * - `session:<claudeSessionId>` — a Claude Code session muxos did not launch
+ *   (no muxos conversation owns its transcript), filed by the transcript
  *   scanner from its `<sessionId>.jsonl`.
  */
 export const SPEND_SOURCE_PREFIX = {
@@ -32,7 +32,7 @@ export function cliSpendSource(sourceName: string): SpendSource {
   return `${SPEND_SOURCE_PREFIX.cli}${sourceName}`;
 }
 
-/** The source a Claude Code session equin did not launch is filed under. */
+/** The source a Claude Code session muxos did not launch is filed under. */
 export function sessionSpendSource(claudeSessionId: string): SpendSource {
   return `${SPEND_SOURCE_PREFIX.session}${claudeSessionId}`;
 }
@@ -45,9 +45,9 @@ export const UNKNOWN_ACCOUNT = "unknown";
 
 /**
  * The account id of usage a transcript names the claude.ai login of (its
- * `session-owner` record) when that login is none of equin's accounts — not
+ * `session-owner` record) when that login is none of muxos's accounts — not
  * the computer's login now (that is the system account). Its own account,
- * never a guess at one of equin's.
+ * never a guess at one of muxos's.
  */
 export function claudeLoginAccountId(accountUuid: string): string {
   return `claude-login:${accountUuid}`;

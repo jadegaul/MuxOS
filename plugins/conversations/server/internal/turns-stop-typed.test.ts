@@ -10,7 +10,7 @@
  * answered "nothing to take back" — and the turn then ran in full, the Stop
  * lost. Now Stop waits for the agent to take the turn, then interrupts it.
  *
- * Requires the running embedded cluster — `./equin build` first.
+ * Requires the running embedded cluster — `./muxos build` first.
  */
 
 import { afterAll, beforeAll, expect, setDefaultTimeout, test } from "bun:test";

@@ -40,7 +40,7 @@ export function declareComposedWebPlugins(
   if (!Array.isArray(webPlugins)) {
     throw new Error(
       "[composition] the server registry this process booted states no `composition.webPlugins` — " +
-        "it predates the field; rebuild the composition (`./equin build --composition <id>`) to regenerate it",
+        "it predates the field; rebuild the composition (`./muxos build --composition <id>`) to regenerate it",
     );
   }
   const next = new Set(webPlugins);

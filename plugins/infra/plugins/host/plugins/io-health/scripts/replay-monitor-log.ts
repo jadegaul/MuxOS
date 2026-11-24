@@ -4,7 +4,7 @@
  * check that the thresholds fire on an incident and stay quiet on a healthy
  * stretch.
  *
- *   ./equin run plugins/infra/plugins/host/plugins/io-health/scripts/replay-monitor-log.ts \
+ *   ./muxos run plugins/infra/plugins/host/plugins/io-health/scripts/replay-monitor-log.ts \
  *     [--log <path>] [--fixed-at 2026-11-04T16:23]
  *
  * `--log` defaults to the live log (copy it first if the monitor is writing).

@@ -12,7 +12,7 @@
  *     config as it found it.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/conversations/plugins/all-conversations/e2e/group-by-model.ts [--out /tmp/group-by-model] [--headed]
+ *   ./muxos run plugins/conversations/plugins/all-conversations/e2e/group-by-model.ts [--out /tmp/group-by-model] [--headed]
  */
 import type { Locator, Page } from "playwright";
 import {

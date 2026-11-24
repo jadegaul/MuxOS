@@ -25,7 +25,7 @@ const MAX_PASSES = 50;
  * Settle passes one phase may take before it is a loop (see {@link settle}).
  * A pass answers every observation the previous one resized, each answer a
  * commit of the observer's tree, so a loop costs passes × that commit with the
- * main thread frozen. Measured on equin.ai's demo (agents, tasks, places;
+ * main thread frozen. Measured on MuxOS.app's demo (agents, tasks, places;
  * resizes, view switches, classic scrollbars): every one of ~5,000 phases
  * settled in its first pass. A two-state oscillation shows by the third, so
  * ten is ample margin — where fifty froze the frame for seconds before the

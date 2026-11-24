@@ -40,7 +40,7 @@ function expiryVerdict(
  *
  * Host-scoped: it is about this machine's keychain and data root, not the
  * tree, so no checkout's check pass runs it: main's hourly host audit does
- * (filing a host-check report), or `./equin check codesign:identity`.
+ * (filing a host-check report), or `./muxos check codesign:identity`.
  */
 const identity: Check = {
   id: "codesign:identity",
@@ -70,7 +70,7 @@ const identity: Check = {
       return expiryVerdict(
         `the configured code-signing identity "${resolved.label}"`,
         await configuredValidTo(resolved, host),
-        "Renew the certificate (Xcode → Settings → Accounts, or developer.apple.com), then rebuild the gateway (`./equin start`).",
+        "Renew the certificate (Xcode → Settings → Accounts, or developer.apple.com), then rebuild the gateway (`./muxos start`).",
       );
     }
     const local = await readLocalIdentity(host);

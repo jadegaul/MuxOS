@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-page-to-do",
+  "name": "@muxos/plugin-page-to-do",
   "description": "To-do / checkbox block type for the page editor.",
   "private": true,
   "version": "0.0.1"

@@ -82,7 +82,7 @@ function packageOf(path: string): string | null {
 
 /**
  * A check module's frame: a file under a `check/` directory that sits DIRECTLY
- * under a plugin directory. No registry is needed — `./equin check`
+ * under a plugin directory. No registry is needed — `./muxos check`
  * discovers checks from exactly this folder name, and the runner's own files
  * live under `checks/core/`, so they never match.
  *
@@ -435,7 +435,7 @@ export function createOwnerTally(roots: readonly string[]): OwnerTally {
  * sample; a stall record carries both.
  *
  * Every name below was read off real stalls
- * (`~/.equin/logs/check-progress/check-progress.jsonl`, `owners[].example`)
+ * (`~/.muxos/logs/check-progress/check-progress.jsonl`, `owners[].example`)
  * on 2026-09-15. An unrecognized name is never dropped — it falls through to
  * `cpu` (it has a source file) or `native` (it doesn't), and the stall's
  * `leaves` tally keeps its raw name visible either way.

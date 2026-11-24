@@ -15,7 +15,7 @@ const autoAwesomeIcon = symbol("auto-awesome");
 /**
  * The Gateway row's remedy (drawn only while it is out of date): the standard
  * launch popover, the differences written out as the agent's first turn, so
- * the row itself stays one line. The agent runs `./equin start --force`.
+ * the row itself stays one line. The agent runs `./muxos start --force`.
  */
 export function UpdateGatewayButton() {
   const result = useLive(gatewayDrift);

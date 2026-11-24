@@ -1,7 +1,7 @@
 import { defineServerContribution } from "@plugins/framework/plugins/server-core/core";
 
 /**
- * One plugin's part of what equin appends to an agent's system prompt — the
+ * One plugin's part of what muxos appends to an agent's system prompt — the
  * channel for context about THIS agent and its task (its mandate, the global
  * page instructions, its task tree), as opposed to how to use a tool (the
  * tool's own description).
@@ -11,7 +11,7 @@ import { defineServerContribution } from "@plugins/framework/plugins/server-core
  * process runs with until it stops. A change while it runs reaches it as an
  * event turn, from the plugin that owns the change — a section that depends
  * on the agent's mandate says so (`followsMandate`), and the mandate change
- * notice re-sends it. `null` (or blank) adds nothing. Sections join in id order, each wrapped in `<equin-context id>`.
+ * notice re-sends it. `null` (or blank) adds nothing. Sections join in id order, each wrapped in `<muxos-context id>`.
  *
  * Nothing caps the system prompt the way MCP server instructions are capped
  * (4,096 characters, cut silently), but every character is paid on every turn:

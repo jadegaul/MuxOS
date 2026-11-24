@@ -100,7 +100,7 @@ const KEPT_SEGMENTS = 3;
 /**
  * A command line, short enough to read in a list: an app's executable by its
  * name (`Google Chrome Helper (Renderer)`); otherwise the executable's file
- * name — a named process's whole name (`equin · server · main`) — then its
+ * name — a named process's whole name (`muxos · server · main`) — then its
  * arguments, each path cut to its last segments (`bun cli/bin/index.ts check`).
  */
 export function processLabel(args: string): string {

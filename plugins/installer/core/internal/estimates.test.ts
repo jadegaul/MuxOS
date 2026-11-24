@@ -96,7 +96,7 @@ const events = (...lines: string[]): InstallEvent[] =>
 const step = (id: string, ms: number) =>
   `{"v":1,"t":"2026-11-17T23:17:10Z","type":"step","id":"${id}","state":"done","ms":${ms}}`;
 const DONE =
-  '{"v":1,"t":"2026-11-17T23:42:18Z","type":"done","url":"http://equin.localhost:8700","ms":1719000}';
+  '{"v":1,"t":"2026-11-17T23:42:18Z","type":"done","url":"http://muxos.localhost:8700","ms":1719000}';
 
 test("a finished stream's timing is each step's last done time", () => {
   const r = timingFromEvents(

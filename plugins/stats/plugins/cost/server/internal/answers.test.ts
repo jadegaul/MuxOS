@@ -6,7 +6,7 @@
  * counted with no dollars — read from the trigger-kept rollups, which a price
  * correction and a repo flag re-aggregate and the repair rebuilds equal.
  *
- * Run: `./equin test plugins/stats/plugins/cost`
+ * Run: `./muxos test plugins/stats/plugins/cost`
  */
 import {
   afterAll,
@@ -90,7 +90,7 @@ beforeAll(async () => {
       // A repo conversation over two days, two models.
       use("conv:conv-a", "2026-11-10T08:00:00Z", 1_000_000, "m-a", 500),
       use("conv:conv-a", "2026-11-11T09:00:00Z", 2_000_000, "m-b"),
-      // A session equin did not launch, outside the repo.
+      // A session muxos did not launch, outside the repo.
       use("session:s-b", "2026-11-10T10:00:00Z", 4_000_000),
       // A background call: repo spend, never a session.
       use("cli:task-title", "2026-11-10T11:00:00Z", 8_000_000),

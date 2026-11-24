@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-studio-compositions-closure-tree",
+  "name": "@muxos/plugin-apps-studio-compositions-closure-tree",
   "description": "Closure section in the composition detail pane: the plugin tree tinted by the active composition's membership.",
   "private": true,
   "version": "0.0.1"

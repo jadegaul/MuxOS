@@ -6,7 +6,7 @@ import { renderPosterHead } from "./poster-head";
 const vision = defineWebsitePage({
   path: "/about/vision",
   title: "Vision",
-  description: "Where equin is going.",
+  description: "Where muxos is going.",
 });
 
 describe("renderPosterHead", () => {

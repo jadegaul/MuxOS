@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-events-sources-source-detail-status",
+  "name": "@muxos/plugin-apps-events-sources-source-detail-status",
   "description": "Status section of the source side-pane: current state, run watermarks, and the classified terminal error.",
   "private": true,
   "version": "0.0.1"

@@ -8,8 +8,8 @@
 // components/hooks by inclusive time; writes `<out>.cpuprofile`.
 //
 // Usage (a long page shows the per-block costs):
-//   ./equin run plugins/page/plugins/editor/e2e/open-in-conversation-profile.ts \
-//     --conv <conv-id> --block <page-block-id> --out "$EQUIN_SCRATCH/open" \
+//   ./muxos run plugins/page/plugins/editor/e2e/open-in-conversation-profile.ts \
+//     --conv <conv-id> --block <page-block-id> --out "$MUXOS_SCRATCH/open" \
 //     [--seconds 6] [--top 40] [--itop 60] [--stacks getBoundingClientRect]
 import {
   arg,

@@ -16,7 +16,7 @@
  * - `recomputeOn` reaches the window per tuple: the tuple of the scope it names;
  * - provenance: every shape joins exactly the members `usesOf` names.
  *
- * Run: `./equin test plugins/network/plugins/live`.
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { describe, expect, test } from "bun:test";

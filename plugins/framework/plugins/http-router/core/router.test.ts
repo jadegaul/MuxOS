@@ -219,7 +219,7 @@ describe("createRequestHandler", () => {
 describe("readServerTiming", () => {
   test("finds our stamp among a proxy's metrics, and says why when it cannot", () => {
     expect(
-      readServerTiming('cdn;dur=2, equin;dur=13.4;desc="r1", db;dur=3'),
+      readServerTiming('cdn;dur=2, muxos;dur=13.4;desc="r1", db;dur=3'),
     ).toEqual({ kind: "stamped", stamp: { handlerMs: 13.4, id: "r1" } });
     expect(readServerTiming(null).kind).toBe("unstamped");
     expect(readServerTiming("cdn;dur=2").kind).toBe("unstamped");

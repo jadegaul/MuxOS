@@ -125,10 +125,10 @@ export function builtinLedgerFor(
      * Bare, idempotent, first-writer-wins: the only writer of the outcome.
      *
      * A failed run is closed WITH its error: when its child recorded none on
-     * the row — an `argv` child (an `./equin` command) cannot, and a `run`
+     * the row — an `argv` child (an `./muxos` command) cannot, and a `run`
      * body's dies before its catch on a boot crash or a kill — the same write
      * gives the row what the child wrote to its run's error file (an
-     * `./equin` command's uncaught exception, message first), else the end
+     * `./muxos` command's uncaught exception, message first), else the end
      * of its transcript. The row is what every surface quotes (the
      * dead-letter, a waiter's own message), so a crash is never recorded as
      * merely "crashed". One statement, so no reader sees the row closed
@@ -246,7 +246,7 @@ export const UNRECORDED_FAILURE_EXCERPT_BYTES = 2048;
 /**
  * The error of a failed run whose child recorded none on its row, in the
  * child's own words: the error it wrote to its run's error file (an
- * `./equin` command's uncaught exception — the message, then its first
+ * `./muxos` command's uncaught exception — the message, then its first
  * frames), else the end of its transcript; with the path to the whole
  * transcript either way.
  */

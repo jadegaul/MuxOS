@@ -76,11 +76,11 @@ describe("spawn wait meter", () => {
 
   test("a per-process binary name is one layer", async () => {
     meter();
-    const run = spawnCaptured(["/nonexistent/equin · kind · 42"], BOUND);
+    const run = spawnCaptured(["/nonexistent/muxos · kind · 42"], BOUND);
     await run.catch((err: unknown) => {
       if (!(err instanceof Error)) throw err;
     });
-    expect(begun).toEqual(["spawn:equin"]);
+    expect(begun).toEqual(["spawn:muxos"]);
   });
 
   test("no meter installed: nothing is metered", async () => {

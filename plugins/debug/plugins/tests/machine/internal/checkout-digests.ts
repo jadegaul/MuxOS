@@ -26,7 +26,7 @@ import { testDigestsDir } from "../../data-dirs";
 const digestsLog = defineLogSink({
   id: "tests-digests",
   description:
-    "Test-status page: each computation of the checkout's test digests (`./equin test-digest`) and what it found.",
+    "Test-status page: each computation of the checkout's test digests (`./muxos test-digest`) and what it found.",
 });
 
 const CHUNK = 500;
@@ -38,7 +38,7 @@ function digestsFile(): string {
 
 /**
  * The checkout's test digests, recomputed when its tree moved: a supervised
- * `./equin test-digest` child (the module graph and the record store stay in
+ * `./muxos test-digest` child (the module graph and the record store stay in
  * the CLI's closure, never the backend's — the type-check backstop's
  * pattern), whose output replaces `test_checkout_digests` and the generation
  * row in one transaction, then re-derives every file's status. The child

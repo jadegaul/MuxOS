@@ -32,7 +32,7 @@ import {
 import { manifestCoversUses } from "./manifest-covers-uses";
 
 const REGEN_NAMES =
-  "Run `./equin regen-generated` (or `./equin build`) and commit the result.";
+  "Run `./muxos regen-generated` (or `./muxos build`) and commit the result.";
 
 const symbolNamesInSync: Check = {
   id: "icons:symbol-names-in-sync",
@@ -87,7 +87,7 @@ const manifestInSync: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     if (
@@ -97,7 +97,7 @@ const manifestInSync: Check = {
       return {
         ok: false,
         message: `${rel} is out of sync with the symbol()/brand() literals in the repo`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     return { ok: true };
@@ -105,7 +105,7 @@ const manifestInSync: Check = {
 };
 
 const REVENDOR_SETI =
-  "Run `./equin run plugins/ui/plugins/icons/scripts/vendor-seti.ts` and commit the result.";
+  "Run `./muxos run plugins/ui/plugins/icons/scripts/vendor-seti.ts` and commit the result.";
 
 const setiInSync: Check = {
   id: "icons:seti-in-sync",

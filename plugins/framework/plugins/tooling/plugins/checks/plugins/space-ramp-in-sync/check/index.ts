@@ -32,7 +32,7 @@ const check: Check = {
       return {
         ok: false,
         message: `app.css @ramp declarations are invalid: ${err instanceof Error ? err.message : String(err)}`,
-        hint: "Fix the `/* @ramp … */` declaration (or add the missing `@utility`) in app.css, then run `./equin build`.",
+        hint: "Fix the `/* @ramp … */` declaration (or add the missing `@utility`) in app.css, then run `./muxos build`.",
       };
     }
 
@@ -40,7 +40,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     if (
@@ -50,7 +50,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is out of sync with the app.css @ramp declarations`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     return { ok: true };

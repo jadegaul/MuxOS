@@ -8,7 +8,7 @@
  * imperative-create-table-allowlisted check scopes itself to persistent tables.
  *
  * Run: `bun test plugins/infra/plugins/retention`
- * (requires the running embedded cluster — `./equin build` first).
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

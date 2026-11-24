@@ -9,7 +9,7 @@
 // and `Permissions::query` does the same. A lock held for the page's lifetime
 // (tab presence, a browser-server port's presence, the demo's visitor lock, the
 // stall watchdog's tab lock) is released exactly that way, so every Safari
-// page leaving rejected one, unhandled and stackless (equin.ai, 2026-11-18
+// page leaving rejected one, unhandled and stackless (MuxOS.app, 2026-11-18
 // 20:17 UTC onwards: report-1795034221-v9b6g9, 26 occurrences on /, /demo/).
 // Chromium and Firefox drop those promises instead.
 //

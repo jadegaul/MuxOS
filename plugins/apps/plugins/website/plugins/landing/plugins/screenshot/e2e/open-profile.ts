@@ -20,9 +20,9 @@
  * the on-demand plugins not loaded yet, the worker's reads not cached).
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/open-profile.ts \
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/open-profile.ts \
  *     --at /agents --click "Sum up last week's pushes" [--throttle 4] [--settle 4000] [--runs 1] [--top 25] [--out <dir>]
- *   ./equin run …/open-profile.ts --at /desktop/home --click Isle
+ *   ./muxos run …/open-profile.ts --at /desktop/home --click Isle
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import type { CDPSession } from "playwright";

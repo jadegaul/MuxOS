@@ -7,7 +7,7 @@
  * nested fold inside the divider whose unrendered members (invoked_skills)
  * keep their fallback card and investigate action.
  *
- *   ./equin run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/plugins/compaction/e2e/compaction-divider.ts --conv <id> [--out /tmp/compaction]
+ *   ./muxos run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/plugins/compaction/e2e/compaction-divider.ts --conv <id> [--out /tmp/compaction]
  */
 import {
   arg,

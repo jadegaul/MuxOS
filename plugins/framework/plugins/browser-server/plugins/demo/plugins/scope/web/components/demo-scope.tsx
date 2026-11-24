@@ -135,7 +135,7 @@ interface ScopeHost {
  * (`STOPPED_MESSAGES`) — decided by the cause, never a catch-all.
  */
 type StopReason =
-  /** Another version of equin, loaded in another tab, holds the demo's data (or wrote it). */
+  /** Another version of muxos, loaded in another tab, holds the demo's data (or wrote it). */
   | "updated"
   /** This browser has no SharedWorker, and another tab's own host took the data. */
   | "unshared"
@@ -147,11 +147,11 @@ type StopReason =
 
 const STOPPED_MESSAGES: Record<StopReason, string> = {
   updated:
-    "equin was updated in another tab. Reload this tab to continue on the new version.",
+    "muxos was updated in another tab. Reload this tab to continue on the new version.",
   unshared:
     "This browser cannot run the demo in two tabs at once, and it is now open in another tab. Reload to continue in this one.",
   "storage-blocked":
-    "The demo runs equin inside your browser and keeps its data there, but this browser blocks site storage for this page (cookies and site data blocked, private settings, or an embedded frame). Allow site data for this site, then reload.",
+    "The demo runs muxos inside your browser and keeps its data there, but this browser blocks site storage for this page (cookies and site data blocked, private settings, or an embedded frame). Allow site data for this site, then reload.",
 };
 
 /**
@@ -494,7 +494,7 @@ export type DemoEntry = "gate" | "joined";
  * the next host — never a screen. A host that fails to boot is drawn by
  * `boot` (`failed`: reported, with a retry) — without `boot`, it throws to
  * the error boundary. Only a cause the tab cannot follow stops it, each with its
- * own message and a Reload (`StopReason`): equin was updated in another tab,
+ * own message and a Reload (`StopReason`): muxos was updated in another tab,
  * or a browser without SharedWorker opened the demo in another tab.
  */
 export function DemoScope({

@@ -65,7 +65,7 @@ export type CargoBuildSpec = (
       readonly bin: string;
       /** The file or directory `then` leaves in `env/`. A plain name, no `/`. */
       readonly output: string;
-      /** `env/`-relative path of the binary inside `output` (`equin.app/Contents/MacOS/equin`). */
+      /** `env/`-relative path of the binary inside `output` (`muxos.app/Contents/MacOS/muxos`). */
       readonly binary: string;
       /**
        * Assemble `ctx.output` from `built` — the binary in this build's own
@@ -246,7 +246,7 @@ async function withEmbedded(
   body: (env: Readonly<Record<string, string>>) => Promise<void>,
 ): Promise<void> {
   if (embed === undefined) return body({});
-  const scratch = await mkdtemp(join(tmpdir(), "equin-cargo-embed-"));
+  const scratch = await mkdtemp(join(tmpdir(), "muxos-cargo-embed-"));
   try {
     await body(await embed.build(ctx, scratch));
   } finally {

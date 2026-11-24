@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-debug",
+  "name": "@muxos/plugin-apps-debug",
   "description": "Debug app.",
   "private": true,
   "version": "0.0.1"

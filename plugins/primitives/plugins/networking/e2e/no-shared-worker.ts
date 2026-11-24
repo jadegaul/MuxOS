@@ -1,4 +1,4 @@
-// End-to-end check that equin boots and stays live in a browser WITHOUT
+// End-to-end check that muxos boots and stays live in a browser WITHOUT
 // SharedWorker and Web Locks (Chrome for Android before 148, Android System
 // WebView — Instagram's in-app browser): `SharedWebSocket` then runs its worker
 // host in the page (`web/in-page-ws-host.ts`).
@@ -11,8 +11,8 @@
 // host reports to exactly as the SharedWorker one does.
 //
 // Usage:
-//   1. `./equin build`
-//   2. `./equin run plugins/primitives/plugins/networking/e2e/no-shared-worker.ts [--path /about] [--headed]`
+//   1. `./muxos build`
+//   2. `./muxos run plugins/primitives/plugins/networking/e2e/no-shared-worker.ts [--path /about] [--headed]`
 //
 // Exits non-zero on any failure.
 import {

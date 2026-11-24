@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-jobs-deadline-audit",
+  "name": "@muxos/plugin-infra-jobs-deadline-audit",
   "private": true,
   "version": "0.0.1"
 }

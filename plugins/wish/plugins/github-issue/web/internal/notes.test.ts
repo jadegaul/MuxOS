@@ -68,7 +68,7 @@ describe("environmentNotes", () => {
         "Chrome 142 on macOS",
       ),
     ).toEqual([
-      "Version: equin 2026.11.17.2 · bf902af7e2 · at main",
+      "Version: muxos 2026.11.17.2 · bf902af7e2 · at main",
       "System: macOS 26.4 (arm64) · Bun 1.3.2",
       "Browser: Chrome 142 on macOS",
     ]);

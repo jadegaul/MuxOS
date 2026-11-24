@@ -316,7 +316,7 @@
 }
 
 /* Agent-worktree deploy frame. The class is stamped into the served index.html
-   by `./equin build` (CLI: experimental-marker.ts) — the same JS-sets /
+   by `./muxos build` (CLI: experimental-marker.ts) — the same JS-sets /
    CSS-styles split as `data-color-scheme`. Compositions and releases never carry it, and
    neither does a chromeless `?embed=1` document (its host already does) nor a
    page under automation (`navigator.webdriver`: the agent browser, e2e runs).

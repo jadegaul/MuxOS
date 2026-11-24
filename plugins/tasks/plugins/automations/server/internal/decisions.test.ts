@@ -3,8 +3,8 @@
  * the pending-approval count (approved ∧ no origin ∧ still `new`), and the
  * per-task approval toggle — whose "take it back" never erases an exclusion.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/tasks/plugins/automations`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/tasks/plugins/automations`.
  */
 
 import {

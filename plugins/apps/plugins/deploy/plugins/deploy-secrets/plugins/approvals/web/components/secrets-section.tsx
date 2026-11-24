@@ -44,7 +44,7 @@ function statusLabel(status: DeploySecretStatus): string {
   return label.charAt(0).toUpperCase() + label.slice(1);
 }
 
-/** Who wrote a value, as a namespace is shown (main reads `equin`). */
+/** Who wrote a value, as a namespace is shown (main reads `muxos`). */
 function writerLabel(by: string | null): string {
   return by === null ? "an unnamed caller" : namespaceLabel(asNamespace(by));
 }

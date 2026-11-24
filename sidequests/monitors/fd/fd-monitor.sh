@@ -1,5 +1,5 @@
 #!/bin/zsh
-# FD / process snapshot for equin crash investigation.
+# FD / process snapshot for muxos crash investigation.
 #
 # Two-tier polling. The launchd interval (default 5s) drives a *cheap probe*
 # (sysctl + ps_count only, microseconds). Each probe decides whether to
@@ -35,13 +35,13 @@
 # incident detection so truncated output doesn't produce garbage forensics.
 
 # The data root, by paths/data-root-layout's rule (data-root-layout.ts): the legacy dir
-# while an install not yet migrated has it (`./equin data-dir migrate` moves
-# it), else ~/.equin.
+# while an install not yet migrated has it (`./muxos data-dir migrate` moves
+# it), else ~/.muxos.
 data_root() {
-  if { [ -e "$HOME/.singularity" ] || [ -L "$HOME/.singularity" ]; } && ! [ "$HOME/.singularity" -ef "$HOME/.equin" ]; then
-    printf '%s\n' "$HOME/.singularity"
-  else
+  if { [ -e "$HOME/.equin" ] || [ -L "$HOME/.equin" ]; } && ! [ "$HOME/.equin" -ef "$HOME/.muxos" ]; then
     printf '%s\n' "$HOME/.equin"
+  else
+    printf '%s\n' "$HOME/.muxos"
   fi
 }
 DATA_ROOT="$(data_root)"
@@ -166,7 +166,7 @@ HOLDERS=$(awk 'NR>1 {print $1":"$2}' "$LSOF_TMP" | sort | uniq -c | sort -rn)
   echo "--- top 10 FD-holding command groups ---"
   awk 'NR>1 {print $1}' "$LSOF_TMP" | sort | uniq -c | sort -rn | head -10
 
-  echo "--- equin quick stats ---"
+  echo "--- muxos quick stats ---"
   GATEWAY_PID=$(pgrep -x gateway 2>/dev/null)
   echo "gateway_pid=${GATEWAY_PID:-none}"
   if [ -n "$GATEWAY_PID" ]; then

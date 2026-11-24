@@ -6,7 +6,7 @@
 // (3a: 48–61 s, the spread all in `artifacts:build`). Prints each stage's wall
 // time and the total; `--runs N` repeats it with a fresh data root each time.
 //
-//   ./equin run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-frontend-cold.ts [--runs 3] [--threads 4|auto] [--json out.json]
+//   ./muxos run plugins/framework/plugins/tooling/plugins/web-artifacts/scripts/measure-frontend-cold.ts [--runs 3] [--threads 4|auto] [--json out.json]
 //
 // Codegen must already be current (the committed registries and the browser
 // host's generated entry list) — run it after a build or an install.
@@ -27,7 +27,7 @@ const arg = (name: string, dflt: string) => {
 };
 const runs = Number(arg("runs", "1"));
 // --threads N | auto: compile on the build's pooled builder (N worker threads;
-// auto = the count `./equin build` picks); omitted: the pipeline's in-process
+// auto = the count `./muxos build` picks); omitted: the pipeline's in-process
 // default. The pooled builder loads only when asked, so the script also runs
 // on a tree that predates it.
 const threadsArg = arg("threads", "0");

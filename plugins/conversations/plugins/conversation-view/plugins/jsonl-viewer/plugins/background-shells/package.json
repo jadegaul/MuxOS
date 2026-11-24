@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-conversation-view-jsonl-viewer-background-shells",
+  "name": "@muxos/plugin-conversations-conversation-view-jsonl-viewer-background-shells",
   "private": true,
   "version": "0.0.1"
 }

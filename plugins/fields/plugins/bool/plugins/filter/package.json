@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-fields-bool-filter",
+  "name": "@muxos/plugin-fields-bool-filter",
   "version": "0.0.1",
   "private": true,
   "description": "Boolean field type: data-view filter (yes/no segmented control)."

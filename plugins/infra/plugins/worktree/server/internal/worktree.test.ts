@@ -5,7 +5,7 @@ import { asAppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core
 describe("isCanonicalWorktreePath", () => {
   // Synthetic repo root — `isCanonicalWorktreePath` only does path logic relative
   // to it. Kept free of real-home patterns so `paths:no-hardcoded-paths` is happy.
-  const root = asAppPath("/repo/equin");
+  const root = asAppPath("/repo/muxos");
   test("accepts a direct child of <root>/.claude/worktrees", () => {
     expect(isCanonicalWorktreePath(`${root}/.claude/worktrees/att-123-abc`, root)).toBe(true);
   });

@@ -8,7 +8,7 @@
 // It also presses a key, so the shot carries a held key beside the lit chord.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/chord/plugins/piano/e2e/piano-shot.ts [--out /tmp/piano] [--headed]
+//   ./muxos run plugins/apps/plugins/chord/plugins/piano/e2e/piano-shot.ts [--out /tmp/piano] [--headed]
 //
 // Mutates server state: records one checked round, like any trainer run.
 

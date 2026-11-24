@@ -19,7 +19,7 @@
  *     marks went to the demo's worker).
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/tips-in-demo.ts [--out /tmp/demo-tips] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/tips-in-demo.ts [--out /tmp/demo-tips] [--headed]
  */
 import type { Locator, Page } from "playwright";
 import { pickFromLauncher } from "@plugins/apps-core/plugins/app-launcher/e2e";

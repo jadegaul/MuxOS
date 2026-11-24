@@ -39,14 +39,14 @@ describe("cloneNamedBinary", () => {
     const first = fakeBin(root, "one");
     const second = fakeBin(root, "two");
     const dir = asAppPath(join(root, "names"));
-    const a = await cloneNamedBinary({ bin: first, dir, name: "equin · x" });
+    const a = await cloneNamedBinary({ bin: first, dir, name: "muxos · x" });
     if (a.kind !== "cloned") throw new Error("not cloned");
     expect(statSync(a.path).ino).not.toBe(statSync(first).ino);
     expect(statSync(a.path).nlink).toBe(1);
     expect(statSync(first).nlink).toBe(1);
     expect(readFileSync(a.path, "utf8")).toBe(readFileSync(first, "utf8"));
     expect(statSync(a.path).mtimeMs).toBe(statSync(first).mtimeMs);
-    const b = await cloneNamedBinary({ bin: second, dir, name: "equin · x" });
+    const b = await cloneNamedBinary({ bin: second, dir, name: "muxos · x" });
     if (b.kind !== "cloned") throw new Error("not cloned");
     expect(b.path).toBe(a.path);
     expect(readFileSync(b.path, "utf8")).toBe(readFileSync(second, "utf8"));
@@ -56,10 +56,10 @@ describe("cloneNamedBinary", () => {
     const root = asAppPath(mkdtempSync(join(tmpdir(), "process-name-")));
     const bin = fakeBin(root);
     const dir = asAppPath(join(root, "names"));
-    const a = await cloneNamedBinary({ bin, dir, name: "equin · x" });
+    const a = await cloneNamedBinary({ bin, dir, name: "muxos · x" });
     if (a.kind !== "cloned") throw new Error("not cloned");
     const ino = statSync(a.path).ino;
-    await cloneNamedBinary({ bin, dir, name: "equin · x" });
+    await cloneNamedBinary({ bin, dir, name: "muxos · x" });
     expect(statSync(a.path).ino).toBe(ino);
   });
 
@@ -67,7 +67,7 @@ describe("cloneNamedBinary", () => {
     const root = asAppPath(mkdtempSync(join(tmpdir(), "process-name-")));
     const bin = fakeBin(root);
     const dir = asAppPath(join(root, "names"));
-    await cloneNamedBinary({ bin, dir, name: "equin · x" });
+    await cloneNamedBinary({ bin, dir, name: "muxos · x" });
     const exited = Bun.spawn(["true"]);
     await exited.exited;
     const dead = String(exited.pid);
@@ -77,9 +77,9 @@ describe("cloneNamedBinary", () => {
     writeFileSync(join(dir, `.verbs.${dead}.1.tmp`), "");
     const live = `.${String(process.ppid)}.1.tmp`;
     writeFileSync(join(dir, live), "");
-    await cloneNamedBinary({ bin, dir, name: "equin · x" });
+    await cloneNamedBinary({ bin, dir, name: "muxos · x" });
     expect(readdirSync(dir).sort()).toEqual(
-      [live, "equin · x", ".locks"].sort(),
+      [live, "muxos · x", ".locks"].sort(),
     );
     expect(statSync(bin).nlink).toBe(1);
   });
@@ -90,14 +90,14 @@ describe("cloneNamedBinary", () => {
     const dir = asAppPath(join(root, "names"));
     const inos = await Promise.all(
       Array.from({ length: 6 }, async () => {
-        const named = await cloneNamedBinary({ bin, dir, name: "equin · x" });
+        const named = await cloneNamedBinary({ bin, dir, name: "muxos · x" });
         if (named.kind !== "cloned") throw new Error("not cloned");
         // What a process exec'ing it as soon as its start returned would run.
         return statSync(named.path).ino;
       }),
     );
     expect(new Set(inos).size).toBe(1);
-    expect(statSync(join(dir, "equin · x")).ino).toBe(inos[0]!);
+    expect(statSync(join(dir, "muxos · x")).ino).toBe(inos[0]!);
   });
 
   test("an old build's hardlink at the name is replaced by a clone", async () => {
@@ -105,8 +105,8 @@ describe("cloneNamedBinary", () => {
     const bin = fakeBin(root);
     const dir = asAppPath(join(root, "names"));
     mkdirSync(dir);
-    linkSync(bin, join(dir, "equin · x"));
-    const named = await cloneNamedBinary({ bin, dir, name: "equin · x" });
+    linkSync(bin, join(dir, "muxos · x"));
+    const named = await cloneNamedBinary({ bin, dir, name: "muxos · x" });
     if (named.kind !== "cloned") throw new Error("not cloned");
     expect(statSync(named.path).ino).not.toBe(statSync(bin).ino);
     expect(statSync(bin).nlink).toBe(1);
@@ -174,13 +174,13 @@ describe("checkout bun", () => {
     const dir = join(root, CHECKOUT_BUN_DIR);
     mkdirSync(dir, { recursive: true });
     linkSync(bun, join(dir, "bun"));
-    linkSync(bun, join(dir, "equin · run · att-x"));
-    linkSync(bun, join(dir, "equin · test · att-x.4242"));
+    linkSync(bun, join(dir, "muxos · run · att-x"));
+    linkSync(bun, join(dir, "muxos · test · att-x.4242"));
     await refreshCheckoutBun(root, bun, verbsDir());
     expect(statSync(join(dir, "bun")).nlink).toBe(1);
-    expect(existsSync(join(dir, "equin · run · att-x"))).toBe(false);
+    expect(existsSync(join(dir, "muxos · run · att-x"))).toBe(false);
     // A script's clone in flight is its own business.
-    expect(statSync(join(dir, "equin · test · att-x.4242")).ino).toBe(
+    expect(statSync(join(dir, "muxos · test · att-x.4242")).ino).toBe(
       statSync(bun).ino,
     );
   });

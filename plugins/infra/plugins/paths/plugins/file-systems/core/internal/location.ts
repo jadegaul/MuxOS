@@ -7,7 +7,7 @@ import { z } from "zod";
  * - `computer` — the computer's disk: absolute paths, or `~`-rooted under the
  *   user's home. Served by host-fs's machine half (desktop only).
  * - `browser` — a browser host's own storage, laid out like a home folder:
- *   `~` is its root, the apps' folders sit under the hidden `~/.equin/`
+ *   `~` is its root, the apps' folders sit under the hidden `~/.muxos/`
  *   (data-files' roots, at their data dir). Served only by a browser host.
  * - `checkout` — one checkout's files (`checkout` is the workspace id the code
  *   reads take: an attempt id, `"main"`, `"self"`, or a checkout's absolute

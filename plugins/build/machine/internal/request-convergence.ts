@@ -5,7 +5,7 @@ import {
 import { isMain } from "@plugins/infra/plugins/runtime-identity/core";
 
 /**
- * Ask the gateway to run main's convergence (`./equin build --allow-main
+ * Ask the gateway to run main's convergence (`./muxos build --allow-main
  * --converge`) — an OPTIONAL edge of main's auto-build loop.
  *
  * The loop's load-bearing edges are the gateway's own: an advance of
@@ -21,7 +21,7 @@ import { isMain } from "@plugins/infra/plugins/runtime-identity/core";
  *
  * Throws when the gateway answers anything but 202 — including 404, a gateway
  * started without `-main-checkout` (older than this edge, or not the machine's
- * dev gateway): `./equin start --force` installs the current one.
+ * dev gateway): `./muxos start --force` installs the current one.
  */
 export async function requestConvergence(cause: string): Promise<void> {
   if (!isMain()) return;

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-file-sink",
+  "name": "@muxos/plugin-infra-file-sink",
   "private": true,
   "version": "0.0.1"
 }

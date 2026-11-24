@@ -36,7 +36,7 @@ Wall-clock decomposition: EVERY entry — including composite ones like \`flush\
 
 Wait layers: \`background-acquire\` (per-backend background DB query gate slot; background = the chain's ROOT entry is flush/push/cascade/job, so a \`sub\`-origin loader never charges here), \`background-tx-acquire\` (background DB transaction lease gate — the \`pool.connect()\` a \`db.transaction()\` takes), \`db-acquire\` (pg pool connect), \`heavy-read-acquire\`/\`heavy-read-local\` (host-wide heavy git/fs read slots), \`read-admit\` (resource read admission), \`read-coalesce\` (joined an in-flight resource read), \`endpoint-concurrency\` (per-route concurrency gate), \`endpoint-dedupe\` (joined an in-flight identical GET — joiners show endpoint-dedupe ≈ wall, selfMs ≈ 0), \`git-coalesce:<name>\` (joined an in-flight git recompute), \`git-memo-hit:<name>\`/\`git-memo-miss:<name>\` (0ms markers — memo hit-rate, not blocking).
 
-Default: profiles the current conversation's worktree server. Pass \`worktree\` to target a different worktree (e.g. "att-1778089188-7uvf" or "equin" for main).`,
+Default: profiles the current conversation's worktree server. Pass \`worktree\` to target a different worktree (e.g. "att-1778089188-7uvf" or "muxos" for main).`,
   inputSchema: {
     kind: z
       .enum(KIND_FILTER)
@@ -52,7 +52,7 @@ Default: profiles the current conversation's worktree server. Pass \`worktree\` 
       .string()
       .optional()
       .describe(
-        "Target worktree name. Defaults to the conversation's own worktree (main for a session equin did not launch).",
+        "Target worktree name. Defaults to the conversation's own worktree (main for a session muxos did not launch).",
       ),
   },
   async handler({ kind = "all", limit = 15, worktree }, { conversationId }) {
@@ -60,7 +60,7 @@ Default: profiles the current conversation's worktree server. Pass \`worktree\` 
     if (worktree) {
       raw = resolveNamespaceAlias(worktree);
     } else if (conversationId === null) {
-      // A session equin did not launch has no worktree of its own: main.
+      // A session muxos did not launch has no worktree of its own: main.
       raw = MAIN_WORKTREE_NAME;
     } else {
       const conv = await getConversation(conversationId);

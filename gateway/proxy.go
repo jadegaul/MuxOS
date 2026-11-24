@@ -30,7 +30,7 @@ type Proxy struct {
 	// `<name>.localhost` subdomain still reaches the backend.
 	defaultNamespace string
 	// publicHosts are the hostnames a deployed site is served under (Caddy
-	// forwards them unchanged); principalOf counts them as equin hosts.
+	// forwards them unchanged); principalOf counts them as muxos hosts.
 	publicHosts map[string]bool
 	// panics files a handler panic as a report (handler_panic.go).
 	panics *panicReporter
@@ -126,7 +126,7 @@ func (p *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if worktreeName == "" {
-		http.Error(w, "equin gateway. Use <name>.localhost.", http.StatusNotFound)
+		http.Error(w, "muxos gateway. Use <name>.localhost.", http.StatusNotFound)
 		return
 	}
 
@@ -806,14 +806,17 @@ func parseWorktree(host string) string {
 }
 
 // hostAliases maps an extra host label onto the namespace it serves:
-// `equin.localhost` is the main app. An alias is a Host spelling only — never a
-// registry entry, socket or database — so it is resolved here, before anything
-// looks the name up.
+// `muxos.localhost` is the main app, and the previous generation's public
+// label resolves to it too (agents launched before the rename still dial it —
+// the entry goes when nothing does, rename track Step 9). An alias is a Host
+// spelling only — never a registry entry, socket or database — so it is
+// resolved here, before anything looks the name up.
 //
 // KEEP IN SYNC with NAMESPACE_HOST_ALIASES in
 // plugins/infra/plugins/namespace/core/namespace.ts — enforced by the
 // `namespace:grammar-in-sync` check, which reads these literals.
 var hostAliases = map[string]string{
+	"muxos": "singularity",
 	"equin": "singularity",
 }
 
@@ -870,7 +873,7 @@ func isWebSocketUpgrade(r *http.Request) bool {
 // backend asking an older or a release gateway is told rather than ignored.
 func (p *Proxy) handleDeploy(w http.ResponseWriter, r *http.Request) {
 	if p.deployer == nil {
-		http.Error(w, "this gateway runs no main deploy (started without -main-checkout); ./equin start --force installs the current one", http.StatusNotFound)
+		http.Error(w, "this gateway runs no main deploy (started without -main-checkout); ./muxos start --force installs the current one", http.StatusNotFound)
 		return
 	}
 	switch {

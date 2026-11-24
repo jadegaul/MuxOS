@@ -7,7 +7,7 @@
 // per-block CRDT), so this checks the page's place and its save path rather
 // than browser storage. The page is trashed at the end.
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/reload-drill.ts [--no-record] [--headed] [--attach <ticket>]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/reload-drill.ts [--no-record] [--headed] [--attach <ticket>]
 import type { Page } from "playwright";
 import {
   agentFetch,

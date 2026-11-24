@@ -13,7 +13,7 @@ import { CLI_NAME } from "@plugins/framework/plugins/cli/plugins/cli-name/core";
  * the only key both sides hold, and only this hook sees it: Claude Code hands
  * no per-call identity to the command itself. So the command gets an `export`
  * in front — `export`, not a `VAR=… cmd` prefix, so it reaches every command of
- * a chain (`./equin build && ./equin run …/e2e/x.ts`). Under every name of the
+ * a chain (`./muxos build && ./muxos run …/e2e/x.ts`). Under every name of the
  * TOOL_USE_ID variable, since the script may be on an older checkout.
  *
  * A rewrite, never a denial, and it changes nothing the command does: the

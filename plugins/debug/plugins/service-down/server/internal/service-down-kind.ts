@@ -55,7 +55,7 @@ function renderDescription(row: ReportRow, d: ServiceDownPayload): string {
         ? `The watchdog ran its start command and it answered again ${outageOf(d)} later.`
         : `The watchdog ran its start command once and it failed, so the service ` +
           `is left \`crashed\` and is no longer watched: nothing restarts it until ` +
-          `the gateway does (\`./equin start --force\`).`),
+          `the gateway does (\`./muxos start --force\`).`),
   );
   lines.push("");
   lines.push(

@@ -12,7 +12,7 @@ export const tryItHint = defineHint({
   id: "open-app.try-it",
   anchor: openAppAnchor,
   title: "Try it before it ships",
-  body: "The agent built this on its own copy of equin. Open it to try the change for real — nothing reaches your equin until you push.",
+  body: "The agent built this on its own copy of muxos. Open it to try the change for real — nothing reaches your muxos until you push.",
   placement: "bottom",
   order: 1,
 });

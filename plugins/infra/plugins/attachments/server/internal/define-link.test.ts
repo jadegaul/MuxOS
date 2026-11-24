@@ -14,8 +14,8 @@
  * delete-nothing one, and the STATEMENT-level change-feed trigger cannot
  * either, which is exactly why the distinction matters.
  *
- * Run: `./equin test plugins/infra/plugins/attachments`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/attachments`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

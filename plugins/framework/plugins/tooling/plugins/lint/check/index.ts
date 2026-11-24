@@ -57,7 +57,7 @@ const check: Check = {
         inconclusive: true,
         message:
           "No `node` on PATH, so the editor's ESLint load cannot be reproduced. The editor runs ESLint under Node; Bun resolves what Node does not, so loading it under Bun proves nothing.",
-        hint: "Install Node (e.g. `brew install node`) and re-run `./equin check lint:eslint-config-loads`.",
+        hint: "Install Node (e.g. `brew install node`) and re-run `./muxos check lint:eslint-config-loads`.",
       };
     }
     const version = await spawnCaptured([node, "--version"], {

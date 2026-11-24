@@ -31,7 +31,7 @@
 // frame-by-frame trace here measures the machine, not the physics.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/dom/plugins/overscroll-hint/e2e/overscroll-hint-verify.ts
+//   ./muxos run plugins/primitives/plugins/dom/plugins/overscroll-hint/e2e/overscroll-hint-verify.ts
 //
 // Manual only — nothing runs this automatically.
 import {

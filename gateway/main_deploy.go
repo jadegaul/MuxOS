@@ -28,7 +28,7 @@ import (
 //
 // The gateway is the one process that is up whenever anything is, so the
 // TRIGGER lives here — and only the trigger. It holds no policy: on an edge it
-// starts ONE convergence run, `./equin build --allow-main --converge` from the
+// starts ONE convergence run, `./muxos build --allow-main --converge` from the
 // code main serves — the main slot main's `current/<main namespace>` link names (-main-slots-current; the
 // repo's checkout before any slot exists, see convergeDir) — which decides
 // from durable state (git, the served dist, the build_runs ledger) whether
@@ -47,7 +47,7 @@ import (
 // report (plugins/build/plugins/converge) and the next edge is the next try.
 //
 // The run is NOT killed when the gateway stops: it is a deploy, its builds
-// restart backends through this gateway's successor, and EQUIN_BUILD_DETACHED
+// restart backends through this gateway's successor, and MUXOS_BUILD_DETACHED
 // keeps the CLI's orphan guard from exiting it when its parent goes. It runs
 // in its own process group and writes straight into its log file (not a pipe),
 // so nothing it depends on dies with this process. The successor's boot edge
@@ -166,7 +166,7 @@ func newMainDeployer(checkout, currentSlot string, env ChildEnv, logDir, outboxD
 	if !info.IsDir() {
 		return nil, fmt.Errorf("-main-checkout %s: .git is not a directory — that is a linked worktree, not main's checkout", checkout)
 	}
-	cli := filepath.Join(checkout, "equin")
+	cli := filepath.Join(checkout, "muxos")
 	if _, err := os.Stat(cli); err != nil {
 		return nil, fmt.Errorf("-main-checkout %s: no CLI at %s: %w", checkout, cli, err)
 	}
@@ -190,7 +190,7 @@ func newMainDeployer(checkout, currentSlot string, env ChildEnv, logDir, outboxD
 		}
 		slog.Info("main deploy: convergence run starts", "dir", dir)
 		return d.spawner.spawn(spawnSpec{
-			Argv: []string{filepath.Join(dir, "equin"), "build", "--allow-main", "--converge"},
+			Argv: []string{filepath.Join(dir, "muxos"), "build", "--allow-main", "--converge"},
 			Dir:  dir,
 			// The CLI's orphan guard exits a command whose parent dies; this run
 			// must outlive a gateway restart (see the header).

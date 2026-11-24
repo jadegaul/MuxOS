@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-lint-check-runner-safety",
+  "name": "@muxos/plugin-framework-tooling-lint-check-runner-safety",
   "version": "0.0.1",
   "private": true,
   "description": "check-runner-safety lint rule: no-adhoc-check-runner"

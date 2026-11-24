@@ -1,20 +1,20 @@
 //! The gateway, seen from outside: which port it listens on (the port file),
 //! whether anything answers there, and starting its login service
 //! (`infra/launcher`'s `GATEWAY_SERVICE`), whose launchd label / systemd unit
-//! the helper's own job carries in `EQUIN_GATEWAY_LABEL` — the label the
+//! the helper's own job carries in `MUXOS_GATEWAY_LABEL` — the label the
 //! service is bound to on this machine, which an install not yet migrated
 //! keeps from before the rename.
 //!
-//! **The port** is this account's, chosen once by `./equin start` and written
-//! to `~/.equin/state/gateway-port/port.json` (`{"port": <u16>, "legacy":
+//! **The port** is this account's, chosen once by `./muxos start` and written
+//! to `~/.muxos/state/gateway-port/port.json` (`{"port": <u16>, "legacy":
 //! <u16|null>}`) only once a gateway listens there. The helper's job names the
-//! file in `EQUIN_GATEWAY_PORT_FILE` (TS owns the layout:
+//! file in `MUXOS_GATEWAY_PORT_FILE` (TS owns the layout:
 //! `menu-bar/login-services`), and every probe / show reads it again — it is
 //! one small file, and the port moves under a running tray when an install
 //! migrates.
 //!
 //! A process the job did not start (an app window launched from its shim by
-//! macOS or the desktop) has no `EQUIN_GATEWAY_PORT_FILE`: it does not know the
+//! macOS or the desktop) has no `MUXOS_GATEWAY_PORT_FILE`: it does not know the
 //! port ([`Port::NotProvided`]), and so never moves a URL onto one.
 
 use std::net::{SocketAddr, TcpStream};
@@ -31,10 +31,10 @@ use serde::Deserialize;
 /// ([`Port::listening`]); never a port to move a URL onto.
 pub const LEGACY_PORT: u16 = 9000;
 /// What the helper's login-service job sets to the gateway's port file.
-const PORT_FILE_ENV: &str = "EQUIN_GATEWAY_PORT_FILE";
+const PORT_FILE_ENV: &str = "MUXOS_GATEWAY_PORT_FILE";
 /// What the helper's login-service job sets to the gateway's label
 /// (`menu-bar/login-services`).
-const LABEL_ENV: &str = "EQUIN_GATEWAY_LABEL";
+const LABEL_ENV: &str = "MUXOS_GATEWAY_LABEL";
 
 /// The port file's shape (`gateway-port`'s zod schema).
 #[derive(Deserialize)]
@@ -64,7 +64,7 @@ pub enum Port {
     /// This process was told where the file is, and there is none: the
     /// install has not moved, its gateway is on [`LEGACY_PORT`].
     Unrecorded,
-    /// No `EQUIN_GATEWAY_PORT_FILE`: a process the helper's job did not start
+    /// No `MUXOS_GATEWAY_PORT_FILE`: a process the helper's job did not start
     /// (an app window launched from its shim) or a job written before the
     /// variable. Whatever port its URLs carry is the best it knows.
     NotProvided,
@@ -103,7 +103,7 @@ fn port_from(path: Option<&Path>) -> Result<Port, String> {
     }
 }
 
-/// What the port file `EQUIN_GATEWAY_PORT_FILE` names says now. Read at every
+/// What the port file `MUXOS_GATEWAY_PORT_FILE` names says now. Read at every
 /// use: it changes under a running helper.
 pub fn port() -> Result<Port, String> {
     let file = std::env::var_os(PORT_FILE_ENV).filter(|f| !f.is_empty());
@@ -124,7 +124,7 @@ pub fn up(port: u16) -> bool {
 fn label() -> Result<String, String> {
     std::env::var(LABEL_ENV).ok().filter(|l| !l.is_empty()).ok_or_else(|| {
         format!(
-            "{LABEL_ENV} is not set, so the helper does not know the gateway's service — restart it with ./equin start --only dev.equin.menu-bar --force"
+            "{LABEL_ENV} is not set, so the helper does not know the gateway's service — restart it with ./muxos start --only dev.muxos.menu-bar --force"
         )
     })
 }
@@ -184,7 +184,7 @@ pub fn start() -> Result<(), String> {
         port = listening_port()?;
     }
     Err(format!(
-        "the gateway service started but nothing answers on port {port} after 30 s — see ./equin start"
+        "the gateway service started but nothing answers on port {port} after 30 s — see ./muxos start"
     ))
 }
 
@@ -193,7 +193,7 @@ mod tests {
     use super::*;
 
     fn scratch(name: &str, text: Option<&str>) -> std::path::PathBuf {
-        let dir = std::env::temp_dir().join(format!("equin-desktop-port-{}-{name}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("muxos-desktop-port-{}-{name}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("port");
         let _ = std::fs::remove_file(&path);

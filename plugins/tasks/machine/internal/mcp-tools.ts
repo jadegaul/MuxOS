@@ -82,7 +82,7 @@ export const addTaskTool = Mcp.tool({
       ? null
       : `## Your mandate allows\n\n${describeFilingGrant(grant)}. Any other track or start mode is refused.`;
   },
-  description: `Add a task to the equin task tree.
+  description: `Add a task to the muxos task tree.
 
 Task titles and descriptions should state the PROBLEM or ISSUE to solve —
 not instructions on how to solve it.

@@ -29,7 +29,7 @@ export const REPORT_FIX_STATE_LABELS = {
 } as const satisfies Record<ReportFixState, string>;
 
 /**
- * The trailer a fixing commit names its report with. `./equin push
+ * The trailer a fixing commit names its report with. `./muxos push
  * --fixes-report <id>` is its one writer; main's ledger reads it back.
  */
 export const FIXES_REPORT_TRAILER = "Fixes-report";
@@ -40,7 +40,7 @@ export const FIXES_REPORT_TRAILER = "Fixes-report";
  * name. Its values are `<report id>@<full sha>` ({@link fixedByClaim}); the
  * fix is that commit, judged exactly like one named by `Fixes-report` (live
  * once main runs code containing it, regressed once the report fires from such
- * code). `./equin push --report-fixed-by <id>@<sha>` is its one writer.
+ * code). `./muxos push --report-fixed-by <id>@<sha>` is its one writer.
  *
  * A key of its own, not a value form of `Fixes-report`: the two say different
  * things ("this push fixes it" / "that commit fixed it"), and a reader that

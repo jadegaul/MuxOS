@@ -19,29 +19,29 @@ describe("e2e-tool-use-id guard", () => {
   test("an e2e run gets the call's id exported in front", () => {
     expect(
       rewritten({
-        command: "./equin run plugins/x/e2e/flow.ts --url http://a",
+        command: "./muxos run plugins/x/e2e/flow.ts --url http://a",
       }),
-    ).toBe(`${EXPORT} ./equin run plugins/x/e2e/flow.ts --url http://a`);
+    ).toBe(`${EXPORT} ./muxos run plugins/x/e2e/flow.ts --url http://a`);
   });
 
   test("a chain reaches the run", () => {
     expect(
       rewritten({
-        command: "./equin build && ./equin run plugins/x/e2e/f.ts",
+        command: "./muxos build && ./muxos run plugins/x/e2e/f.ts",
         run_in_background: true,
       }),
-    ).toStartWith(`${EXPORT} ./equin build`);
+    ).toStartWith(`${EXPORT} ./muxos build`);
   });
 
   test("other commands, non-e2e runs and a payload without an id are untouched", () => {
-    expect(rewritten({ command: "./equin build" })).toBeUndefined();
-    expect(rewritten({ command: "./equin run scripts/x.ts" })).toBeUndefined();
+    expect(rewritten({ command: "./muxos build" })).toBeUndefined();
+    expect(rewritten({ command: "./muxos run scripts/x.ts" })).toBeUndefined();
     expect(rewritten({ command: "ls plugins/x/e2e/" })).toBeUndefined();
     expect(
-      rewritten({ command: "./equin run plugins/x/e2e/f.ts" }, null),
+      rewritten({ command: "./muxos run plugins/x/e2e/f.ts" }, null),
     ).toBeUndefined();
     expect(
-      rewritten({ command: "./equin run plugins/x/e2e/f.ts" }, "a;rm -rf /"),
+      rewritten({ command: "./muxos run plugins/x/e2e/f.ts" }, "a;rm -rf /"),
     ).toBeUndefined();
   });
 });

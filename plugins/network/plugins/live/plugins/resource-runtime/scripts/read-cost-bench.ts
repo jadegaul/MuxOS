@@ -3,7 +3,7 @@
  * at the read-admission gate while the edited-files readers of every open
  * conversation wait on their worktrees' first watch pass.
  *
- *   ./equin run plugins/network/plugins/live/plugins/resource-runtime/scripts/read-cost-bench.ts
+ *   ./muxos run plugins/network/plugins/live/plugins/resource-runtime/scripts/read-cost-bench.ts
  *
  * WORKTREES watched memos open at once; each one's pass 1 (`git status` +
  * `git diff`) takes PASS_MS. Each worktree has two readers (the pages and the

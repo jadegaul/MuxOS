@@ -13,7 +13,7 @@ import type { LoadedServerPlugin } from "../core/types";
 // question about the declared set — "which tables must a fork not copy?" — is a
 // function of the code alone. Answering it used to need a RUNNING backend (one
 // that had collected its contributions at boot), which made a recovery tool
-// depend on the thing it recovers: `./equin db fork --replace` could not run
+// depend on the thing it recovers: `./muxos db fork --replace` could not run
 // while main's backend was down (2026-11-08, main crash-looping 18:06–18:34).
 //
 // This loads the graph `exec` would boot — the same registry
@@ -42,7 +42,7 @@ export async function loadDeclaredGraph(
 ): Promise<readonly LoadedServerPlugin[]> {
   declareRuntimeNamespace(namespace);
   // The graph loads from the checkout this process runs from, which no push
-  // rewrites (a worktree; on main a slot this `./equin` holds for life —
+  // rewrites (a worktree; on main a slot this `./muxos` holds for life —
   // `runExec` says why).
   const { serverEntries, machineEntries } =
     await import("../bin/active-runtime");
@@ -55,7 +55,7 @@ export async function loadDeclaredGraph(
  * importing NO plugin. A data list (`defineServerContribution(name, { data:
  * true })`) then reads whole with `Kind.getContributions()`, the way every
  * booted host reads it: one path. For a process that only needs data lists
- * (`./equin db fork`'s probe).
+ * (`./muxos db fork`'s probe).
  */
 export async function installDeclaredListEntries(
   namespace: Namespace,

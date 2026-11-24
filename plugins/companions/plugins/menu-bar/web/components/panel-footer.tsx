@@ -3,7 +3,7 @@ import { Loading } from "@plugins/primitives/plugins/loading/web";
 import { useNativeHost } from "../native-host";
 
 /**
- * The menu-bar panel's footer: the companions' footer, opening equin in the
+ * The menu-bar panel's footer: the companions' footer, opening muxos in the
  * default browser through the helper, or as a plain link when the page is not
  * inside one.
  */

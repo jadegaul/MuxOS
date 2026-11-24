@@ -34,7 +34,7 @@ export function convergenceBuild(
 
 /** How a manual retry of main's current commit is spelled, for the log. */
 const MANUAL_RETRY =
-  "retry it with Build (the action bar's build popover, or Debug → Builds) or `./equin build --allow-main` in main's checkout";
+  "retry it with Build (the action bar's build popover, or Debug → Builds) or `./muxos build --allow-main` in main's checkout";
 
 /**
  * What a pass that builds nothing says about the deployment — never

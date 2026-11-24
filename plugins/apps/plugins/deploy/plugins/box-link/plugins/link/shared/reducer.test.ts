@@ -338,7 +338,7 @@ describe("reduceLink", () => {
   });
 });
 
-describe("a stream that got no answer (the tunnel or equin: unknown)", () => {
+describe("a stream that got no answer (the tunnel or muxos: unknown)", () => {
   const unanswered = (at: number): LinkEvent => ({
     kind: "unanswered",
     at,

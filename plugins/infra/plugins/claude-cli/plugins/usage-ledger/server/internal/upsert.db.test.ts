@@ -3,7 +3,7 @@
  * (account, hour, source, model, speed), a negative delta takes tokens back,
  * rows sharing a key in one call are summed, and malformed rows throw.
  *
- * Run: `./equin test plugins/infra/plugins/claude-cli/plugins/usage-ledger`
+ * Run: `./muxos test plugins/infra/plugins/claude-cli/plugins/usage-ledger`
  */
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { asc } from "drizzle-orm";

@@ -1,6 +1,6 @@
 //! Window mode: one installed app's own process — a regular app with its own
 //! Dock icon (macOS: the shim bundle's identity) or window class (Linux:
-//! `equin-<id>`, the shim's `StartupWMClass`), and its windows, each on a page
+//! `muxos-<id>`, the shim's `StartupWMClass`), and its windows, each on a page
 //! of the app as the app's own document (never `?embed=`, see
 //! `shim::window_url`). The first is `app`; every hand-off carrying a page
 //! opens another (`app-2`, `app-3`, …) — unless a window already shows that
@@ -8,7 +8,7 @@
 //! what another window shows. A hand-off with no page (the Dock, the menu
 //! bar's launch) brings the last focused window forward.
 //!
-//! Its one bridge, `window.equinWindow` (src/window_bridge.js), carries the
+//! Its one bridge, `window.muxosWindow` (src/window_bridge.js), carries the
 //! powers a page of the app needs from this machine — today a native file
 //! drag (src/file_drag.rs). It is held to the window's origin (`Scope`): the
 //! ACL grants its commands to window `app` on that origin only, the script
@@ -126,7 +126,7 @@ fn save_frame(window: &WebviewWindow) {
         .map_or(Ok(()), std::fs::create_dir_all)
         .and_then(|_| std::fs::write(&file, serde_json::to_string(&frame).expect("a frame serializes")));
     if let Err(e) = written {
-        eprintln!("equin-desktop: cannot remember the window frame in {}: {e}", file.display());
+        eprintln!("muxos-desktop: cannot remember the window frame in {}: {e}", file.display());
     }
 }
 
@@ -177,7 +177,7 @@ impl Scope {
 
     /// window_bridge.js with the origin filled in.
     fn bridge_script(&self) -> String {
-        BRIDGE_JS.replace("__EQUIN_ORIGIN__", &serde_json::json!(self.origin()).to_string())
+        BRIDGE_JS.replace("__MUXOS_ORIGIN__", &serde_json::json!(self.origin()).to_string())
     }
 }
 
@@ -209,7 +209,7 @@ fn on_handoff(app: &AppHandle, scope: &Url, url: Option<Url>) {
         return;
     };
     if !shim::in_scope(scope, &url) {
-        eprintln!("equin-desktop: ignoring a hand-off outside the app: {url}");
+        eprintln!("muxos-desktop: ignoring a hand-off outside the app: {url}");
         return;
     }
     let page = shim::window_url(&url);
@@ -218,7 +218,7 @@ fn on_handoff(app: &AppHandle, scope: &Url, url: Option<Url>) {
         .into_values()
         .find(|w| is_app_label(w.label()) && w.url().is_ok_and(|u| u == page));
     if let Some(window) = showing {
-        eprintln!("equin-desktop: {page} is already in window {}; bringing it forward", window.label());
+        eprintln!("muxos-desktop: {page} is already in window {}; bringing it forward", window.label());
         focus(&window);
         return;
     }
@@ -226,10 +226,10 @@ fn on_handoff(app: &AppHandle, scope: &Url, url: Option<Url>) {
     let label = format!("{LABEL}-{}", windows.next.fetch_add(1, Ordering::SeqCst));
     let launch = Launch { url, ..windows.launch.clone() };
     let place = last_focused(app).and_then(|w| frame_of(&w)).map(cascade);
-    eprintln!("equin-desktop: opening window {label} on {page}");
+    eprintln!("muxos-desktop: opening window {label} on {page}");
     match build_window(app, &label, &launch, Hooks::default(), place) {
         Ok(window) => focus(&window),
-        Err(e) => eprintln!("equin-desktop: cannot open a window on {}: {e}", launch.url),
+        Err(e) => eprintln!("muxos-desktop: cannot open a window on {}: {e}", launch.url),
     }
 }
 
@@ -302,17 +302,17 @@ pub fn build_window(
                 }
                 let url = payload.url();
                 if admits_main_frame(&scope, url) {
-                    eprintln!("equin-desktop: loaded {url}");
+                    eprintln!("muxos-desktop: loaded {url}");
                     assert!(
                         installed.load(Ordering::SeqCst) || url.as_str() == "about:blank",
-                        "equin-desktop: {url} loaded before the main-frame gate was installed"
+                        "muxos-desktop: {url} loaded before the main-frame gate was installed"
                     );
                 } else {
                     // The gate cancels every such load before it happens: reaching
                     // here is a bug. Replace the page natively — never script in it.
-                    eprintln!("equin-desktop: BUG: the main frame reached {url} past the gate; going home");
+                    eprintln!("muxos-desktop: BUG: the main frame reached {url} past the gate; going home");
                     if let Err(e) = window.navigate(home.clone()) {
-                        eprintln!("equin-desktop: cannot go home to {home}: {e}");
+                        eprintln!("muxos-desktop: cannot go home to {home}: {e}");
                     }
                 }
                 if let Some(loaded) = loaded {
@@ -338,11 +338,11 @@ pub fn build_window(
             }
             if !admitted {
                 if web(url) {
-                    eprintln!("equin-desktop: {url} is outside the namespace; refused before it loaded, handing it off");
+                    eprintln!("muxos-desktop: {url} is outside the namespace; refused before it loaded, handing it off");
                     scope_gate::hand_off(url.clone(), sink);
                 } else {
                     // A dropped file the page did not take: the drop is nothing.
-                    eprintln!("equin-desktop: refused the main-frame load of {url}");
+                    eprintln!("muxos-desktop: refused the main-frame load of {url}");
                 }
             }
             admitted
@@ -364,7 +364,7 @@ pub fn build_window(
 
 pub fn run(launch: Launch) {
     if !shim::valid_app_id(&launch.app_id) {
-        eprintln!("equin-desktop: {:?} is not an app id", launch.app_id);
+        eprintln!("muxos-desktop: {:?} is not an app id", launch.app_id);
         std::process::exit(2);
     }
     // A plain launch (the app's own URL) only brings a running window forward;
@@ -372,12 +372,12 @@ pub fn run(launch: Launch) {
     let forwarded = (launch.url != launch.base).then_some(&launch.url);
     let listener = match instance::claim(&launch.app_id, forwarded) {
         instance::Claim::Forwarded => {
-            eprintln!("equin-desktop: {} is already open; handed it over", launch.app_id);
+            eprintln!("muxos-desktop: {} is already open; handed it over", launch.app_id);
             return;
         }
         instance::Claim::Owner(listener) => listener,
     };
-    eprintln!("equin-desktop: window mode, app {} ({}), {}", launch.app_id, launch.name, launch.url);
+    eprintln!("muxos-desktop: window mode, app {} ({}), {}", launch.app_id, launch.name, launch.url);
 
     #[cfg(target_os = "linux")]
     gtk::glib::set_prgname(Some(shim::wm_class(&launch.app_id).as_str()));
@@ -411,7 +411,7 @@ pub fn run(launch: Launch) {
             Ok(())
         })
         .build(context)
-        .expect("equin-desktop: cannot build the app window");
+        .expect("muxos-desktop: cannot build the app window");
     app.run(move |handle, event| match event {
         // The Dock icon clicked while running: bring the window forward.
         #[cfg(target_os = "macos")]
@@ -437,10 +437,10 @@ mod tests {
 
     #[test]
     fn the_window_roams_its_namespace() {
-        let scope = window_scope(&Url::parse("http://equin.localhost:9000/mail/inbox").unwrap());
+        let scope = window_scope(&Url::parse("http://muxos.localhost:9000/mail/inbox").unwrap());
         let u = |s: &str| Url::parse(s).unwrap();
-        assert!(shim::in_scope(&scope, &u("http://equin.localhost:9000/home")));
-        assert!(shim::in_scope(&scope, &u("http://equin.localhost:9000/agents/c/1")));
+        assert!(shim::in_scope(&scope, &u("http://muxos.localhost:9000/home")));
+        assert!(shim::in_scope(&scope, &u("http://muxos.localhost:9000/agents/c/1")));
         assert!(!shim::in_scope(&scope, &u("http://other.localhost:9000/home")));
         assert!(!shim::in_scope(&scope, &u("https://example.com/")));
     }
@@ -464,16 +464,16 @@ mod tests {
     #[test]
     fn the_bridge_is_the_origin() {
         use tauri::ipc::RuntimeCapability;
-        let bridge = Scope::of(&Url::parse("http://equin.localhost:9000/files").unwrap());
+        let bridge = Scope::of(&Url::parse("http://muxos.localhost:9000/files").unwrap());
         let tauri::utils::acl::capability::CapabilityFile::Capability(cap) = bridge.capability().build() else {
             panic!("one capability");
         };
         assert_eq!(cap.windows, vec![LABEL.to_string(), format!("{LABEL}-*")]);
         assert!(!cap.local);
-        assert_eq!(cap.remote.expect("a remote grant").urls, vec!["http://equin.localhost:9000/*".to_string()]);
+        assert_eq!(cap.remote.expect("a remote grant").urls, vec!["http://muxos.localhost:9000/*".to_string()]);
         assert_eq!(cap.permissions.len(), APP_WINDOW_COMMANDS.len());
         let js = bridge.bridge_script();
-        assert!(!js.contains("__EQUIN_ORIGIN__"));
-        assert!(js.contains(r#"var origin = "http://equin.localhost:9000";"#));
+        assert!(!js.contains("__MUXOS_ORIGIN__"));
+        assert!(js.contains(r#"var origin = "http://muxos.localhost:9000";"#));
     }
 }

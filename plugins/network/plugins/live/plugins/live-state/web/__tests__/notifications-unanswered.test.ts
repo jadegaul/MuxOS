@@ -29,7 +29,7 @@
  *     once is the connection's, not the server's: the dead link is replaced
  *     (its open replays every sub) and nothing is reported — unless the
  *     replacement leaves one unread too, or the server is slow on the
- *     question, or it runs in this browser (equin.ai, report-1794962221-4ztwpq:
+ *     question, or it runs in this browser (MuxOS.app, report-1794962221-4ztwpq:
  *     a woken tab's socket read "open" for 38 s after its frames stopped
  *     arriving; a fresh one was answered in 100 ms).
  *

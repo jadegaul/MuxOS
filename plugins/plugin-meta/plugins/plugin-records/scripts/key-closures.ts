@@ -3,7 +3,7 @@
  * closure whose Merkle key keys its records, and how many of the last N main
  * commits touched it (each one re-keys every record that producer made).
  *
- *   ./equin run plugins/plugin-meta/plugins/plugin-records/scripts/key-closures.ts [--commits 200] <module>...
+ *   ./muxos run plugins/plugin-meta/plugins/plugin-records/scripts/key-closures.ts [--commits 200] <module>...
  */
 import { spawnSync } from "child_process";
 import { loadRepoSnapshot } from "@plugins/framework/plugins/tooling/core";

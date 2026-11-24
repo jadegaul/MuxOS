@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-css-switch",
+  "name": "@muxos/plugin-primitives-css-switch",
   "description": "On/off switch primitive: the presentational SwitchIndicator track+knob and the interactive Switch that wraps it.",
   "private": true,
   "version": "0.0.1"

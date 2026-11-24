@@ -9,7 +9,7 @@
 // The e2e half is `@plugins/primitives/plugins/networking/e2e` (`tapSharedSocket`).
 
 /** The page global a test hook is installed under. */
-export const WS_TEST_HOOK_GLOBAL = "__equinWsTestHook";
+export const WS_TEST_HOOK_GLOBAL = "__muxosWsTestHook";
 
 /** What the shared socket did, as this tab saw it. `url` is the socket's URL as constructed (`/ws/notifications`). */
 export type WsTestEvent =

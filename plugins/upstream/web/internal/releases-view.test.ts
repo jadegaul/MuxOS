@@ -86,7 +86,7 @@ describe("the releases row", () => {
       releasesHealth(ready(publisher({ kind: "ready", commit: served }))),
     ).toEqual({
       state: "ok",
-      title: "equin releases",
+      title: "muxos releases",
       summary: expect.any(String),
     });
   });
@@ -144,8 +144,8 @@ describe("the releases row", () => {
   });
 });
 
-const runUrl = "https://github.com/equinai/equin/actions/runs/1";
-const releaseUrl = "https://github.com/equinai/equin/releases/tag/v2026.11.17";
+const runUrl = "https://github.com/jadegaul/MuxOS/actions/runs/1";
+const releaseUrl = "https://github.com/jadegaul/MuxOS/releases/tag/v2026.11.17";
 const installers = Object.values(INSTALLER_BINARIES);
 const coreAssets = ["install.sh", "release.json", "SHA256SUMS"];
 
@@ -283,7 +283,7 @@ describe("what GitHub published of the newest release", () => {
       ready(publisher({ kind: "ready", commit: served }, { github }));
     expect(releasesHealth(status(connected(failedRun, null)))).toMatchObject({
       state: "attention",
-      title: "equin releases",
+      title: "muxos releases",
       summary: expect.stringContaining("· GitHub release failed"),
     });
     expect(

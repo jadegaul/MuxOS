@@ -9,7 +9,7 @@ const instructionsIcon = symbol("tune");
 
 /**
  * Developer-only header action of the card, empty or holding a thread: opens
- * the Ask equin config (Settings → Config), whose Instructions field is the
+ * the Ask muxos config (Settings → Config), whose Instructions field is the
  * help agent's whole prompt — tune it there, then port the edit back to the
  * code default.
  */

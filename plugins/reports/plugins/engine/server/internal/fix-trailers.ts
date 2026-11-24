@@ -46,7 +46,7 @@ function reportIdIn(value: string, sha: string, trailer: string): ReportId {
  * The fix claims in `git log --format=FIX_LOG_FORMAT` output (newest first),
  * one per (report, fix):
  *
- * - `Fixes-report: <id>` — the push is the fix. `./equin push` stamps its
+ * - `Fixes-report: <id>` — the push is the fix. `./muxos push` stamps its
  *   trailers on EVERY commit of a push, so the push's newest commit — the
  *   first seen — stands for it (code containing it contains the whole push).
  *   A commit with no push trailer (a hand-made one) stands for itself.

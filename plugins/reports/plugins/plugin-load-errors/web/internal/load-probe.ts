@@ -25,7 +25,7 @@ import { z } from "zod";
 // It starts from the URL, never from the plugin's `@plugins/<p>/web`
 // specifier: the link (web-artifacts) rewrote the registry's loaders to chunk
 // URLs and maps no `@plugins/*` specifier, so a specifier lookup answers "not
-// in the import map" for every failure and probes nothing (equin.ai's
+// in the import map" for every failure and probes nothing (MuxOS.app's
 // active-data burst, report-1794951421-c3g90t, read as a module the page was
 // never given).
 //

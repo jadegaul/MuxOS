@@ -37,7 +37,7 @@ function parseLists(file: string): ListRow[] {
 
 // The override a reorderable list owes, at the path config_v2 derives for it:
 // the DECLARING plugin's path joined with the list's declaration key.
-// `./equin build` SEEDS it — naming it here is the zero-build heads-up.
+// `./muxos build` SEEDS it — naming it here is the zero-build heads-up.
 function overridePathFor(row: ListRow): string {
   return `config/${asPath(asPluginId(row.plugin))}/${row.key}.jsonc`;
 }
@@ -65,7 +65,7 @@ const check: Check = {
         return {
           ok: false,
           message: `${rel} is missing`,
-          hint: "Run `./equin build` to generate it.",
+          hint: "Run `./muxos build` to generate it.",
         };
       }
       const expected = await formatGenerated({ file, content });
@@ -93,7 +93,7 @@ const check: Check = {
             : `\n\n${owedBy.length} newly reorderable list(s) will each owe an authored config override:\n` +
               owedBy.map((r) => `    ${overridePathFor(r)}`).join("\n")),
         hint:
-          "Run `./equin build` and commit the regenerated file." +
+          "Run `./muxos build` and commit the regenerated file." +
           (owedBy.length > 0
             ? " The build also SEEDS each override listed above with a `// @review` marker: arrange its `items` for how" +
               " the list renders, then delete that marker line (`config:overrides-authored` fails until you do). If a" +

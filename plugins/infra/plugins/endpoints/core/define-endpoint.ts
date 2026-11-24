@@ -116,7 +116,7 @@ interface EndpointContract<
   /**
    * Who may call this route, resolved: `"owner"` unless the declaration said
    * `access: { public: "<reason>" }`. The socket hosts refuse an anonymous
-   * caller (the gateway's `X-Equin-Principal` verdict) of an owner route with
+   * caller (the gateway's `X-MuxOS-Principal` verdict) of an owner route with
    * `403 cross-site-refused` before the handler runs (`framework/principal`'s
    * `gateByPrincipal`, reading the `access` `implement` attaches to the handler).
    */

@@ -183,7 +183,7 @@ export async function startAgentProcess(
     });
   }
   await mkdir(agentDir(id), { recursive: true });
-  // The session's EQUIN_SCRATCH (agentSessionEnv), there before its first
+  // The session's MUXOS_SCRATCH (agentSessionEnv), there before its first
   // command. Under /tmp, so the OS reclaims it once the conversation is idle.
   await mkdir(agentScratchDir(id), { recursive: true, mode: 0o700 });
   const claudeBin = await bundledClaudeBin();
@@ -195,7 +195,7 @@ export async function startAgentProcess(
     previous: await previousNamedClaudeBin(id),
   });
   // This backend's own bun, by path (the login shell's PATH is the account's),
-  // named `equin · agent` — one clone per machine and Bun version, shared by
+  // named `muxos · agent` — one clone per machine and Bun version, shared by
   // every agent, so only the first agent after a Bun upgrade pays macOS's
   // first-exec scan (~1.7 s; a per-conversation name paid it at every new
   // conversation's first start). Its claude carries the conversation's name.

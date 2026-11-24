@@ -58,7 +58,7 @@ export async function claudeAccountCredential(
       );
     if (!API_KEY_PREFIXES.some((p) => secret.startsWith(p)))
       throw new Error(
-        `Claude account "${id}" holds a plan sign-in token, not an API key — equin runs plans only on the computer's own Claude Code login; remove the account`,
+        `Claude account "${id}" holds a plan sign-in token, not an API key — muxos runs plans only on the computer's own Claude Code login; remove the account`,
       );
     return { kind: "api-key", key: secret };
   }

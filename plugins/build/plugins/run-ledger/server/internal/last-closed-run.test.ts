@@ -2,8 +2,8 @@
  * `lastClosedRunOn` — the convergence decision's "already attempted?" read —
  * on a real Postgres seeded with the real migration chain.
  *
- * Run: `./equin test plugins/build/plugins/run-ledger`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/build/plugins/run-ledger`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

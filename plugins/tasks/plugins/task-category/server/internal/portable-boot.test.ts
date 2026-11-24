@@ -23,7 +23,7 @@ import { asPluginId } from "@plugins/framework/plugins/plugin-id/core";
  * `bun test` process it would both see what other suites registered and leave
  * PGlite answering for every suite after it.
  *
- * Run: `./equin test plugins/tasks/plugins/task-category`.
+ * Run: `./muxos test plugins/tasks/plugins/task-category`.
  */
 
 import { defineMandate } from "@plugins/tasks/plugins/orchestration/plugins/mandate/plugins/policy/core";

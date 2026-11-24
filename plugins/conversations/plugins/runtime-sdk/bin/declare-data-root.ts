@@ -7,7 +7,7 @@ import { declareDataRootLayoutSync } from "@plugins/infra/plugins/paths/plugins/
 // `agentSessionEnv`), which carries no data-root declaration, and it outlives
 // the backend that started it. So it decides the layout from the disk itself,
 // first thing, and every process below it — the claude it runs, that claude's
-// hooks and `./equin` calls — inherits the answer through `claudeSessionEnv`'s
+// hooks and `./muxos` calls — inherits the answer through `claudeSessionEnv`'s
 // copy of this process's environment (infra/paths CLAUDE.md, § The data root).
 // A blocking read, once, before the agent opens its socket.
 declareDataRootLayoutSync();

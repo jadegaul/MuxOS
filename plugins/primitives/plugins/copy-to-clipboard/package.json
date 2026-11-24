@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-copy-to-clipboard",
+  "name": "@muxos/plugin-primitives-copy-to-clipboard",
   "private": true,
   "version": "0.0.1"
 }

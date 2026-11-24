@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-variant",
+  "name": "@muxos/plugin-fields-variant",
   "version": "0.0.1",
   "private": true,
-  "description": "Variant (discriminated/polymorphic object) field type: identity only — value is `{ type, ...payload }`."
+  "description": "Variant (discriminated/polymorphic object) field type: identity only \u2014 value is `{ type, ...payload }`."
 }

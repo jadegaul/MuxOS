@@ -58,7 +58,7 @@ async function entriesOf(
         ok: false,
         result: {
           ok: false,
-          message: `${registry} is missing — run ./equin build`,
+          message: `${registry} is missing — run ./muxos build`,
         },
       };
     }

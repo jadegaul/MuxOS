@@ -2,8 +2,8 @@
  * Bundles the installer page into one HTML file, for a cargo build outside
  * infra/deps — the release workflow (`.github/workflows/installer-release.yml`)
  * builds the page once and hands it to every platform's `cargo build` as
- * `EQUIN_INSTALLER_PAGE`. Locally the `installer-window` dependency does
- * this itself; `./equin run` this only to look at the file.
+ * `MUXOS_INSTALLER_PAGE`. Locally the `installer-window` dependency does
+ * this itself; `./muxos run` this only to look at the file.
  *
  *   bun plugins/installer/plugins/window/scripts/bundle-page.ts <out.html>
  */

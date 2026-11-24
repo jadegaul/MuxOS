@@ -1,7 +1,7 @@
 /**
  * What a namespace-named thing is, from the evidence its producer left.
  *
- * Run: `./equin test plugins/infra/plugins/worktree`
+ * Run: `./muxos test plugins/infra/plugins/worktree`
  */
 
 import { describe, test, expect } from "bun:test";

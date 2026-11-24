@@ -17,8 +17,8 @@ import {
  * `lane`, so whatever runs under it (a dependency install, a dataset
  * download) is bounded with the rest of the fleet.
  *
- * A process that INHERITED a grant (`EQUIN_HOST_GRANT`, set by a holder
- * for the subprocess it spawns — `./equin deps install` run by a check
+ * A process that INHERITED a grant (`MUXOS_HOST_GRANT`, set by a holder
+ * for the subprocess it spawns — `./muxos deps install` run by a check
  * inside a build) spends one of those units instead: the grant contract is that
  * nothing a holder spawns re-acquires host-wide. Acquiring anyway waited on the
  * parent's own slots — on a host whose whole fleet is one unit (an 8 GB box:
@@ -48,14 +48,14 @@ function admitIn(lane: Lane, hooks?: GrantHooks) {
 export const admitBackground = admitIn("background");
 
 /**
- * A `./equin` CLI command's admission (`cliExecContext`, which reaches this
+ * A `./muxos` CLI command's admission (`cliExecContext`, which reaches this
  * file through a deferred import so the `cli` declaration stays light): the
- * lane of whoever runs the command — an ancestor's published `EQUIN_LANE`
+ * lane of whoever runs the command — an ancestor's published `MUXOS_LANE`
  * if there is one (an op, or the grant it handed down); else interactive
  * when a person runs it in the main checkout (`interactiveCaller`); else
  * background.
  *
- * Not always background: a person re-running install.sh or `./equin start`
+ * Not always background: a person re-running install.sh or `./muxos start`
  * on main is waiting on its dependency installs, and the background lane can
  * be the one with no free slot (2026-11-16 onboarding audit: a 16 GB Mac's
  * measured window kept its one slot for interactive work).

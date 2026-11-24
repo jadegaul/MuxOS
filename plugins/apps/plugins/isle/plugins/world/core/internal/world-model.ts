@@ -1,5 +1,5 @@
 // The archipelago: an endless, deterministic world from one seed. Home is the
-// hand-shaped Equin Isle; more islands are generated around it, each with
+// hand-shaped MuxOS Isle; more islands are generated around it, each with
 // district slots. Everything here is a pure function of the seed — slot n of an
 // island is always in the same place — and is computed lazily (an island's
 // shape is rasterised only when something reads it), then memoised.
@@ -396,7 +396,7 @@ function archipelago(seed: number): Island[] {
   const out: Island[] = [
     new Island(
       0,
-      "Equin Isle",
+      "MuxOS Isle",
       HOME_CX,
       HOME_CY,
       HOME_RX,

@@ -8,7 +8,7 @@ import {
 } from "../core";
 
 const HINT =
-  "Run `./equin run plugins/ui/plugins/logo/scripts/render.ts` and commit the result.";
+  "Run `./muxos run plugins/ui/plugins/logo/scripts/render.ts` and commit the result.";
 
 const filesInSync: Check = {
   id: "logo:files-in-sync",

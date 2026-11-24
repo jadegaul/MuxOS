@@ -26,7 +26,7 @@ function gateEnv(): Record<string, string | undefined> {
 }
 
 async function cli(root: string, args: string[]): Promise<number> {
-  console.log(`\n$ ./equin ${args.join(" ")}`);
+  console.log(`\n$ ./muxos ${args.join(" ")}`);
   const { exitCode } = await spawnPassthrough([join(root, CLI_NAME), ...args], {
     cwd: root,
     env: gateEnv(),
@@ -38,10 +38,10 @@ async function cli(root: string, args: string[]): Promise<number> {
  * Every tree-scoped check, uncached. `--no-cache` because a recorded PASS is
  * keyed on the tree, not on the toolchain that produced it — reusing one would
  * let the candidate inherit the baseline's verdicts. `--scope tree`, the pass
- * `./equin push` runs: a deploy-scoped check judges the deployed dist, which a
+ * `./muxos push` runs: a deploy-scoped check judges the deployed dist, which a
  * candidate never rebuilds, so it fails on every move that changes what the
  * dist composes (web-artifacts:map-in-sync on a mise move) whatever the
- * release; the `./equin build` after a landing runs those.
+ * release; the `./muxos build` after a landing runs those.
  *
  * The verdicts are read back from the durable check-progress log (the one
  * machine-readable per-check record), picking the run this invocation started.
@@ -64,7 +64,7 @@ export async function runChecks(
   );
   if (run === undefined) {
     throw new Error(
-      `\`./equin check\` exited ${exitCode} but left no finished run in the check-progress log — cannot tell which checks failed.`,
+      `\`./muxos check\` exited ${exitCode} but left no finished run in the check-progress log — cannot tell which checks failed.`,
     );
   }
   const failures = run.completed.filter((c) => !c.ok).map((c) => c.checkId);
@@ -95,7 +95,7 @@ export async function runTests(
     status.status === "running"
   ) {
     throw new Error(
-      `\`./equin test\` exited ${exitCode} but did not record a finished run in test-status-<opId>.json — cannot tell which tests failed.`,
+      `\`./muxos test\` exited ${exitCode} but did not record a finished run in test-status-<opId>.json — cannot tell which tests failed.`,
     );
   }
   // A file that stops reporting on the new toolchain most likely crashes while
@@ -112,14 +112,14 @@ export async function runTests(
 const WEB_BUILD_GATE = "web build";
 
 /**
- * The main composition's web dist, built hermetically: `./equin build
+ * The main composition's web dist, built hermetically: `./muxos build
  * --hermetic`, the artifact half `release` runs — every web artifact, the
  * vendor set (esbuild over every npm package the browser loads, `browser`
  * field maps and all), the global CSS and the compose-time link checks, with
  * no cluster touched and nothing published. Checks and tests never bundle for
  * the browser, so without it a release that breaks only the browser build (a
  * Node builtin its browser code imports, a changed export) passed every gate
- * and failed the `./equin build` after the landing (@electric-sql/pglite
+ * and failed the `./muxos build` after the landing (@electric-sql/pglite
  * 0.5.13+, 2026-11-09).
  */
 export async function runWebBuild(root: string): Promise<GateResult> {
@@ -213,7 +213,7 @@ export async function retryGates(
 
 /**
  * The gates an upgrade runs, as one seam: the real ones spawn
- * `./equin check` / `test` / `build --hermetic` and the smoke commands; the runner's tests
+ * `./muxos check` / `test` / `build --hermetic` and the smoke commands; the runner's tests
  * hand fakes.
  */
 export interface Gates {

@@ -7,14 +7,14 @@
 // functions they called.
 //
 // Usage:
-//   ./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/main-thread-trace.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/main-thread-trace.ts \
 //     [--path /demo] [--seconds 30] [--tasks 8] [--top 12] [--out /tmp/main-thread-trace]
 //
 // Wall is not work. A darwinbg Chromium (efficiency cores, throttled) waits
 // seconds to be scheduled on a loaded host: /demo measured 124 tasks over
 // 50 ms, 36.5 s wall but 1.6 s CPU (2026-11-06, load 40–90). A
 // long-animation-frame or long-task count taken that way says how starved the
-// browser was, not what the page costs. `./equin run` now spawns every e2e
+// browser was, not what the page costs. `./muxos run` now spawns every e2e
 // script — and so its Chromium — in the foreground, as the user's own browser
 // runs; the tier is printed first, and the CPU column holds either way.
 //

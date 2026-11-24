@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-lint-sink-safety",
+  "name": "@muxos/plugin-framework-tooling-lint-sink-safety",
   "version": "0.0.1",
   "private": true,
   "description": "sink-safety lint rules: no-adhoc-file-sink, no-adhoc-profiler-seam"

@@ -34,7 +34,7 @@ function harness(over: Partial<ReplayFollowDeps> = {}) {
       listener({
         data,
         source: "source" in from ? from.source : parent,
-        origin: from.origin ?? "http://equin.localhost:9000",
+        origin: from.origin ?? "http://muxos.localhost:9000",
       } as MessageEvent);
     },
   };
@@ -42,7 +42,7 @@ function harness(over: Partial<ReplayFollowDeps> = {}) {
 
 describe("followReplay", () => {
   it("installs nothing on a public host, or when not framed", () => {
-    expect(harness({ host: "equin.ai" }).followed).toBe(false);
+    expect(harness({ host: "MuxOS.app" }).followed).toBe(false);
     expect(harness({ parent: null }).followed).toBe(false);
   });
 

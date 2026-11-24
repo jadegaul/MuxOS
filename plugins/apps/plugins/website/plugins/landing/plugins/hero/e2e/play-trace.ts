@@ -2,7 +2,7 @@
 // work ran.
 //
 // Opens the landing page (default /about — the website app; pass
-// --url https://equin.ai/ for the public site) as a phone (touch, so the
+// --url https://MuxOS.app/ for the public site) as a phone (touch, so the
 // player draws its touch controls — the report's `TouchControls`), records a
 // Chrome trace, taps Play, and prints:
 //   - the Event Timing duration of the click (input → next paint) and its
@@ -13,9 +13,9 @@
 //   - the frames: when the first frame after the tap was presented.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/hero/e2e/play-trace.ts \
-//     [--url https://equin.ai/] [--viewport 390x844] [--cpu 4] [--window 2000] \
-//     [--desktop] [--out "$EQUIN_SCRATCH/hero-play"]
+//   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/hero/e2e/play-trace.ts \
+//     [--url https://MuxOS.app/] [--viewport 390x844] [--cpu 4] [--window 2000] \
+//     [--desktop] [--out "$MUXOS_SCRATCH/hero-play"]
 
 import {
   arg,

@@ -7,7 +7,7 @@ export function gatewayServiceJob(
 ): LoginServiceJob {
   return {
     description:
-      "equin gateway (and through it Postgres, PgBouncer and every backend)",
+      "muxos gateway (and through it Postgres, PgBouncer and every backend)",
     argv: spec.argv,
     cwd: spec.cwd,
     env: spec.env,

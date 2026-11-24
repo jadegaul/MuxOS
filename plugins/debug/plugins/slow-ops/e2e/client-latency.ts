@@ -15,7 +15,7 @@
  * WRITES: the two thresholds (agent-marked; withBrowser reverts them) and one
  * throwaway blank page left in the worktree fork DB.
  *
- * Usage: ./equin run plugins/debug/plugins/slow-ops/e2e/client-latency.ts [--headed] [--out /tmp/client-latency]
+ * Usage: ./muxos run plugins/debug/plugins/slow-ops/e2e/client-latency.ts [--headed] [--out /tmp/client-latency]
  */
 import {
   agentFetch,

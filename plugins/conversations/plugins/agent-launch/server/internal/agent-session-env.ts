@@ -38,28 +38,28 @@ import { agentScratchDir } from "@plugins/infra/plugins/launcher/plugins/agent-s
  * the allowlist below spreads this list, so a delivered name is never dropped
  * by `env -i`.
  *
- * - `EQUIN_CONVERSATION_ID` — the conversation id the
+ * - `MUXOS_CONVERSATION_ID` — the conversation id the
  *   prepare-commit-msg hook stamps trailers from (and every hook command names
  *   its conversation by).
- * - `EQUIN_PARENT_URL` — the launching backend's origin (`namespaceUrl`), which
+ * - `MUXOS_PARENT_URL` — the launching backend's origin (`namespaceUrl`), which
  *   the agent's `.mcp.json` and its hooks dial back to. A whole URL, never a
  *   name to build a host from, so no file assembles an address by hand.
- * - `EQUIN_PARENT_HOST` — TEMPORARY: the same backend's host LABEL
- *   (`namespaceLabel`, main → `equin`), for a worktree branched before
- *   `EQUIN_PARENT_URL` whose `.mcp.json` still builds
- *   `http://${EQUIN_PARENT_HOST}.localhost:<port>`. Delete with its env-names key
+ * - `MUXOS_PARENT_HOST` — TEMPORARY: the same backend's host LABEL
+ *   (`namespaceLabel`, main → `muxos`), for a worktree branched before
+ *   `MUXOS_PARENT_URL` whose `.mcp.json` still builds
+ *   `http://${MUXOS_PARENT_HOST}.localhost:<port>`. Delete with its env-names key
  *   once no checkout's `.mcp.json` names it (rename track, Step 9).
  * - `CLAUDE_CODE_DISABLE_AGENT_VIEW` — pins the Claude session to this agent
  *   process, so it can never migrate into Claude Code's background daemon and
  *   inherit whichever process first spawned that daemon (the Sep 9 misattributed
  *   push).
- * - `EQUIN_GUARDS_ROOT` — the checkout whose guard scripts the agent's hooks
+ * - `MUXOS_GUARDS_ROOT` — the checkout whose guard scripts the agent's hooks
  *   run (guards/agent-policy): the workspace's own for a worktree (whose own
  *   settings carry the hooks), the launching backend's for scratch.
- * - `EQUIN_WORKSPACE_ROOT` — the workspace the agent runs in, the
+ * - `MUXOS_WORKSPACE_ROOT` — the workspace the agent runs in, the
  *   boundary the write guards allow (any workspace kind, so a scratch dir is
  *   bounded too).
- * - `EQUIN_SCRATCH` — the session's private scratch directory
+ * - `MUXOS_SCRATCH` — the session's private scratch directory
  *   (`agentScratchDir(conversationId)`), so a scratch file it names — a push
  *   message, a log — is never another session's file of the same name. The
  *   `shared-tmp` guard refuses fixed names in `/tmp` and points here.
@@ -80,9 +80,9 @@ export type AgentSessionEnv = Record<string, string>;
 /**
  * The `-e` values for `conversationId`'s session.
  *
- * EQUIN_PARENT_URL must be an address the gateway actually routes, so it is
+ * MUXOS_PARENT_URL must be an address the gateway actually routes, so it is
  * this backend's own declared runtime namespace's URL (`namespaceUrl`: its
- * public host label, main → `equin`) rather than a caller-supplied one;
+ * public host label, main → `muxos`) rather than a caller-supplied one;
  * `runtimeNamespace()` throws when the process never declared one.
  *
  * CLAUDE_CODE_DISABLE_AGENT_VIEW: Claude Code's agent view can otherwise move a
@@ -143,7 +143,7 @@ export const AGENT_SESSION_PATH_SEED = "/usr/bin:/bin:/usr/sbin:/sbin";
  * re-orders the system entries first and keeps the rest).
  *
  * It used to be the seed alone, so an agent found `bun` — and could run
- * `./equin` at all — only when the user's own shell profile put mise on
+ * `./muxos` at all — only when the user's own shell profile put mise on
  * PATH for a NON-interactive login shell: a `~/.zshenv` line on the one Mac it
  * ran on, which `install.sh` (writing `~/.zshrc`) never creates. On Linux the
  * agent came up with no `bun` and no `claude`.

@@ -12,7 +12,7 @@
  *     host page's (mounting the embed alone does not move the keys into it);
  *  1. opens the launcher inside the embed and picks Pages: the embed switches
  *     to Pages (`data-app-embed`, its theme scope), whose sidebar lists the
- *     seeded pages ("Welcome to equin", "Piano practice", "Ideas");
+ *     seeded pages ("Welcome to muxos", "Piano practice", "Ideas");
  *  2. goes back to the Agent Manager through the launcher;
  *  3. opens the practice-timer task's detail, and its Origin chip: the Piano practice page
  *     opens beside it;
@@ -30,7 +30,7 @@
  *  - no "Opens outside this embed" toast, no page error, no console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/app-switch.ts [--out /tmp/demo-app-switch] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/app-switch.ts [--out /tmp/demo-app-switch] [--headed]
  */
 import type { Locator, Page, WebSocket } from "playwright";
 import { tapSharedSocket } from "@plugins/primitives/plugins/networking/e2e";
@@ -59,7 +59,7 @@ import { watchPageOrigin } from "./internal/page-origin";
 const OUT = arg("out") ?? "/tmp/demo-app-switch";
 
 /** The seeded pages (`website/demos/workspace`'s `core/internal/pages.ts`). */
-const ROOT_PAGES = ["Welcome to equin", "Piano practice", "Ideas"] as const;
+const ROOT_PAGES = ["Welcome to muxos", "Piano practice", "Ideas"] as const;
 const ORIGIN_PAGE = "Piano practice";
 /** The seeded task launched from Piano practice's prompt block (`stories.ts`). */
 const PRACTICE_TIMER_TASK = "Practice timer in Sonata";

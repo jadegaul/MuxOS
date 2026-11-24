@@ -1,4 +1,4 @@
-// The bodies of `./equin prototype`'s verbs. A `cli/` barrel with no default
+// The bodies of `./muxos prototype`'s verbs. A `cli/` barrel with no default
 // export, so not a command: the `prototype` group is declared by
 // `apps/prototypes/commands`, the plugin above both this one and `state` —
 // `list` needs `state`'s deleted marks, which this plugin cannot import

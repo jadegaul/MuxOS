@@ -20,8 +20,8 @@ describe("readToolSearch", () => {
   test("a select that loaded everything it named has nothing missing", () => {
     const s = readToolSearch(
       ...call(
-        { query: "select:mcp__equin__add_task", max_results: 1 },
-        { content: "", toolReferences: ["mcp__equin__add_task"] },
+        { query: "select:mcp__muxos__add_task", max_results: 1 },
+        { content: "", toolReferences: ["mcp__muxos__add_task"] },
       ),
     );
     expect(s.mode).toBe("select");
@@ -34,7 +34,7 @@ describe("readToolSearch", () => {
     const s = readToolSearch(
       ...call(
         { query: "select:read_page, Grep" },
-        { content: "", toolReferences: ["mcp__equin__read_page"] },
+        { content: "", toolReferences: ["mcp__muxos__read_page"] },
       ),
     );
     if (s.mode !== "select") throw new Error("expected select");

@@ -3,7 +3,7 @@ import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 /**
  * `db` is a GROUP: it routes and never runs. The declaration union makes that
  * exclusive — a group has `subcommands` and cannot also carry `run` — so
- * `./equin db` printing its own help rather than doing something is a
+ * `./muxos db` printing its own help rather than doing something is a
  * property of the shape, not of a runtime check.
  *
  * One subcommand today. It stays a group because the verb it reserves is
@@ -21,7 +21,7 @@ export default defineCliCommand({
       name: "fork",
       description:
         "Fork the main (base) DB into [target]. For worktrees created " +
-        "outside equin (git worktree add), which get no fork on creation. " +
+        "outside muxos (git worktree add), which get no fork on creation. " +
         "Idempotent: a no-op if the DB already exists, unless --replace. " +
         "Needs no running backend: which tables must not be copied is read " +
         "from this checkout's plugin declarations.",

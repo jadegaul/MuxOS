@@ -47,23 +47,23 @@ export function pluginIdOfRepoPath(rel: string): PluginId | null {
 /** Segments for breadcrumbs / last-segment matching. */
 export const pluginIdSegments = (id: PluginId): string[] => id.split(".");
 
-/** The workspace package scope every plugin's package name lives in: `@equin`. */
+/** The workspace package scope every plugin's package name lives in: `@muxos`. */
 export const PACKAGE_SCOPE = `@${PRODUCT_NAME}`;
 
-/** The workspace package-name prefix: `@equin/plugin-`. */
+/** The workspace package-name prefix: `@muxos/plugin-`. */
 export const PLUGIN_PACKAGE_PREFIX = `${PACKAGE_SCOPE}/plugin-`;
 
 /** The key of a plugin's own settings in its `package.json` (`collapsed`,
- *  `compositionRoot`): `"equin": { … }`. */
+ *  `compositionRoot`): `"muxos": { … }`. */
 export const PLUGIN_MANIFEST_KEY = PRODUCT_NAME;
 
 /** The workspace package name of the plugin whose directory is `fsPath` (relative
- *  to `plugins/`, the `asFsPath` form): `@equin/plugin-<chain>`, the chain
+ *  to `plugins/`, the `asFsPath` form): `@muxos/plugin-<chain>`, the chain
  *  joining every non-`plugins` segment with `-` — unique across the nested tree
  *  (`tasks` → `plugin-tasks`, `stats/plugins/tasks` → `plugin-stats-tasks`).
  *
- *  DERIVED, never authored: the repo-tree codegen (`./equin build` /
- *  `./equin regen-generated`) writes it into each plugin's `package.json`,
+ *  DERIVED, never authored: the repo-tree codegen (`./muxos build` /
+ *  `./muxos regen-generated`) writes it into each plugin's `package.json`,
  *  and the plugin-boundaries check (R1) holds the file to it. Bun needs the field
  *  (a nameless workspace member fails `bun install`), but nothing reads it. */
 export const packageNameFor = (fsPath: string): string =>
@@ -135,11 +135,11 @@ export type RuntimeFolder = (typeof RUNTIME_FOLDERS)[number];
  *  the Claude Code hook guards a plugin adds for its own files, collected by
  *  `tooling/guards`; `login-services/` holds the per-user OS services a plugin
  *  runs at login (`defineLoginService`), collected by `infra/launcher`'s
- *  `login-services` and brought up by `./equin start`; `browser-extension/`
+ *  `login-services` and brought up by `./muxos start`; `browser-extension/`
  *  holds a browser extension's shell (its `manifest.json`, `popup.html` and
  *  the entry the build bundles), which the owning plugin's `cli/` builds into
  *  the data root and Chrome loads from there; `build-step/` holds the steps a
- *  plugin contributes to `./equin build` (`defineBuildStep`), collected by
+ *  plugin contributes to `./muxos build` (`defineBuildStep`), collected by
  *  `framework/cli/build/build-steps` and run at their build phase;
  *  `standalone-page/` holds a page that no app serves — its HTML and the
  *  entry a build bundles into ONE self-contained file — which a native shell
@@ -215,7 +215,7 @@ const RUNTIME_FOLDER_DOCUMENTED: Record<RuntimeFolder, boolean> = {
   // `cli` is the one non-web/server runtime that IS documented. Unlike `e2e` and
   // `provision`, whose barrels only other e2e scripts / provisioning steps can
   // reach, a `cli/` folder's headline fact is user-facing: this plugin owns
-  // `./equin <verb>`. That is precisely what an agent needs to read out of
+  // `./muxos <verb>`. That is precisely what an agent needs to read out of
   // the generated reference before adding a second verb for the same job, and it
   // is not answerable from anywhere else — a command name is not a filename.
   cli: true,

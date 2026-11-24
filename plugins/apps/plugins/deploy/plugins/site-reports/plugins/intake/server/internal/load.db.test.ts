@@ -78,7 +78,7 @@ function crash(fn: string, count = 1): SiteReportEntry {
     message: `TypeError: cannot read ${fn}`,
     data: {
       errorType: "TypeError",
-      stack: `TypeError: cannot read ${fn}\n    at ${fn} (https://equin.ai/assets/app.js:1:10)\n    at run (https://equin.ai/assets/app.js:2:20)`,
+      stack: `TypeError: cannot read ${fn}\n    at ${fn} (https://MuxOS.app/assets/app.js:1:10)\n    at run (https://MuxOS.app/assets/app.js:2:20)`,
     },
     path: "/",
     count,

@@ -2,7 +2,7 @@
 // on a deployed build. A throwaway folder is made under the home directory
 // (the deploy reads the same disk) and removed at the end:
 //
-//   ~/.equin-e2e-move-<random>/
+//   ~/.muxos-e2e-move-<random>/
 //     a.txt b.txt c.txt   → selected, then dragged into Docs
 //     Docs/sub/           → a collapsed folder that springs open; its own child
 //     Target/x.txt        → the name a dropped x.txt collides with
@@ -28,7 +28,7 @@
 //  7. Screenshots of the selection and the drop highlight, light and dark.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/file-explorer/plugins/browser/e2e/select-and-move.ts \
+//   ./muxos run plugins/apps/plugins/file-explorer/plugins/browser/e2e/select-and-move.ts \
 //     [--out /tmp/select-and-move] [--headed]
 
 import {
@@ -57,7 +57,7 @@ const out = arg("out") ?? join(tmpdir(), "select-and-move");
 
 const root = join(
   HOME_DIR,
-  `.equin-e2e-move-${Math.random().toString(36).slice(2, 8)}`,
+  `.muxos-e2e-move-${Math.random().toString(36).slice(2, 8)}`,
 );
 const at = (...parts: string[]) => join(root, ...parts);
 mkdirSync(at("Docs", "sub"), { recursive: true });

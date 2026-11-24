@@ -5,10 +5,10 @@
  *
  * THE BUG THIS EXISTS FOR (reproduced deterministically, bun 1.3.13):
  *
- *     $ ./equin push          # in a worktree with no node_modules
+ *     $ ./muxos push          # in a worktree with no node_modules
  *     … bun install … 2542 packages installed
  *     error: Cannot find package 'commander' from '…/cli/bin/cli.ts'
- *     $ ./equin push          # retry, no changes → works
+ *     $ ./muxos push          # retry, no changes → works
  *
  * Bun's module resolver CACHES DIRECTORY LISTINGS, and starts populating them as
  * it loads this process's first modules — well before `ensureDeps()` runs. Every
@@ -86,7 +86,7 @@ export interface ReexecBudget {
 // it is carried only from a process to the re-exec of itself. The bootstrap
 // TAKES it (below) — reads it and removes it from `process.env` — before it
 // spawns anything, so no descendant (`run` → an e2e script → a nested
-// `./equin …`, `build` → its `check` subprocess) inherits a spent or partly
+// `./muxos …`, `build` → its `check` subprocess) inherits a spent or partly
 // spent budget for what is really a new invocation.
 
 /**

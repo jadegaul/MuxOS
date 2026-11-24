@@ -6,7 +6,7 @@ import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 
 // Did a fix remove its problem as a class, or patch one instance? The cheapest
 // honest reading git can give: a commit on main naming a report it fixes
-// (`Fixes-report:`, stamped by `./equin push --fixes-report`) that ALSO changed a
+// (`Fixes-report:`, stamped by `./muxos push --fixes-report`) that ALSO changed a
 // lint rule or a check (a file under a `lint/` or `check/` folder, tests aside)
 // landed a guard that refuses the next one. A type-level guard or a loud runtime
 // assert leaves no such trace in the paths, so this is a FLOOR on structural
@@ -17,7 +17,7 @@ const MARK = "@@";
 
 /**
  * One fix as it landed: a push to main whose commits name a report they fix.
- * `./equin push --fixes-report` stamps the trailer on every commit of the
+ * `./muxos push --fixes-report` stamps the trailer on every commit of the
  * push, so the push — not each commit — is the unit; it landed a guard when
  * any of its commits did.
  */

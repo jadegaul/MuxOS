@@ -17,7 +17,7 @@ interface Recorded {
   spawned: { argv: string[]; cwd: AppPath; env: Record<string, unknown> }[];
 }
 
-/** The Build button's build: `./equin build --allow-main` run by main's backend, in the slot it serves from. */
+/** The Build button's build: `./muxos build --allow-main` run by main's backend, in the slot it serves from. */
 function buttonDeps(exitCode: number): { deps: SlotRelayDeps; rec: Recorded } {
   const rec: Recorded = { slotFor: null, slotOpts: null, spawned: [] };
   const deps: SlotRelayDeps = {
@@ -62,7 +62,7 @@ describe("relayIntoSlot (the Build button's build on main)", () => {
     expect(rec.spawned).toHaveLength(1);
     const [child] = rec.spawned;
     expect(child!.argv).toEqual([
-      `${FREE_SLOT}/equin`,
+      `${FREE_SLOT}/muxos`,
       "build",
       "--allow-main",
     ]);

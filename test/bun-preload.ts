@@ -22,7 +22,7 @@ import {
   formatLoopHeartbeat,
 } from "@plugins/framework/plugins/cli/plugins/test/core";
 
-// The loop heartbeat `./equin test` asked for (cli/test core loop-heartbeat.ts):
+// The loop heartbeat `./muxos test` asked for (cli/test core loop-heartbeat.ts):
 // the awake clock, stamped while this process's event loop turns, so the runner
 // can tell a test stuck in native code — which bun's own per-test timeout,
 // enforced on this same loop, can never time out — from a slow one. Armed
@@ -70,7 +70,7 @@ if (heartbeatPath !== undefined) {
 // is the property that matters: no suite can observe an undeclared namespace.
 // The root of a `bun test` process tree: decide the data root before any suite
 // reads a path (infra/paths CLAUDE.md, § The data root). A suite that repoints
-// the root sets EQUIN_DIR, which wins over the declaration.
+// the root sets MUXOS_DIR, which wins over the declaration.
 declareDataRootLayoutSync();
 declareRuntimeNamespace(await checkoutNamespace(REPO_ROOT));
 

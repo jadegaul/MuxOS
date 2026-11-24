@@ -5,7 +5,7 @@ import {
   type CannotJudgePayload,
 } from "../../core";
 
-// The `restart-skip-cannot-judge` kind, filed by `./equin build` through the
+// The `restart-skip-cannot-judge` kind, filed by `./muxos build` through the
 // report outbox when the process it asked to adopt the deploy answered
 // `cannot-judge`. One row per process kind: central, and every namespace's
 // backend together (it is the same judgement over the same code, so one

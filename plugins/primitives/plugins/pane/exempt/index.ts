@@ -28,7 +28,7 @@ export default [
     paths: ["check/write-identity-snapshot.ts"],
     kind: "sanctioned",
     reason:
-      "A standalone regenerator run by hand (`./equin run …/write-identity-snapshot.ts`), outside any check pass: it is its own pass root, lists the working tree once and hands that set to scanPaneIdentities.",
+      "A standalone regenerator run by hand (`./muxos run …/write-identity-snapshot.ts`), outside any check pass: it is its own pass root, lists the working tree once and hands that set to scanPaneIdentities.",
   },
   {
     rule: "react-compiler:no-silent-skips",

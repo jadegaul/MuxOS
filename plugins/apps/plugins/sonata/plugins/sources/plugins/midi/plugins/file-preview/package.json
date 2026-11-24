@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-sonata-sources-midi-file-preview",
-  "description": "Sonata's MIDI file preview — a FileViewer renderer for .mid/.midi host files: the file's facts, Sonata's falling-notes piano roll and transport, and Open in Sonata at the playhead.",
+  "name": "@muxos/plugin-apps-sonata-sources-midi-file-preview",
+  "description": "Sonata's MIDI file preview \u2014 a FileViewer renderer for .mid/.midi host files: the file's facts, Sonata's falling-notes piano roll and transport, and Open in Sonata at the playhead.",
   "private": true,
   "version": "0.0.1"
 }

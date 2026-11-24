@@ -44,7 +44,7 @@ let running: () => string[];
 beforeEach(() => {
   // Real: running executables are reported by real path (/private/var/…).
   dir = asAppPath(realpathSync(mkdtempSync(join(tmpdir(), "macos-app-"))));
-  bundle = joinAppPath(dir, "state", "equin.app");
+  bundle = joinAppPath(dir, "state", "muxos.app");
   mkdirSync(join(dir, "state"));
   calls = [];
   signed = true;
@@ -98,12 +98,12 @@ function build(name: string, content: string, icon?: string) {
 }
 
 const gateway = { name: "gateway" };
-const tray = { name: "equin-desktop", main: true };
+const tray = { name: "muxos-desktop", main: true };
 const exe = (name: string) => joinAppPath(bundle, "Contents", "MacOS", name);
 /** The swapped-out bundles beside the installed one. */
 const oldBundles = () =>
   readdirSync(joinAppPath(dir, "state"))
-    .filter((name) => name.startsWith("equin.app.old-"))
+    .filter((name) => name.startsWith("muxos.app.old-"))
     .map((name) => joinAppPath(dir, "state", name));
 const plist = () =>
   readFileSync(join(bundle, "Contents", "Info.plist"), "utf8");
@@ -112,11 +112,11 @@ describe("Info.plist", () => {
   const components: InstalledComponent[] = [
     { name: "gateway", identity: "gw@1", main: false, icon: false },
     {
-      name: "equin-desktop",
+      name: "muxos-desktop",
       identity: "mb@1",
       main: true,
       icon: true,
-      urlSchemes: ["equin"],
+      urlSchemes: ["muxos"],
     },
   ];
 
@@ -127,24 +127,24 @@ describe("Info.plist", () => {
     ]);
   });
 
-  test("names the app equin, dev.equin, its main component and its icon", () => {
+  test("names the app muxos, dev.muxos, its main component and its icon", () => {
     const text = renderAppInfoPlist(components);
     expect(text).toContain(
       `<key>CFBundleIdentifier</key><string>${APP_BUNDLE_ID}</string>`,
     );
     expect(text).toContain(
-      "<key>CFBundleDisplayName</key><string>equin</string>",
+      "<key>CFBundleDisplayName</key><string>muxos</string>",
     );
     expect(text).toContain(
-      "<key>CFBundleExecutable</key><string>equin-desktop</string>",
+      "<key>CFBundleExecutable</key><string>muxos-desktop</string>",
     );
-    expect(text).toContain("<key>CFBundleIconFile</key><string>equin</string>");
+    expect(text).toContain("<key>CFBundleIconFile</key><string>muxos</string>");
     expect(text).toContain("<key>LSUIElement</key><true/>");
   });
 
   test("registers every component's URL schemes, and none when none declares one", () => {
     expect(renderAppInfoPlist(components)).toContain(
-      `<key>CFBundleURLTypes</key><array><dict><key>CFBundleURLName</key><string>${APP_BUNDLE_ID}</string><key>CFBundleURLSchemes</key><array><string>equin</string></array></dict></array>`,
+      `<key>CFBundleURLTypes</key><array><dict><key>CFBundleURLName</key><string>${APP_BUNDLE_ID}</string><key>CFBundleURLSchemes</key><array><string>muxos</string></array></dict></array>`,
     );
     expect(renderAppInfoPlist([components[0]!])).not.toContain(
       "CFBundleURLTypes",
@@ -158,7 +158,7 @@ describe("Info.plist", () => {
 
   test("another component stands in as main until the main one is installed", () => {
     expect(mainComponent([components[0]!]).name).toBe("gateway");
-    expect(mainComponent(components).name).toBe("equin-desktop");
+    expect(mainComponent(components).name).toBe("muxos-desktop");
   });
 
   test("a plist it did not write is not read as one", () => {
@@ -204,7 +204,7 @@ describe("installServiceExecutable", () => {
     ]);
     expect(calls).toEqual(["lock", "sign", `register ${bundle}`]);
     // No staging or old copy is left beside it.
-    expect(readdirSync(join(dir, "state"))).toEqual(["equin.app"]);
+    expect(readdirSync(join(dir, "state"))).toEqual(["muxos.app"]);
   });
 
   test("a second component joins the first, which keeps its build", async () => {
@@ -216,15 +216,15 @@ describe("installServiceExecutable", () => {
       () => {},
     );
     expect(readFileSync(exe("gateway"), "utf8")).toBe("1");
-    expect(readFileSync(exe("equin-desktop"), "utf8")).toBe("1");
+    expect(readFileSync(exe("muxos-desktop"), "utf8")).toBe("1");
     expect(
-      readFileSync(join(bundle, "Contents", "Resources", "equin.icns"), "utf8"),
+      readFileSync(join(bundle, "Contents", "Resources", "muxos.icns"), "utf8"),
     ).toBe("ICON");
     expect(plist()).toContain(
-      "<key>CFBundleExecutable</key><string>equin-desktop</string>",
+      "<key>CFBundleExecutable</key><string>muxos-desktop</string>",
     );
     expect((await installedAppComponents(bundle))?.map((c) => c.name)).toEqual([
-      "equin-desktop",
+      "muxos-desktop",
       "gateway",
     ]);
   });
@@ -249,13 +249,13 @@ describe("installServiceExecutable", () => {
     calls = [];
     await installServiceExecutable(
       host(),
-      { ...tray, urlSchemes: ["equin"] },
+      { ...tray, urlSchemes: ["muxos"] },
       build("mb", "1"),
       () => {},
     );
     expect(calls).toEqual(["lock", "sign", `register ${bundle}`, "lsof"]);
     expect(plist()).toContain(
-      "<key>CFBundleURLSchemes</key><array><string>equin</string></array>",
+      "<key>CFBundleURLSchemes</key><array><string>muxos</string></array>",
     );
   });
 
@@ -292,7 +292,7 @@ describe("installServiceExecutable", () => {
     // The gateway restarted from the new bundle: the next install removes it.
     running = () => [exe("gateway")];
     await installServiceExecutable(host(), tray, build("mb", "2"), () => {});
-    expect(readdirSync(join(dir, "state"))).toEqual(["equin.app"]);
+    expect(readdirSync(join(dir, "state"))).toEqual(["muxos.app"]);
   });
 
   test("a swap whose old bundle nothing runs leaves none behind", async () => {
@@ -300,7 +300,7 @@ describe("installServiceExecutable", () => {
     calls = [];
     await installServiceExecutable(host(), gateway, build("gw", "2"), () => {});
     expect(calls).toEqual(["lock", "sign", `register ${bundle}`, "lsof"]);
-    expect(readdirSync(join(dir, "state"))).toEqual(["equin.app"]);
+    expect(readdirSync(join(dir, "state"))).toEqual(["muxos.app"]);
   });
 
   test("a failed signature leaves the installed bundle as it was", async () => {
@@ -311,7 +311,7 @@ describe("installServiceExecutable", () => {
     ).rejects.toMatchObject({ message: "signing failed" });
 
     expect(readFileSync(exe("gateway"), "utf8")).toBe("1");
-    expect(readdirSync(join(dir, "state"))).toEqual(["equin.app"]);
+    expect(readdirSync(join(dir, "state"))).toEqual(["muxos.app"]);
   });
 
   test("a write the Mac refuses is a BundleWriteRefusedError naming the bundle, which is left as it was", async () => {
@@ -332,7 +332,7 @@ describe("installServiceExecutable", () => {
     expect((err as Error).message).toContain("Operation not permitted");
 
     expect(readFileSync(exe("gateway"), "utf8")).toBe("1");
-    expect(readdirSync(join(dir, "state"))).toEqual(["equin.app"]);
+    expect(readdirSync(join(dir, "state"))).toEqual(["muxos.app"]);
   });
 
   test("a bundle it did not write is rebuilt, not merged into", async () => {
@@ -367,38 +367,38 @@ test("bundleOfExecutable", () => {
 
 describe("appsBlockedNotice", () => {
   const refused = new BundleWriteRefusedError(
-    asAppPath("/h/me/Applications/equin.app"),
-    "equin-desktop",
+    asAppPath("/h/me/Applications/muxos.app"),
+    "muxos-desktop",
     new Error("Operation not permitted (os error 1)"),
   );
   const icon = {
-    name: "the equin icon in your menu bar",
-    gives: "It opens equin from anywhere.",
+    name: "the muxos icon in your menu bar",
+    gives: "It opens muxos from anywhere.",
   };
 
   test("keeps the installer message rules, the refusal only as evidence", () => {
     const notice = appsBlockedNotice([refused], [icon], {
       optional: true,
-      appUrl: "http://equin.localhost:9000",
-      addLater: "Add it later with `./equin start --only dev.equin.menu-bar`.",
+      appUrl: "http://muxos.localhost:9000",
+      addLater: "Add it later with `./muxos start --only dev.muxos.menu-bar`.",
     });
-    expect(notice.doing).toContain("the equin icon in your menu bar");
+    expect(notice.doing).toContain("the muxos icon in your menu bar");
     expect(notice.ifSkipped.optional).toBe(true);
     expect(notice.evidence.join("\n")).toContain("Operation not permitted");
     expect(
       JSON.stringify([notice.title, notice.doing, notice.blocked, notice.now]),
-    ).not.toContain("equin.app");
+    ).not.toContain("muxos.app");
   });
 
-  test("a needed part says why equin cannot go on", () => {
+  test("a needed part says why muxos cannot go on", () => {
     const notice = appsBlockedNotice([refused], [icon], {
       optional: false,
-      because: "without it, equin cannot open in your browser.",
+      because: "without it, muxos cannot open in your browser.",
     });
-    expect(notice.title).toBe("macOS blocked equin from setting itself up");
+    expect(notice.title).toBe("macOS blocked muxos from setting itself up");
     expect(notice.ifSkipped).toEqual({
       optional: false,
-      because: "without it, equin cannot open in your browser.",
+      because: "without it, muxos cannot open in your browser.",
     });
   });
 });

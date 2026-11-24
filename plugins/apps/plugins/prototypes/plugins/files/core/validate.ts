@@ -16,7 +16,7 @@ import { foldOptions } from "./options";
 // server serves it, and that it reaches outside itself for nothing.
 //
 // Two callers, one rule set. Prototypes themselves are user content living in
-// `~/.equin/apps/prototypes/`, so their problems surface in the gallery, on the
+// `~/.muxos/apps/prototypes/`, so their problems surface in the gallery, on the
 // card, where the author is looking. The `_template/` seed IS code, ships in the
 // repo, and is checked by `prototypes:self-contained` at push time.
 
@@ -256,7 +256,7 @@ export function scanPrototypeFolder(
     folderProblems.push({
       path: "",
       detail:
-        "the folder name is not a minted prototype id (proto-<epoch>-<4 chars>), so this prototype cannot be referenced by id from a conversation — create prototypes with `./equin prototype new` instead of copying _template by hand",
+        "the folder name is not a minted prototype id (proto-<epoch>-<4 chars>), so this prototype cannot be referenced by id from a conversation — create prototypes with `./muxos prototype new` instead of copying _template by hand",
     });
   }
 

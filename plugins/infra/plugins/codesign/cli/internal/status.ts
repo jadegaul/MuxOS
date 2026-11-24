@@ -8,7 +8,7 @@ import {
   RESET_HINT,
 } from "../../deps";
 
-/** `./equin codesign status` — read-only: never creates the local identity. */
+/** `./muxos codesign status` — read-only: never creates the local identity. */
 const run: CliAction<[], object> = async () => {
   const host = machineHost();
   if (host.platform !== "darwin") {
@@ -27,7 +27,7 @@ const run: CliAction<[], object> = async () => {
   const local = await readLocalIdentity(host);
   if (local.kind === "absent") {
     console.log(
-      "No local identity yet: the next gateway build (`./equin start`) creates one.",
+      "No local identity yet: the next gateway build (`./muxos start`) creates one.",
     );
     return;
   }

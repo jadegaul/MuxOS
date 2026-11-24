@@ -9,7 +9,7 @@ describe("the run-as-root refusal", () => {
       "Details (for a bug report):",
     );
     expect(message).not.toMatch(/initdb|embedded cluster|backend/);
-    expect(message).toContain("`adduser --disabled-password --gecos '' equin`");
+    expect(message).toContain("`adduser --disabled-password --gecos '' muxos`");
     expect(evidence).toContain("initdb");
   });
 });

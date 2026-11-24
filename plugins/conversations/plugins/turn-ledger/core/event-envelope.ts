@@ -9,7 +9,7 @@ import type { TurnKind } from "./schemas";
 // `submitTurn` passes the raw body, so no event can reach an agent bare.
 
 /** The envelope's tag. */
-const EVENT_TURN_TAG = "equin-event";
+const EVENT_TURN_TAG = "muxos-event";
 
 const OPEN = `<${EVENT_TURN_TAG}>`;
 const CLOSE = `</${EVENT_TURN_TAG}>`;

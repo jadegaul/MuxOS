@@ -114,7 +114,7 @@ export function startExitWatchdog(opts: {
     throw new Error(
       `exit watchdog: graceSeconds must be a whole number ≥ 1, got ${String(opts.graceSeconds)}`,
     );
-  const fifoDir = mkdtempSync(join(tmpdir(), "equin-exit-watchdog-"));
+  const fifoDir = mkdtempSync(join(tmpdir(), "muxos-exit-watchdog-"));
   const fifo = join(fifoDir, "arm");
   const made = spawnSync(MKFIFO, [fifo], { encoding: "utf8" });
   if (made.status !== 0)

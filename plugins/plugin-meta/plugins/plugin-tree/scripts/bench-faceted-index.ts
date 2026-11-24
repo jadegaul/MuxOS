@@ -1,5 +1,5 @@
 // Faceted tree, cold and per edit. Before: every file event under `plugins/`
-// spawned `./equin plugin-tree-facets`, which built the whole tree again — a
+// spawned `./muxos plugin-tree-facets`, which built the whole tree again — a
 // whole snapshot, the structure, every plugin's record keys and reads, relate,
 // a 7.8 MB JSON round trip — on top of its own process boot and tooling load.
 // "before" measures that in-process work (records warm), a floor of what the
@@ -7,7 +7,7 @@
 // refreshes — and its tree after every edit equals a fresh build.
 // Then across processes: a new worker, as each backend restart starts one,
 // after edits made while none ran — its tree too must equal a fresh build.
-// `./equin run plugins/plugin-meta/plugins/plugin-tree/scripts/bench-faceted-index.ts [--rounds N] [--skip-old]`
+// `./muxos run plugins/plugin-meta/plugins/plugin-tree/scripts/bench-faceted-index.ts [--rounds N] [--skip-old]`
 import { rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { getWorktreeRoot } from "@plugins/infra/plugins/spawn/core";

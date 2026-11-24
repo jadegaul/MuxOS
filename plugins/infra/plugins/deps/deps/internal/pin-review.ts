@@ -1,6 +1,6 @@
 // A pin's lag behind what main declares, bounded the way a dependency hold is
 // (the `deps/hold` model): once a pin has lagged for PIN_LAG_MAX_DAYS someone
-// must decide — switch it (`./equin deps pin`), or record a deliberate stay,
+// must decide — switch it (`./muxos deps pin`), or record a deliberate stay,
 // which IS a hold (a reason and a `reviewBy` at most HOLD_MAX_DAYS out). Past
 // its `reviewBy` the stay is lapsed and the decision is due again. Nothing here
 // switches a pin or restarts anything: the switch stays a person's.

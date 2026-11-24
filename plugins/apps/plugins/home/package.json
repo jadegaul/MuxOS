@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-home",
-  "description": "Home — app launcher and entry point.",
+  "name": "@muxos/plugin-apps-home",
+  "description": "Home \u2014 app launcher and entry point.",
   "private": true,
   "version": "0.0.1"
 }

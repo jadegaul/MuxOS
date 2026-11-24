@@ -6,7 +6,7 @@
 // a retiring worker's name is skipped), a NEW build has a new worker URL — a
 // different SharedWorker — and a browser without SharedWorker falls back to a
 // worker per tab. So the storage is held under an exclusive Web Lock,
-// `equin-host:<name>`, for as long as it is open, and a worker that finds it
+// `muxos-host:<name>`, for as long as it is open, and a worker that finds it
 // held CLAIMS it over a BroadcastChannel of the same name, saying what code it
 // runs (its migrations, snapshot and build) and the SharedWorker name it
 // serves under. The holder answers, by the claimant's cause:

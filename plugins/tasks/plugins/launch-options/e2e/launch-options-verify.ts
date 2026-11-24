@@ -39,7 +39,7 @@
  * always-mounted trigger instead of one behind the floating action bar's
  * hover-disclosure animation.
  *
- *   ./equin run plugins/tasks/plugins/launch-options/e2e/launch-options-verify.ts \
+ *   ./muxos run plugins/tasks/plugins/launch-options/e2e/launch-options-verify.ts \
  *     --task <taskId> [--headed]
  */
 import {

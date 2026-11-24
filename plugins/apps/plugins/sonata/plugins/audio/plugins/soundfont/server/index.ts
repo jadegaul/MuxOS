@@ -5,7 +5,7 @@ import { soundfontSource } from "../shared/source";
 /**
  * Registers the General MIDI soundfont asset mirror so the web voices can fetch
  * each instrument's samples from `/api/asset-mirror/gm-soundfont/…` (same-origin,
- * cached to `~/.equin/cache/asset-mirror/`) instead of the remote gleitz CDN. After one online
+ * cached to `~/.muxos/cache/asset-mirror/`) instead of the remote gleitz CDN. After one online
  * warm-up per instrument, that timbre sounds fully offline.
  */
 export default {

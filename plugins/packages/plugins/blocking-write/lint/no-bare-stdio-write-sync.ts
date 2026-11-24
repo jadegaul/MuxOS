@@ -43,7 +43,7 @@ function isWriteSync(callee: TSESTree.Node): boolean {
  *
  * Bun sets O_NONBLOCK on a piped stdout / stderr the first time
  * `process.stdout` / `process.stderr` is touched, so a bare `writeSync(1, …)`
- * into a pipe whose reader is slower (`./equin build | tail`) throws EAGAIN
+ * into a pipe whose reader is slower (`./muxos build | tail`) throws EAGAIN
  * once the pipe is full, or writes part of the buffer and returns the short
  * count — a build crashed on it instead of printing its verdict (2026-11-15).
  * `writeAllSync` (packages/blocking-write) waits the pipe out and writes it

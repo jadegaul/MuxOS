@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-dom-web-storage-health",
+  "name": "@muxos/plugin-primitives-dom-web-storage-health",
   "private": true,
   "version": "0.0.1"
 }

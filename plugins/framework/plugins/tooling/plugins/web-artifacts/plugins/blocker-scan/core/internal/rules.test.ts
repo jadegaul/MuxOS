@@ -22,7 +22,7 @@ const set = (rules: DnrRule[]): Ruleset[] => [
 
 const PATH =
   "/artifacts/apps.prototypes.thumbnails.core.4841d5b3c51d0d46.worker/core/fingerprint.js";
-const URL = `https://equin.ai${PATH}`;
+const URL = `https://MuxOS.app${PATH}`;
 
 describe("generic rules", () => {
   test("a rule naming a domain, a || host or third parties only is not generic", () => {
@@ -54,7 +54,7 @@ describe("generic rules", () => {
     ).toBe(false);
     expect(
       isGenericCancellingRule(
-        rule({ urlFilter: "/x.js", excludedInitiatorDomains: ["equin.ai"] }),
+        rule({ urlFilter: "/x.js", excludedInitiatorDomains: ["MuxOS.app"] }),
       ),
     ).toBe(false);
   });
@@ -88,9 +88,9 @@ describe("matching", () => {
       "/fingerprint.js^",
     ]);
     const renamed = PATH.replace("fingerprint", "content-key");
-    expect(matchingRules(rules, `https://equin.ai${renamed}`, renamed)).toEqual(
-      [],
-    );
+    expect(
+      matchingRules(rules, `https://MuxOS.app${renamed}`, renamed),
+    ).toEqual([]);
   });
 
   test("^ is a separator or the end, never a letter", () => {
@@ -98,13 +98,13 @@ describe("matching", () => {
       set([rule({ urlFilter: "/beacon^" })]),
     );
     expect(
-      matchingRules(rules, "https://equin.ai/a/beacon/x.js", "/a/beacon/x.js"),
+      matchingRules(rules, "https://MuxOS.app/a/beacon/x.js", "/a/beacon/x.js"),
     ).toHaveLength(1);
     expect(
-      matchingRules(rules, "https://equin.ai/a/beacon", "/a/beacon"),
+      matchingRules(rules, "https://MuxOS.app/a/beacon", "/a/beacon"),
     ).toHaveLength(1);
     expect(
-      matchingRules(rules, "https://equin.ai/a/beacons.js", "/a/beacons.js"),
+      matchingRules(rules, "https://MuxOS.app/a/beacons.js", "/a/beacons.js"),
     ).toHaveLength(0);
   });
 
@@ -115,11 +115,11 @@ describe("matching", () => {
         rule({ urlFilter: "|http://" }),
       ]),
     );
-    const hits = (p: string, origin = "https://equin.ai") =>
+    const hits = (p: string, origin = "https://MuxOS.app") =>
       matchingRules(rules, origin + p, p).map((r) => r.filter);
     expect(hits("/x/tracker-v2.js")).toEqual(["/track*.js|"]);
     expect(hits("/x/tracker-v2.js?x")).toEqual([]);
-    expect(hits("/y", "http://equin.localhost:9000")).toEqual(["|http://"]);
+    expect(hits("/y", "http://muxos.localhost:9000")).toEqual(["|http://"]);
   });
 
   test("case-insensitive unless the rule says otherwise", () => {
@@ -130,10 +130,10 @@ describe("matching", () => {
       ]),
     );
     expect(
-      matchingRules(rules, "https://equin.ai/autotrack.js", "/autotrack.js"),
+      matchingRules(rules, "https://MuxOS.app/autotrack.js", "/autotrack.js"),
     ).toHaveLength(1);
     expect(
-      matchingRules(rules, "https://equin.ai/clicktrack.js", "/clicktrack.js"),
+      matchingRules(rules, "https://MuxOS.app/clicktrack.js", "/clicktrack.js"),
     ).toHaveLength(0);
   });
 
@@ -148,13 +148,13 @@ describe("matching", () => {
       ]),
     );
     expect(
-      matchingRules(rules, "https://equin.ai/pixel.js", "/pixel.js"),
+      matchingRules(rules, "https://MuxOS.app/pixel.js", "/pixel.js"),
     ).toHaveLength(0);
     expect(
-      matchingRules(rules, "https://equin.ai/pixel.png", "/pixel.png"),
+      matchingRules(rules, "https://MuxOS.app/pixel.png", "/pixel.png"),
     ).toHaveLength(1);
     expect(
-      matchingRules(rules, "https://equin.ai/stats.js", "/stats.js"),
+      matchingRules(rules, "https://MuxOS.app/stats.js", "/stats.js"),
     ).toHaveLength(0);
   });
 
@@ -168,7 +168,7 @@ describe("matching", () => {
     expect(
       matchingRules(
         rules,
-        "https://equin.ai/analytics-event.js",
+        "https://MuxOS.app/analytics-event.js",
         "/analytics-event.js",
       ),
     ).toHaveLength(1);

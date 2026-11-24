@@ -20,7 +20,7 @@ async function stamp(code: string): Promise<string> {
   return result.code;
 }
 
-const STAMP = (name: string) => `${name}.__equinSource = "src/thing.tsx";`;
+const STAMP = (name: string) => `${name}.__muxosSource = "src/thing.tsx";`;
 
 describe("loss-detector component-source stamp", () => {
   it("stamps every PascalCase component binding whose own body calls a hook", async () => {
@@ -40,10 +40,10 @@ describe("loss-detector component-source stamp", () => {
     expect(out).toContain(STAMP("Memo"));
     // No hook of its own (Outer's is in a nested function), not a component
     // name, or a hook: no state of a component of its own to judge.
-    expect(out).not.toContain("Plain.__equinSource");
-    expect(out).not.toContain("Outer.__equinSource");
-    expect(out).not.toContain("helper.__equinSource");
-    expect(out).not.toContain("useThing.__equinSource");
+    expect(out).not.toContain("Plain.__muxosSource");
+    expect(out).not.toContain("Outer.__muxosSource");
+    expect(out).not.toContain("helper.__muxosSource");
+    expect(out).not.toContain("useThing.__muxosSource");
     // Exactly one stamp per binding.
     expect(out.split(STAMP("Memo")).length).toBe(2);
   });
@@ -54,7 +54,7 @@ describe("loss-detector component-source stamp", () => {
     );
     const ran = new Function(
       "useState",
-      `${out}\nreturn Arrow.__equinSource;`,
+      `${out}\nreturn Arrow.__muxosSource;`,
     ) as (u: unknown) => unknown;
     expect(ran(() => 0)).toBe("src/thing.tsx");
   });
@@ -72,6 +72,6 @@ describe("loss-detector component-source stamp", () => {
       join(import.meta.dir, "../web/internal/fiber.ts"),
       "utf8",
     );
-    expect(fiber).toContain('COMPONENT_SOURCE_PROP = "__equinSource"');
+    expect(fiber).toContain('COMPONENT_SOURCE_PROP = "__muxosSource"');
   });
 });

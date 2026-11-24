@@ -33,7 +33,7 @@ describe("backend-crash", () => {
       "alpha died by SIGSEGV after 1h 05m — panic: Segmentation fault at address 0x7BC138",
     );
     expect(macCrashReportGlob(d)).toBe(
-      "~/Library/Logs/DiagnosticReports{,/Retired}/equin · server · alpha-*.ips",
+      "~/Library/Logs/DiagnosticReports{,/Retired}/muxos · server · alpha-*.ips",
     );
   });
 

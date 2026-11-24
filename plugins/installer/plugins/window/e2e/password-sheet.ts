@@ -3,7 +3,7 @@
 // in a headless Chromium over the bundled page, with the window's bridge
 // recorded. Writes `<out>.png` with the sheet open.
 //
-//   ./equin run plugins/installer/plugins/window/e2e/password-sheet.ts --url http://equin.localhost:<port> --out "$EQUIN_SCRATCH/password"
+//   ./muxos run plugins/installer/plugins/window/e2e/password-sheet.ts --url http://muxos.localhost:<port> --out "$MUXOS_SCRATCH/password"
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -15,7 +15,7 @@ import { bundlePage } from "../deps";
 
 const out = requireArg(
   "out",
-  "password-sheet.ts --url http://equin.localhost:<port> --out <prefix>",
+  "password-sheet.ts --url http://muxos.localhost:<port> --out <prefix>",
 );
 const html = await bundlePage(join(import.meta.dir, "../../../../.."));
 const r = report("installer password sheet");
@@ -40,7 +40,7 @@ await withBrowser(async (h) => {
     (
       window as unknown as { installer: { askPassword(p: string): void } }
     ).installer.askPassword(
-      "equin needs your password to install git and a C compiler, and to keep running while nobody is logged in. It is used for this only and never stored.",
+      "muxos needs your password to install git and a C compiler, and to keep running while nobody is logged in. It is used for this only and never stored.",
     ),
   );
   await page.keyboard.type("s3cr et");

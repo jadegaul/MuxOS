@@ -20,7 +20,7 @@
  * to record (`[conversations.status] recordReport failed`), and the user's
  * notification — what this asserts — is written regardless.
  *
- * Requires the running embedded cluster — `./equin build` first.
+ * Requires the running embedded cluster — `./muxos build` first.
  */
 
 import { afterAll, beforeAll, expect, setDefaultTimeout, test } from "bun:test";

@@ -4,7 +4,7 @@ import type { VersionEntry } from "../server/internal/history-store";
 import { cliHistory } from "./tree";
 
 /**
- * `./equin prototype log <id> [-p]` — how a prototype got to where it is,
+ * `./muxos prototype log <id> [-p]` — how a prototype got to where it is,
  * newest first: what each version was asked for, what the agent said it did,
  * and (with `-p`) the diff it made.
  *
@@ -28,7 +28,7 @@ export const prototypeLogAction: CliAction<
       "* Live · unsaved changes — the folder differs from the newest version",
     );
     console.log(
-      `  (the next agent turn records them; or: ./equin prototype checkpoint ${id})`,
+      `  (the next agent turn records them; or: ./muxos prototype checkpoint ${id})`,
     );
     console.log("");
   }

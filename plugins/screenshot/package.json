@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-screenshot",
+  "name": "@muxos/plugin-screenshot",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

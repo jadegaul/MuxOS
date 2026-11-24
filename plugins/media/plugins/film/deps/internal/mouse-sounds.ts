@@ -74,7 +74,7 @@ export function mouseSoundFiles(ready: Ready<typeof mouseSounds.source>): {
   };
 }
 
-/** Installs the mouse sounds when missing (a child `./equin deps install`) and returns their paths. */
+/** Installs the mouse sounds when missing (a child `./muxos deps install`) and returns their paths. */
 export async function resolveMouseSounds(): Promise<{
   press: string;
   release: string;

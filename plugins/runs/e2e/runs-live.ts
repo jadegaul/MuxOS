@@ -19,7 +19,7 @@
  * Seeded rows are deleted at the end (also on failure). Refuses main (it
  * seeds rows into the deploy's database).
  *
- *   ./equin run plugins/runs/e2e/runs-live.ts [--headed]
+ *   ./muxos run plugins/runs/e2e/runs-live.ts [--headed]
  */
 import { randomBytes } from "node:crypto";
 import type { Page } from "playwright";

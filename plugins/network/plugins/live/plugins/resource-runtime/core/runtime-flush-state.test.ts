@@ -1,6 +1,6 @@
 /**
  * The flush scheduler can never strand a request. Run with
- * `./equin test plugins/network/plugins/live/plugins/resource-runtime`.
+ * `./muxos test plugins/network/plugins/live/plugins/resource-runtime`.
  *
  * The 2026-10-26 incident: main pushed nothing for 7 minutes while subscribe
  * replies kept working, no span stayed open and `flushOpenMs` read 0. The old

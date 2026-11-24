@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-conversation-view-user-message",
+  "name": "@muxos/plugin-conversations-conversation-view-user-message",
   "private": true,
   "version": "0.0.1"
 }

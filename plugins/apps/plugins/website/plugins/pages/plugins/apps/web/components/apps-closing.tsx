@@ -19,16 +19,16 @@ import { subThemeScope } from "@plugins/primitives/plugins/css/plugins/ui-kit/co
 import { downloadPane } from "@plugins/apps/plugins/website/plugins/pages/plugins/download/web";
 import { visionPane } from "@plugins/apps/plugins/website/plugins/pages/plugins/vision/web";
 import { foundationsPane } from "@plugins/apps/plugins/website/plugins/pages/plugins/foundations/web";
-import { equinClosingTheme } from "../internal/theme";
+import { muxosClosingTheme } from "../internal/theme";
 
 /**
- * The page's end, in its own sizes (`equinClosingTheme`): "Missing an app?",
+ * The page's end, in its own sizes (`muxosClosingTheme`): "Missing an app?",
  * then the two pages to read next. Its distances from the gallery above and
  * between its two parts are the gallery's score, in `apps-gallery.css`.
  */
 export function AppsClosing() {
   return (
-    <Theme name={subThemeScope(equinClosingTheme)} surface="none">
+    <Theme name={subThemeScope(muxosClosingTheme)} surface="none">
       <AppsCompose />
       <AppsReadNext />
     </Theme>
@@ -37,9 +37,9 @@ export function AppsClosing() {
 
 /**
  * "Missing an app?" — the gallery's answer to an app it does not have: install
- * equin, then describe it, and an agent composes it. The field is there so the
+ * muxos, then describe it, and an agent composes it. The field is there so the
  * reader can start describing; Build it goes to the download page, because the
- * building happens in equin, not on the site.
+ * building happens in muxos, not on the site.
  */
 function AppsCompose() {
   const openPane = useOpenPane();
@@ -61,7 +61,7 @@ function AppsCompose() {
               Missing an app?
             </Text>
             <Text as="p" variant="body" tone="muted">
-              Install equin, then describe it: an agent composes it from
+              Install muxos, then describe it: an agent composes it from
               existing plugins and builds what is missing.
             </Text>
           </Stack>

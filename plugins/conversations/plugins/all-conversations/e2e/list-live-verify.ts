@@ -21,7 +21,7 @@
  * Refuses main.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/conversations/plugins/all-conversations/e2e/list-live-verify.ts [--headed]
+ *   ./muxos run plugins/conversations/plugins/all-conversations/e2e/list-live-verify.ts [--headed]
  */
 import type { Page } from "playwright";
 import {

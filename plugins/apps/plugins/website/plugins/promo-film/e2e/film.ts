@@ -1,32 +1,32 @@
-// The equin showcase film (the Video page's Script v2 and its Preferences):
+// The muxos showcase film (the Video page's Script v2 and its Preferences):
 // one continuous recorded session of the real app on the seeded promo-film
-// composition, ending on equin's desktop mode. Renders from what
+// composition, ending on muxos's desktop mode. Renders from what
 // e2e/record.ts recorded (never records itself); the music is
 // internal/music.ts's FILM_MUSIC (or, to audition, --music <slug>). The
 // recordings are read from --rec-dir <dir> (required: the dir record.ts wrote).
 //
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --preview
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --stills 5,12,30 [--captions]
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts            # new version
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --captions # its captions
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --preview
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --stills 5,12,30 [--captions]
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts            # new version
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --captions # its captions
 //
 // The render runs on parallel pages (film's --workers, default from the host's
 // cores; --workers 1 renders serially) — the same film either way.
 //
 // Every render is a new version, never an overwrite (runFilm refuses one):
-// the plain render writes ~/Downloads/showcase/equin-v<N>.mp4 with N one past
-// the newest there; --captions writes equin-v<N>-captions.mp4 for the newest
+// the plain render writes ~/Downloads/showcase/muxos-v<N>.mp4 with N one past
+// the newest there; --captions writes muxos-v<N>-captions.mp4 for the newest
 // version that has none yet (render the plain variant first); each full
 // render also writes its light web version beside it (`<name>-web.mp4`,
 // media/film's webEncodeArgs); a preview
-// writes equin-v<N>-preview[-k].mp4 for the version about to be rendered.
+// writes muxos-v<N>-preview[-k].mp4 for the version about to be rendered.
 //
 // --music <slug> renders the newest version's recordings with another track
 // (internal/music.ts's FILM_MUSIC_TRACKS: its file, beat grid and section) to
-// equin-v<N>-music-<slug>.mp4 — FILM_MUSIC stays as it is. One render per
+// muxos-v<N>-music-<slug>.mp4 — FILM_MUSIC stays as it is. One render per
 // track; a second one with the same slug is refused (never an overwrite).
 //
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --music hug-convoy
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/film.ts --music hug-convoy
 
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
@@ -57,7 +57,7 @@ function versionedOut(ctx: FilmContext): string {
   const files = readdirSync(SHOWCASE);
   const has = (f: string) => files.includes(f);
   const versions = files
-    .map((f) => /^equin-v(\d+)\.mp4$/.exec(f)?.[1])
+    .map((f) => /^muxos-v(\d+)\.mp4$/.exec(f)?.[1])
     .filter((n): n is string => n !== undefined)
     .map(Number);
   const newest = versions.length ? Math.max(...versions) : -1;
@@ -67,30 +67,30 @@ function versionedOut(ctx: FilmContext): string {
       usage(
         "promo-film: --music renders the newest version's recordings with another track — a plain render (no --preview / --captions) of an existing version",
       );
-    return join(SHOWCASE, `equin-v${newest}-music-${music}.mp4`);
+    return join(SHOWCASE, `muxos-v${newest}-music-${music}.mp4`);
   }
   if (ctx.preview) {
     const n = newest + 1;
     for (let k = 1; ; k++) {
-      const f = `equin-v${n}-preview${k === 1 ? "" : `-${k}`}.mp4`;
+      const f = `muxos-v${n}-preview${k === 1 ? "" : `-${k}`}.mp4`;
       if (!has(f)) return join(SHOWCASE, f);
     }
   }
   if (ctx.flag("captions")) {
-    if (newest < 0 || has(`equin-v${newest}-captions.mp4`))
+    if (newest < 0 || has(`muxos-v${newest}-captions.mp4`))
       usage(
-        `promo-film: equin-v${newest}.mp4 already has its captions (or there is no version yet) — render the plain variant of the new version first`,
+        `promo-film: muxos-v${newest}.mp4 already has its captions (or there is no version yet) — render the plain variant of the new version first`,
       );
-    return join(SHOWCASE, `equin-v${newest}-captions.mp4`);
+    return join(SHOWCASE, `muxos-v${newest}-captions.mp4`);
   }
-  return join(SHOWCASE, `equin-v${newest + 1}.mp4`);
+  return join(SHOWCASE, `muxos-v${newest + 1}.mp4`);
 }
 
 await runFilm({
-  name: "equin",
+  name: "muxos",
   out: versionedOut,
-  // Beside every full render, its light web version (equin-v<N>-web.mp4,
-  // equin-v<N>-music-<slug>-web.mp4): what the website streams.
+  // Beside every full render, its light web version (muxos-v<N>-web.mp4,
+  // muxos-v<N>-music-<slug>-web.mp4): what the website streams.
   web: true,
   flags: { captions: "adds the section captions (bottom-left)" },
   options: {

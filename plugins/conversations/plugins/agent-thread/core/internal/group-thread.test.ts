@@ -91,16 +91,16 @@ const searchTurn: JsonlEvent[] = [
   user("chinese restaurant open tuesday"),
   say("Let me search around the map."),
   call(
-    "mcp__equin__places_search_text",
+    "mcp__muxos__places_search_text",
     { query: "chinese restaurant" },
     { content: "12 places" },
   ),
   call(
-    "mcp__equin__places_details",
+    "mcp__muxos__places_details",
     { ids: ["ChIJ1", "ChIJ2"] },
     { content: "…" },
   ),
-  call("mcp__equin__places_show_picks", PICKS_INPUT, { content: "Shown" }),
+  call("mcp__muxos__places_show_picks", PICKS_INPUT, { content: "Shown" }),
   say("Here are two picks open on Tuesday."),
 ];
 
@@ -115,8 +115,8 @@ describe("groupThread", () => {
     const [turn] = turns;
     expect(turn!.prompt.text).toBe("chinese restaurant open tuesday");
     expect(turn!.steps.map((s) => s.event.name)).toEqual([
-      "mcp__equin__places_search_text",
-      "mcp__equin__places_details",
+      "mcp__muxos__places_search_text",
+      "mcp__muxos__places_details",
     ]);
     expect(turn!.steps.map((s) => s.state)).toEqual(["done", "done"]);
     expect(turn!.answer?.text).toBe("Here are two picks open on Tuesday.");
@@ -157,11 +157,11 @@ describe("groupThread", () => {
     const events = [
       user("cheaper"),
       call(
-        "mcp__equin__places_show_picks",
+        "mcp__muxos__places_show_picks",
         { picks: "oops" },
         { content: "Invalid input", isError: true },
       ),
-      call("mcp__equin__places_show_picks", PICKS_INPUT, { content: "Shown" }),
+      call("mcp__muxos__places_show_picks", PICKS_INPUT, { content: "Shown" }),
     ];
     const [turn] = groupThread(events, [picks], IDLE);
     expect(turn!.steps.map((s) => s.state)).toEqual(["error"]);
@@ -173,14 +173,14 @@ describe("groupThread", () => {
   test("a later call of the same kind replaces the earlier one, at its own position", () => {
     const events = [
       user("cheaper"),
-      call("mcp__equin__places_show_picks", PICKS_INPUT, { content: "ok" }),
+      call("mcp__muxos__places_show_picks", PICKS_INPUT, { content: "ok" }),
       call(
-        "mcp__equin__places_summary",
+        "mcp__muxos__places_summary",
         { text: "two picks" },
         { content: "ok" },
       ),
       call(
-        "mcp__equin__places_show_picks",
+        "mcp__muxos__places_show_picks",
         { picks: [{ googlePlaceId: "ChIJ9", why: "Cheapest" }] },
         { content: "ok" },
       ),
@@ -202,13 +202,13 @@ describe("groupThread", () => {
     const events = [
       user("two wishes"),
       call(
-        "mcp__equin__file_task",
+        "mcp__muxos__file_task",
         { title: "A" },
         { content: replied("task-a") },
       ),
-      call("mcp__equin__places_show_picks", PICKS_INPUT, { content: "ok" }),
+      call("mcp__muxos__places_show_picks", PICKS_INPUT, { content: "ok" }),
       call(
-        "mcp__equin__file_task",
+        "mcp__muxos__file_task",
         { title: "B" },
         { content: replied("task-b") },
       ),
@@ -227,7 +227,7 @@ describe("groupThread", () => {
     const events = [
       user("file it"),
       call(
-        "mcp__equin__file_task",
+        "mcp__muxos__file_task",
         { title: "A" },
         { content: replied("task-a") },
       ),
@@ -249,12 +249,12 @@ describe("groupThread", () => {
     const events = [
       user("file it"),
       call(
-        "mcp__equin__file_task",
+        "mcp__muxos__file_task",
         { title: "A" },
         { content: "Filed task task-a" },
       ),
       call(
-        "mcp__equin__file_task",
+        "mcp__muxos__file_task",
         { title: "B" },
         { content: JSON.stringify({ id: "task-b" }) },
       ),
@@ -267,7 +267,7 @@ describe("groupThread", () => {
     const events = [
       user("q"),
       call(
-        "mcp__equin__places_show_picks",
+        "mcp__muxos__places_show_picks",
         { picks: [{ id: 1 }] },
         { content: "ok" },
       ),
@@ -280,7 +280,7 @@ describe("groupThread", () => {
     const events = [
       ...searchTurn,
       user("cheaper"),
-      call("mcp__equin__places_search_text", { query: "cheap chinese" }),
+      call("mcp__muxos__places_search_text", { query: "cheap chinese" }),
     ];
     const turns = groupThread(events, [picks], WORKING);
     expect(turns.map((t) => t.state)).toEqual(["done", "running"]);
@@ -290,7 +290,7 @@ describe("groupThread", () => {
   test("a conversation that ended mid-turn fails the turn and its unreturned step", () => {
     const events = [
       user("q"),
-      call("mcp__equin__places_search_text", { query: "x" }),
+      call("mcp__muxos__places_search_text", { query: "x" }),
     ];
     const [turn] = groupThread(events, [picks], GONE);
     expect(turn!.state).toBe("failed");
@@ -370,7 +370,7 @@ describe("threadResultReply", () => {
 describe("defineThreadResult", () => {
   test("refuses a transcript name", () => {
     expect(() =>
-      defineThreadResult({ tool: "mcp__equin__x", schema: z.object({}) }),
+      defineThreadResult({ tool: "mcp__muxos__x", schema: z.object({}) }),
     ).toThrow(/own name/);
   });
 });

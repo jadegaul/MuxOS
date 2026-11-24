@@ -116,7 +116,7 @@ describe("a guard bypass (postgres, a hard denial)", () => {
     const s = newSession();
     const id = idOf(denial(await bash(s, "psql -l")));
     expect(
-      denial(await bash(s, `./equin guard bypass ${id} ${REASON}`)),
+      denial(await bash(s, `./muxos guard bypass ${id} ${REASON}`)),
     ).toBeNull();
     const retry = await bash(s, "psql -l");
     expect(denial(retry)).toBeNull();
@@ -127,14 +127,14 @@ describe("a guard bypass (postgres, a hard denial)", () => {
   test("covers only the call it names", async () => {
     const s = newSession();
     const id = idOf(denial(await bash(s, "psql -l")));
-    await bash(s, `./equin guard bypass ${id} ${REASON}`);
+    await bash(s, `./muxos guard bypass ${id} ${REASON}`);
     expect(denial(await bash(s, "psql -c 'select 1'"))).not.toBeNull();
   });
 
   test("covers only the agent that asked", async () => {
     const s = newSession();
     const id = idOf(denial(await bash(s, "psql -l")));
-    await bash(s, `./equin guard bypass ${id} ${REASON}`);
+    await bash(s, `./muxos guard bypass ${id} ${REASON}`);
     expect(
       denial(await bash(s, "psql -l", { agent_id: "sub-1" })),
     ).not.toBeNull();
@@ -144,7 +144,7 @@ describe("a guard bypass (postgres, a hard denial)", () => {
     const s = newSession();
     const id = idOf(denial(await bash(s, "psql -l")));
     expect(
-      denial(await bash(s, `./equin guard bypass ${id} --reason ok`)),
+      denial(await bash(s, `./muxos guard bypass ${id} --reason ok`)),
     ).toContain("--reason must say why");
     expect(denial(await bash(s, "psql -l"))).not.toBeNull();
   });
@@ -153,7 +153,7 @@ describe("a guard bypass (postgres, a hard denial)", () => {
     const s = newSession();
     const id = idOf(denial(await bash(s, "psql -l")));
     expect(
-      denial(await bash(s, `./equin guard bypass ${id} ${REASON} && psql -l`)),
+      denial(await bash(s, `./muxos guard bypass ${id} ${REASON} && psql -l`)),
     ).toContain("as its own tool call");
     expect(denial(await bash(s, "psql -l"))).not.toBeNull();
   });
@@ -161,13 +161,13 @@ describe("a guard bypass (postgres, a hard denial)", () => {
 
 describe("a foreground build backgrounded by background-ops", () => {
   test("runs backgrounded, at the 2 h ceiling, the command unchanged", async () => {
-    const out = await bash(newSession(), "./equin build 2>&1");
+    const out = await bash(newSession(), "./muxos build 2>&1");
     const specific = out?.hookSpecificOutput as
       | { updatedInput?: Record<string, unknown>; additionalContext?: string }
       | undefined;
     // background-timeout judges the rewritten input, so it raises the timeout.
     expect(specific?.updatedInput).toEqual({
-      command: "./equin build 2>&1",
+      command: "./muxos build 2>&1",
       run_in_background: true,
       timeout: 7_200_000,
     });
@@ -175,17 +175,17 @@ describe("a foreground build backgrounded by background-ops", () => {
   });
 
   test("a tail of its output keeps the op's exit status (pipefail still applies)", async () => {
-    const out = await bash(newSession(), "./equin push -m x 2>&1 | tail -15");
+    const out = await bash(newSession(), "./muxos push -m x 2>&1 | tail -15");
     const specific = out?.hookSpecificOutput as
       { updatedInput?: Record<string, unknown> } | undefined;
     expect(specific?.updatedInput?.run_in_background).toBe(true);
     expect(specific?.updatedInput?.command).toBe(
-      "set -o pipefail; ./equin push -m x 2>&1 | tail -15",
+      "set -o pipefail; ./muxos push -m x 2>&1 | tail -15",
     );
   });
 
   test("a compound form is still refused", async () => {
-    const reason = denial(await bash(newSession(), "./equin build | head -15"));
+    const reason = denial(await bash(newSession(), "./muxos build | head -15"));
     expect(reason).toContain("run_in_background");
   });
 });

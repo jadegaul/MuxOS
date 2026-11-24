@@ -11,7 +11,7 @@ import {
   type VmStat,
 } from "./vm-stat";
 
-// The host's memory, one shape on every OS equin runs on: what the host
+// The host's memory, one shape on every OS muxos runs on: what the host
 // sampler (debug/health-monitor) charts and what main's owner sampler
 // (debug/sentinel/machine-usage) hands host admission. Derived here from the
 // OS's own counters — `vm_stat` on macOS, `/proc/meminfo` + `/proc/vmstat` on

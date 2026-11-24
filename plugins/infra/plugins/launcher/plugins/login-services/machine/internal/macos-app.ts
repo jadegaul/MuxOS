@@ -57,11 +57,11 @@ import {
 } from "./macos-app-plist";
 
 /**
- * The equin app on macOS: ONE bundle, `equin.app` (`dev.equin`), that every
+ * The muxos app on macOS: ONE bundle, `muxos.app` (`dev.muxos`), that every
  * login service runs from — the gateway (and through it every backend, which
  * macOS charges to it) and the menu-bar helper. So every permission prompt,
- * System Settings row and `tccutil reset <Service> dev.equin` names one
- * app, "equin", with its icon, rather than a bare executable called
+ * System Settings row and `tccutil reset <Service> dev.muxos` names one
+ * app, "muxos", with its icon, rather than a bare executable called
  * `gateway` that cannot be reset on its own.
  *
  * Measured on macOS 26 (research/2026-10-25-global-gateway-app-bundle-v2.md):
@@ -78,7 +78,7 @@ import {
  * whole bundle in a staging copy and swaps it in whole; the job's environment
  * names the build (`executableEnv`), so only that component's job changes.
  *
- * The bundle swapped out is kept, as `equin.app.old-*`, while a process still
+ * The bundle swapped out is kept, as `muxos.app.old-*`, while a process still
  * runs an executable from it: macOS identifies a process by the file it runs,
  * and once that file is deleted tccd cannot (`proc_pidpath_audittoken() …
  * No such file or directory`), so every grant charged to it — the gateway's
@@ -93,7 +93,7 @@ import {
 /** What installing touches outside the bundle's own files — injected by tests. */
 export interface MacosAppHost {
   readonly platform: NodeJS.Platform;
-  /** `equin.app`'s path. */
+  /** `muxos.app`'s path. */
   readonly bundle: AppPath;
   /** Run `fn` holding the machine-wide lock on the bundle. */
   withLock<T>(fn: () => Promise<T>): Promise<T>;
@@ -173,7 +173,7 @@ async function runningExecutables(): Promise<string[]> {
   });
   if (result.timedOut || result.exitCode !== 0) {
     throw new Error(
-      `\`${argv.join(" ")}\` ${result.timedOut ? `did not finish within ${LSOF_TIMEOUT_MS / 1000}s` : `failed (exit ${result.exitCode}): ${result.stderr.trim() || "(no output)"}`} — cannot tell which old equin.app bundles are still running`,
+      `\`${argv.join(" ")}\` ${result.timedOut ? `did not finish within ${LSOF_TIMEOUT_MS / 1000}s` : `failed (exit ${result.exitCode}): ${result.stderr.trim() || "(no output)"}`} — cannot tell which old muxos.app bundles are still running`,
     );
   }
   return result.stdout
@@ -231,7 +231,7 @@ export async function installedAppComponents(
  * the icon it brings) replaced, `Info.plist` rewritten, the staging copy signed
  * and verified, then swapped in whole: a running component's executable is
  * never rewritten in place, and a failure leaves the installed bundle as it
- * was. Under a machine-wide lock: `./equin start` and main's boot may install
+ * was. Under a machine-wide lock: `./muxos start` and main's boot may install
  * at once.
  */
 export async function installServiceExecutable(
@@ -328,9 +328,9 @@ export async function installServiceExecutable(
 }
 
 /**
- * The OS refused a write while assembling or swapping in `equin.app`
+ * The OS refused a write while assembling or swapping in `muxos.app`
  * ("Operation not permitted"). Not a missing file or a bug of ours: something
- * outside equin decides which process may change the bundle — on a stock Mac
+ * outside muxos decides which process may change the bundle — on a stock Mac
  * nothing does (verified on macOS 26: a process with no grants re-signs and
  * swaps it), so it is the machine's own policy: macOS's App Management
  * permission for the app the command runs in (a terminal, VS Code), or
@@ -354,10 +354,10 @@ export class BundleWriteRefusedError extends Error {
 }
 
 /**
- * What the person installing reads when the Mac refused to let equin add
+ * What the person installing reads when the Mac refused to let muxos add
  * `adding` (each in their words, `forUser`): the installer message rules
  * (`infra/launcher/installer-notice`), with the refusals as the evidence.
- * `skip`: optional (where equin still opens, how to add them later), or needed (why equin
+ * `skip`: optional (where muxos still opens, how to add them later), or needed (why muxos
  * cannot run without them).
  */
 export function appsBlockedNotice(
@@ -366,7 +366,7 @@ export function appsBlockedNotice(
   skip:
     | {
         readonly optional: true;
-        /** Where equin opens in the browser without them. */
+        /** Where muxos opens in the browser without them. */
         readonly appUrl: string;
         readonly addLater: string;
       }
@@ -374,19 +374,19 @@ export function appsBlockedNotice(
 ): InstallerNotice {
   return defineNotice({
     title: skip.optional
-      ? "macOS blocked equin from adding its apps"
-      : "macOS blocked equin from setting itself up",
-    doing: `equin was adding ${joinNames(adding.map((a) => a.name))}. ${adding.map((a) => a.gives).join(" ")}`,
+      ? "macOS blocked muxos from adding its apps"
+      : "macOS blocked muxos from setting itself up",
+    doing: `muxos was adding ${joinNames(adding.map((a) => a.name))}. ${adding.map((a) => a.gives).join(" ")}`,
     blocked:
       "This Mac lets only the apps you approve change other apps, and the app you ran this from (Terminal, iTerm, VS Code…) is not one of them. On a Mac your company manages, its security software can also stop it.",
     now: [
-      "Allow it: in System Settings → Privacy & Security → App Management, turn on the app you ran this from, then run the installer again (`./install.sh`; on a Mac where equin is already installed, `./equin start`).",
-      "On a company-managed Mac, ask your IT team to allow equin.",
+      "Allow it: in System Settings → Privacy & Security → App Management, turn on the app you ran this from, then run the installer again (`./install.sh`; on a Mac where muxos is already installed, `./muxos start`).",
+      "On a company-managed Mac, ask your IT team to allow muxos.",
     ],
     ifSkipped: skip.optional
       ? {
           optional: true,
-          stillWorks: `Everything else goes on: equin works fully in your browser at ${skip.appUrl}.`,
+          stillWorks: `Everything else goes on: muxos works fully in your browser at ${skip.appUrl}.`,
           addLater: skip.addLater,
         }
       : { optional: false, because: skip.because },
@@ -402,7 +402,7 @@ function isPermissionRefusal(err: unknown): boolean {
 }
 
 /**
- * Delete every swapped-out bundle (`equin.app.old-*`, beside the bundle) no
+ * Delete every swapped-out bundle (`muxos.app.old-*`, beside the bundle) no
  * running process was started from; keep the rest until a later install.
  * Under the bundle lock, so no swap is renaming one meanwhile.
  */

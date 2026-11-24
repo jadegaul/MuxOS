@@ -8,7 +8,7 @@
 // Tab is ringed, not in pointer modality, and ringed again after.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/css/plugins/ui-kit/e2e/input-modality-flip-cost.ts \
+//   ./muxos run plugins/primitives/plugins/css/plugins/ui-kit/e2e/input-modality-flip-cost.ts \
 //     [--path /agents] [--rounds 3] [--invalidations] [--url http://<namespace>.localhost:<port>]
 //
 // --invalidations: also trace Chrome's invalidation tracking and list what

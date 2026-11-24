@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-html-decode",
+  "name": "@muxos/plugin-infra-html-decode",
   "description": "Read and edit HTML on every host, every value decoded exactly once: scanHtml (start tags and element text, on htmlparser2), rewriteStartTag / replaceElementText (in-place splices that leave every other byte as written), and decodeHtmlText / readHtmlAttr for a Bun HTMLRewriter read, which decodes nothing.",
   "private": true,
   "version": "0.0.1",

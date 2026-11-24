@@ -482,7 +482,7 @@ let writtenEntries: {
  * Install the build's data-list entries, kept to `registry` (graph node →
  * plugin id): an entry of a plugin outside this process's composition is not
  * part of its lists. Before collecting (`bootPluginGraph`), or by a process
- * that boots nothing and reads a data list (`./equin db fork`'s probe).
+ * that boots nothing and reads a data list (`./muxos db fork`'s probe).
  */
 export function installListEntries(
   table: WrittenListEntries,
@@ -635,7 +635,7 @@ export function assertWrittenListsMatch(
   if (failures.length > 0) {
     throw new Error(
       `[lists] the build's list entries (list-entries.generated.ts) disagree with what the started plugins declare:\n${failures.join("\n")}\n` +
-        "Run `./equin build` to rewrite them. If they still disagree, an entry is computed from something only known at run time — it cannot be a data list's entry.",
+        "Run `./muxos build` to rewrite them. If they still disagree, an entry is computed from something only known at run time — it cannot be a data list's entry.",
     );
   }
 }

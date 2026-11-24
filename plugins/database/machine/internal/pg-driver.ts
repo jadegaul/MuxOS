@@ -894,7 +894,7 @@ async function warmOne(p: Pool): Promise<void> {
 // its own hot-swap successor, on the same database — which is what makes a
 // per-database advisory lock enough to serialize them. Each step runs only when
 // missing, so a boot against a converged cluster writes nothing.
-const LANE_ROLE_LOCK_KEY = "equin.database.lane-roles";
+const LANE_ROLE_LOCK_KEY = "muxos.database.lane-roles";
 const PG_IDENTIFIER = /^[a-z_][a-z0-9_]*$/;
 
 async function ensureBackgroundRole(): Promise<void> {

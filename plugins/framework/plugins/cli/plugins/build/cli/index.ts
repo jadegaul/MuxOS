@@ -1,7 +1,7 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * The command the whole agent workflow runs on: `./equin build` is how a
+ * The command the whole agent workflow runs on: `./muxos build` is how a
  * checkout's work becomes a running app at `http://<worktree>.localhost:<port>`.
  *
  * It is a leaf with two postures over one pipeline — deploy this checkout into
@@ -15,7 +15,7 @@ import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
  * Not `detachable`: build is an op command, and the orphan guard exiting it
  * when its invoking shell dies is what stops an abandoned build from sitting on
  * the build lock and a host grant. The detached self-restart build exempts
- * itself through `EQUIN_BUILD_DETACHED` instead.
+ * itself through `MUXOS_BUILD_DETACHED` instead.
  */
 export default defineCliCommand({
   name: "build",

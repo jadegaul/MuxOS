@@ -105,7 +105,7 @@ export function createContext(
   toolUseId: string | null = null,
   /** The launch-named workspace root — see `GuardContext.workRoot`. */
   workspaceRoot: string | null = null,
-  /** The launch-delivered `EQUIN_SCRATCH` — see `GuardContext.scratch`. */
+  /** The launch-delivered `MUXOS_SCRATCH` — see `GuardContext.scratch`. */
   scratchDir: string | null = null,
 ): GuardContext {
   const workRoot = workspaceRoot ?? worktreeContextOf(cwd)?.worktreeRoot ?? cwd;

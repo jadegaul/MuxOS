@@ -2,7 +2,7 @@
  * Pin a mirror's files: download each from its remote and write their sha256
  * as a TypeScript module — the `files` record of a `defineAssetMirrorSource`.
  *
- *   ./equin run plugins/infra/plugins/asset-mirror/scripts/pin.ts \
+ *   ./muxos run plugins/infra/plugins/asset-mirror/scripts/pin.ts \
  *     --base https://cdn.example.com/assets --out plugins/<p>/shared/pins.ts \
  *     --export MY_PINS [--names-json names.json] [name ...]
  *
@@ -66,7 +66,7 @@ const body = unique
   .join("\n");
 await writeFile(
   values.out,
-  `// Pinned by \`./equin run plugins/infra/plugins/asset-mirror/scripts/pin.ts\`
+  `// Pinned by \`./muxos run plugins/infra/plugins/asset-mirror/scripts/pin.ts\`
 // from ${base} — each file's sha256, checked before the mirror stores it.
 export const ${values.export} = {
 ${body}

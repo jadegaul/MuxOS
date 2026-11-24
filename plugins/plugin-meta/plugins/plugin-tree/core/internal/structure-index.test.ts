@@ -161,7 +161,7 @@ describe("createStructureIndex", () => {
     const index = await createStructureIndex(ROOT, "pkgs", io);
     disk.set(
       "pkgs/a/package.json",
-      JSON.stringify({ equin: { collapsed: true } }),
+      JSON.stringify({ muxos: { collapsed: true } }),
     );
     const changed = await index.refresh(["pkgs/a/package.json"]);
     expect(shape(index.tree())).toEqual(await coldShape(disk));

@@ -20,8 +20,8 @@
  * the old key (`tasks.window`) and is refused `unknown-key` — the Reload
  * prompt, never the tree's differently ordered default set.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/tasks/plugins/tasks-core`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/tasks/plugins/tasks-core`.
  */
 
 import {

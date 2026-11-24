@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-deploy-health",
+  "name": "@muxos/plugin-apps-deploy-health",
   "private": true,
   "version": "0.0.1"
 }

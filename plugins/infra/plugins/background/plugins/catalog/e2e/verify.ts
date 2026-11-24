@@ -12,7 +12,7 @@
 //    renders its file-change trigger and its open instance.
 //
 // Usage:
-//   ./equin run plugins/infra/plugins/background/plugins/catalog/e2e/verify.ts [--headed] [--out /tmp/bg-verify]
+//   ./muxos run plugins/infra/plugins/background/plugins/catalog/e2e/verify.ts [--headed] [--out /tmp/bg-verify]
 
 import {
   arg,

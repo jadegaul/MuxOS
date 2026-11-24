@@ -37,7 +37,7 @@ function sample(over: Partial<TabMemorySample>): TabMemorySample {
     sampledAt: 0,
     tabId: "tab-a",
     pageStartedAt: 1,
-    host: "equin.localhost:9000",
+    host: "muxos.localhost:9000",
     route: "/agents",
     focusedAppId: "agents",
     visible: true,

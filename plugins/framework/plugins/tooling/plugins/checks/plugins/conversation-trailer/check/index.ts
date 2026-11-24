@@ -44,7 +44,7 @@ async function currentBranch(): Promise<string> {
 // This branch's own commits: reachable from HEAD and from no `main` this
 // checkout knows of — local `main` or any `refs/remotes/<remote>/main` (the
 // published set, as `database/migrations`' `publishedMigrationRefs` reads it).
-// After `./equin upstream merge` a clone's branch carries upstream's
+// After `./muxos upstream merge` a clone's branch carries upstream's
 // commits, which sit on `<remote>/main` and not on local `main`: they were
 // authored in upstream's own sessions (or none), so their trailers are not
 // this pane's to have, and asking would fail every upstream update's push.
@@ -88,7 +88,7 @@ async function hasStrayBodyTrailer(sha: string): Promise<boolean> {
 const check: Check = {
   id: "conversation-trailer",
   description: `every commit ahead of every known main (local, and each <remote>/main) is attributable: with ${envName("CONVERSATION_ID")} set it carries that conversation's ${TRAILER} trailer; without it the branch is an attempt's (push credits it with ${ATTEMPT_TRAILER_KEY}) or each commit names its conversation, attempt or ${UNATTRIBUTED_TRAILER_KEY} reason`,
-  // Not a pure function of the working tree: reads EQUIN_CONVERSATION_ID
+  // Not a pure function of the working tree: reads MUXOS_CONVERSATION_ID
   // env and the trailers of this branch's own commits. Never cache.
   cacheSignature: () => null,
   async run() {
@@ -98,7 +98,7 @@ const check: Check = {
     const envId = readEnv("CONVERSATION_ID");
     const commits = await commitsAheadOfMain();
     if (!envId) {
-      // A session equin did not launch (a plain terminal, e.g. recovering a
+      // A session muxos did not launch (a plain terminal, e.g. recovering a
       // broken main): there is no conversation to vouch for. An attempt's
       // branch still names who the push credits — push stamps the attempt
       // trailer from it on every commit it lands.
@@ -109,11 +109,11 @@ const check: Check = {
       return {
         ok: false,
         message:
-          `${envName("CONVERSATION_ID")} is not set (this session was not launched by equin) and ${branch} is no attempt's branch, ` +
+          `${envName("CONVERSATION_ID")} is not set (this session was not launched by muxos) and ${branch} is no attempt's branch, ` +
           `so nothing names who these ${unnamed.length} commit(s) ahead of main are for:\n${list}`,
         hint:
           "Ask the user before landing it unattributed; with their approval in this conversation, push with " +
-          '`./equin push --unattributed "<one-line reason>"`, which records the reason in the commit instead. ' +
+          '`./muxos push --unattributed "<one-line reason>"`, which records the reason in the commit instead. ' +
           "Do not set the env var by hand to another conversation's id.",
       };
     }
@@ -166,7 +166,7 @@ const check: Check = {
         hint:
           "If the commit was created by another conversation sharing this worktree, " +
           "you can safely uncommit (git reset HEAD~1) while keeping the changes, " +
-          "then run ./equin push again — the new commit will carry the correct trailer for this conversation. " +
+          "then run ./muxos push again — the new commit will carry the correct trailer for this conversation. " +
           STOP_MESSAGE,
       };
     }

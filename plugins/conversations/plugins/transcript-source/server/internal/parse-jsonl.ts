@@ -427,10 +427,10 @@ function extractQuestionAnswer(
 }
 
 /**
- * What equin appended to the system prompt a `prompt_snapshot` attachment
+ * What muxos appended to the system prompt a `prompt_snapshot` attachment
  * carries: the launch's append is the prompt's last segment
  * (`systemPrompt.append`) — its <special_instructions> block and every
- * <equin-context> section. Empty when it ends in anything else.
+ * <muxos-context> section. Empty when it ends in anything else.
  */
 function snapshotInstructions(att: Record<string, unknown>): InstructionPart[] {
   const segments = att.systemPrompt;
@@ -865,7 +865,7 @@ export class JsonlEventBuilder {
           // The same predicate a rewind applies to an answer it cuts at.
           const answerUuid =
             uuid && questionAnswerText(obj) !== null ? uuid : undefined;
-          // A prompt equin sent carries each attached image twice: its
+          // A prompt muxos sent carries each attached image twice: its
           // `@<path>` in the text (what the user wrote, and the path the
           // agent can hand on) and the image itself after it (so the model
           // sees it without a Read). The text already draws those, so as many

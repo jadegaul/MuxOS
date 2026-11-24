@@ -2,7 +2,7 @@
 // first, each judged against the builds before it — what the build itself does
 // at its end, over history. Prints every regression, and a per-day count.
 //
-//   ./equin run plugins/build/plugins/step-baseline/scripts/replay-build-profiles.ts \
+//   ./muxos run plugins/build/plugins/step-baseline/scripts/replay-build-profiles.ts \
 //     [--checkout <name>]   # one checkout's own series (default: main's)
 //     [--host]              # every checkout's profiles as one series
 //     [--since 2026-10-01] [--quiet-steps]

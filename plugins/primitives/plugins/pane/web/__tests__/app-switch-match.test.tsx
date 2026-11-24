@@ -23,7 +23,7 @@ import { symbol } from "@plugins/ui/plugins/icons/core";
 // app's shell, whose providers they cannot read: Sonata's player under the
 // Agent Manager shell, the site's live-demo page under Sonata's — each a
 // "scoped-store: hook used outside its <Provider>" crash (2026-11-18, on
-// equin.ai's home page too). This suite records every commit's (base path,
+// MuxOS.app's home page too). This suite records every commit's (base path,
 // matched panes' apps) pair and pins that they never disagree.
 
 const appA = defineApp({

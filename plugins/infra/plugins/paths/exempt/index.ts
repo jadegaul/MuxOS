@@ -52,7 +52,7 @@ export default [
     paths: ["core/internal/checkout-deploys.ts"],
     kind: "sanctioned",
     reason:
-      "A namespace's spec.json (written by `./equin build`) names the checkout that published it: a checkout of this repo, which the app runs from.",
+      "A namespace's spec.json (written by `./muxos build`) names the checkout that published it: a checkout of this repo, which the app runs from.",
   },
   {
     rule: "user-path/no-unproven-claim",

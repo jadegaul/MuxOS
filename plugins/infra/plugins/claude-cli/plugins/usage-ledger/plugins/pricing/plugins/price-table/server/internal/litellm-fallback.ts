@@ -30,7 +30,7 @@ import type { PriceTable } from "@plugins/infra/plugins/claude-cli/plugins/usage
 // model joins `BASELINE_MODELS` (the price-table test fails until the snapshot
 // carries it) — with:
 //
-//   ./equin run plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/scripts/refresh-litellm-fallback.ts
+//   ./muxos run plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/scripts/refresh-litellm-fallback.ts
 //
 // which merges a fresh `fetchPriceTable()` over this snapshot (`mergePriceTable`:
 // the floor never loses a key) and rewrites the JSON. Its `fetchedAt` is the

@@ -13,8 +13,8 @@
  * chain's table is outside the tree): the workload is the chain's own appends
  * — the table is append-only, so an insert is the only write it ever sees.
  *
- * Requires a running Postgres cluster (started by ./equin build).
- * Run: `./equin test plugins/conversations/plugins/session-chain`.
+ * Requires a running Postgres cluster (started by ./muxos build).
+ * Run: `./muxos test plugins/conversations/plugins/session-chain`.
  */
 
 import {

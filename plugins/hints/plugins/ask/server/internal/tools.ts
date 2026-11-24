@@ -38,7 +38,7 @@ import {
 export const fileTaskTool = Mcp.tool({
   name: FILE_TASK_TOOL,
   profiles: [HELP_ASK_PROFILE],
-  description: `File a task for something the user wants changed or added in equin, or something broken: an agent starts on it at once, in its own worktree, and the task shows in the user's thread. Title and description state the PROBLEM or WISH and what you found, not how to build it. Call it once per wish. It answers the filed task's id; then tell the user in one sentence that it is filed — the task shows in their thread, an agent already on it.`,
+  description: `File a task for something the user wants changed or added in muxos, or something broken: an agent starts on it at once, in its own worktree, and the task shows in the user's thread. Title and description state the PROBLEM or WISH and what you found, not how to build it. Call it once per wish. It answers the filed task's id; then tell the user in one sentence that it is filed — the task shows in their thread, an agent already on it.`,
   inputSchema: AskFiledTaskSchema.shape,
   async handler({ title, description }, { conversationId }) {
     // Before anything is written: a model this machine cannot run fails the

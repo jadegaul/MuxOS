@@ -16,14 +16,14 @@ const REPO = "https://github.com/owner/repo";
 const website = (autoDeploy: boolean) => ({
   notes: [
     `Auto-deploy: ${autoDeploy ? "yes" : "no (review first)"}`,
-    "Filed from the Wish button on equin.ai",
+    "Filed from the Wish button on MuxOS.app",
   ],
   labels: ["idea"],
 });
-const PAGE = "https://equin.ai/about/harness";
+const PAGE = "https://MuxOS.app/about/harness";
 
 const HEADLINE: UiContextMeta = {
-  url: "https://equin.ai/",
+  url: "https://MuxOS.app/",
   path: "apps/website/landing/hero@Website.Section",
   element: "h1 — What will apps evolve into?",
   selector: "main>section>h1",
@@ -31,7 +31,7 @@ const HEADLINE: UiContextMeta = {
     "plugins/apps/plugins/website/plugins/landing/plugins/hero/web/hero.tsx:42",
 };
 const BUTTON: UiContextMeta = {
-  url: "https://equin.ai/",
+  url: "https://MuxOS.app/",
   element: "button — Show me",
 };
 
@@ -131,7 +131,7 @@ describe("buildIssueUrl", () => {
         "---",
         `Page: ${PAGE}`,
         "Auto-deploy: no (review first)",
-        "Filed from the Wish button on equin.ai",
+        "Filed from the Wish button on MuxOS.app",
       ].join("\n"),
     );
   });
@@ -260,7 +260,7 @@ describe("buildIssueUrl", () => {
         "",
         `Page: ${PAGE}`,
         "Auto-deploy: no (review first)",
-        "Filed from the Wish button on equin.ai",
+        "Filed from the Wish button on MuxOS.app",
       ].join("\n"),
     );
   });
@@ -335,7 +335,7 @@ describe("buildIssueUrl", () => {
         "",
         `Page: ${PAGE}`,
         "Auto-deploy: no (review first)",
-        "Filed from the Wish button on equin.ai",
+        "Filed from the Wish button on MuxOS.app",
       ].join("\n"),
     );
   });

@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-integrations",
-  "description": "Umbrella for third-party service integrations that consume an auth connection (Gmail, …).",
+  "name": "@muxos/plugin-integrations",
+  "description": "Umbrella for third-party service integrations that consume an auth connection (Gmail, \u2026).",
   "private": true,
   "version": "0.0.1"
 }

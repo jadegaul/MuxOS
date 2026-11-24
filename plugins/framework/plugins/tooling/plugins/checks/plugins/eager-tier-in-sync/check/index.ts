@@ -25,7 +25,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     // Rendering may throw the reachability guard (a preloaded descriptor whose
@@ -50,7 +50,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is out of sync with the derived load tiers`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     return { ok: true };

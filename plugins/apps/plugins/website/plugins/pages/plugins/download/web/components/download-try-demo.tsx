@@ -20,7 +20,7 @@ const DEMO_URL = demoPagePath(undefined);
  * The page's last word, for a reader not ready to install: the homepage's live
  * demo, opened full screen. One card as a whole is the link — a drawn
  * miniature of the app with a play disc, a heading, one line saying what the
- * demo is and that its agents are off (they need equin on the reader's
+ * demo is and that its agents are off (they need muxos on the reader's
  * machine), and the link line.
  */
 export function DownloadTryDemo() {
@@ -48,7 +48,7 @@ export function DownloadTryDemo() {
             </Text>
             <Text as="span" variant="body" tone="muted">
               The real app on made-up data, nothing to install. Agents are off:
-              they need equin on your machine.
+              they need muxos on your machine.
             </Text>
             <Text as="span" variant="label" className="download-try-go">
               Open the demo

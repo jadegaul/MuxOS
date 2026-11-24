@@ -20,8 +20,8 @@ import { MAIN_COMPOSITION_ID } from "@plugins/infra/plugins/namespace/core";
  * import closure.
  *
  * **Why the file and not a spawn-time value.** The first cut had the gateway
- * pass the composition to the backend it spawns. But `./equin build`
- * rebuilds the backend and NOT the Go gateway (only `./equin start`
+ * pass the composition to the backend it spawns. But `./muxos build`
+ * rebuilds the backend and NOT the Go gateway (only `./muxos start`
  * compiles that), so a running gateway is routinely older than the tree it
  * serves — it would not pass the variable at all, the backend would see no
  * composition, and it would boot the FULL app under a composition's own

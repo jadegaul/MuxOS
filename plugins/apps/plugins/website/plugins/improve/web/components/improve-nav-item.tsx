@@ -21,7 +21,7 @@ const autoAwesomeIcon = symbol("auto-awesome");
 
 /**
  * "Wish" in the shared site header — the header's one call to action, so the
- * filled pill, named like equin's own Wish button, with the agent sparkle.
+ * filled pill, named like muxos's own Wish button, with the agent sparkle.
  *
  * It opens a panel hung off its trailing edge (`align="end"`: the button is the
  * last item in the header, so the panel grows back over the page rather than off

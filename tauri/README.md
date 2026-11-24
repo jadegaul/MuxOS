@@ -1,7 +1,7 @@
 # tauri — desktop release shell
 
 The generic Tauri (Rust) shell that turns a staged self-contained app bundle into
-a host-platform desktop app. Driven by `./equin release --composition <name>
+a host-platform desktop app. Driven by `./muxos release --composition <name>
 --target tauri` (see `plugins/framework/plugins/cli/plugins/release/cli/run.ts`).
 
 It is **app-agnostic**: it reads the composition name + port from the bundled
@@ -63,8 +63,8 @@ src-tauri/
 ## Status
 
 **Compiled and stack-verified on a Rust host (Tauri 2.11.3, Rust 1.96.0,
-macOS arm64).** `./equin release --composition sonata --target tauri`
-produces `Sonata.app` (identifier `ai.equin.sonata`, embedded bundle + RELEASE.json).
+macOS arm64).** `./muxos release --composition sonata --target tauri`
+produces `Sonata.app` (identifier `ai.muxos.sonata`, embedded bundle + RELEASE.json).
 The Tauri-v2 API names in `lib.rs` all check out on 2.11.x — notably
 `WebviewWindow::navigate(&self, Url)` compiles with an immutable binding,
 `PathResolver::{resource_dir,app_data_dir}` resolve, and the
@@ -74,7 +74,7 @@ The self-contained stack was verified by driving the `.app`'s embedded
 `launch`/`teardown` binaries with the exact env the shell sets: bare
 `http://localhost:<port>/` serves the composition SPA single-origin (gateway
 `-default-namespace` route), a row written to the app-data DB survives a full
-teardown + relaunch, the PG socket sits at `/tmp/equin-<app>/.s.PGSQL.<port>`
+teardown + relaunch, the PG socket sits at `/tmp/muxos-<app>/.s.PGSQL.<port>`
 (31 bytes, well under the 104-byte limit), and teardown leaves no orphaned
 gateway/postgres/pgbouncer processes.
 
@@ -96,6 +96,6 @@ session, which a headless/automation shell lacks.
 - **Embedded PG port is picked per launch.** The embedded Postgres binds no TCP
   listener, but its port still names its Unix socket file and would default to
   5433, the dev cluster's. The shell picks a free port at setup and passes it as
-  `EQUIN_PG_PORT` to both `launch` and `teardown` (mirroring the web
+  `MUXOS_PG_PORT` to both `launch` and `teardown` (mirroring the web
   preview path, `plugins/release/server/internal/preview-manager.ts`), so the
   desktop app coexists with a running dev cluster and other instances.

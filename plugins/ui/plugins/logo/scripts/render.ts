@@ -1,7 +1,7 @@
 /**
  * Writes every generated logo file (`LOGO_FILES`) from the geometry in core/:
  *
- *   ./equin run plugins/ui/plugins/logo/scripts/render.ts
+ *   ./muxos run plugins/ui/plugins/logo/scripts/render.ts
  *
  * Run it after changing the logo; the `logo:files-in-sync` check fails until
  * you do. PNGs are rasterized with resvg and stamped with the digest of the

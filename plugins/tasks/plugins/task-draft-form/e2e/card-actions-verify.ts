@@ -31,7 +31,7 @@
  * hover-disclosure animation. `--task` must name a task that already has at
  * least one dependency — the Standalone option is only offered then.
  *
- *   ./equin run plugins/tasks/plugins/task-draft-form/e2e/card-actions-verify.ts \
+ *   ./muxos run plugins/tasks/plugins/task-draft-form/e2e/card-actions-verify.ts \
  *     --task <taskId> [--headed]
  */
 import {

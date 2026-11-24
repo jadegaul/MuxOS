@@ -31,7 +31,7 @@ import firstUiShot from "../shots/ui-2026-04-11.png";
 import "./story-essay.css";
 
 /**
- * The story of how equin came to be, as one essay: first contact with agents
+ * The story of how muxos came to be, as one essay: first contact with agents
  * and the skills that taught them to think more like us, the friction loop that
  * built the agent manager, a world without friction, the restart after Google,
  * and the data view as the one primitive reused everywhere.
@@ -186,7 +186,7 @@ function ReduceFriction() {
 
       <p>
         This is when I started building the core pieces that would later evolve
-        into equin:
+        into muxos:
       </p>
       <ul>
         <li>

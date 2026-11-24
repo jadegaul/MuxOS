@@ -18,7 +18,7 @@ import { requestUsageSync } from "./sync";
 import { importUsageHistory, transcriptsOnDisk } from "./history-import";
 import { loadCostArchive } from "./archive";
 import {
-  equinSessionIds,
+  muxosSessionIds,
   furthestByKey,
   requestSessionSync,
 } from "./session-sync";
@@ -88,7 +88,7 @@ export const usageBackfillJob = defineJob({
 });
 
 /**
- * One session's ledger-only count (a session no equin conversation owns —
+ * One session's ledger-only count (a session no muxos conversation owns —
  * `session-sync.ts`), as a job: how the session backfill reaches
  * `requestSessionSync`. Keyed on the session; serial in the transcript-read
  * lane, so the first backfill of a host — every Claude Code session on it,
@@ -97,7 +97,7 @@ export const usageBackfillJob = defineJob({
 export const usageSessionSyncJob = defineJob({
   name: "conversations.usage.session-sync",
   description:
-    "Counts the tokens of one Claude Code session equin did not launch into the usage ledger, from its transcripts.",
+    "Counts the tokens of one Claude Code session muxos did not launch into the usage ledger, from its transcripts.",
   // seconds: local reads of one session's transcripts — what was appended
   // since its last read, or the whole files the first time.
   hold: "seconds",
@@ -120,7 +120,7 @@ const SESSION_FILE_RE = /^([0-9a-f-]{36})\.jsonl$/;
  * (never read — the first boot reads every one), one whose file grew past
  * its row's offset (appended while no backend listened), or one whose rows
  * predate owners (`ownerTracked` false — recounted under the owners its
- * transcripts name). A session equin ran
+ * transcripts name). A session muxos ran
  * is the conversation path's, never queued.
  *
  * On the host singleton only, like the live recount: one scanner per host. A
@@ -130,7 +130,7 @@ const SESSION_FILE_RE = /^([0-9a-f-]{36})\.jsonl$/;
 export const usageSessionBackfillJob = defineJob({
   name: "conversations.usage.session-backfill",
   description:
-    "Queues a usage-ledger count for every Claude Code session on this computer that equin did not launch and has not counted to its end.",
+    "Queues a usage-ledger count for every Claude Code session on this computer that muxos did not launch and has not counted to its end.",
   // seconds: a readdir per project dir and a stat per session file (thousands).
   hold: "seconds",
   input: z.object({}).default({}),
@@ -156,7 +156,7 @@ export const usageSessionBackfillJob = defineJob({
         if (match) files.set(match[1]!, join(at, name));
       }
     }
-    const owned = await equinSessionIds(db, [...files.keys()]);
+    const owned = await muxosSessionIds(db, [...files.keys()]);
     const read = furthestByKey(
       await db
         .select({

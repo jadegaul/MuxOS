@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { renderPrompt } from "@plugins/tasks/plugins/automations/core";
 import { PUSH_POLICY_TEXT } from "@plugins/conversations/plugins/conversation-view/plugins/push-and-exit/plugins/capabilities/core";
+import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 import { boundedRows } from "./awaiting";
 import type { PendingDecision } from "./decision";
 import type { Outdated } from "./updater";
@@ -118,7 +119,10 @@ describe("awaiting rows", () => {
       kind: "awaiting",
       on: {
         kind: "cooldown",
-        of: ["@equin/pg-client-darwin-arm64", "@equin/pg-client-linux-x64"],
+        of: [
+          `${LEGACY_IDS.npmScope}/pg-client-darwin-arm64`,
+          `${LEGACY_IDS.npmScope}/pg-client-linux-x64`,
+        ],
         until: "2026-10-31T09:00:00.000Z",
       },
     },
@@ -142,7 +146,7 @@ describe("awaiting rows", () => {
 
   test("a cooldown wait says whose and until when", () => {
     expect(formatOutdated(awaiting.outdated[1]!)).toBe(
-      "@embedded-postgres/darwin-arm64 18.3.0-beta.17 → 18.4.0-beta.1 — WAITING for the cooldown of @equin/pg-client-darwin-arm64, @equin/pg-client-linux-x64 (moves by itself after 2026-10-31)",
+      `@embedded-postgres/darwin-arm64 18.3.0-beta.17 → 18.4.0-beta.1 — WAITING for the cooldown of ${LEGACY_IDS.npmScope}/pg-client-darwin-arm64, ${LEGACY_IDS.npmScope}/pg-client-linux-x64 (moves by itself after 2026-10-31)`,
     );
   });
 
@@ -236,7 +240,7 @@ describe("decisions only a person can make", () => {
     subject: "postgres-binaries",
     title: "pin postgres-binaries 18.1.0 → 19.0.0",
     situation: "pinned 18.1.0, main declares 19.0.0, behind since 2026-10-01",
-    options: ["Switch: not a plain switch", "Stay: `./equin deps pin-stay …`"],
+    options: ["Switch: not a plain switch", "Stay: `./muxos deps pin-stay …`"],
   };
 
   test("alone, they file the task and title it", () => {
@@ -253,7 +257,7 @@ describe("decisions only a person can make", () => {
     expect(text.indexOf("`mise`")).toBeLessThan(text.indexOf("Decisions only"));
     expect(text).toContain("do NOT act on them");
     expect(text).toContain(
-      "- [ ] postgres-binaries: pinned 18.1.0, main declares 19.0.0, behind since 2026-10-01\n  - Switch: not a plain switch\n  - Stay: `./equin deps pin-stay …`",
+      "- [ ] postgres-binaries: pinned 18.1.0, main declares 19.0.0, behind since 2026-10-01\n  - Switch: not a plain switch\n  - Stay: `./muxos deps pin-stay …`",
     );
     expect(outdatedSections(batch, [])).not.toContain("Decisions only");
   });

@@ -290,7 +290,7 @@ export function snapshotBodies(
   ): Promise<string> => {
     if (computing.has(node.id))
       throw new Error(
-        `snapshot ${node.id} (${node.file}) descends from itself; run \`./equin check snapshot-chain-intact\``,
+        `snapshot ${node.id} (${node.file}) descends from itself; run \`./muxos check snapshot-chain-intact\``,
       );
     computing.add(node.id);
     try {

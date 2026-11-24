@@ -22,7 +22,7 @@ import (
 // side and the other's test fails.
 func TestBackendCrashEntryMatchesTheGolden(t *testing.T) {
 	crash := newBackendCrash("alpha", 45958, syscall.SIGSEGV, false,
-		1794150000000, 1794153877965, "equin · server · alpha",
+		1794150000000, 1794153877965, "muxos · server · alpha",
 		[]string{
 			"Bun v1.4.4 (38afee6c8) macOS Silicon",
 			"panic: Segmentation fault at address 0x7BC138",

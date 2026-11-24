@@ -4,7 +4,7 @@
  * is filterable (the source pane scopes the window by it), and the outcome
  * presents as the run's chip.
  *
- * Run: `./equin test plugins/apps/plugins/events/plugins/events-core/core`.
+ * Run: `./muxos test plugins/apps/plugins/events/plugins/events-core/core`.
  */
 
 import { expect, test } from "bun:test";

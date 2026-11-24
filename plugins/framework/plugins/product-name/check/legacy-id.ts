@@ -9,20 +9,41 @@ import {
   LEGACY_ID_NOTES,
   type LegacyIdKey,
 } from "../core/internal/legacy-ids";
-import { PRODUCT_NAME } from "../core/internal/product-name";
+import {
+  LEGACY_PRODUCT_NAMES,
+  PRODUCT_NAME,
+} from "../core/internal/product-name";
 
 const RULE = "product-name:legacy-id";
 
-/** The old name, in any case: an identifier, a scope, a key, a path, prose. */
-const OLD_NAME = /singularity/i;
+/** The old names, in any case: an identifier, a scope, a key, a path, prose. */
+const OLD_NAME = new RegExp(
+  LEGACY_PRODUCT_NAMES.map((name) => name.toLowerCase()).join("|"),
+  "i",
+);
 
-/** Which kept values each mirror file may spell. */
-const MIRROR_VALUES: ReadonlyMap<string, readonly string[]> = (() => {
+/**
+ * The candidate selection's grep argument: every old name as a per-letter
+ * char-class alternation, so `git grep` finds it in any case.
+ */
+const OLD_NAME_GREP = LEGACY_PRODUCT_NAMES.map((name) =>
+  [...name].map((c) => `[${c.toLowerCase()}${c.toUpperCase()}]`).join(""),
+).join("|");
+
+/** A reference to a research doc's filename: history, not a live mention. */
+export function stripResearchRefs(text: string): string {
+  return text.replace(/research\/[\w.-]+/g, "");
+}
+
+/** Which kept values each mirror file may spell (list ids flattened). */
+export const MIRROR_VALUES: ReadonlyMap<string, readonly string[]> = (() => {
   const byFile = new Map<string, string[]>();
   for (const [key, note] of Object.entries(LEGACY_ID_NOTES)) {
     for (const file of note.mirrors ?? []) {
       const values = byFile.get(file) ?? [];
-      values.push(LEGACY_IDS[key as LegacyIdKey]);
+      const value = LEGACY_IDS[key as LegacyIdKey];
+      if (typeof value === "string") values.push(value);
+      else values.push(...value);
       byFile.set(file, values);
     }
   }
@@ -41,8 +62,9 @@ export function offendingLine(
  * The old name survives only where it is stored state or a cross-version
  * contract, and there it is spelled once, in `LEGACY_IDS`. Everything else — a
  * package scope, a manifest key, a camelCase identifier, a temp prefix, a
- * comment — says `equin` or names the kept id through the owner. Nothing breaks
- * when a new `singularity` appears, so without this check nothing would notice.
+ * comment — says the current name (`PRODUCT_NAME`) or names the kept id
+ * through the owner. Nothing breaks when a new old-name spelling appears, so
+ * without this check nothing would notice.
  */
 const legacyIdCheck: Check = {
   id: RULE,
@@ -55,19 +77,19 @@ const legacyIdCheck: Check = {
     [RULE]:
       "spells the old name on purpose — stored history (committed migrations) or the owner of the kept ids",
   },
-  outOfScope: ["research", "generated"],
+  outOfScope: ["research", "generated", "readme", "patch"],
   async run(ctx) {
     const exempt = await ctx.exempt(RULE);
     const offenders: string[] = [];
     const candidates = await listCandidateSources({
-      grepArg: "[Ss][Ii][Nn][Gg][Uu][Ll][Aa][Rr][Ii][Tt][Yy]",
+      grepArg: OLD_NAME_GREP,
       pathspecs: ["."],
     });
     for (const { rel, src } of candidates) {
       if (exempt.skips(rel)) continue;
       const mirrored = MIRROR_VALUES.get(rel) ?? [];
       src.split("\n").forEach((text, i) => {
-        if (offendingLine(text, mirrored)) {
+        if (offendingLine(stripResearchRefs(text), mirrored)) {
           offenders.push(`${rel}:${i + 1}:${text.trim()}`);
         }
       });
@@ -99,11 +121,14 @@ const legacyIdsInSyncCheck: Check = {
     const root = await getWorktreeRoot();
     const drift: string[] = [];
     for (const [key, note] of Object.entries(LEGACY_ID_NOTES)) {
-      const value = LEGACY_IDS[key as LegacyIdKey];
+      const raw = LEGACY_IDS[key as LegacyIdKey];
+      const values = Array.isArray(raw) ? raw : [raw];
       for (const file of note.mirrors ?? []) {
         const text = await readFile(join(root, file), "utf8");
-        if (!text.includes(value)) {
-          drift.push(`${file} — no longer spells ${key} (${value})`);
+        for (const value of values) {
+          if (!text.includes(value)) {
+            drift.push(`${file} — no longer spells ${key} (${value})`);
+          }
         }
       }
     }

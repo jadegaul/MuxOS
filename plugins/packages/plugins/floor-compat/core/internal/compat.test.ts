@@ -4,8 +4,8 @@ import { jsonResponse, parseUrl, promiseWithResolvers } from "./compat";
 describe("floor-safe spellings answer as the built-ins do", () => {
   test("parseUrl ≡ URL.parse", () => {
     for (const [raw, base] of [
-      ["https://equin.ai/a", undefined],
-      ["/a", "https://equin.ai"],
+      ["https://MuxOS.app/a", undefined],
+      ["/a", "https://MuxOS.app"],
       ["nope", undefined],
     ] as const)
       expect(parseUrl(raw, base)?.href).toBe(URL.parse(raw, base)?.href);

@@ -18,7 +18,7 @@
  *
  * Spawns a real agent — run it deliberately.
  *
- *   ./equin run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/e2e/stream-order.ts --attempt <attempt-id>
+ *   ./muxos run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/e2e/stream-order.ts --attempt <attempt-id>
  */
 import {
   agentFetch,

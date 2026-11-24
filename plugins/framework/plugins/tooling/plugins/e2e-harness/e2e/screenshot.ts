@@ -3,7 +3,7 @@
 // state it leaves).
 //
 // Usage:
-//   ./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts \
 //     [--path <route>] [--click <aria-label>] [--out <path>] [--color-scheme dark|light]
 //
 // --path names the screen: `--path /agents`. The deploy is not named at all in
@@ -34,7 +34,7 @@
 // (a phone: touch screen, no hover), --headed.
 //
 // Example:
-//   ./equin run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts \
+//   ./muxos run plugins/framework/plugins/tooling/plugins/e2e-harness/e2e/screenshot.ts \
 //     --path /agents/c/<id> \
 //     --click "Design docs" \
 //     --out /tmp/docs

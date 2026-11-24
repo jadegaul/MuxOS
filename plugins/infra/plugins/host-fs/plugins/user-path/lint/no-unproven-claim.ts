@@ -16,7 +16,7 @@ const createRule = lintRuleCreator(import.meta.url);
  * var, a value read from a record — so it is reported: a claim is made only
  * by a file that declares it, as a `sanctioned` exemption of this rule in its
  * plugin's `exempt/index.ts` with the reason the path is the app's. That keeps
- * every claim listed in one place (`./equin exempt list --rule
+ * every claim listed in one place (`./muxos exempt list --rule
  * user-path/no-unproven-claim`) instead of scattered where a type was
  * inconvenient, which is how an allow-list turns into a rubber stamp.
  *

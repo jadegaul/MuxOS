@@ -529,7 +529,7 @@ function NotificationLayout({
     audience.status === "ready" && audience.data === "developer";
   const idKinds = useIdKinds();
   const { icon, className: iconTone } = glyph(n);
-  // A developer row (equin's own telemetry) says what it is in its
+  // A developer row (muxos's own telemetry) says what it is in its
   // description, wrapped to two lines under the headline; a user row's line 2
   // is its subject, else its description, on one line.
   const developerRow = n.audience === "developer";

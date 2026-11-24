@@ -26,7 +26,7 @@
  * excluded from the default composition). `--runs N` repeats the whole run
  * (fresh fixtures and socket each time) and reports each number's median.
  *
- *   ./equin run plugins/network/plugins/live/e2e/narrowing.ts \
+ *   ./muxos run plugins/network/plugins/live/e2e/narrowing.ts \
  *     --page <held page id> --pages <2 more held page ids> --other-page <page id> \
  *     --attempt <A> --attempt-b <B> --conv <C in A> --others <conv ids> \
  *     --other-task <task id> [--shell <C's shell id>] [--subagent <by>:<key>] [--runs 3]
@@ -47,7 +47,7 @@
  * record-session on F. `--composite-keys old|v2` picks the keys (the old
  * whole-table values, or their `.v2` scoped collections).
  *
- *   ./equin run plugins/network/plugins/live/e2e/narrowing.ts --suite composite \
+ *   ./muxos run plugins/network/plugins/live/e2e/narrowing.ts --suite composite \
  *     --attempt <A> --page <page id> --other-page <page id> \
  *     --song <song id> --other-song <song id> [--composite-keys old|v2] [--runs 3]
  *
@@ -69,7 +69,7 @@
  * measured here: `mail.message-body` and `events.run-events` (their rows hang
  * off FK chains no fixture creates yet).
  *
- *   ./equin run plugins/network/plugins/live/e2e/narrowing.ts --suite byid [--runs 3]
+ *   ./muxos run plugins/network/plugins/live/e2e/narrowing.ts --suite byid [--runs 3]
  */
 import { endpointPath } from "@plugins/infra/plugins/endpoints/e2e";
 import { PROTOCOL } from "@plugins/network/plugins/live/plugins/resource-protocol/core";

@@ -16,7 +16,7 @@ import (
 // ─── what the gateway listens on ─────────────────────────────
 //
 // -listen is the browser port: required, no default. The port is chosen per
-// account by `./equin start` (the first free one of a small range;
+// account by `./muxos start` (the first free one of a small range;
 // plugins/infra/plugins/launcher/plugins/gateway-port owns the choice)
 // and handed down as this flag — a default here would be a second copy of
 // that choice, free to drift from it.
@@ -40,7 +40,7 @@ type listenPlan struct {
 }
 
 // errListenRequired names the fix: the usual way to hit it is a hand run.
-var errListenRequired = errors.New("-listen is required — start the gateway with ./equin start, which passes this " +
+var errListenRequired = errors.New("-listen is required — start the gateway with ./muxos start, which passes this " +
 	"account's port; to hand-run it, pass e.g. -listen loopback:<port>")
 
 // parseListenFlags checks both flags: -listen present, each a host:port with
@@ -109,7 +109,7 @@ type legacyListenStatus struct {
 // legacyRedirect is the legacy listeners' handler: next, except that a
 // top-level document navigation is answered 308 to the same host name, path
 // and query on the main port — bookmarks and typed URLs move, while
-// everything a running client holds on to (an agent's EQUIN_PARENT_URL, an
+// everything a running client holds on to (an agent's MUXOS_PARENT_URL, an
 // open tab's API calls and WebSockets, an embedded panel) keeps working.
 func legacyRedirect(next http.Handler, mainPort int) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

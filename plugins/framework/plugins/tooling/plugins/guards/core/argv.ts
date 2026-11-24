@@ -8,7 +8,7 @@ import type { ShellCall } from "./parse-shell";
  * Guards used to do this with `call.args.filter((a) => !a.startsWith("-"))` and
  * then `resolve(call.cwd, …)` on the survivors. That is not a parse, it is a
  * guess: every token that is not flag-shaped becomes a path. A `sed -i ''
- * 's|resolve(HERE, "../../../..");|…|' cli/equin-cli.ts` was blocked as a
+ * 's|resolve(HERE, "../../../..");|…|' cli/muxos-cli.ts` was blocked as a
  * write to the main checkout, because `path.resolve` normalised the `..`
  * sequences INSIDE the substitution script and landed them under the repo root.
  * The same guess also missed real writes — `cp -t <main> a.ts` treats the
@@ -52,8 +52,8 @@ export type FileOperand =
    * What a link will POINT AT (`ln`'s target operands): never opened, never
    * written, and deliberately unresolved — a relative `ln -s` target is read
    * from the LINK's folder, not the cwd, so a `path` here would be wrong as
-   * well as irrelevant. Having none is what keeps `cd <main> && ln -s .equin
-   * ~/.x` from reading as a write to `<main>/.equin`.
+   * well as irrelevant. Having none is what keeps `cd <main> && ln -s .muxos
+   * ~/.x` from reading as a write to `<main>/.muxos`.
    */
   | { kind: "link-target"; raw: string };
 

@@ -103,7 +103,7 @@ export interface Move {
  * have been public before it is adopted — the cheapest defence against a
  * hijacked fresh release). `honour`: the default, and the only one the
  * scheduled detection uses. `skip`: adopt the newest release however fresh
- * (`./equin deps upgrade --skip-cooldown`), for an update wanted now — the
+ * (`./muxos deps upgrade --skip-cooldown`), for an update wanted now — the
  * gates still prove every move. An updater with no cooldown ignores it.
  */
 export type Cooldown = "honour" | "skip";
@@ -134,7 +134,7 @@ export interface PlanOptions {
 }
 
 export interface Updater {
-  /** Stable id: `./equin deps upgrade <id>`, the receipt name, the task author. */
+  /** Stable id: `./muxos deps upgrade <id>`, the receipt name, the task author. */
   readonly id: string;
   /** One line: what it keeps current. */
   readonly description: string;

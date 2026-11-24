@@ -4,7 +4,7 @@ import { densityGroup } from "@plugins/ui/plugins/tokens/plugins/density/core";
 import { shapeGroup } from "@plugins/ui/plugins/tokens/plugins/shape/core";
 
 /**
- * The download page's body sizes, worn over the site's `equin-document`. An
+ * The download page's body sizes, worn over the site's `muxos-document`. An
  * install page is read up close, step by step, so it sets in a smaller hand
  * than the essay pages. Each role re-valued here is the one the page's text
  * already speaks through:
@@ -23,9 +23,9 @@ import { shapeGroup } from "@plugins/ui/plugins/tokens/plugins/shape/core";
  * 48px to the caveats and the demo card, 64px to "Once it is running" — are the
  * page's score, in `download.css`.
  */
-export const equinDownloadTheme = defineSubTheme({
-  id: "equin-download",
-  label: "equin download",
+export const muxosDownloadTheme = defineSubTheme({
+  id: "muxos-download",
+  label: "muxos download",
   fragments: [
     typeScaleGroup.fragment(
       both({
@@ -74,13 +74,13 @@ export const equinDownloadTheme = defineSubTheme({
 });
 
 /**
- * The caveats note's one size over `equinDownloadTheme`: its words on the
+ * The caveats note's one size over `muxosDownloadTheme`: its words on the
  * `caption` role at 13.5px/1.55 — a half-step under the page's 14px body, the
  * small print before installing, while the eyebrow keeps the 12px caption.
  */
-export const equinDownloadNoteTheme = defineSubTheme({
-  id: "equin-download-note",
-  label: "equin download note",
+export const muxosDownloadNoteTheme = defineSubTheme({
+  id: "muxos-download-note",
+  label: "muxos download note",
   fragments: [
     typeScaleGroup.fragment(
       both({
@@ -92,14 +92,14 @@ export const equinDownloadNoteTheme = defineSubTheme({
 });
 
 /**
- * The audience switch's one size over `equinDownloadTheme`: a segment's words
+ * The audience switch's one size over `muxosDownloadTheme`: a segment's words
  * (a `ToggleChip` reads `caption`) at 13.5px/1.6, medium — so a segment is
  * 34px tall with its 6px above and below — while the page's eyebrow and step
  * numbers keep the 12px caption.
  */
-export const equinDownloadTabsTheme = defineSubTheme({
-  id: "equin-download-tabs",
-  label: "equin download tabs",
+export const muxosDownloadTabsTheme = defineSubTheme({
+  id: "muxos-download-tabs",
+  label: "muxos download tabs",
   fragments: [
     typeScaleGroup.fragment(
       both({

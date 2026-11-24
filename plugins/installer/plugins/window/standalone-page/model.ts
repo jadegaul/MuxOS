@@ -25,7 +25,7 @@ export type StepState = "pending" | "active" | "done" | "skipped" | "failed";
 export interface ViewLeaf {
   readonly id: InstallStepId;
   readonly label: string;
-  /** What it does, as it happens ("Downloading equin"). */
+  /** What it does, as it happens ("Downloading muxos"). */
   readonly doing: string;
   /**
    * What its current attempt said it is doing now (the `doing` event), and
@@ -599,7 +599,7 @@ export function statusText(view: InstallView, now: number): string {
 
 /**
  * What a count counts, in the user's words (no internal names: cargo's
- * crates are the "components" equin compiles). Exhaustive over the units, so
+ * crates are the "components" muxos compiles). Exhaustive over the units, so
  * a new one does not compile until it has words.
  */
 const UNIT_WORDS: Record<Exclude<ProgressUnit, "%">, string> = {

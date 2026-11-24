@@ -11,7 +11,7 @@
  * build or checkout it ran from — before, the page's host was hashed in, so a
  * product rename moved every pinned hash and each namespace minted its own row.
  *
- * Run: `./equin test plugins/reports`
+ * Run: `./muxos test plugins/reports`
  */
 
 import { describe, test, expect } from "bun:test";
@@ -23,17 +23,17 @@ const ctx = (message: string) => ({ message, source: "browser-error" });
 // strips — so the fingerprint survives a dev reload.
 const V8_STACK = [
   "TypeError: Cannot read properties of undefined (reading 'id')",
-  "    at TaskRow (https://equin.localhost:9000/@fs/src/task-row.tsx?v=abc123:41:17)",
-  "    at renderWithHooks (https://equin.localhost:9000/node_modules/.vite/deps/react-dom.js:12345:26)",
-  "    at mountIndeterminateComponent (https://equin.localhost:9000/node_modules/.vite/deps/react-dom.js:99:3)",
-  "    at beginWork (https://equin.localhost:9000/node_modules/.vite/deps/react-dom.js:7:1)",
+  "    at TaskRow (https://muxos.localhost:9000/@fs/src/task-row.tsx?v=abc123:41:17)",
+  "    at renderWithHooks (https://muxos.localhost:9000/node_modules/.vite/deps/react-dom.js:12345:26)",
+  "    at mountIndeterminateComponent (https://muxos.localhost:9000/node_modules/.vite/deps/react-dom.js:99:3)",
+  "    at beginWork (https://muxos.localhost:9000/node_modules/.vite/deps/react-dom.js:7:1)",
 ].join("\n");
 
 // The same crash as Safari/Firefox spell it: `fn@location`, no "at".
 const SAFARI_STACK = [
-  "TaskRow@https://equin.localhost:9000/src/task-row.tsx:41:17",
-  "renderWithHooks@https://equin.localhost:9000/src/react-dom.js:12345:26",
-  "@https://equin.localhost:9000/src/main.tsx:3:9",
+  "TaskRow@https://muxos.localhost:9000/src/task-row.tsx:41:17",
+  "renderWithHooks@https://muxos.localhost:9000/src/react-dom.js:12345:26",
+  "@https://muxos.localhost:9000/src/main.tsx:3:9",
 ].join("\n");
 
 describe("crashFingerprint", () => {
@@ -180,7 +180,7 @@ describe("a frame's location is not its identity", () => {
       "https://app.example.com",
     ]) {
       expect(
-        await fp(V8_STACK.replaceAll("https://equin.localhost:9000", host)),
+        await fp(V8_STACK.replaceAll("https://muxos.localhost:9000", host)),
       ).toBe(pinned);
     }
   });
@@ -189,8 +189,8 @@ describe("a frame's location is not its identity", () => {
     const built = (hash: string) =>
       [
         "Error: boom",
-        `    at reject (http://equin.localhost:9000/artifacts/network.live.core.${hash}/index.js:57:9)`,
-        `    at http://equin.localhost:9000/artifacts/network.live.web.${hash}/index.js:218:25`,
+        `    at reject (http://muxos.localhost:9000/artifacts/network.live.core.${hash}/index.js:57:9)`,
+        `    at http://muxos.localhost:9000/artifacts/network.live.web.${hash}/index.js:218:25`,
       ].join("\n");
     expect(await fp(built("5d6e9dbccf632a03"))).toBe(
       await fp(built("e8ef70cea1efca77")),
@@ -208,7 +208,7 @@ describe("a frame's location is not its identity", () => {
     expect(
       await fp(ranFrom("/home/a/dev/repo/.claude/worktrees/att-1-x")),
     ).toBe(main);
-    expect(await fp(ranFrom("file:///home/b/src/equin"))).toBe(main);
+    expect(await fp(ranFrom("file:///home/b/src/muxos"))).toBe(main);
   });
 
   test("the normalized frame is the function and the app-relative file", () => {
@@ -216,12 +216,12 @@ describe("a frame's location is not its identity", () => {
       normalizeFrames(
         [
           "Error: boom",
-          "    at reject (http://equin.localhost:9000/artifacts/network.live.core.5d6e9dbccf632a03/index.js:57:9)",
+          "    at reject (http://muxos.localhost:9000/artifacts/network.live.core.5d6e9dbccf632a03/index.js:57:9)",
           "    at http://x.localhost:9000/artifacts/set.0123456789abcdef/react.js:1:2",
           "    at f (http://x.localhost:9000/@fs/home/a/repo/node_modules/.vite/deps/react-dom.js?v=1a2b:3:4)",
           "    at g (/home/a/repo/.claude/worktrees/att-1-x/plugins/p/plugins/q/server/x.ts:5:6)",
           "    at h (http://x.localhost:9000/plugins/p/web/y.tsx?t=123:7:8)",
-          "TaskRow@https://equin.localhost:9000/src/task-row.tsx:41:17",
+          "TaskRow@https://muxos.localhost:9000/src/task-row.tsx:41:17",
         ].join("\n"),
       ),
     ).toEqual([

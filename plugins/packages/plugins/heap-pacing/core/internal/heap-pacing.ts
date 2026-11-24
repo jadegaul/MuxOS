@@ -59,7 +59,7 @@ export const HEAVY_PROCESS_RAM_BYTES = 4e9;
 export const CHECK_PROCESS_RAM_BYTES = 2e9;
 
 /**
- * Marks a pace this repo set (`pacedHeapEnv`, the `./equin` shim), as against
+ * Marks a pace this repo set (`pacedHeapEnv`, the `./muxos` shim), as against
  * one a person set. A pace is a property of the process it was chosen for: a
  * child spawned with a pace of its own replaces an inherited marked one, while
  * an unmarked one — a measurement's — wins everywhere below it.

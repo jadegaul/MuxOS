@@ -13,10 +13,10 @@ import { buildRunIdKind } from "../core";
 // - The CLI runs NEW code against the schema the PREVIOUS build left behind
 //   (see `insertRow`), so it must never bind to the current table definition.
 // - The table is a `defineEntity` (server/internal/tables.ts), which loads the
-//   field-storage codegen manifest — and the regenerating `./equin build`
+//   field-storage codegen manifest — and the regenerating `./muxos build`
 //   process may not load one (`cli:codegen-manifests-not-frozen`).
 //
-// The detached `./equin build` CLI records build_runs rows directly, from
+// The detached `./muxos build` CLI records build_runs rows directly, from
 // the CLI process — which declares NO runtime namespace (a terminal build is
 // namespace-less) and so cannot use the namespace-bound `db` from
 // `@plugins/database/server`. The recorder therefore opens ONE short-lived pool
@@ -45,7 +45,7 @@ export interface InsertRunRow {
 export interface BuildRunRecorder {
   /**
    * Claim this namespace's in-flight row for a terminal build (a direct
-   * `./equin build`, where no backend minted the row first). Returns
+   * `./muxos build`, where no backend minted the row first). Returns
    * "lost" when a LIVE build holds this namespace's slot, and "unavailable" when
    * the namespace has no ledger yet — no database, or no `build_runs` table in
    * it.
@@ -188,7 +188,7 @@ async function insertRow(
   // The reason is a hard ordering fact plus a drizzle behaviour that
   // together make the ORM form structurally unusable HERE:
   //
-  //   1. This row is minted by the `./equin build` CLI
+  //   1. This row is minted by the `./muxos build` CLI
   //      (bin/commands/build.ts, just before `generateAppSources`), which
   //      GENERATES the migration; the migration is not APPLIED until the
   //      backend restarts at the very end of the build. So the CLI always
@@ -319,7 +319,7 @@ export async function closeRunOn(
  * `recordRunCommit`'s body over any drizzle handle. The build stamps the commit
  * it sampled before reading a source file (`headAtStart`) into the dist as
  * `.build-commit`; this puts the same sha on its row, so "did the build of the
- * commit main serves pass" (`./equin version cut`) and the convergence
+ * commit main serves pass" (`./muxos version cut`) and the convergence
  * decision's "already attempted" read a row that names the tree it built — not
  * the HEAD its claimer saw, which a push in between makes another commit.
  *

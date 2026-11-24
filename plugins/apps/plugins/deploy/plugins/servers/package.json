@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-deploy-servers",
+  "name": "@muxos/plugin-apps-deploy-servers",
   "private": true,
   "version": "0.0.1"
 }

@@ -9,8 +9,8 @@
  * migration chain plus graphile's queue schema (the reconcile enqueues its fire
  * job on the same transaction as its row writes).
  *
- * Run: `./equin test plugins/page/plugins/inline-date`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/page/plugins/inline-date`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

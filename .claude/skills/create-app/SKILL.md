@@ -1,7 +1,7 @@
 ---
 name: create-app
 description: >
-  Rules for creating a new top-level app in the equin platform.
+  Rules for creating a new top-level app in the muxos platform.
   Read BEFORE creating any new app.
 ---
 
@@ -20,7 +20,7 @@ description: >
 
 ## Files on disk: one data dir per app
 
-An app's durable host-global files (content the user made, state that is the only copy) live in its **one** data dir, `~/.equin/apps/<name>/` — never in a second `apps/*` dir, and never in `state/` from inside the app.
+An app's durable host-global files (content the user made, state that is the only copy) live in its **one** data dir, `~/.muxos/apps/<name>/` — never in a second `apps/*` dir, and never in `state/` from inside the app.
 
 - Declare it at the app root, `plugins/apps/plugins/<name>/data-dirs/index.ts`, from the shell's `AppRef`:
 
@@ -59,4 +59,4 @@ plugins/apps/plugins/<name>/
 ```
 
 Each `package.json` needs a `"name"` for `bun install`, but its value is derived from the
-folder path and rewritten by `./equin build` — any unique placeholder works.
+folder path and rewritten by `./muxos build` — any unique placeholder works.

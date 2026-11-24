@@ -6,7 +6,7 @@
  * (task-1795221280-0armjx: a user carried a supervisor task on in a side chat,
  * closed the original, and the side chat stayed `interactive`).
  *
- * Run: `./equin test plugins/tasks/plugins/tasks-core`.
+ * Run: `./muxos test plugins/tasks/plugins/tasks-core`.
  */
 import { describe, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";

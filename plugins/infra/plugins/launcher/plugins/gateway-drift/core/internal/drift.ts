@@ -2,10 +2,10 @@ import { z } from "zod";
 import { wholeList } from "@plugins/packages/plugins/list-bound/core";
 
 /** What brings the machine's gateway onto what this checkout's main installs. */
-export const GATEWAY_REFRESH_COMMAND = "./equin start --force";
+export const GATEWAY_REFRESH_COMMAND = "./muxos start --force";
 
 /**
- * Is the machine's gateway the one `./equin start --force` would install now?
+ * Is the machine's gateway the one `./muxos start --force` would install now?
  *
  * - `current`        — the installed definition and the running gateway match
  *                      main's launch (argv, cwd, signature);

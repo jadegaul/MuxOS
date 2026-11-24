@@ -82,7 +82,7 @@ const DROPPED = new Set([
  * name above its description) as a run of text, and a stray space costs a
  * robot less than two words glued into one. A span's edge is the one judged
  * by what is written beside it (see `semanticHtml`): where the markup runs a
- * word straight into it (`equin<span>.</span>`, `<span>$</span>5`), the author
+ * word straight into it (`muxos<span>.</span>`, `<span>$</span>5`), the author
  * wrote one run of text, styled in part, and no space is put there.
  */
 const PHRASING = new Set([
@@ -198,7 +198,7 @@ function attrValue(v: string): string {
  * - Every other element is unwrapped into its children; a kept element left
  *   with no text and no image is dropped. A box separates its text from its
  *   neighbours' by a space; a `span` does not where a word is written straight
- *   against its edge (`equin<span>.</span>` reads `equin.`).
+ *   against its edge (`muxos<span>.</span>` reads `muxos.`).
  * - Text and inline elements left at the top level, between blocks, are
  *   wrapped in a `<p>` (a run holding a block — a link around a card — stays
  *   as it is): a document's prose is in paragraphs.

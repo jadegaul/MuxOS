@@ -7,7 +7,7 @@ import type { TSESTree } from "@typescript-eslint/utils";
  * `navigator.locks` is absent in some contexts of browsers that otherwise have
  * Web Locks (iOS Lockdown Mode, in-app webviews, insecure origins, some worker
  * kinds): a bare `navigator.locks.request(…)` there throws "undefined is not
- * an object" (equin.ai's demo worker on Safari). Lock through `webLocks()`
+ * an object" (MuxOS.app's demo worker on Safari). Lock through `webLocks()`
  * from `@plugins/primitives/plugins/dom/plugins/web-locks/core`, whose
  * `unsupported` arm has no lock manager.
  *

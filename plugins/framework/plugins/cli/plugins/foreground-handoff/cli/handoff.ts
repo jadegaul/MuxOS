@@ -32,7 +32,7 @@ function signalExitCode(signal: NodeJS.Signals): number {
  * - **Finishes in time:** its output was streamed as it came, and its exit
  *   code is this process's — indistinguishable from running in place.
  * - **Deadline:** print where it stands and how to get its verdict, leave it
- *   running, exit 70 (`./equin await`'s "still running" code). The op's
+ *   running, exit 70 (`./muxos await`'s "still running" code). The op's
  *   orphan guard is disarmed (`OP_HANDED_OFF`), so this exit does not kill it.
  * - **This launcher is interrupted or orphaned** before the deadline (the user
  *   stopped the call): the op is SIGTERMed with it, as an in-place op would
@@ -49,7 +49,7 @@ export async function runHandedOff(
   // (everything in it was streamed out already). Left behind, one per
   // foreground check / test, it piled up — 2,700+ in /tmp on 2026-11-05.
   // A handed-off op's log outlives the call on purpose: its path is printed.
-  const logDir = mkdtempSync(join(tmpdir(), `equin-${op}-`));
+  const logDir = mkdtempSync(join(tmpdir(), `muxos-${op}-`));
   const logPath = join(logDir, "output.log");
   const writeFd = adoptFd(openSync(logPath, "a"));
   const env = { ...process.env };
@@ -120,7 +120,7 @@ export async function runHandedOff(
   writeAllSync(
     1,
     `\n⏸ ${op} is still running — handed off before this call's time limit; it keeps going on its own (pid ${child.pid}).\n` +
-      `  Next: \`./equin await ${op}\` (foreground). It blocks until the ${op} writes its verdict and prints it; ` +
+      `  Next: \`./muxos await ${op}\` (foreground). It blocks until the ${op} writes its verdict and prints it; ` +
       `exit 70 means still going — call it again. No notification will come, so do not end your turn waiting for one.\n` +
       `  Its full output, so far and from here on: ${logPath}\n`,
   );

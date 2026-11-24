@@ -67,7 +67,7 @@ const check: Check = {
     const dead = deadCompositionOutputs(repo);
     if (dead.length > 0) {
       problems.push(
-        `Per-composition outputs no build writes are in the tree (\`./equin build\` deletes them; ` +
+        `Per-composition outputs no build writes are in the tree (\`./muxos build\` deletes them; ` +
           `never commit one):\n` +
           dead.map((p) => `  ${p}`).join("\n"),
       );

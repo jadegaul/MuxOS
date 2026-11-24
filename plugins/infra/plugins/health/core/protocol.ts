@@ -10,7 +10,7 @@ export const HealthResponseSchema = z.object({
    * phase ran, `onSettled` included).
    *
    * What a deploy's verdict reads: a backend that answered once and then died
-   * in a post-ready phase never says `settled`, so `./equin build` counts a
+   * in a post-ready phase never says `settled`, so `./muxos build` counts a
    * namespace deployed only when the process that took over (same `startedAt`)
    * reports it.
    *

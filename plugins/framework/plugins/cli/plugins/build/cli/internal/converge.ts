@@ -73,7 +73,7 @@ export interface ConvergeOptions {
 }
 
 /**
- * `./equin build --allow-main --converge` — main's deploy, run from OUTSIDE
+ * `./muxos build --allow-main --converge` — main's deploy, run from OUTSIDE
  * main's backend.
  *
  * The gateway starts this on every advance of `refs/heads/main`, on its own
@@ -127,7 +127,7 @@ export interface ConvergeOptions {
  * listen. It runs after the builds (a build's backend restart goes through
  * whichever gateway is up) and whatever their verdict, since the gateway's
  * source does not depend on the app building. This run outlives the gateway
- * it replaces (its own process group, `EQUIN_BUILD_DETACHED`), so its exit
+ * it replaces (its own process group, `MUXOS_BUILD_DETACHED`), so its exit
  * status reaches no one after a restart: a restart that fails files its own
  * report.
  *
@@ -142,7 +142,7 @@ export interface ConvergeOptions {
  *
  * On main, each build runs in a SLOT (`infra/git/main-slots`): the run checks
  * the decided commit out into a free slot no push writes into (never one an
- * app lives in), hands it to `<slot>/equin build`, and the build points each
+ * app lives in), hands it to `<slot>/muxos build`, and the build points each
  * deployed app's `current/<namespace>` link at the slot once that app is
  * healthy; the pool is reclaimed after each build. The gateway starts this
  * run from main's link (the repo root before any slot exists), so the
@@ -514,10 +514,10 @@ function slotSha(head: string | null): string {
 
 /**
  * One main build in a slot: a slot checked out at `sha` and handed to
- * `<slot>/equin build …`, run there as the attached supervised run `buildId`
+ * `<slot>/muxos build …`, run there as the attached supervised run `buildId`
  * (`runInBuildSlot`: the child holds the slot — exclusively, then shared once
  * it hands it to the backend it restarts there — until it exits). The
- * `<slot>/equin` wrapper rather than this process's Bun: the slot's commit
+ * `<slot>/muxos` wrapper rather than this process's Bun: the slot's commit
  * may pin another toolchain.
  */
 async function buildInSlot(i: {

@@ -51,7 +51,7 @@ const PGBOUNCER_SOCKET = join(
  *
  * - A packaged release names its vendored binary (`PGBOUNCER_BIN`).
  * - Otherwise the install pinned to this machine (`pgbouncer-binary`, see
- *   `pinned-binary.ts`), moved only by `./equin deps pin`.
+ *   `pinned-binary.ts`), moved only by `./muxos deps pin`.
  */
 async function resolveBinary(): Promise<{
   binary: string;
@@ -102,7 +102,7 @@ function pingSocket(timeoutMs: number): Promise<boolean> {
  * `logfile`. It still writes its pidfile, which every stop and reattach reads.
  *
  * `absent` is a gateway older than the relay running this script (its binary is
- * only rebuilt by `./equin start`): PgBouncer daemonizes as before, with no log
+ * only rebuilt by `./muxos start`): PgBouncer daemonizes as before, with no log
  * at all — said out loud, never by quietly reviving the unbounded file.
  */
 function launch(binary: string, target: ServiceLogTarget): Launched {
@@ -136,7 +136,7 @@ function launch(binary: string, target: ServiceLogTarget): Launched {
     return launched;
   }
   console.log(
-    "pgbouncer: this gateway predates the service log relay; running without a log — restart the gateway (./equin start --force) and then pgbouncer",
+    "pgbouncer: this gateway predates the service log relay; running without a log — restart the gateway (./muxos start --force) and then pgbouncer",
   );
   const result = spawnSync(binary, [PGBOUNCER_CONFIG_FILE, "-d"], {
     stdio: "pipe",

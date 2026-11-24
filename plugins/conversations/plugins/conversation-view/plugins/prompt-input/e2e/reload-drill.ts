@@ -9,7 +9,7 @@
 // is sent: no Enter is pressed, so no turn reaches any agent. The draft lives
 // in the throwaway browser's storage only.
 //
-// Usage: ./equin run plugins/conversations/plugins/conversation-view/plugins/prompt-input/e2e/reload-drill.ts [--conversation <id>] [--no-record] [--headed]
+// Usage: ./muxos run plugins/conversations/plugins/conversation-view/plugins/prompt-input/e2e/reload-drill.ts [--conversation <id>] [--no-record] [--headed]
 import type { Page } from "playwright";
 import {
   arg,

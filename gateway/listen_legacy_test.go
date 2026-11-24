@@ -186,22 +186,22 @@ func TestLegacyRedirect(t *testing.T) {
 		headers  map[string]string
 		location string // "" = served
 	}{
-		{"typed URL", "equin.localhost:9000", "/agents/c/x?tab=2&q=a%20b", nav, "http://equin.localhost:8701/agents/c/x?tab=2&q=a%20b"},
+		{"typed URL", "muxos.localhost:9000", "/agents/c/x?tab=2&q=a%20b", nav, "http://muxos.localhost:8701/agents/c/x?tab=2&q=a%20b"},
 		{"same-origin link", "wt.localhost:9000", "/", with(map[string]string{"Sec-Fetch-Site": "same-origin"}), "http://wt.localhost:8701/"},
 		{"bare localhost", "localhost:9000", "/home", nav, "http://localhost:8701/home"},
 		{"IPv6 literal", "[::1]:9000", "/x", nav, "http://[::1]:8701/x"},
-		{"embedded panel", "equin.localhost:9000", "/home/menu-bar?embed=1", nav, ""},
-		{"cross-site (OAuth popup)", "equin.localhost:9000", "/settings", with(map[string]string{"Sec-Fetch-Site": "cross-site"}), ""},
-		{"same-site frame", "equin.localhost:9000", "/settings", with(map[string]string{"Sec-Fetch-Site": "same-site"}), ""},
-		{"no Sec-Fetch-Site (a tool)", "equin.localhost:9000", "/", with(map[string]string{"Sec-Fetch-Site": ""}), ""},
-		{"API", "equin.localhost:9000", "/api/auth/callback/google?code=1", nav, ""},
-		{"WebSocket path", "equin.localhost:9000", "/ws/notifications", nav, ""},
-		{"gateway API", "equin.localhost:9000", "/gateway/identity", nav, ""},
-		{"gateway root", "equin.localhost:9000", "/gateway", nav, ""},
-		{"a fetch", "equin.localhost:9000", "/agents", with(map[string]string{"Sec-Fetch-Mode": "cors", "Sec-Fetch-Dest": "empty"}), ""},
-		{"an iframe", "equin.localhost:9000", "/agents", with(map[string]string{"Sec-Fetch-Dest": "iframe"}), ""},
-		{"no fetch metadata", "equin.localhost:9000", "/agents", map[string]string{}, ""},
-		{"a path merely starting with api", "equin.localhost:9000", "/apis", nav, "http://equin.localhost:8701/apis"},
+		{"embedded panel", "muxos.localhost:9000", "/home/menu-bar?embed=1", nav, ""},
+		{"cross-site (OAuth popup)", "muxos.localhost:9000", "/settings", with(map[string]string{"Sec-Fetch-Site": "cross-site"}), ""},
+		{"same-site frame", "muxos.localhost:9000", "/settings", with(map[string]string{"Sec-Fetch-Site": "same-site"}), ""},
+		{"no Sec-Fetch-Site (a tool)", "muxos.localhost:9000", "/", with(map[string]string{"Sec-Fetch-Site": ""}), ""},
+		{"API", "muxos.localhost:9000", "/api/auth/callback/google?code=1", nav, ""},
+		{"WebSocket path", "muxos.localhost:9000", "/ws/notifications", nav, ""},
+		{"gateway API", "muxos.localhost:9000", "/gateway/identity", nav, ""},
+		{"gateway root", "muxos.localhost:9000", "/gateway", nav, ""},
+		{"a fetch", "muxos.localhost:9000", "/agents", with(map[string]string{"Sec-Fetch-Mode": "cors", "Sec-Fetch-Dest": "empty"}), ""},
+		{"an iframe", "muxos.localhost:9000", "/agents", with(map[string]string{"Sec-Fetch-Dest": "iframe"}), ""},
+		{"no fetch metadata", "muxos.localhost:9000", "/agents", map[string]string{}, ""},
+		{"a path merely starting with api", "muxos.localhost:9000", "/apis", nav, "http://muxos.localhost:8701/apis"},
 	}
 	for _, c := range cases {
 		req := httptest.NewRequest(http.MethodGet, "http://"+c.host+c.target, nil)
@@ -242,7 +242,7 @@ func TestIdentityEndpoint(t *testing.T) {
 
 	p.identity = &gatewayIdentity{Product: productName, UID: os.Getuid(), DataDir: "/data", Port: 8700}
 	got := get()
-	want := map[string]any{"product": "equin", "uid": float64(os.Getuid()), "dataDir": "/data", "port": float64(8700), "legacyListen": nil}
+	want := map[string]any{"product": "muxos", "uid": float64(os.Getuid()), "dataDir": "/data", "port": float64(8700), "legacyListen": nil}
 	if !mapsEqual(got, want) {
 		t.Fatalf("identity = %v, want %v", got, want)
 	}
@@ -280,16 +280,16 @@ func mapsEqual(a, b map[string]any) bool {
 
 func TestChildEnvCarriesTheGatewayPort(t *testing.T) {
 	// A starter's own value never reaches a child: the gateway's wins.
-	captured, _ := NewChildEnv([]string{"PATH", "EQUIN_*"}, []string{"PATH=/bin", "EQUIN_GATEWAY_PORT=9000"})
+	captured, _ := NewChildEnv([]string{"PATH", "MUXOS_*"}, []string{"PATH=/bin", "MUXOS_GATEWAY_PORT=9000"})
 	env := runtimeChildEnv(captured, 8702).With()
 	var ports []string
 	for _, kv := range env {
-		if v, ok := strings.CutPrefix(kv, "EQUIN_GATEWAY_PORT="); ok {
+		if v, ok := strings.CutPrefix(kv, "MUXOS_GATEWAY_PORT="); ok {
 			ports = append(ports, v)
 		}
 	}
 	if !slices.Equal(ports, []string{strconv.Itoa(8702)}) {
-		t.Fatalf("EQUIN_GATEWAY_PORT entries %v in %v, want exactly [8702]", ports, env)
+		t.Fatalf("MUXOS_GATEWAY_PORT entries %v in %v, want exactly [8702]", ports, env)
 	}
 	if !slices.Contains(env, "PATH=/bin") {
 		t.Fatalf("the captured base was dropped: %v", env)

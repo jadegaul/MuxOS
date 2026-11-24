@@ -35,7 +35,7 @@ const followLog = defineLogSink({
 /**
  * Main's boot: bring every declared login service the user `start`ed to the
  * dependency main's checkout now builds — so a push changing a service's
- * binary reaches it without anyone running `./equin start`. Names no service.
+ * binary reaches it without anyone running `./muxos start`. Names no service.
  *
  * Run on main's boot and on every advance of main (`followMainReaction`):
  * main's build keeps its backend when the server code is unchanged, so a boot

@@ -9,7 +9,7 @@
 // Manual only — nothing runs this automatically.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-remember.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-remember.ts \
 //     [--name <prototype id>] [--out <prefix>] [--headed]
 
 import {

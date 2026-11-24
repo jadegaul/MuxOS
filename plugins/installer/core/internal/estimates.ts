@@ -21,7 +21,7 @@ export type EstimateSet = z.infer<typeof EstimateSet>;
 /**
  * The set an install of `platform` (`<os>-<arch>`, as the plan names it)
  * drawn in `mode` is estimated with — install.sh's `EST_SET` is the same
- * choice. An OS equin does not install on is an error, never a fallback.
+ * choice. An OS muxos does not install on is an error, never a fallback.
  */
 export function estimateSetOf(
   platform: string,
@@ -32,7 +32,7 @@ export function estimateSetOf(
     return mode === "window" ? "macos-window" : "macos-terminal";
   if (os === "linux") return "linux";
   throw new Error(
-    `no estimate set for platform '${platform}' (equin installs on macOS and Linux)`,
+    `no estimate set for platform '${platform}' (muxos installs on macOS and Linux)`,
   );
 }
 
@@ -49,7 +49,7 @@ export type StepEstimates = z.infer<typeof StepEstimates>;
 
 /**
  * Per-step medians from clean installs, per estimate set — `core/estimates.json`,
- * written only by `./equin installer estimates` from the timing files real
+ * written only by `./muxos installer estimates` from the timing files real
  * installs leave (`<run>/timing.json`). A step with no measured run is null: a
  * renderer then shows no number for it, never a guess. install.sh carries a
  * generated copy (its `estimates` block), held equal to this file by the
@@ -65,7 +65,7 @@ export const INSTALL_ESTIMATES: InstallEstimates =
 
 /**
  * What one install measured, written beside its events when it ends
- * (`~/.equin/install/<run>/timing.json`): every step that ran to `done`, with
+ * (`~/.muxos/install/<run>/timing.json`): every step that ran to `done`, with
  * how long it took. Skipped, failed and never-reached steps are absent — a
  * median is taken only over steps that really ran — except a build sub-step
  * skipped inside a build that ran to `done`: it is part of that measured

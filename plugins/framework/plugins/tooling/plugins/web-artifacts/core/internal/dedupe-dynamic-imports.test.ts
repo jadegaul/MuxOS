@@ -22,10 +22,10 @@ describe("dedupeDynamicImportEdits", () => {
       'const b=()=>import("../chunk.ab/index.js").then(n=>n.C);';
     const out = apply(code, await dedupeDynamicImportEdits(code));
     expect(out).toContain(
-      '__equinImportOnce("../chunk.ab/index.js",()=>import(`../chunk.ab/index.js`)).then(n=>(n.A(),n.B))',
+      '__muxosImportOnce("../chunk.ab/index.js",()=>import(`../chunk.ab/index.js`)).then(n=>(n.A(),n.B))',
     );
     expect(out).toContain(
-      '__equinImportOnce("../chunk.ab/index.js",()=>import("../chunk.ab/index.js")).then(n=>n.C)',
+      '__muxosImportOnce("../chunk.ab/index.js",()=>import("../chunk.ab/index.js")).then(n=>n.C)',
     );
   });
 
@@ -40,7 +40,7 @@ describe("dedupeDynamicImportEdits", () => {
     expect(out).toContain('import{x}from"@c/ab";import"vendor";');
     expect(out).toContain('const a=()=>import("@c/cd");');
     expect(out).toContain(
-      'const b=()=>__equinImportOnce("@c/ef",()=>import("@c/ef")),c=()=>__equinImportOnce("@c/ef",()=>import("@c/ef"));',
+      'const b=()=>__muxosImportOnce("@c/ef",()=>import("@c/ef")),c=()=>__muxosImportOnce("@c/ef",()=>import("@c/ef"));',
     );
     expect(out).not.toContain("../c.");
   });
@@ -61,7 +61,7 @@ describe("dedupeDynamicImportEdits", () => {
     };
     const once = new Function(
       "load",
-      `${IMPORT_ONCE_HELPER};return (k)=>__equinImportOnce(k,load);`,
+      `${IMPORT_ONCE_HELPER};return (k)=>__muxosImportOnce(k,load);`,
     )(load) as (k: string) => Promise<number>;
     const first = once("a");
     expect(once("a")).toBe(first);

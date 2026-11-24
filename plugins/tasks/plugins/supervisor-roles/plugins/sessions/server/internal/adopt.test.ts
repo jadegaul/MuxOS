@@ -4,7 +4,7 @@
  * task is blocked before anything can arm it; a cycle or a task no longer in
  * the backlog rolls the whole adoption back.
  *
- * Run: `./equin test plugins/tasks/plugins/supervisor-roles/plugins/sessions`.
+ * Run: `./muxos test plugins/tasks/plugins/supervisor-roles/plugins/sessions`.
  */
 import { describe, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";

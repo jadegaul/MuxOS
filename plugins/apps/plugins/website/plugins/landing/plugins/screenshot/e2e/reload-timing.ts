@@ -23,7 +23,7 @@
  * only when the demo does not come up.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/reload-timing.ts [--reloads 3]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/reload-timing.ts [--reloads 3]
  */
 import type { Page } from "playwright";
 import {

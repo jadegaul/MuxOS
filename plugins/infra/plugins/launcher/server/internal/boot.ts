@@ -93,8 +93,8 @@ import {
 type LogFn = (msg: string) => void;
 const noop: LogFn = () => {};
 
-// All data paths derive from the (possibly overridden) EQUIN_DIR, so a
-// release launched with EQUIN_DIR=<releaseRoot> isolates its entire install
+// All data paths derive from the (possibly overridden) MUXOS_DIR, so a
+// release launched with MUXOS_DIR=<releaseRoot> isolates its entire install
 // — pid file, logs, the PG cluster, the registry — under that root.
 // The gateway owns the rotating per-channel logs under its log dir (gateway.log,
 // <worktree>.log). This file only captures the daemon's raw stdout/stderr — Go
@@ -236,7 +236,7 @@ export function hasPgBouncerPackage(repoRoot: AppPath): Promise<boolean> {
   return exists(
     joinAppPath(
       repoRoot,
-      "plugins/database/plugins/pgbouncer/node_modules/@equin",
+      "plugins/database/plugins/pgbouncer/node_modules/@muxos",
     ),
   );
 }
@@ -439,8 +439,8 @@ export interface GatewayLaunchOptions {
   /**
    * The gateway executable the launch runs, made from an installed
    * `gateway-binary` build (a `Ready`: ensured from the checkout by
-   * `./equin start` / `serve-app`, read from the bundle by a release).
-   * `./equin start` on macOS runs it from the equin app bundle
+   * `./muxos start` / `serve-app`, read from the bundle by a release).
+   * `./muxos start` on macOS runs it from the muxos app bundle
    * (login-services' `installServiceExecutable`), every other launch where it
    * was built (`unbundledExecutable(gatewayBuild(ready))`).
    */
@@ -473,7 +473,7 @@ export interface GatewayLaunchOptions {
   defaultNamespace?: string;
   /**
    * Main's checkout, passed as `-main-checkout`: the gateway watches its
-   * `refs/heads/main` and runs main's convergence (`./equin build --allow-main
+   * `refs/heads/main` and runs main's convergence (`./muxos build --allow-main
    * --converge`) there on every advance — main's auto-deploy, triggered from
    * outside main's backend (gateway/main_deploy.go). Only the machine's dev
    * gateway sets it; a release or `serve-app` deploys nothing.
@@ -520,21 +520,21 @@ export function selfContainedGatewayOptions(opts: {
 /**
  * How to run the gateway — argv, working dir, environment, and where its raw
  * stdio goes — as data. The ONE derivation of a gateway launch: the detached
- * spawn ({@link spawnGatewayDaemon}) and the login service `./equin start`
+ * spawn ({@link spawnGatewayDaemon}) and the login service `./muxos start`
  * registers (`gatewayServiceJob`, rendered by `launcher/login-services`) are both derived from it, so the two
  * ways the gateway gets started cannot drift apart.
  *
  * The gateway starts from the DECLARED runtime environment, not from ours:
  * `pickRuntimeEnv(process.env)` keeps only the names `launcher/runtime-env` declares.
  * Whatever else the starting shell carries — an agent's
- * `EQUIN_CONVERSATION_ID`, its `CLAUDE_*` — stays here instead
+ * `MUXOS_CONVERSATION_ID`, its `CLAUDE_*` — stays here instead
  * of reaching every backend on the host. `-child-env` hands the gateway the same
  * list of names, and the gateway forwards only those to the backends and
  * Postgres / PgBouncer it starts.
  *
  * `env` is computed from the LIVE `process.env`. Bun snapshots the real
  * environment at process start, so runtime mutations to `process.env` (the
- * release launcher's `EQUIN_DIR`, PG bin-dir and other relocation
+ * release launcher's `MUXOS_DIR`, PG bin-dir and other relocation
  * overrides, set in launch.ts before any import, and the release identity
  * stamped by `bootSelfContainedApp`) would NOT reach an implicitly inherited
  * env. Filtering the live object keeps them, because each is a forwarded name:
@@ -590,7 +590,7 @@ export function gatewayLaunchFlags(
     opts.logLevel,
     // EVERY path the gateway reads or writes is passed explicitly, from the
     // declaration that owns it. The Go side has its own defaults derived from
-    // the inherited EQUIN_DIR, and they are kept in step (gateway/main.go)
+    // the inherited MUXOS_DIR, and they are kept in step (gateway/main.go)
     // — but a default is a SECOND derivation of this layout, and a second
     // derivation is what silently keeps writing to the old spot when the
     // layout moves. Passing them means the declaration is the only authority.
@@ -689,7 +689,7 @@ export async function spawnGatewayDaemon(
   // preview's reaper — which reads a missing file as "still booting" — would
   // wait on it forever. The gateway then rewrites the same value.
   await writeFile(pidFile(), String(gw.pid) + "\n");
-  // Detached by default: `./equin start` on a host without launchd and
+  // Detached by default: `./muxos start` on a host without launchd and
   // the preview/desktop bring-up paths all outlive their launcher. A caller
   // that means to SUPERVISE the gateway (the release launcher under systemd)
   // calls `.ref()` on the returned handle and awaits `.exited`, which is why
@@ -879,13 +879,13 @@ async function awaitAppReady(name: Namespace, port: number): Promise<void> {
 
 /**
  * Boot a packaged app's full runtime end to end, race-free. The launcher is a
- * release entry point invoked with EQUIN_DIR already set in its env (all
+ * release entry point invoked with MUXOS_DIR already set in its env (all
  * path constants are import-time frozen, so it cannot be set mid-process).
  *
  * Ordering (each step gates the next):
  *   1. (The caller hands in the gateway binary — ensured or sealed.)
  *   2. ensureDatabaseConfig — write the release database.json under the root.
- *   3. Spawn the gateway daemon (receives EQUIN_DIR and the rest of the
+ *   3. Spawn the gateway daemon (receives MUXOS_DIR and the rest of the
  *      declared runtime environment, listens on `port`);
  *      the gateway is the sole supervisor of embedded PG + PgBouncer.
  *   4. awaitGatewayReady — the gateway is serving, which (because it exits on a

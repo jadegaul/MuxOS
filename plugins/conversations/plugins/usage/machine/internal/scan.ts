@@ -237,7 +237,7 @@ export interface OwnedCount {
  * `oauthAccount`) the session runs on, kept for the session's life and
  * restored on resume. A new value is written when the session moves to
  * another login. None is written for a session on `CLAUDE_CODE_OAUTH_TOKEN`
- * (an equin added account) or an API key, nor in a sub-agent's transcript.
+ * (an muxos added account) or an API key, nor in a sub-agent's transcript.
  */
 export function sessionOwnerOf(line: unknown): string | null {
   if (typeof line !== "object" || line === null) return null;

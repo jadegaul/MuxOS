@@ -14,7 +14,7 @@ import {
 // The desktop's version store against a throwaway prototypes tree: the shared
 // contract every provider passes, then what only git does. The store takes its
 // directory as an argument, so nothing here touches
-// `~/.equin/apps/prototypes`.
+// `~/.muxos/apps/prototypes`.
 
 describeHistoryContract("git", async () => {
   const root = await mkdtemp(join(tmpdir(), "prototype-history-"));

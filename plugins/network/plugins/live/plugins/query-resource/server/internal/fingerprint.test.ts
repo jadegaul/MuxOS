@@ -5,7 +5,7 @@
  * built from the repo-owned SchemaNode, so a zod upgrade cannot move a
  * definition.
  *
- * Run: `./equin test plugins/network/plugins/live/plugins/query-resource`.
+ * Run: `./muxos test plugins/network/plugins/live/plugins/query-resource`.
  */
 
 import { describe, expect, test } from "bun:test";

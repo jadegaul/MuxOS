@@ -5,9 +5,9 @@ PgBouncer connection pooler for the embedded Postgres cluster. Fronts PG in tran
 This plugin ships:
 
 - The `@equin/pgbouncer-<platform>` binary as an optionalDependency in `package.json` so `bun install` lands the binary.
-- `scripts/start.ts` — standalone lifecycle script that handles binary resolution, config generation, and pgbouncer spawn. Invoked by the gateway's generic service supervisor via `~/.equin/state/db-config/database.json`.
+- `scripts/start.ts` — standalone lifecycle script that handles binary resolution, config generation, and pgbouncer spawn. Invoked by the gateway's generic service supervisor via `~/.muxos/state/db-config/database.json`.
 - The `pgbouncer` lockstep group (`package.json` `dependencyPolicy`) keeps the four platforms on one version, and its `wraps` reads the `pgbouncer_<x>_<y>_<z>` tags of github.com/pgbouncer/pgbouncer. The wrappers publish themselves: a daily run of github.com/equinai/pgbouncer-embedded's Build and Publish workflow builds and publishes every new PgBouncer tag, so there is no manual publish step. A wrapper version names the PgBouncer release it wraps and a rebuild count, in its patch number: PgBouncer X.Y.Z rebuild R is `X.Y.(Z*100+R)` (1.26.1 rebuild 1 = `1.26.101`; versions up to 1.26.1 are the release they name). `wraps.revisions` tells the npm updater so (`wrappedRelease`), and the whole wrapped release is compared. A change to the build ships without waiting for upstream: merge it in pgbouncer-embedded, then `gh workflow run "Build and Publish" -R equinai/pgbouncer-embedded -f version=<release> -f rebuild=<next>` (its README, "Patch-only rebuilds"). A PgBouncer release no `@equin/pgbouncer-*` release wraps yet is listed BLOCKED in the weekly upgrade task: the auto-publish has not caught up, so check its latest run, fix it and re-run.
-- The `pgbouncer-binary` dependency (the `binary` child): an `infra/deps` `npmPackageCopy` of that package into `cache/deps/pgbouncer-binary/<identity>/`, pinned (holder `machine-pgbouncer`). The start script runs the pinned copy, never the checkout's `node_modules` (a `bun install` there replaced the binary under the running daemon, and the next start ran the new one silently). Only a fresh start resolves the binary (a reattach runs none); the first one on a machine pins the checkout's install; afterwards a different declared version is only logged. The switch is `./equin deps pin pgbouncer-binary`, then a restart of PgBouncer. A release keeps `PGBOUNCER_BIN`.
+- The `pgbouncer-binary` dependency (the `binary` child): an `infra/deps` `npmPackageCopy` of that package into `cache/deps/pgbouncer-binary/<identity>/`, pinned (holder `machine-pgbouncer`). The start script runs the pinned copy, never the checkout's `node_modules` (a `bun install` there replaced the binary under the running daemon, and the next start ran the new one silently). Only a fresh start resolves the binary (a reattach runs none); the first one on a machine pins the checkout's install; afterwards a different declared version is only logged. The switch is `./muxos deps pin pgbouncer-binary`, then a restart of PgBouncer. A release keeps `PGBOUNCER_BIN`.
 - `shared/` constants (PGBOUNCER_PORT, PGBOUNCER_SOCKET_DIR, config/log/pid paths) reused by the database client layer.
 
 ## Connection routing
@@ -47,7 +47,7 @@ Design: [`research/2026-11-04-global-pgbouncer-pool-per-lane.md`](../../../../re
 
 PgBouncer uses a catch-all `* = host=<PG_SOCKET_DIR> port=5433` — any database name routes to the embedded cluster automatically. No SIGHUP needed on worktree create/destroy.
 
-Config files (`pgbouncer.ini`, `userlist.txt`) at `~/.equin/postgres/` are rendered from the lane table (`renderPgbouncerConfig` in `core`, bound to this install's paths by `server`'s `pgbouncerConfigFiles`). Two writers, one rendering: the start script writes them before spawning a fresh daemon, and every backend's database driver calls `machine`'s `convergePgbouncerConfig` at boot — rewrite (atomically) only when the files differ from the rendering, then `SIGHUP` the running daemon (verified to be PgBouncer by its pid's command). The second is what applies a lane-table change: the gateway re-runs the start script only at its own start, and a reattached daemon keeps the config of its own start. With `auth_type = trust` the userlist is what lets a user log in at all: an unlisted user gets `"trust" authentication failed`.
+Config files (`pgbouncer.ini`, `userlist.txt`) at `~/.muxos/postgres/` are rendered from the lane table (`renderPgbouncerConfig` in `core`, bound to this install's paths by `server`'s `pgbouncerConfigFiles`). Two writers, one rendering: the start script writes them before spawning a fresh daemon, and every backend's database driver calls `machine`'s `convergePgbouncerConfig` at boot — rewrite (atomically) only when the files differ from the rendering, then `SIGHUP` the running daemon (verified to be PgBouncer by its pid's command). The second is what applies a lane-table change: the gateway re-runs the start script only at its own start, and a reattached daemon keeps the config of its own start. With `auth_type = trust` the userlist is what lets a user log in at all: an unlisted user gets `"trust" authentication failed`.
 
 ## Socket buffers
 
@@ -75,7 +75,7 @@ The gateway supervisor starts PgBouncer after Postgres (service index 1 in `data
 
 The pre-relay `postgres/pgbouncer.log` is moved into that rotation (as the newest free backup) on the first fresh start under a relay-aware gateway; until then it is a `debt` claim on the cluster's data dir (task-1793827129-t489g4). Converging a running pre-relay PgBouncer onto the new config (no `logfile`) is harmless: it keeps running and stops writing the file.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
@@ -104,6 +104,8 @@ The pre-relay `postgres/pgbouncer.log` is moved into that rotation (as the newes
   - Exempts itself from:
     - `boundaries/no-platform-api` — `shared/internal/paths.ts` (debt)
     - `check-thread-safety/no-blocking-check-work` — `check/internal/socket-buffer-probe.ts` (sanctioned)
+    - `product-name:legacy-id` — `check/index.ts`, `core/internal/lanes.ts`, `plugins/publish-watch/server/index.ts`, `CLAUDE.md`, `plugins/publish-watch/CLAUDE.md`, `plugins/binary/CLAUDE.md` (sanctioned)
+    - `product-name:legacy` — `CLAUDE.md`, `plugins/binary/CLAUDE.md`, `plugins/publish-watch/CLAUDE.md`, `plugins/publish-watch/server/index.ts` (sanctioned)
 - Machine:
   - Exports (types): `PgbouncerConvergence`
   - Exports (values): `convergePgbouncerConfig`

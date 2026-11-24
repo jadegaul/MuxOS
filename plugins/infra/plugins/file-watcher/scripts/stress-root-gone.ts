@@ -4,12 +4,12 @@
 // on a deleted root (an fseventsd RPC) before clearing the watcher's state, so
 // an unsubscribe landing in that window stops the same stream twice.
 //
-//   ./equin run plugins/infra/plugins/file-watcher/scripts/stress-root-gone.ts [--rounds 2000] [--parallel 8]
+//   ./muxos run plugins/infra/plugins/file-watcher/scripts/stress-root-gone.ts [--rounds 2000] [--parallel 8]
 //
 // To widen the window the way a stuck fseventsd does, run it against an addon
 // built with a delay before that stop (`usleep(300000)` ahead of the
 // callback's `stopStream` on a deleted root), loaded through
-// EQUIN_PARCEL_WATCHER_NODE, with MallocScribble=1 MallocGuardEdges=1
+// MUXOS_PARCEL_WATCHER_NODE, with MallocScribble=1 MallocGuardEdges=1
 // MallocErrorAbort=1 MallocCheckHeapStart=100 MallocCheckHeapEach=100.
 // Upstream's FSEvents backend crashed 2 of 3 such runs; the patched one none
 // (research/2026-11-09-infra-file-watcher-kqueue-children.md).

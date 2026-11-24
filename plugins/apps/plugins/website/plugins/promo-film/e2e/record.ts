@@ -4,10 +4,10 @@
 // --rec-dir <dir> (a fresh mkdtemp dir when omitted — printed); film.ts
 // renders from there without recording.
 //
-//   ./equin build --composition promo-film      # once
-//   ./equin promo-film seed                     # first launch + the story
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/record.ts \
-//     --composition promo-film [--only pages,sonata,…] --rec-dir "$EQUIN_SCRATCH/equin-film"
+//   ./muxos build --composition promo-film      # once
+//   ./muxos promo-film seed                     # first launch + the story
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/record.ts \
+//     --composition promo-film [--only pages,sonata,…] --rec-dir "$MUXOS_SCRATCH/muxos-film"
 //
 // Each segment is re-recordable alone (see this plugin's CLAUDE.md for which
 // need a fresh seed). A segment records ~0.5 s of real time per frame.

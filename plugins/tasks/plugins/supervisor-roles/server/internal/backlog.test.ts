@@ -4,7 +4,7 @@
  * interactive mandate) and a task a person ROUTED there (nested in its tree,
  * stating no mandate) both count; the role's session root does not.
  *
- * Run: `./equin test plugins/tasks/plugins/supervisor-roles`.
+ * Run: `./muxos test plugins/tasks/plugins/supervisor-roles`.
  */
 import { describe, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";

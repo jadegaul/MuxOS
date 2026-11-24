@@ -2,7 +2,7 @@ import { INSTALL_VERB } from "../core";
 import { STAMP_REL } from "./ensure-deps";
 
 /**
- * `./equin install` — the one verb whose whole work IS the bootstrap, so the
+ * `./muxos install` — the one verb whose whole work IS the bootstrap, so the
  * bootstrap answers it itself instead of handing it to the CLI.
  *
  * Every invocation runs `ensureDeps()` before the CLI is loaded; `install` asks
@@ -16,7 +16,7 @@ import { STAMP_REL } from "./ensure-deps";
  *
  * The verb's NAME is owned by the bootstrap (`../core`), and the `install`
  * plugin's command declaration takes it from there (it stays a declared command so
- * `./equin --help` lists it). That is what keeps the bootstrap's "reads no
+ * `./muxos --help` lists it). That is what keeps the bootstrap's "reads no
  * argv" rule honest: the rule exists because the bootstrap cannot load the
  * declarations, so it may not keep a copy of a set they own — but this name is
  * not theirs, it is the bootstrap's.
@@ -33,7 +33,7 @@ export function isInstallInvocation(args: readonly string[]): boolean {
   return args.length === 1 && args[0] === INSTALL_VERB;
 }
 
-/** The line `./equin install` ends with once `root`'s dependencies are installed. */
+/** The line `./muxos install` ends with once `root`'s dependencies are installed. */
 export function installedLine(root: string): string {
   return `${INSTALL_VERB}: ${root} is installed (${STAMP_REL})`;
 }

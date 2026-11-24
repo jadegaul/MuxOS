@@ -47,7 +47,7 @@ function majorUpgrade(from: string, to: string): string | null {
  * not silently run a new version.
  *
  * Pinned: the start script runs the install the pin holds; moving it is
- * `./equin deps pin postgres-binaries`, then a restart of the cluster.
+ * `./muxos deps pin postgres-binaries`, then a restart of the cluster.
  */
 export const postgresBinaries = defineDep({
   id: "postgres-binaries",

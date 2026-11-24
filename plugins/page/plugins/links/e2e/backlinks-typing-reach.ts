@@ -17,7 +17,7 @@
 // typing projection and pushed identical bytes; C proves the narrowed reads
 // still carry every change that matters.
 //
-// Usage: ./equin run plugins/page/plugins/links/e2e/backlinks-typing-reach.ts
+// Usage: ./muxos run plugins/page/plugins/links/e2e/backlinks-typing-reach.ts
 //        [--chars 30] [--gap 250] [--setup-settle 20000]
 import type { Page } from "playwright";
 import {

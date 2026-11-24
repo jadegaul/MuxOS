@@ -2,6 +2,7 @@ import {
   envName,
   readEnv,
 } from "@plugins/infra/plugins/launcher/plugins/env-names/core";
+import { LEGACY_IDS } from "@plugins/framework/plugins/product-name/core";
 import { exists } from "@plugins/packages/plugins/timed-fs/core";
 import { join } from "node:path";
 
@@ -64,13 +65,13 @@ export async function resolvePgClientBin(
   const platform = PLATFORMS[ctx.platform]?.[ctx.arch];
   if (!platform) {
     throw new Error(
-      `${tool}: unsupported platform ${ctx.platform}/${ctx.arch} — @equin/pg-client ships darwin/linux × arm64/x64`,
+      `${tool}: unsupported platform ${ctx.platform}/${ctx.arch} — ${LEGACY_IDS.npmScope}/pg-client ships darwin/linux × arm64/x64`,
     );
   }
   const bin = join(
     ctx.pluginRoot,
     "node_modules",
-    `@equin/pg-client-${platform}`,
+    `${LEGACY_IDS.npmScope}/pg-client-${platform}`,
     "native",
     "bin",
     tool,

@@ -7,7 +7,7 @@ import { resolveOpenerOrigin } from "./oauth-flow";
 
 test("the opener's origin is kept as given when it is a host of the claimed namespace", () => {
   for (const origin of [
-    "http://equin.localhost:9000",
+    "http://muxos.localhost:9000",
     "http://singularity.localhost:9000",
   ]) {
     expect(resolveOpenerOrigin(origin, MAIN_WORKTREE_NAME, 8700)).toEqual({
@@ -40,6 +40,6 @@ test("an origin that is not a host of the claimed namespace is refused", () => {
 test("a bundle that sends no origin gets the namespace's handed-out address", () => {
   expect(resolveOpenerOrigin(null, MAIN_WORKTREE_NAME, 8700)).toEqual({
     kind: "ok",
-    origin: "http://equin.localhost:8700",
+    origin: "http://muxos.localhost:8700",
   });
 });

@@ -1,7 +1,7 @@
 import type { Namespace } from "@plugins/infra/plugins/namespace/core";
 
 /**
- * {@link import("./reset").resetCompositionData} for a `./equin` verb acting on
+ * {@link import("./reset").resetCompositionData} for a `./muxos` verb acting on
  * this checkout — the same four guards and the same recipe the Reset button's
  * endpoint runs. A CLI process has no runtime namespace, so it names the one
  * whose user config holds this checkout's manifests (`checkoutNamespace(root)`).

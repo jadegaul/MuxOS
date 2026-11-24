@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-studio-explorer",
+  "name": "@muxos/plugin-apps-studio-explorer",
   "description": "Sidebar entry and filterable tree pane for browsing and inspecting the plugin tree.",
   "private": true,
   "version": "0.0.1"

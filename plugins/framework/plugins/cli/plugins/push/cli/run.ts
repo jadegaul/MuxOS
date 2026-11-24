@@ -294,7 +294,7 @@ async function pushLockFor(
 }
 
 // The push mutex is the `push` host-pool (host-admission): `pushPool.run(fn)`
-// holds its single slot file — `~/.equin/locks/push/slot-0.lock` — for the
+// holds its single slot file — `~/.muxos/locks/push/slot-0.lock` — for the
 // whole critical section, so at most one push runs host-wide. Who holds it and
 // who queues on it is read from the op log (`push-mutex` waits, `granted`). This folds the last hand-rolled
 // FFI flock onto the shared primitive: the size-1 fan-out is a single
@@ -754,7 +754,7 @@ const pushAction: CliAction<
         //     an update branch those include commits that belong to the
         //     upstream repository. Measured: after such a rebase, upstream's
         //     own sha was no longer an ancestor of main, so the next
-        //     `./equin upstream merge` computed its merge base BELOW the
+        //     `./muxos upstream merge` computed its merge base BELOW the
         //     commits already merged, re-presented them, and conflicted on a
         //     file nobody had touched twice. Landing by fast-forward keeps
         //     upstream's commits under the identities upstream gave them, and
@@ -802,7 +802,7 @@ const pushAction: CliAction<
               `To resolve, in this worktree:`,
               `  1. git merge main        (the one sanctioned merge — do NOT rebase here)`,
               `  2. Resolve conflicts, then 'git add <files>' and 'git commit'`,
-              `  3. Re-run ./equin push`,
+              `  3. Re-run ./muxos push`,
             ].join("\n"),
           );
           profiler.complete("failed_rebase");
@@ -840,7 +840,7 @@ const pushAction: CliAction<
                 `  2. git rebase origin/main     (NEVER 'git merge' — push re-rebases and a merge commit produces churn)`,
                 `  3. Resolve conflicts, then 'git add <files>' and 'git rebase --continue'`,
                 `     (or 'git rebase --abort' to bail out)`,
-                `  4. Re-run ./equin push`,
+                `  4. Re-run ./muxos push`,
                 ``,
                 `If main's shape has diverged so much your commit no longer applies, re-apply your`,
                 `changes by hand onto a fresh worktree branched from origin/main. Never 'git reset'`,

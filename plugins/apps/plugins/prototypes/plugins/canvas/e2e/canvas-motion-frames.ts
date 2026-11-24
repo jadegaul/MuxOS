@@ -14,7 +14,7 @@
 // Manual only.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-motion-frames.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/canvas/e2e/canvas-motion-frames.ts \
 //     --conv <conversation holding a proto- id> [--name <prototype id>] \
 //     --out <dir> [--frames 30] [--headed]
 

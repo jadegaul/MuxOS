@@ -29,7 +29,7 @@ const prepareLog = defineLogSink({
 
 /**
  * Makes an attempt's checkout, in a detached child
- * (`./equin supervised-exec worktree.prepare`) a backend restart does not kill.
+ * (`./muxos supervised-exec worktree.prepare`) a backend restart does not kill.
  * The spawn job requests it and waits (`prepareWorktree`), so a deploy landing
  * mid-checkout no longer cuts a `git worktree add` half-way: the child finishes
  * and whichever backend is alive when it ends resumes the spawn.

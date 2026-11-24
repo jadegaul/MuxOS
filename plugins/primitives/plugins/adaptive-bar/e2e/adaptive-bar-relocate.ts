@@ -15,8 +15,8 @@
  *
  * Manual only — nothing runs this automatically.
  *
- *   ./equin build
- *   ./equin run plugins/primitives/plugins/adaptive-bar/e2e/adaptive-bar-relocate.ts [--headed]
+ *   ./muxos build
+ *   ./muxos run plugins/primitives/plugins/adaptive-bar/e2e/adaptive-bar-relocate.ts [--headed]
  */
 import {
   pathUrl,

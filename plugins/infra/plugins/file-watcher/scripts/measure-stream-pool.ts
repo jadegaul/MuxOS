@@ -11,7 +11,7 @@
 //    of a children watch on a stream of its own, against one riding a covering
 //    recursive stream, written to side by side once a second.
 //
-//   ./equin run plugins/infra/plugins/file-watcher/scripts/measure-stream-pool.ts \
+//   ./muxos run plugins/infra/plugins/file-watcher/scripts/measure-stream-pool.ts \
 //     [--set watches.json] [--rounds 30]
 //
 // Research: research/2026-11-09-infra-file-watcher-stream-pool.md

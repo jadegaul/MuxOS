@@ -1,5 +1,5 @@
 /**
- * The points of `./equin build` where contributed steps run, in build order.
+ * The points of `./muxos build` where contributed steps run, in build order.
  * A closed set: each phase is a place in the build's pipeline, with the
  * context the build has there.
  *

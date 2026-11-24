@@ -1,6 +1,6 @@
 // `core/` here means RUNTIME-NEUTRAL NODE, not web-safe — it reaches `node:path`
-// and `EQUIN_DIR`, exactly like `infra/file-sink/core` underneath it. It
-// lives in `core/` so the `./equin` CLI (whose runtime isolation gives a
+// and `MUXOS_DIR`, exactly like `infra/file-sink/core` underneath it. It
+// lives in `core/` so the `./muxos` CLI (whose runtime isolation gives a
 // `core/` file only `core → core`) can write the record and a backend can read
 // it back through the SAME declaration. This barrel must NEVER be imported from
 // `web/`; the parent plugin's FFI-free `core/` is the web-safe half.

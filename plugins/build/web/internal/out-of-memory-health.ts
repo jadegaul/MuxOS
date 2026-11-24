@@ -35,11 +35,11 @@ export function outOfMemoryHealth(runs: readonly BuildRun[]): HealthStatus {
     );
   const still =
     served?.commitHash != null
-      ? ` equin is still running ${served.commitHash.slice(0, 9)}, the version from before.`
-      : " equin is still running the version from before.";
+      ? ` muxos is still running ${served.commitHash.slice(0, 9)}, the version from before.`
+      : " muxos is still running the version from before.";
   const next = retrying
     ? " A build is running now."
-    : " Closing other apps frees memory for the next attempt: equin retries a few times, then waits for the next update or for Build.";
+    : " Closing other apps frees memory for the next attempt: muxos retries a few times, then waits for the next update or for Build.";
   return {
     state: "attention",
     title: "Update not deployed",

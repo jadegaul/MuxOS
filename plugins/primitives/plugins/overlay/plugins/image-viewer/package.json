@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-primitives-overlay-image-viewer",
-  "description": "One full-screen image viewer for every image in the app: fit, click-to-close, wheel/pinch zoom, drag pan, ← / → through a page-ordered gallery, and the capped inline thumbnail that opens it.",
+  "name": "@muxos/plugin-primitives-overlay-image-viewer",
+  "description": "One full-screen image viewer for every image in the app: fit, click-to-close, wheel/pinch zoom, drag pan, \u2190 / \u2192 through a page-ordered gallery, and the capped inline thumbnail that opens it.",
   "private": true,
   "version": "0.0.1"
 }

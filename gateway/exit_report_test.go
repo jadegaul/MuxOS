@@ -48,7 +48,7 @@ func goldenEntry(kind, msg string, data any, at int64) outboxEntry {
 func TestBackendExitEntryMatchesTheGolden(t *testing.T) {
 	ready := int64(1794157615000)
 	e := newBackendExit("main", 49750, 1, 1794157606287, 1794157613456+7000, &ready,
-		"equin · server · main",
+		"muxos · server · main",
 		[]string{
 			"[process-crash] uncaughtException: error: conversations_ext_sdk_agent_stop.updated_at is derived (declared by its touchedBy); do not write it",
 			"      at processTicksAndRejections (native:7:39)",

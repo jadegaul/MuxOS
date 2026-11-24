@@ -33,7 +33,7 @@ export const blockedArtifactUrlKind = ReportKind({
         `- Rule: \`${d.filter}\` (${d.ruleset} #${d.ruleId}), from ${d.rulesFrom}`,
         "",
         "Browsers running EasyList / EasyPrivacy / uBlock filters (uBlock Origin and uBO Lite, AdGuard, Brave Shields) cancel this request, so whatever imports the module fails to load for those visitors — while curl, headless Chromium and the e2e runs load it fine. A served URL is spelled from the source file's and its plugin's names, so the fix is a name the rule does not match: rename the file (or the plugin), never an exception list.",
-        "Re-check with `./equin web-artifacts-blocker-scan --dry-run` after the build that renames it.",
+        "Re-check with `./muxos web-artifacts-blocker-scan --dry-run` after the build that renames it.",
       ].join("\n"),
     };
   },

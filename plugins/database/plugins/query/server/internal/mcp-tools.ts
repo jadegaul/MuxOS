@@ -40,14 +40,14 @@ A table with a derived \`<table>_v\` view reads as that view: \`tasks\` here is 
 (with computed columns such as \`status\`), \`public.tasks\` is the physical table.
 
 Default: queries the current conversation's worktree database.
-Pass \`database\` to target a different worktree (e.g. "att-1778089188-7uvf", or "equin" for main).`,
+Pass \`database\` to target a different worktree (e.g. "att-1778089188-7uvf", or "muxos" for main).`,
   inputSchema: {
     sql: z.string().min(1).describe("SQL query to execute (read-only)."),
     database: z
       .string()
       .optional()
       .describe(
-        "Target database: a worktree name, or \"equin\" for main. Defaults to the conversation's own worktree DB (main's for a session equin did not launch).",
+        "Target database: a worktree name, or \"muxos\" for main. Defaults to the conversation's own worktree DB (main's for a session muxos did not launch).",
       ),
   },
   async handler({ sql, database }, { conversationId }) {
@@ -55,7 +55,7 @@ Pass \`database\` to target a different worktree (e.g. "att-1778089188-7uvf", or
     if (database) {
       dbName = resolveNamespaceAlias(database);
     } else if (conversationId === null) {
-      // A session equin did not launch has no worktree of its own: main.
+      // A session muxos did not launch has no worktree of its own: main.
       dbName = MAIN_WORKTREE_NAME;
     } else {
       const conv = await getConversation(conversationId);
@@ -108,7 +108,7 @@ Pass \`database\` to target a different worktree (e.g. "att-1778089188-7uvf", or
         }
         await client.query("ROLLBACK");
         const rows = result.rows.slice(0, QUERY_DB_MAX_ROWS);
-        // Told once per conversation; a session equin did not launch has none
+        // Told once per conversation; a session muxos did not launch has none
         // to remember it by, so it is told every time.
         const named =
           conversationId !== null && toldAliases.has(conversationId)

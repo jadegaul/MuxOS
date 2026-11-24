@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-claude-cli-usage-ledger-pricing",
+  "name": "@muxos/plugin-infra-claude-cli-usage-ledger-pricing",
   "private": true,
   "version": "0.0.1"
 }

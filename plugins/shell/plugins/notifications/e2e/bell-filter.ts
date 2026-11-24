@@ -31,7 +31,7 @@
  * server may record its own notifications meanwhile), and reports the baseline.
  *
  * Usage:
- *   ./equin run plugins/shell/plugins/notifications/e2e/bell-filter.ts [--headed]
+ *   ./muxos run plugins/shell/plugins/notifications/e2e/bell-filter.ts [--headed]
  */
 
 import {

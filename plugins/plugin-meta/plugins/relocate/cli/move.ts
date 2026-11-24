@@ -181,7 +181,7 @@ const run: CliAction<[string, string], { dryRun?: boolean }> = async (
   if (await isMainCheckoutOrSlot(root)) {
     refuse(
       "refusing to run in the main checkout. Main rebuilds itself the moment its ref moves; " +
-        "move the plugin in a worktree and land it with `./equin push`.",
+        "move the plugin in a worktree and land it with `./muxos push`.",
     );
   }
 
@@ -364,7 +364,7 @@ const run: CliAction<[string, string], { dryRun?: boolean }> = async (
   console.log(``);
   console.log(
     `${dryRun ? "Would record" : "Recorded"} ${from.id} → ${to.id} in ${PLUGIN_MOVES_FILE}. ` +
-      `Each namespace's next \`./equin build\` moves its saved settings from ` +
+      `Each namespace's next \`./muxos build\` moves its saved settings from ` +
       `${asPath(from.id)} to ${asPath(to.id)} and rewrites saved reorder keys` +
       (holding.length > 0
         ? ` — namespaces with settings there now: ${holding.join(", ")}.`
@@ -381,8 +381,8 @@ const run: CliAction<[string, string], { dryRun?: boolean }> = async (
     console.log(`Dry run — nothing was moved or written.`);
   } else {
     console.log(
-      `Moved. Next: \`./equin build\` (regenerates registries, docs, CLAUDE.md blocks and bun.lock), ` +
-        `then \`./equin check\`. \`git diff HEAD\` shows every rename and edit.`,
+      `Moved. Next: \`./muxos build\` (regenerates registries, docs, CLAUDE.md blocks and bun.lock), ` +
+        `then \`./muxos check\`. \`git diff HEAD\` shows every rename and edit.`,
     );
   }
 };

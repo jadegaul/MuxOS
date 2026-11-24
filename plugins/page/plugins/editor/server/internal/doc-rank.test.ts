@@ -16,8 +16,8 @@
  * by a write that never names its row), a data-only patch issuing NO reconcile
  * query, and the boot reconcile's backfill / drift classification.
  *
- * Run: `./equin test plugins/page/plugins/editor`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/page/plugins/editor`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

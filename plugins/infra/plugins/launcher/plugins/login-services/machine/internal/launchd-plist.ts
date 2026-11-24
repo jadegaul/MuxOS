@@ -29,7 +29,7 @@ import { appBundleIdOfProgram } from "./macos-app-plist";
  * default type carries resource limits a measurement must not read as the
  * machine's.
  *
- * A job whose program is an executable of `equin.app` carries
+ * A job whose program is an executable of `muxos.app` carries
  * `AssociatedBundleIdentifiers` naming the bundle — derived from the program,
  * so no caller can forget it: how a legacy plist names its app to macOS's
  * Background Task Management (`man launchd.plist`). Measured on macOS 26: BTM

@@ -161,7 +161,7 @@ async function planNow(
   const ws = await workspaceAt(root);
   if (ws.policyErrors.length > 0) {
     throw new Error(
-      `dependencyPolicy does not parse (\`./equin check deps-npm:policy\`):\n  ${ws.policyErrors.map((e) => `${e.manifest}: ${e.message}`).join("\n  ")}`,
+      `dependencyPolicy does not parse (\`./muxos check deps-npm:policy\`):\n  ${ws.policyErrors.map((e) => `${e.manifest}: ${e.message}`).join("\n  ")}`,
     );
   }
   const installed = installedVersions(ws);
@@ -223,7 +223,7 @@ async function regenGenerated(
   root: AppPath,
   log: (line: string) => void,
 ): Promise<void> {
-  log("  ./equin regen-generated");
+  log("  ./muxos regen-generated");
   const regen = await spawnCaptured(
     [joinAppPath(root, CLI_NAME), "regen-generated"],
     {

@@ -24,13 +24,13 @@ describe("parseResendResponse", () => {
         JSON.stringify({
           statusCode: 403,
           name: "validation_error",
-          message: "The equin.ai domain is not verified.",
+          message: "The MuxOS.app domain is not verified.",
         }),
       ),
     ).toEqual({
       ok: false,
       status: 403,
-      error: "validation_error: The equin.ai domain is not verified.",
+      error: "validation_error: The MuxOS.app domain is not verified.",
     });
   });
 
@@ -57,16 +57,16 @@ describe("resendRequestBody", () => {
     expect(
       JSON.parse(
         resendRequestBody({
-          from: "equin <noreply@equin.ai>",
-          to: "hello@equin.ai",
+          from: "muxos <noreply@MuxOS.app>",
+          to: "hello@MuxOS.app",
           replyTo: "visitor@example.com",
           subject: "Hi",
           text: "Body",
         }),
       ),
     ).toEqual({
-      from: "equin <noreply@equin.ai>",
-      to: ["hello@equin.ai"],
+      from: "muxos <noreply@MuxOS.app>",
+      to: ["hello@MuxOS.app"],
       reply_to: "visitor@example.com",
       subject: "Hi",
       text: "Body",

@@ -17,7 +17,7 @@
  *                   add writes from empty (the first marked failed)
  * - `lock`          locking the checkout
  * - `dep-store`     adopting a waiting dependency store, or copying the seed
- * - `install`       the checkout's own `./equin install` (bun install + provisions)
+ * - `install`       the checkout's own `./muxos install` (bun install + provisions)
  * - `fsmonitor`     turning the checkout's git fsmonitor on (config + daemon;
  *                   for a checkout already there, renewing a stale index token)
  * - `index-refresh` filling the new checkout's index (untracked cache)

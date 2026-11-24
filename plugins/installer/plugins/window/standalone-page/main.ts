@@ -31,7 +31,7 @@ type Plain =
   | "quit"
   | "skip"
   | "stop"
-  | "open-equin"
+  | "open-muxos"
   | "close"
   | "drag"
   | "fix-app"
@@ -459,7 +459,7 @@ function noticeBanner(body: HTMLElement, notice: Notice): void {
       fix: false,
       report: reportUrl(notice.title, notice.text, []),
       skip: {
-        tip: `Finish installing without ${notice.without}. equin works fully in your browser; you can add them once it's done.`,
+        tip: `Finish installing without ${notice.without}. muxos works fully in your browser; you can add them once it's done.`,
         onSkip: () => {
           noticeSkipped = true;
           showLog = true;
@@ -472,14 +472,14 @@ function noticeBanner(body: HTMLElement, notice: Notice): void {
 }
 
 /**
- * When equin comes back by itself (the done screen): macOS starts it at login
+ * When muxos comes back by itself (the done screen): macOS starts it at login
  * (a LaunchAgent), Linux at every boot (a lingering systemd user unit) —
  * the terminal view's "starts at every login / boot".
  */
 function startsByItself(platform: string): string {
   return platform.startsWith("darwin-")
-    ? "equin opens by itself whenever you log in."
-    : "equin starts by itself whenever this computer starts.";
+    ? "muxos opens by itself whenever you log in."
+    : "muxos starts by itself whenever this computer starts.";
 }
 
 /** The done screen's line for a part the person chose to leave out (Skip): what it is, and what that means. */
@@ -625,7 +625,7 @@ function renderBody(): void {
         el(
           "p",
           "iw-text fadein",
-          "equin isn't installed yet. What happened is in the log below. Running the installer again picks up where it stopped.",
+          "muxos isn't installed yet. What happened is in the log below. Running the installer again picks up where it stopped.",
         ),
         withChildren(el("div", "iw-actions"), [
           button("Close", "pill ghost", () => post("close")),
@@ -637,8 +637,8 @@ function renderBody(): void {
         el("h2", "iw-title fadein", "You're all set"),
         el("p", "iw-text fadein", startsByItself(view.platform)),
       );
-      const open = button("Open equin", "pill white big", () =>
-        post("open-equin"),
+      const open = button("Open muxos", "pill white big", () =>
+        post("open-muxos"),
       );
       open.append(arrow());
       body.append(withChildren(el("div", "iw-actions"), [open]));
@@ -776,7 +776,7 @@ function askPassword(prompt: string): void {
     if (e.key === "Enter") answer();
   });
   const s = sheet(
-    "equin needs your password",
+    "muxos needs your password",
     prompt,
     [input],
     [

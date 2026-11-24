@@ -56,7 +56,7 @@
  * every run reverted the user's live documents before doing anything.
  *
  * So the target is no longer computed at all. Every deploy RECORDS itself: the
- * build writes `~/.equin/worktrees/<ns>/spec.json` naming the absolute
+ * build writes `~/.muxos/worktrees/<ns>/spec.json` naming the absolute
  * path of the checkout whose backend answers that namespace, and
  * `resolveCheckoutDeploySync(REPO_ROOT)` reads that registry back. A checkout that
  * has published nothing resolves to nothing and the run REFUSES — which is the
@@ -231,7 +231,7 @@ function noDeploy(
         `${checkout}\n` +
         `  registered : ${none}\n\n` +
         `Nothing under ${worktreesDir()} is registered to this\n` +
-        `checkout's backend, so \`./equin build\` has never published a deploy from\n` +
+        `checkout's backend, so \`./muxos build\` has never published a deploy from\n` +
         `here. Run it, then re-run this script.\n` +
         `To drive a deploy this checkout did not build, name it:\n` +
         `  --url http://<namespace>.localhost:<port>`,
@@ -249,10 +249,10 @@ function noDeploy(
   const tail =
     composition === undefined
       ? `A \`--composition\` build publishes only that composition's namespace, never the\n` +
-        `checkout's own app. Run \`./equin build\` here to deploy it, or target one\n` +
+        `checkout's own app. Run \`./muxos build\` here to deploy it, or target one\n` +
         `of the deploys above with --composition ${suggest}.`
       : `This checkout has published the compositions above, but not "${composition}". Run\n` +
-        `\`./equin build --composition ${composition}\` here to deploy it, or target one\n` +
+        `\`./muxos build --composition ${composition}\` here to deploy it, or target one\n` +
         `of the deploys above with --composition ${suggest}.`;
   usage(`${head}\n\n${checkout}\n  registered : ${registered}\n\n${tail}`);
 }
@@ -402,7 +402,7 @@ export function isTargetOrigin(url: string): boolean {
 /**
  * Whether the target is served by this machine's gateway (a namespace host,
  * or bare loopback) — a deploy that keeps this machine's
- * agent-write ledger. A public site (`--url https://equin.ai`) keeps none and
+ * agent-write ledger. A public site (`--url https://MuxOS.app`) keeps none and
  * refuses the harness's control calls as cross-site: a run there only reads.
  */
 export function targetIsLocalGateway(): boolean {

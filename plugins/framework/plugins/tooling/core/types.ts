@@ -41,7 +41,7 @@ export interface CheckContext {
   log?: (line: string, stream: "stdout" | "stderr") => void;
   /**
    * False when the run was asked to bypass caches (`--no-cache` /
-   * `EQUIN_CHECK_NO_CACHE=1`).
+   * `MUXOS_CHECK_NO_CACHE=1`).
    *
    * The runner honours it for its own result cache, but a check with caches of
    * its OWN has to be told — otherwise `--no-cache` stops meaning "actually do
@@ -218,7 +218,7 @@ export const CHECK_SCOPES = ["tree", "deploy", "host"] as const;
 export type CheckScope = (typeof CHECK_SCOPES)[number];
 
 /**
- * The scopes a CHECKOUT can assert — what a bare `./equin check` selects. Every
+ * The scopes a CHECKOUT can assert — what a bare `./muxos check` selects. Every
  * scope but `"host"`: a host verdict is about state shared with every other
  * checkout on the machine, so one agent's leftover directory under the data
  * root would turn every other agent's check red over something it neither
@@ -277,15 +277,15 @@ export interface Check {
    *     .gitignore). Whatever that hash covers is exactly what a push carries,
    *     so the check is in the push payload and every caller can assert it.
    *   - "deploy" → the check verifies the local deployment that
-   *     `./equin build` produces (`~/.equin/worktrees/<name>/web`,
-   *     the `~/.equin/cache/web-artifacts` store). That artifact NEVER lands on
+   *     `./muxos build` produces (`~/.muxos/worktrees/<name>/web`,
+   *     the `~/.muxos/cache/web-artifacts` store). That artifact NEVER lands on
    *     main, and `push`'s own internal rebase invalidates it by construction
    *     (the tree moves past the deployed dist), so push cannot meaningfully
    *     assert it — no matter how it is scheduled. Its real homes are `build`
-   *     (which deploys, then verifies), a standalone `./equin check`, and
+   *     (which deploys, then verifies), a standalone `./muxos check`, and
    *     main's post-push auto-build.
    *   - "host" → the verdict is about this MACHINE: the shared data root
-   *     (`~/.equin/`), host-global services, state no checkout owns. It is
+   *     (`~/.muxos/`), host-global services, state no checkout owns. It is
    *     a function of neither the tree nor the artifact a build produces, and —
    *     unlike the two above — NO per-worktree caller can assert it. The subject
    *     is shared with every other checkout on the box and is AHEAD of any one
@@ -294,15 +294,15 @@ export interface Check {
    *     build is what made `paths:no-undeclared-data-dirs` fail a deploy on a
    *     directory another agent's unmerged branch had just declared (see
    *     research/2026-09-01-global-host-scoped-data-root-audit.md). A bare
-   *     `./equin check` does not select it either (`CHECKOUT_SCOPES`) — run in
+   *     `./muxos check` does not select it either (`CHECKOUT_SCOPES`) — run in
    *     a worktree it is the same per-worktree caller. Its home is main's hourly
    *     `checks.host-audit`, which delivers the verdict as a report (kind
-   *     `host-check`), and an explicit `./equin check <id>` / `--scope host`.
+   *     `host-check`), and an explicit `./muxos check <id>` / `--scope host`.
    *
    * TREE PURITY — the second half of what `"tree"` promises. The verdict must be
    * a function of the tree hash AND of NOTHING ELSE, including what else already
    * ran in this process. That is what makes a recorded PASS TRANSFERABLE: the
-   * runner writes a cache entry from one process and a later `./equin push`
+   * runner writes a cache entry from one process and a later `./muxos push`
    * reads it from another, so a verdict that also depended on process history is
    * one the reading process cannot reproduce — and has no way to detect that it
    * cannot. It just returns the green.
@@ -360,7 +360,7 @@ export interface Check {
    * the two failures from one tree to the next). So an O(tree) body has no silent spelling: it is either made
    * O(changes) — a fold (`defineFoldCheck` / `foldRepoFiles`: per-file work
    * kept along the directory tree), or an input-keyed check over a narrow
-   * read-set — or declared here, which `./equin check --list` prints.
+   * read-set — or declared here, which `./muxos check --list` prints.
    *
    *   - `debt`: not yet O(changes); `task` names the task that makes it so.
    *   - `sanctioned`: reading every file each pass is the check's subject and
@@ -368,7 +368,7 @@ export interface Check {
    */
   wholeTreeRead?: WholeTreeRead;
   /**
-   * Run even when `./equin build --skip-checks` is passed (and, as always,
+   * Run even when `./muxos build --skip-checks` is passed (and, as always,
    * during a normal build and `push`). For cheap, structural, codegen-coupled
    * invariants whose violation is painful to discover only at push — e.g. a
    * newly-reorderable slot that still owes an authored override. Default false:
@@ -481,7 +481,7 @@ export type CheckResult =
    * is the whole failure. Still fatal: no verdict is not a pass, so the pass
    * fails and nothing is cached. But it is no verdict on the code either, so
    * a pass whose every non-passing check says so ends as killed, not failed
-   * (`./equin check` exits `128 + signo`), and a build reading it records
+   * (`./muxos check` exits `128 + signo`), and a build reading it records
    * no verdict. Set it only when nothing else failed.
    */
   | {

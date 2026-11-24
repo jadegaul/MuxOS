@@ -42,7 +42,7 @@ export const FIRST_PROMPT =
 
 const mouseIcon = symbol("mouse");
 const pickIcon = symbol("ads-click");
-const equinIcon = symbol("all-inclusive");
+const muxosIcon = symbol("all-inclusive");
 
 /**
  * Home's tour (the primary one: "Replay the tour" starts it). The welcome
@@ -56,8 +56,8 @@ export const homeTour = defineTour<HomeTourData>({
   primary: true,
   autoStart: true,
   intro: {
-    icon: equinIcon,
-    title: "Welcome to equin",
+    icon: muxosIcon,
+    title: "Welcome to muxos",
     body: "An app that builds itself. You say what you want; agents build it in the background while you keep working.",
     note: "A few quick stops · about a minute",
   },
@@ -78,14 +78,14 @@ export const homeTour = defineTour<HomeTourData>({
     {
       id: "bar",
       anchor: actionBarAnchor,
-      title: "Your way to talk to equin",
+      title: "Your way to talk to muxos",
       // Floating (solo), the bar is a dot that unfolds on hover, and hovering
       // it is the step's gesture. Docked in the tab bar it is always open:
       // nothing to unfold, so only Next moves on.
       body: (d) =>
         d.barFloating
-          ? "This toolbar is your entry point to talk with equin. It's on every screen, folded into this dot to stay out of your way."
-          : "This toolbar is your entry point to talk with equin. It's on every screen, up here in the tab bar.",
+          ? "This toolbar is your entry point to talk with muxos. It's on every screen, folded into this dot to stay out of your way."
+          : "This toolbar is your entry point to talk with muxos. It's on every screen, up here in the tab bar.",
       footnote: (d) =>
         d.barFloating ? (
           <>
@@ -98,7 +98,7 @@ export const homeTour = defineTour<HomeTourData>({
     {
       id: "wish",
       anchor: wishButtonAnchor,
-      title: "Ask equin for anything",
+      title: "Ask muxos for anything",
       body: (
         <>
           One place to ask for anything. Build an app, change this one, get

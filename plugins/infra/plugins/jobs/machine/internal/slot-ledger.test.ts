@@ -6,10 +6,10 @@
  * are attributed to the runner whose emitter heard them; `jobs:insert` is
  * announced by the one runner told to listen; each announcement says which
  * database reads it may have moved, a finished run's only once the patch's
- * `equin:outcomeWritten` says its outcome is written; and the pickup ring keeps
+ * `muxos:outcomeWritten` says its outcome is written; and the pickup ring keeps
  * a bounded, windowed sample with nearest-rank percentiles.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
+ * Run: `./muxos test plugins/infra/plugins/jobs`
  */
 
 import { afterEach, describe, expect, test } from "bun:test";
@@ -85,7 +85,7 @@ function runner(
       });
     },
     written(job: Job, failed: boolean) {
-      events.emit("equin:outcomeWritten" as never, { job, failed } as never);
+      events.emit("muxos:outcomeWritten" as never, { job, failed } as never);
     },
     fatal(workerId: string) {
       events.emit("worker:fatalError", {

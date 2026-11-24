@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-scope-tab-id",
+  "name": "@muxos/plugin-primitives-scope-tab-id",
   "description": "Stable per-tab id (sessionStorage-backed) for crash/notification attribution, and whether the tab an id names is still open (useTabPresence: every page holds a shared Web Lock under its id).",
   "private": true,
   "version": "0.0.1"

@@ -138,7 +138,7 @@ describe("attribute", () => {
 // The frames of real reports, on the performance clock (ms from the frame the
 // interaction began in), as the tab held them.
 describe("withheld rendering", () => {
-  // report-1795095421-0r9u4n (equin.ai, macOS Chrome): a row click, 2280 ms to
+  // report-1795095421-0r9u4n (MuxOS.app, macOS Chrome): a row click, 2280 ms to
   // its paint, three ~1 s frames tiling it with blocking 0 — the thread ran
   // ~100 ms of script, then waited ~280–980 ms per frame for a render step
   // the browser gave it about once a second.

@@ -3,7 +3,7 @@ import { readDistTrailer } from "./dist-trailers";
 
 // The commit the frontend bundle this backend serves was BUILT FROM, read from
 // `dist/.build-commit` FRESH on every call — same rule, and same reason, as
-// `getServerGraphHash` beside it: `./equin build` swaps the `dist` symlink
+// `getServerGraphHash` beside it: `./muxos build` swaps the `dist` symlink
 // before it restarts this backend, so a value memoized at process start would
 // disagree with the served bundle for the whole swap→restart window.
 //

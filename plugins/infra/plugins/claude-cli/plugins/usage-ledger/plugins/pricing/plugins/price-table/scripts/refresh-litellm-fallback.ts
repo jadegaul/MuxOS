@@ -1,6 +1,6 @@
 // ─── Refresh the vendored LiteLLM snapshot ────────────────────────────────────
 //
-//   ./equin run plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/plugins/price-table/scripts/refresh-litellm-fallback.ts
+//   ./muxos run plugins/infra/plugins/claude-cli/plugins/usage-ledger/plugins/pricing/plugins/price-table/scripts/refresh-litellm-fallback.ts
 //
 // Fetches LiteLLM's table through the server's own `fetchPriceTable` (so the
 // snapshot is exactly what `parseLiteLlmTable` produces) and merges it OVER the

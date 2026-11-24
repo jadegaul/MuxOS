@@ -5,7 +5,7 @@
  * moved from `Bun.build` onto the graph (server portability, the browser
  * host's inference) answers the same.
  *
- *   ./equin run plugins/plugin-meta/plugins/plugin-records/scripts/closure-equivalence.ts
+ *   ./muxos run plugins/plugin-meta/plugins/plugin-records/scripts/closure-equivalence.ts
  */
 import { realpathSync } from "@plugins/packages/plugins/timed-fs/core";
 import { loadRepoSnapshot } from "@plugins/framework/plugins/tooling/core";

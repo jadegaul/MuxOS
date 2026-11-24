@@ -16,7 +16,7 @@
 //      own Escape (block selection) running — a key typed in a portaled menu
 //      is the menu's.
 //
-// Usage: ./equin run plugins/page/plugins/table/e2e/grip-menu-focus-verify.ts [--out /tmp/grip-menu-focus]
+// Usage: ./muxos run plugins/page/plugins/table/e2e/grip-menu-focus-verify.ts [--out /tmp/grip-menu-focus]
 import {
   arg,
   report,

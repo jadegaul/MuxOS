@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # macOS: the window's crate built for both architectures.
 #
-# Env: EQUIN_INSTALLER_PAGE (the bundled page the crate compiles in).
+# Env: MUXOS_INSTALLER_PAGE (the bundled page the crate compiles in).
 set -euo pipefail
 # shellcheck source=release-config.sh
 . "$(dirname "$0")/release-config.sh"

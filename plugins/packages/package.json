@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-packages",
+  "name": "@muxos/plugin-packages",
   "description": "Umbrella for package management utilities.",
   "private": true,
   "version": "0.0.1"

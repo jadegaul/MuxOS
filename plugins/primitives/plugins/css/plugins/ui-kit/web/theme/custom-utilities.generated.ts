@@ -1,5 +1,5 @@
 // AUTO-GENERATED from app.css @utility `/* twmerge: … */` markers. Do not edit.
-// Run `./equin build` to regenerate.
+// Run `./muxos build` to regenerate.
 // (see plugins/framework/plugins/tooling/plugins/codegen/core/custom-utilities-gen.ts).
 //
 // The twMerge registry consumed by cn() (lib/utils.ts), derived from app.css —

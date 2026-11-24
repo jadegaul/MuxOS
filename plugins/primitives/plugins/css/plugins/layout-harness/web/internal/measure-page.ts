@@ -99,12 +99,12 @@ function serveDir(outDir: string): { origin: string; stop: () => void } {
  * Chromium is an on-demand dependency (`chromium`, declared by
  * safe-fetch/browser-fetch). This file sits under `web/`, whose row cannot
  * reach the `deps/` engine barrel, so it asks the engine's process boundary
- * instead — `./equin deps install chromium --json`, a no-op printing
+ * instead — `./muxos deps install chromium --json`, a no-op printing
  * where the install lives once it is there (the `layout-geometry` check has
  * already installed it before this suite runs) — and reads the executables
  * the install recorded, as Playwright reported them, through the kind's
  * `core` reader. So the suite runs the same way under the check and under a
- * plain `./equin test`.
+ * plain `./muxos test`.
  */
 async function installedHeadlessChromium(): Promise<string> {
   const root = await getWorktreeRoot();

@@ -8,7 +8,7 @@ import {
 } from "./instructions";
 
 /**
- * Ask equin's settings (Settings → Config). The two models are picked from the
+ * Ask muxos's settings (Settings → Config). The two models are picked from the
  * live model catalog (the web barrel contributes their options); a stored
  * value is read through `normalizeModelChoice`. `instructions` is the help
  * agent's whole CLAUDE.md, filled at each launch — edit it here, then port the
@@ -25,7 +25,7 @@ export const askConfig = defineConfig({
     taskModel: dynamicEnumField({
       label: "Model for filed tasks",
       description:
-        "The model a task Ask equin files for you launches with (in its own worktree, at once).",
+        "The model a task Ask muxos files for you launches with (in its own worktree, at once).",
       default: DEFAULT_MODEL_CHOICE,
     }),
     instructions: multilineTextField({

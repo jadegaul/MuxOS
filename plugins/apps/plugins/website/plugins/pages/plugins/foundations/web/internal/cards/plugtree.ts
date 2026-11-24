@@ -53,7 +53,7 @@ const OWNER: Record<string, string> = Object.fromEntries(
   APPS.flatMap(([id, , kids]) => kids.map(([c]) => [c, id])),
 );
 const LABEL: Record<string, string> = Object.fromEntries([
-  ["equin", "equin"],
+  ["muxos", "muxos"],
   ["apps", "Apps"],
   ["shell", "Shell"],
   ["data", "Data"],
@@ -62,14 +62,14 @@ const LABEL: Record<string, string> = Object.fromEntries([
   ...SHELL,
 ]);
 const HEADS = new Set([
-  "equin",
+  "muxos",
   "apps",
   "shell",
   "data",
   ...APPS.map(([id]) => id),
 ]);
 const ORDER = [
-  "equin",
+  "muxos",
   "apps",
   ...APPS.flatMap(([id, , kids]) => [id, ...kids.map(([c]) => c)]),
   "shell",
@@ -110,7 +110,7 @@ const geom = (open: readonly string[]): [Record<string, Rect>, number] => {
   const data: Rect = [258, sb + 10, 204, 32];
   G.data = data;
   const bottom = Math.max(apps[1] + apps[3], data[1] + data[3]) + 12;
-  G.equin = [8, 8, 466, bottom - 8];
+  G.muxos = [8, 8, 466, bottom - 8];
   return [G, bottom + 26];
 };
 

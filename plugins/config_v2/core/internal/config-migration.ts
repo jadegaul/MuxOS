@@ -3,8 +3,8 @@ import type { JsonValue } from "./types";
 /**
  * A one-time rewrite of a config's SAVED values, for when the shape its fields
  * store changed (a renamed key, a value re-spelled). The user layer
- * (`~/.equin/state/config/<ns>/`) is not in git, so a commit can only
- * change it through code the build runs: each `./equin build` applies
+ * (`~/.muxos/state/config/<ns>/`) is not in git, so a commit can only
+ * change it through code the build runs: each `./muxos build` applies
  * every migration its namespace has not applied yet — to that config's origin,
  * override and ancestor documents, base and app scopes — right before
  * propagating the git config there, and records it (the shared config ledger,

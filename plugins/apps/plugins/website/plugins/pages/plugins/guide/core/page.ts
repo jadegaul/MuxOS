@@ -5,5 +5,5 @@ export const guidePage = defineWebsitePage({
   path: "/about/guide",
   title: "Getting started",
   description:
-    "Your first tasks, agents and changes once equin is running, step by step.",
+    "Your first tasks, agents and changes once muxos is running, step by step.",
 });

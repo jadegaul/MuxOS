@@ -17,7 +17,7 @@ export interface BuildPhaseContexts {
   };
 }
 
-/** One step a plugin contributes to `./equin build`. */
+/** One step a plugin contributes to `./muxos build`. */
 export interface BuildStep<P extends BuildPhase = BuildPhase> {
   readonly _brand: "BuildStep";
   /** The step's profiler span id — stable across builds, so its timing

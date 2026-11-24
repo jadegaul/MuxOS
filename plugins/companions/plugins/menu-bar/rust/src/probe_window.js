@@ -2,18 +2,18 @@
 // app window's main frame once its page has loaded — the stand-in for app code
 // (or content it shows) that tries to take the window off its namespace. Each
 // row tries one way; the helper judges from what its gate decided and what it
-// handed off. `__EQUIN_PROBE__` = { foreign, other, content, home } (filled by
-// probe_window.rs). Results go back as `document.title` (`equin-probe:<json>`),
+// handed off. `__MUXOS_PROBE__` = { foreign, other, content, home } (filled by
+// probe_window.rs). Results go back as `document.title` (`muxos-probe:<json>`),
 // the one channel that needs no bridge.
 (async function () {
-  var P = __EQUIN_PROBE__;
+  var P = __MUXOS_PROBE__;
   // Spaced past the hand-off gate's refill (3 s), so each row's hand-off is
   // its own and only the burst row is collapsed.
   var STEP = 3300;
   var sent = Promise.resolve();
   function send(report) {
     sent = sent.then(function () {
-      document.title = "equin-probe:" + JSON.stringify(report);
+      document.title = "muxos-probe:" + JSON.stringify(report);
       return sleep(250);
     });
     return sent;
@@ -74,5 +74,5 @@
   await send({ phase: "leaving" });
   location.assign(P.home);
 })().catch(function (e) {
-  document.title = "equin-probe:" + JSON.stringify({ phase: "error", message: String(e && e.stack ? e.stack : e) });
+  document.title = "muxos-probe:" + JSON.stringify({ phase: "error", message: String(e && e.stack ? e.stack : e) });
 });

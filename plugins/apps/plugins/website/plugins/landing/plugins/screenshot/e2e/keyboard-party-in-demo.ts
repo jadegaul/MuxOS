@@ -28,7 +28,7 @@
  * no page socket, no page or console error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/keyboard-party-in-demo.ts [--out /tmp/demo-keyboard-party] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/keyboard-party-in-demo.ts [--out /tmp/demo-keyboard-party] [--headed]
  */
 import type { Locator, Page, WebSocket } from "playwright";
 import { pickFromLauncher } from "@plugins/apps-core/plugins/app-launcher/e2e";

@@ -59,7 +59,7 @@ beforeAll(async () => {
     ...r,
     id: siteMessageIdKind.mint(),
     replyTo: "visitor@example.com",
-    host: "equin.ai",
+    host: "MuxOS.app",
     page: "/",
     ipHash: "h",
     spamReason: r.verdict === "spam" ? ("honeypot" as const) : null,

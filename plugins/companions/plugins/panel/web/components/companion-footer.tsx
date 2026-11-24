@@ -8,9 +8,9 @@ const readOrigin = (): string => window.location.origin;
 const readHostname = (): string => window.location.hostname;
 
 /**
- * A companion's last row: equin is running here (the page is served, so the
+ * A companion's last row: muxos is running here (the page is served, so the
  * gateway is up — only a native host can report it down, from outside), on
- * this host. The whole row opens equin: through the host's `open` (the
+ * this host. The whole row opens muxos: through the host's `open` (the
  * menu-bar helper's default browser, the extension's new tab) when it has
  * one, else as a plain link to a new tab.
  */
@@ -37,7 +37,7 @@ export function CompanionFooter({
       {open !== null ? (
         <Row
           icon={dot}
-          title="Open equin"
+          title="Open muxos"
           className="gap-md"
           onClick={() => open(home)}
         >
@@ -46,7 +46,7 @@ export function CompanionFooter({
       ) : (
         <Row
           icon={dot}
-          title="Open equin"
+          title="Open muxos"
           className="gap-md"
           href={home}
           target="_blank"

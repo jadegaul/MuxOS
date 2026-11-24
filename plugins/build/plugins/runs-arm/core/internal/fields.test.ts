@@ -3,7 +3,7 @@
  * surface's saved views and filter presets name (`<kind>.<field>`) are
  * unchanged, and they are listed under the arm's "Build" band.
  *
- * Run: `./equin test plugins/build/plugins/runs-arm`.
+ * Run: `./muxos test plugins/build/plugins/runs-arm`.
  */
 
 import { describe, expect, test } from "bun:test";

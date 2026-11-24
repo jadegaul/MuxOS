@@ -58,7 +58,7 @@ func (s State) String() string {
 	}
 }
 
-// Spec is the on-disk schema parsed from ~/.equin/worktrees/<name>/spec.json.
+// Spec is the on-disk schema parsed from ~/.muxos/worktrees/<name>/spec.json.
 type Spec struct {
 	Server  string   `json:"server"`            // absolute path to the backend's working directory (cwd)
 	Web     string   `json:"web"`               // absolute path to web/dist
@@ -78,7 +78,7 @@ type Spec struct {
 	// Carried, not decomposed — exactly like Name.
 	//
 	// Deliberately NOT passed as an env var to the spawned backend. A
-	// worktree's `./equin build` does not rebuild this Go binary (main's deploy
+	// worktree's `./muxos build` does not rebuild this Go binary (main's deploy
 	// does, once a change lands), so a running gateway is routinely older than
 	// the backend it spawns; a backend
 	// that depended on a new env line would silently fall back to the full
@@ -167,7 +167,7 @@ var (
 	ErrStopping    = errors.New("worktree is stopping")
 	// ErrHeld: the backend was stopped with a hold (Stop's held mode) while its
 	// data is replaced; only a deploy start boots it again.
-	ErrHeld = errors.New("the backend is held down while its data is replaced; a deploy start (./equin build, or POST /gateway/worktrees/<name>/restart) boots it again")
+	ErrHeld = errors.New("the backend is held down while its data is replaced; a deploy start (./muxos build, or POST /gateway/worktrees/<name>/restart) boots it again")
 )
 
 // StartReason is why a caller may start the backend, which sets the spawn's
@@ -204,7 +204,7 @@ func (r StartReason) String() string {
 
 // ErrBootFailed: the worktree's last boot failed and background traffic does
 // not retry it (see Ensure). Wraps the failure, and says what does retry it.
-var ErrBootFailed = errors.New("the backend's last boot failed, and background requests do not retry it — redeploy it (./equin build, or POST /gateway/worktrees/<name>/restart) or open it in a browser")
+var ErrBootFailed = errors.New("the backend's last boot failed, and background requests do not retry it — redeploy it (./muxos build, or POST /gateway/worktrees/<name>/restart) or open it in a browser")
 
 // backend groups the per-process fields for one running backend instance.
 // A Worktree holds at most one active *backend; a second may exist briefly
@@ -1050,7 +1050,7 @@ func (w *Worktree) Pinned() bool {
 // automations, and the samplers (host admission's owner sampler writes the
 // fleet memory reading every host CPU grant is sized from, leased for 120 s).
 // That work must run with no browser open, exactly like central's. Swept, main
-// stayed down until a request woke it: every `./equin build/check/test` run
+// stayed down until a request woke it: every `./muxos build/check/test` run
 // from a terminal or an agent meanwhile saw admission "unmeasured" and sat on
 // its floor (77 sweeps of main on one Mac between 2026-06-05 and 2026-11-12,
 // ~348 h down in all, median 28 min, longest 66 h; a fresh Ubuntu install had
@@ -1159,11 +1159,11 @@ func (w *Worktree) demotes(reason StartReason) bool {
 // research/2026-09-15-global-backend-env-leak-followups.md).
 //
 // The last one, principalStampedFlag, is a declaration, not a value: "this
-// gateway stamps X-Equin-Principal on every request it proxies". A backend
+// gateway stamps X-MuxOS-Principal on every request it proxies". A backend
 // enforces the principal fail-closed only when told so (framework/principal's
 // readPrincipalStamp). A gateway older than the stamp passes no flag, and its
 // backends serve ungated rather than refuse everything — its own readiness
-// probe included — until it is restarted (./equin start).
+// probe included — until it is restarted (./muxos start).
 func backendLaunch(name, socketPath string) []string {
 	return []string{"--namespace", name, "--socket", socketPath, principalStampedFlag}
 }
@@ -1465,7 +1465,7 @@ var errExitedAfterReady = errors.New("backend exited right after it became ready
 var errExitedBeforeReady = errors.New("backend exited before ready")
 
 // withStderrTail puts the backend's last stderr lines into the error, so the
-// restart's 500 body — which `./equin build` prints — says WHY the boot
+// restart's 500 body — which `./muxos build` prints — says WHY the boot
 // died instead of only that it did. The lines are also in the worktree's
 // gateway log; this is the one place the caller is already looking.
 func withStderrTail(err error, tail []logEntry) error {
@@ -1489,7 +1489,7 @@ func withStderrTail(err error, tail []logEntry) error {
 // every proxied request (Proxy.ServeHTTP), so only this probe sets it. Pinned
 // to the backend's BOOT_TIER_HEADER by the `spawn-priority:boot-tier-in-sync`
 // check.
-const bootTierHeader = "X-Equin-Boot-Tier"
+const bootTierHeader = "X-MuxOS-Boot-Tier"
 
 const (
 	bootTierBackground = "background"

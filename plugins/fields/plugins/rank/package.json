@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-rank",
+  "name": "@muxos/plugin-fields-rank",
   "version": "0.0.1",
   "private": true,
-  "description": "Rank field type: identity only, extends text — a fractional-indexing string stored in the rank_text (C-collation) domain so keys sort by byte order."
+  "description": "Rank field type: identity only, extends text \u2014 a fractional-indexing string stored in the rank_text (C-collation) domain so keys sort by byte order."
 }

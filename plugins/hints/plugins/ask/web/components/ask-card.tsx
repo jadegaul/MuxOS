@@ -43,7 +43,7 @@ const suggestionIcon = symbol("arrow-forward");
 export type DragHandle = (e: PointerEvent<HTMLElement>) => void;
 
 /**
- * The card's frame, the one surface every state of Ask equin is drawn in:
+ * The card's frame, the one surface every state of Ask muxos is drawn in:
  * the card (the chrome's popover material, a fixed width, and a max height
  * its content hugs up to — it grows with its thread, then the thread scrolls
  * between the header and the composer) or, minimized, the pill. One surface
@@ -63,7 +63,7 @@ export function CardFrame({
   return (
     <Surface
       level="overlay"
-      {...(pill ? {} : { role: "dialog", "aria-label": "Ask equin" })}
+      {...(pill ? {} : { role: "dialog", "aria-label": "Ask muxos" })}
       className={cn(
         pill
           ? "w-64 max-w-[calc(100vw-1.5rem)] rounded-full"
@@ -122,7 +122,7 @@ export function AskThreadCard({
   drag: DragHandle;
   card: () => Element;
 }) {
-  const question = useRunQuestion(conversationId) ?? "Ask equin";
+  const question = useRunQuestion(conversationId) ?? "Ask muxos";
   const prepareTurn = useAskPrepareTurn(conversationId, card);
   return (
     <>
@@ -214,7 +214,7 @@ export function AskEmptyCard({
       fit
       className="max-h-[inherit]"
       header={
-        <CardHeader drag={drag} title="Ask equin">
+        <CardHeader drag={drag} title="Ask muxos">
           <AgentInstructionsButton />
           <IconButton icon={closeIcon} label="Close" onClick={minimizeAsk} />
         </CardHeader>

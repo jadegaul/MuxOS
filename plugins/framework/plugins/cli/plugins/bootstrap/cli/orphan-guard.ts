@@ -8,7 +8,7 @@ export const ORPHAN_EXIT_CODE = 140; // 128 + 12
 // to thread through the bootstrap.
 let orphanPoll: ReturnType<typeof setInterval> | null = null;
 
-// A foreground `./equin <anything>` dies with its invoker, so a CLI
+// A foreground `./muxos <anything>` dies with its invoker, so a CLI
 // process can never hold or queue on a host lock after the shell that started it
 // is gone. macOS has no PDEATHSIG, so a child cannot ask the kernel to signal it
 // when its parent dies — poll ppid instead (reparented orphans get ppid 1). The
@@ -41,7 +41,7 @@ export function installOrphanGuard(onOrphan: () => void): void {
   if (readEnv("BUILD_DETACHED")) return;
   // Likewise an op the foreground hand-off detached (op-runtime
   // foreground-handoff.ts): its spawner exits at the agent's deadline BY DESIGN,
-  // and `./equin await` is its handle from then on.
+  // and `./muxos await` is its handle from then on.
   if (readEnv("OP_HANDED_OFF")) return;
   if (process.ppid === 1) {
     onOrphan();

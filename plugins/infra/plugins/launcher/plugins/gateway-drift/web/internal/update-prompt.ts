@@ -3,7 +3,7 @@ import { GATEWAY_REFRESH_COMMAND } from "../../core";
 /**
  * The first turn of the agent the Gateway row's Update launches: what differs,
  * and the one command that applies it. The user asked for it by clicking, which
- * is the explicit request `./equin start` needs.
+ * is the explicit request `./muxos start` needs.
  */
 export function buildGatewayUpdatePrompt(
   differences: readonly string[],

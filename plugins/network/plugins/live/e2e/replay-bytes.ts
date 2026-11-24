@@ -18,7 +18,7 @@
  *
  * Read-only: it writes nothing.
  *
- *   ./equin run plugins/network/plugins/live/e2e/replay-bytes.ts \
+ *   ./muxos run plugins/network/plugins/live/e2e/replay-bytes.ts \
  *     [--tabs 3] [--path /] [--gap 35000] [--headed]
  */
 

@@ -8,7 +8,7 @@
 // The conversation must hold an assistant reply with a `<go>` pick table.
 //
 // Usage:
-//   ./equin run plugins/active-data/plugins/go/e2e/go-table-verify.ts \
+//   ./muxos run plugins/active-data/plugins/go/e2e/go-table-verify.ts \
 //     --conv <conversationId> [--out /tmp/go-table] [--headed]
 
 import {

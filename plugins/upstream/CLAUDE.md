@@ -15,7 +15,7 @@ Plan: `research/2026-11-17-global-release-updates.md` (phases 1–3).
 The author pushes to `main` a hundred times a day, so "behind upstream's main"
 is true of every clone all the time — noise. A clone is measured against
 **releases** instead: annotated tags `v<YYYY.MM.DD>` (`.2`, `.3`… for another the
-same UTC day) on main, cut on purpose with `./equin version cut`
+same UTC day) on main, cut on purpose with `./muxos version cut`
 (`framework/cli/plugins/version`), which tags the commit main serves and
 refuses unless it is published, newer than every release, and its build passed. The tag grammar is
 `plugins/release` (web-safe core).
@@ -75,10 +75,10 @@ off main; re-read on restart and on an adopted deploy).
 | State | Title | Summary | Health |
 |---|---|---|---|
 | no upstream / no release / never checked / no computer | — | — | `absent`: the row is not drawn |
-| behind, no task | equin is out of date | `2026.10.30 → 2026.11.14 · 312 commits` (the commits the release holds that local `main` does not — `standingAgainst`'s `commits`; the reminder says the same) | `info`: being behind is not a problem, but worth knowing — the row and the dot are blue, never counted |
+| behind, no task | muxos is out of date | `2026.10.30 → 2026.11.14 · 312 commits` (the commits the release holds that local `main` does not — `standingAgainst`'s `commits`; the reminder says the same) | `info`: being behind is not a problem, but worth knowing — the row and the dot are blue, never counted |
 | behind, task about it | Update in progress | same | working → `info` pulsing; at rest / not started → `attention` |
 | current, main's backend not built from it yet | Installing | `2026.11.14` | `info` pulsing |
-| current | equin is up to date | `2026.11.14` | `ok` |
+| current | muxos is up to date | `2026.11.14` | `ok` |
 
 - **Send agent to update** (an action, out of date only — not a `remedy`,
   which is drawn only while a row needs a look) is the standard
@@ -106,7 +106,7 @@ off main; re-read on restart and on an adopted deploy).
 
 On the canonical repo's main — no upstream because it IS upstream
 (`resolveUpstreamRemote` → `is-publisher`) — the `updates` row is absent and
-the `releases` row takes its place: "equin releases", subtitled `Latest
+the `releases` row takes its place: "muxos releases", subtitled `Latest
 2026.11.17 · 6h ago` (or `No release yet`), a commit line (`142 unreleased
 commits` — commits on `main` since its newest release, `readOwnReleases`) and
 a **Release 2026.11.17.2** button (the next tag of the day: `.2`, `.3`… are
@@ -118,7 +118,7 @@ cut runs too). It recomputes on `main` moving, a tag created or deleted
 (git-watcher's `git-watcher.tags`: a cut through the button or from a
 terminal alike), a `build_runs` write and an adopted deploy.
 
-**The button runs the CLI.** `POST /api/upstream/release` spawns `./equin
+**The button runs the CLI.** `POST /api/upstream/release` spawns `./muxos
 version cut` in the backend's checkout (main's slot): one implementation,
 every refusal its own (the cut's `CUT_REFUSED_EXIT_CODE`, shown as the toast).
 Any other exit is a crash, thrown — a 5xx, filed as an `endpoint-errors`
@@ -138,7 +138,7 @@ exhibit draws every state.
 
 The user must never be spammed, but hears — rarely — that a release is out.
 The daily job, on `behind`, calls `remindOfRelease` (`machine/internal/reminder.ts`),
-which writes ONE user notification "equin is out of date" (`2026.10.30 →
+which writes ONE user notification "muxos is out of date" (`2026.10.30 →
 2026.11.14`, category Updates) only when `reminderDecision`
 (`shared/reminder.ts`, pure and tested) says it is due:
 
@@ -162,7 +162,7 @@ reminder (that release's and every earlier one's) in place (state resolved,
 waits in the bell under Updates, never in the unread badge — rare and quiet by
 design.
 
-Its action, `equin-update` (`web/components/reminder-action.tsx`, a
+Its action, `muxos-update` (`web/components/reminder-action.tsx`, a
 `Notifications.Action` `Control` placed `below`), draws — only while that
 release is still the update to make — "Send agent to update" (the row's own
 launch popover, `SendAgentButton`) and "Remind me later ▾": Tomorrow / In a week
@@ -191,7 +191,7 @@ The **Upstream merges** automation (Automations pane; off by default — daily a
 07:00 local and Push = never once turned on) asks `fetchUpstreamStatus` itself
 (through `checkUpstream()`, so what it acts on is recorded) and, when
 `behind` with no merge task open, files ONE auto-started task
-(Upstream category) whose agent runs `./equin upstream merge` — which merges
+(Upstream category) whose agent runs `./muxos upstream merge` — which merges
 the release tag, never `<remote>/main` — builds and checks the app, and lands it
 only as far as Push allows. `no-upstream`, `no-release` and `unreachable` file
 nothing.
@@ -201,7 +201,7 @@ nothing.
 Both sides' migrations are published (upstream's on `<remote>/main`, which the
 check fetches with the tags; the user's on local `main`), so the merge renames,
 deletes and re-hashes none of them. Their snapshot chains fork at the merge
-base; the first `./equin build` (or push's normalize) after the merge joins them
+base; the first `./muxos build` (or push's normalize) after the merge joins them
 with a **merge node** — see `database/migrations/CLAUDE.md` → **Merge nodes**.
 `shared/merge-prompt.ts` tells the agent to keep the node, to resolve every
 conflict itself (a schema decided in its `schema.ts`, never in a migration
@@ -210,11 +210,11 @@ decision it cannot infer, or for the one case no code edit resolves: a snapshot
 merge conflict or a `migration-applies-clean` failure (a published migration
 that cannot run on this database).
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: Registers the Upstream merges automation's config (schedule, push policy, model, prompt template) for the Automations pane and Settings → Config. The health report's updates row on a clone: titled by its state — 'equin is out of date' (2026.10.30 → 2026.11.14; info — being behind is not a problem but worth knowing, so the row and the dot are blue and never counted) with a Send agent to update action (the launch popover, filed about the release so it is never filed twice), 'Update in progress' with the merging conversation linked beside its own status chip (info and pulsing while it works, attention while it waits on the user), 'Installing' (info, pulsing) while main rebuilds the merged release, then 'equin is up to date'; a reminder bell in every state (the update reminders config). The update reminder's action (equin-update) on the 'equin is out of date' notification the daily check writes: Send agent to update (the row's launch popover) and Remind me later (Tomorrow / In a week / In a month / Skip this release / Never), each settling the notification. Absent on the canonical repo, before any check, and where upstream has cut no release. On the canonical repo's main instead, the 'equin releases' row (always ok — unreleased commits are the normal state): the newest release and when it was cut, the commits on main since it, and a Release <next tag> button that runs `./equin version cut` through main's backend — disabled, with the reason on the commit line, while main builds, when its build of the served commit failed (with Open build), or when the served commit cannot be released for another reason the cut would give. Upstream, portable half: the Upstream merges automation's config registration, the update reminders config, the Upstream task category, and the upstream_release_check table the desktop half records each check of upstream's releases in.
+- Description: Registers the Upstream merges automation's config (schedule, push policy, model, prompt template) for the Automations pane and Settings → Config. The health report's updates row on a clone: titled by its state — 'muxos is out of date' (2026.10.30 → 2026.11.14; info — being behind is not a problem but worth knowing, so the row and the dot are blue and never counted) with a Send agent to update action (the launch popover, filed about the release so it is never filed twice), 'Update in progress' with the merging conversation linked beside its own status chip (info and pulsing while it works, attention while it waits on the user), 'Installing' (info, pulsing) while main rebuilds the merged release, then 'muxos is up to date'; a reminder bell in every state (the update reminders config). The update reminder's action (muxos-update) on the 'muxos is out of date' notification the daily check writes: Send agent to update (the row's launch popover) and Remind me later (Tomorrow / In a week / In a month / Skip this release / Never), each settling the notification. Absent on the canonical repo, before any check, and where upstream has cut no release. On the canonical repo's main instead, the 'muxos releases' row (always ok — unreleased commits are the normal state): the newest release and when it was cut, the commits on main since it, and a Release <next tag> button that runs `./muxos version cut` through main's backend — disabled, with the reason on the commit line, while main builds, when its build of the served commit failed (with Open build), or when the served commit cannot be released for another reason the cut would give. Upstream, portable half: the Upstream merges automation's config registration, the update reminders config, the Upstream task category, and the upstream_release_check table the desktop half records each check of upstream's releases in.
 - Web:
   - Contributes:
     - `ConfigV2.WebRegister` "reminders"
@@ -222,7 +222,7 @@ that cannot run on this database).
     - `Automations.Config` "upstream-merge"
     - `HealthReport.Row` "Releases"
     - `HealthReport.Row` "Updates"
-    - `Notifications.Action` "equin-update"
+    - `Notifications.Action` "muxos-update"
   - Uses: 28 symbols — full list in [REFERENCE.md](./REFERENCE.md)
     - `primitives/css/ui-kit` ×6
     - `config_v2` ×3
@@ -315,6 +315,6 @@ that cannot run on this database).
     - `framework/tooling/format`
     - `wish/github-issue`
 - Sub-plugins:
-  - **`release`** — What an equin release is, as web-safe data: the release tag grammar (annotated `v<YYYY.MM.DD>[.<n>]` tags on main — parse, order, name the next one, display), the upstream.release-status live value…
+  - **`release`** — What an muxos release is, as web-safe data: the release tag grammar (annotated `v<YYYY.MM.DD>[.<n>]` tags on main — parse, order, name the next one, display), the upstream.release-status live value…
 
 <!-- AUTOGENERATED:END -->

@@ -2,7 +2,7 @@ import type { CliAction } from "@plugins/framework/plugins/cli/core";
 import { parseBypassArgs } from "@plugins/framework/plugins/tooling/plugins/guards/plugins/bypass/core";
 
 /**
- * `./equin guard bypass <id> --reason "…"`: the hook already recorded the
+ * `./muxos guard bypass <id> --reason "…"`: the hook already recorded the
  * bypass when it judged this call (`core/runner.ts`); this re-reads the same
  * grammar so a malformed one fails here too, and states what it allows.
  */

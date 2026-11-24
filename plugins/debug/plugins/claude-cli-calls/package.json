@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-claude-cli-calls",
+  "name": "@muxos/plugin-debug-claude-cli-calls",
   "private": true,
   "version": "0.0.1"
 }

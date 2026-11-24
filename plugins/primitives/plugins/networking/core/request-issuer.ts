@@ -6,7 +6,7 @@
  * must never). Read by e2e to tell a page's own request from a scope's
  * leak: one document holds both, so a request's origin cannot say who sent it.
  */
-export const REQUEST_ISSUER_HEADER = "X-Equin-Issuer";
+export const REQUEST_ISSUER_HEADER = "X-MuxOS-Issuer";
 
 /** A request issuer as {@link REQUEST_ISSUER_HEADER} spells it. */
 export type RequestIssuer = "page" | `scope:${string}`;

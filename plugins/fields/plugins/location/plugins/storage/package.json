@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-location-storage",
+  "name": "@muxos/plugin-fields-location-storage",
   "version": "0.0.1",
   "private": true,
-  "description": "Location field type: DB storage capability — a jsonb column decoded by LocationSchema."
+  "description": "Location field type: DB storage capability \u2014 a jsonb column decoded by LocationSchema."
 }

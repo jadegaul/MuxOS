@@ -27,7 +27,7 @@ import {
  * Upstream merges: for someone who cloned this repo, on the configured
  * schedule (daily by default), ask upstream for its newest release and, when
  * local `main` does not hold it and no merge task is open, file ONE
- * auto-started task whose agent runs `./equin upstream merge` (which merges
+ * auto-started task whose agent runs `./muxos upstream merge` (which merges
  * the release tag) in its own worktree, builds, checks the app — and lands it
  * only as far as the Push setting allows (never, by default: the user lands a
  * change to their own trunk).
@@ -41,7 +41,7 @@ export const upstreamMergeAutomation = defineAutomation({
   label: "Upstream merges",
   icon: symbol("call-merge"),
   description:
-    "Checks the repository this checkout was cloned from for a new release and files one task that merges it with `./equin upstream merge`.",
+    "Checks the repository this checkout was cloned from for a new release and files one task that merges it with `./muxos upstream merge`.",
   categoryId: UPSTREAM_CATEGORY_ID,
   // No re-run on settle: a dropped merge leaves upstream still ahead, and
   // detecting again at once would re-file it. The next scheduled run looks again.

@@ -70,7 +70,7 @@ export type JournalReplay =
 const DROPPED_EVENTS = /must be re-scanned/;
 
 async function withScratch<T>(fn: (file: string) => Promise<T>): Promise<T> {
-  const dir = await mkdtemp(join(tmpdir(), "equin-journal-"));
+  const dir = await mkdtemp(join(tmpdir(), "muxos-journal-"));
   try {
     return await fn(join(dir, "snapshot"));
   } finally {

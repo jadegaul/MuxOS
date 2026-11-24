@@ -9,7 +9,7 @@ import {
 import { machineHost, runOk, type CodesignHost } from "./host";
 
 /** The common name of the local certificate this plugin creates. */
-export const LOCAL_IDENTITY_NAME = "equin Local Code Signing";
+export const LOCAL_IDENTITY_NAME = "muxos Local Code Signing";
 /** 20 years: the local certificate should outlive the machine. */
 const LOCAL_CERT_DAYS = 7300;
 
@@ -19,7 +19,7 @@ const LOCAL_CERT_DAYS = 7300;
  * rebuilds.
  *
  * - `configured`: a VALID identity in the user's keychains, named by
- *   `EQUIN_CODESIGN_IDENTITY` or the `identity` file — an Apple
+ *   `MUXOS_CODESIGN_IDENTITY` or the `identity` file — an Apple
  *   "Developer ID Application" / "Apple Development" identity. Signed with
  *   `/usr/bin/codesign`.
  * - `local`: the machine's own self-signed certificate under
@@ -212,7 +212,7 @@ extendedKeyUsage = critical,codeSigning
 
 /** How to reset a broken local identity, for messages. */
 export const RESET_HINT =
-  "`./equin codesign reset` removes it, and the next gateway build creates a new one (macOS then asks again for every permission the gateway had)";
+  "`./muxos codesign reset` removes it, and the next gateway build creates a new one (macOS then asks again for every permission the gateway had)";
 
 /**
  * The local identity, created on first use. Created under the machine-wide

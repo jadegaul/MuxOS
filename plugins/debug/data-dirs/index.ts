@@ -8,7 +8,7 @@ import { defineDataDir } from "@plugins/infra/plugins/paths/core";
  *
  * Declared here, by the debug umbrella, because the sidequest monitors are
  * scripts run by launchd: they are outside the build, import nothing, and so
- * can declare nothing themselves. The fs-latency monitor, now equin's own
+ * can declare nothing themselves. The fs-latency monitor, now muxos's own
  * (`infra/host/io-health/monitor`), is handed this directory on argv by its
  * login service, and keeps writing here so its history stays in one place. An undeclared directory written by a process the registry
  * cannot see is exactly the orphan this registry exists to prevent, and the

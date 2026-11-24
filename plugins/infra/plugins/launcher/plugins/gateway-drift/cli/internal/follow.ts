@@ -114,9 +114,9 @@ type LastAttempt = z.infer<typeof LastAttemptSchema>;
 
 /**
  * Bring the machine's gateway onto main's — main's convergence run calls this
- * after its builds (`./equin build --allow-main --converge`), so a push that
+ * after its builds (`./muxos build --allow-main --converge`), so a push that
  * changes what the gateway runs (its Go source, its flags, the declared
- * environment names, its cwd) takes effect with no one running `./equin start
+ * environment names, its cwd) takes effect with no one running `./muxos start
  * --force`.
  *
  * - **Only main's checkout, only the machine's gateway.** It acts when this
@@ -160,7 +160,7 @@ export async function followMainGateway(opts: {
 /**
  * Run `fn` holding the machine-wide gateway-follow lock: one swap of the
  * machine's gateway at a time — main's follow step, the successor's boot-edge
- * run, and a person's `./equin start` (which takes it around its own reload).
+ * run, and a person's `./muxos start` (which takes it around its own reload).
  */
 export async function withGatewayFollowLock<T>(
   fn: () => Promise<T>,

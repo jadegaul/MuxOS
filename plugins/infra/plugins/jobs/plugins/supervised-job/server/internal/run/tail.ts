@@ -14,7 +14,7 @@ import { createKeyedMutex } from "@plugins/packages/plugins/keyed-mutex/core";
  * `.jsonl` sink, which every OTHER channel shares a rotation budget with.
  *
  * 16 MiB is far above any real build, release or deploy transcript (a full
- * `./equin build` is low single-digit MB) and far below the point where
+ * `./muxos build` is low single-digit MB) and far below the point where
  * publishing it costs anything. The transcript FILE's own bound is the artifact
  * prune: the newest 50 runs per kind per worktree, reaped when the next run
  * starts. A single pathological run's file is bounded only by that run.
@@ -232,14 +232,14 @@ export async function readTranscriptEnd(
   }
 }
 
-// ─── The run's error file: what an `./equin` child said ended it ──────────
+// ─── The run's error file: what an `./muxos` child said ended it ──────────
 // Written by the child (`../../../cli/internal/run-error.ts`, through `runCli`);
 // read here, beside the transcript's end, when the ledger closes a failed run.
 
 /** What {@link readRunError} found at a run's error path. */
 export type RecordedRunError =
   | { readonly kind: "recorded"; readonly text: string }
-  /** ENOENT: the child recorded none (exited cleanly, was killed, or is not an `./equin` command). */
+  /** ENOENT: the child recorded none (exited cleanly, was killed, or is not an `./muxos` command). */
   | { readonly kind: "none" }
   /** Any other read failure, named — the caller is closing a run's row. */
   | { readonly kind: "unreadable"; readonly message: string };

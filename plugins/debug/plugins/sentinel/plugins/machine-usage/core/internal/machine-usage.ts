@@ -4,7 +4,7 @@ import { cappedList } from "@plugins/packages/plugins/list-bound/core";
 
 /**
  * Who a process on the machine works for. A closed list, in display order:
- * the user's own Chrome, the agents' ops (`./equin build` / push / check /
+ * the user's own Chrome, the agents' ops (`./muxos build` / push / check /
  * test / e2e and everything they started), the agent browser's host and its
  * Chromium, the agents themselves (each SDK agent and its Claude Code, with
  * the tools it runs outside an op), the app's backends (the gateway, central

@@ -22,7 +22,7 @@ const onFsEvents = process.platform === "darwin";
 let dir: string;
 
 beforeEach(async () => {
-  dir = await realpath(await mkdtemp(join(HOME_DIR, ".equin-journal-test-")));
+  dir = await realpath(await mkdtemp(join(HOME_DIR, ".muxos-journal-test-")));
 });
 
 afterEach(async () => {

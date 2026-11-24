@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-lint-reactive-server-io",
+  "name": "@muxos/plugin-framework-tooling-lint-reactive-server-io",
   "version": "0.0.1",
   "private": true,
   "description": "reactive-server-io lint rule: no-reactive-server-io"

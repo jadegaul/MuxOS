@@ -8,7 +8,7 @@ import type { SerializedBlock } from "../serialized-block";
 // `page.editor:markdown-round-trip-covers-every-block` check (which refuses a
 // registered block type the generator never produces).
 //
-// The coverage half lives in a CHECK because `./equin build` and `push` run
+// The coverage half lives in a CHECK because `./muxos build` and `push` run
 // checks and nothing runs tests: the `prototype` block shipped with no
 // generator, so its round trip went unchecked and the only signal was a test
 // failure nobody saw. Reading the generated types off THIS table — not a copy

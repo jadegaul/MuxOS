@@ -12,7 +12,7 @@ import {
 const LANES = Object.keys(PGBOUNCER_LANES) as PgbouncerLane[];
 
 const INPUTS: PgbouncerConfigInputs = {
-  baseUser: "equin",
+  baseUser: "muxos",
   socketDir: "/tmp/socket",
   pgPort: 5433,
   listenPort: 6432,
@@ -23,9 +23,9 @@ const INPUTS: PgbouncerConfigInputs = {
 
 describe("PgBouncer lanes", () => {
   it("gives every lane its own login role", () => {
-    const users = LANES.map((lane) => laneUser("equin", lane));
+    const users = LANES.map((lane) => laneUser("muxos", lane));
     expect(new Set(users).size).toBe(LANES.length);
-    expect(laneUser("equin", "interactive")).toBe("equin");
+    expect(laneUser("muxos", "interactive")).toBe("muxos");
   });
 
   it("renders each lane's pool size and cluster cap, and lets only lane users log in", () => {
@@ -33,11 +33,11 @@ describe("PgBouncer lanes", () => {
     for (const lane of LANES) {
       const { poolSize, clusterCap } = PGBOUNCER_LANES[lane];
       expect(ini).toContain(
-        `${laneUser("equin", lane)} = pool_size=${poolSize} max_user_connections=${clusterCap}`,
+        `${laneUser("muxos", lane)} = pool_size=${poolSize} max_user_connections=${clusterCap}`,
       );
     }
     expect(userlist.trim().split("\n")).toEqual(
-      LANES.map((lane) => `"${laneUser("equin", lane)}" ""`),
+      LANES.map((lane) => `"${laneUser("muxos", lane)}" ""`),
     );
     // No shared default pool a lane could fall back into.
     expect(ini).not.toContain("default_pool_size");

@@ -35,7 +35,7 @@ import { WatchedDirGoneError } from "./dir-gone";
 //   unsubscribe). The addon this engine loads on darwin is built from a
 //   patched source that closes it (`patches/@parcel%2Fwatcher@*.patch`, built
 //   by the `parcel-addon` child plugin and copied into the checkout by
-//   `./equin build`); a checkout never built, or a release, still runs the
+//   `./muxos build`); a checkout never built, or a release, still runs the
 //   upstream prebuild.
 
 /** One follower's files in one directory, and where its events go. */

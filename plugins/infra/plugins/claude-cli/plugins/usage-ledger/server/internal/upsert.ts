@@ -155,7 +155,7 @@ export interface UsageSourceRow {
 /**
  * The source-row write for `rows`: inserted, or merged into what the row
  * holds — a known project dir or title is never replaced by an unknown one,
- * and a source once equin's own stays so. A builder like `usageLedgerUpsert`;
+ * and a source once muxos's own stays so. A builder like `usageLedgerUpsert`;
  * `null` when there is nothing to write. Unchanged rows are not rewritten.
  */
 export function usageSourcesUpsert(
@@ -249,7 +249,7 @@ export function negateUsage(rows: readonly UsageLedgerRow[]): UsageLedgerRow[] {
  * `counted` — what was imported stays: it is usage of transcripts already gone,
  * which the new owner cannot recount) and their source rows (kept while an
  * imported row still names the source) — for a REATTRIBUTION: the writer files the same usage under
- * another source in the same `writeAtomically` group (a session equin did not
+ * another source in the same `writeAtomically` group (a session muxos did not
  * launch, adopted by a conversation: its transcripts are recounted under
  * `conv:`). Never for a transcript that vanished — the ledger outlives its
  * files. Two arms; `null` each when there is nothing to drop.

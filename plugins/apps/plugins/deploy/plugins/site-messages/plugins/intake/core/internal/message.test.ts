@@ -10,7 +10,7 @@ const VALID = {
   replyTo: "visitor@example.com",
   honeypot: "",
   elapsedMs: 5000,
-  host: "equin.ai",
+  host: "MuxOS.app",
   page: "/",
 };
 

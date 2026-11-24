@@ -11,7 +11,7 @@ export default function FlagRaiseCardExhibit() {
         kind: "tool-call",
         at: "2026-11-13T05:00:00.000Z",
         toolUseId: "toolu_exhibit",
-        name: "mcp__equin__flag_raise",
+        name: "mcp__muxos__flag_raise",
       }}
       input={{
         items: [

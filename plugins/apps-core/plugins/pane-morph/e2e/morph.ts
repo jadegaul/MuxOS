@@ -5,9 +5,9 @@
  * leaf pane of the app that replaced it), then land in that app. Photographs
  * the morph mid-flight (every animation paused) and at its end.
  *
- * Manual only. After `./equin build`:
+ * Manual only. After `./muxos build`:
  *
- *   ./equin run plugins/apps-core/plugins/pane-morph/e2e/morph.ts \
+ *   ./muxos run plugins/apps-core/plugins/pane-morph/e2e/morph.ts \
  *     [--path /agents/c/<conv>/page/<block>] [--out /tmp/pane-morph]
  *
  * With no `--path`, runs the two expand sites the morph was designed on: a page

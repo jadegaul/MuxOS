@@ -87,10 +87,10 @@ def sample(seconds):
 
 def kind(args):
     args = re.sub(r"(att|conv|task|build)-[0-9a-z-]+", "<id>", args)
-    named = re.search(r"· (\w[\w-]*) ·", args)  # packages/process-name: `equin · <kind> · <id>`
+    named = re.search(r"· (\w[\w-]*) ·", args)  # packages/process-name: `muxos · <kind> · <id>`
     if named:
         verb = re.search(r"index\.ts (\S+)", args)
-        return "equin:" + named.group(1) + (":" + verb.group(1) if verb else "")
+        return "muxos:" + named.group(1) + (":" + verb.group(1) if verb else "")
     words = args.split()
     base = words[0].split("/")[-1]
     if base == "git":

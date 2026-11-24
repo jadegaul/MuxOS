@@ -4,8 +4,8 @@
  * the handlers run it.
  *
  * Requires the running embedded cluster and the `conversation_sections`
- * migration (`./equin build` first):
- *   ./equin test plugins/conversations/plugins/conversations-view/plugins/queue
+ * migration (`./muxos build` first):
+ *   ./muxos test plugins/conversations/plugins/conversations-view/plugins/queue
  */
 
 import {

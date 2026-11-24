@@ -1,6 +1,6 @@
 /**
  * Tests for the `no-laundered-peek` lint rule. Run with
- * `./equin test plugins/primitives/plugins/install-sink`.
+ * `./muxos test plugins/primitives/plugins/install-sink`.
  *
  * The rule bans an exported module-scope function whose returned expression
  * contains a `peek…()` call, unless the function is already named `peek…` or is

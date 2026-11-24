@@ -132,7 +132,7 @@ export const RunDeploymentBodySchema = z.discriminatedUnion("verb", [
   z.object({ verb: z.literal("update") }),
   /**
    * Restart the installed unit and hold the health gate — for a site whose
-   * server answers but whose equin has stopped. Ships nothing, converges
+   * server answers but whose muxos has stopped. Ships nothing, converges
    * nothing, so it takes no fields either.
    */
   z.object({ verb: z.literal("restart") }),
@@ -140,7 +140,7 @@ export const RunDeploymentBodySchema = z.discriminatedUnion("verb", [
 export type RunDeploymentBody = z.infer<typeof RunDeploymentBodySchema>;
 
 /**
- * Launch `./equin deploy <verb> <composition> --server <serverId>` for
+ * Launch `./muxos deploy <verb> <composition> --server <serverId>` for
  * this deployment, streaming its stdout/stderr into the `deploy` log channel.
  *
  * Returns as soon as the command is spawned — a converge on a cold box installs

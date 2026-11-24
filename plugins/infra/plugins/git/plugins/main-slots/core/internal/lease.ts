@@ -530,13 +530,13 @@ export async function reapDeadHolders(slot: AppPath): Promise<void> {
 /** What {@link claimHandedBuildSlot} found. */
 export type HandedBuildSlot =
   | { kind: "handed"; lease: SlotLease }
-  /** No slot was handed to this process (`EQUIN_BUILD_SLOT` unset, or naming another checkout). */
+  /** No slot was handed to this process (`MUXOS_BUILD_SLOT` unset, or naming another checkout). */
   | { kind: "not-handed" };
 
 /**
  * The exclusive lease of the slot `root` when it was handed to this process
- * to build in (`runInBuildSlot`, cli/, sets `EQUIN_BUILD_SLOT` and
- * `EQUIN_BUILD_SLOT_HANDOFF`): the slot must be marked handed to that very
+ * to build in (`runInBuildSlot`, cli/, sets `MUXOS_BUILD_SLOT` and
+ * `MUXOS_BUILD_SLOT_HANDOFF`): the slot must be marked handed to that very
  * handoff by a live hander, and is taken without waiting, since nothing may
  * hold a slot handed to a build. Either broken is refused loudly. Once held,
  * the mark is cleared — the lease guards the slot from here.

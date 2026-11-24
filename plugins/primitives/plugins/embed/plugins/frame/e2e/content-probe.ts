@@ -22,7 +22,7 @@
  * realm (what an `allow-same-origin` frame on our origin used to be), must
  * REACH `top` and the owner API — so the probe can tell the two apart.
  *
- *   ./equin run plugins/primitives/plugins/embed/plugins/frame/e2e/content-probe.ts [--headed]
+ *   ./muxos run plugins/primitives/plugins/embed/plugins/frame/e2e/content-probe.ts [--headed]
  */
 import { mkdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";

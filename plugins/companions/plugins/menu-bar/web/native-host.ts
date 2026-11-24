@@ -3,7 +3,7 @@ import {
   BRIDGE_METHODS,
   NativeAppsSchema,
   NativeHostInfoSchema,
-  type EquinNativeBridge,
+  type MuxOSNativeBridge,
   type NativeApps,
   type NativeCapabilities,
   type NativeHostInfo,
@@ -46,8 +46,8 @@ export type NativeHost =
 type ProbeState = NativeHost | { kind: "failed"; error: Error };
 
 /** The bridge the helper injected, checked to carry every method — or none. */
-function readBridge(): EquinNativeBridge | null {
-  const raw: unknown = (window as { equinNative?: unknown }).equinNative;
+function readBridge(): MuxOSNativeBridge | null {
+  const raw: unknown = (window as { muxosNative?: unknown }).muxosNative;
   if (raw === undefined) return null;
   const missing = BRIDGE_METHODS.filter(
     (m) =>
@@ -57,14 +57,14 @@ function readBridge(): EquinNativeBridge | null {
   );
   if (missing.length > 0) {
     throw new Error(
-      `window.equinNative is not the equin bridge: missing ${missing.join(", ")}.`,
+      `window.muxosNative is not the muxos bridge: missing ${missing.join(", ")}.`,
     );
   }
-  return raw as EquinNativeBridge;
+  return raw as MuxOSNativeBridge;
 }
 
 function presentHost(
-  bridge: EquinNativeBridge,
+  bridge: MuxOSNativeBridge,
   info: NativeHostInfo,
 ): NativeHost {
   const caps = info.capabilities;
@@ -72,7 +72,7 @@ function presentHost(
   // A helper that says it keeps apps carries both methods, or it is broken.
   if (caps.apps && (apps === undefined || pinApp === undefined)) {
     throw new Error(
-      "window.equinNative keeps apps but is missing apps() / pinApp().",
+      "window.muxosNative keeps apps but is missing apps() / pinApp().",
     );
   }
   return {
@@ -110,7 +110,7 @@ function settle(next: ProbeState): void {
 
 function probe(): ProbeState {
   if (state !== null) return state;
-  let bridge: EquinNativeBridge | null;
+  let bridge: MuxOSNativeBridge | null;
   try {
     bridge = readBridge();
   } catch (err) {
@@ -139,7 +139,7 @@ function probe(): ProbeState {
       settle({
         kind: "failed",
         error: new Error(
-          `equinNative.hostInfo() answered an unknown shape: ${parsed.error.message}`,
+          `muxosNative.hostInfo() answered an unknown shape: ${parsed.error.message}`,
         ),
       });
     },
@@ -149,7 +149,7 @@ function probe(): ProbeState {
         error:
           err instanceof Error
             ? err
-            : new Error(`equinNative.hostInfo() failed: ${String(err)}`),
+            : new Error(`muxosNative.hostInfo() failed: ${String(err)}`),
       }),
   );
   return state;

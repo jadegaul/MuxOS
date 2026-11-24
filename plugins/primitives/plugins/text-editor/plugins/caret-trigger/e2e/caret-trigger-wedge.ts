@@ -14,7 +14,7 @@
 // must never type into a page a human owns.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/text-editor/plugins/caret-trigger/e2e/caret-trigger-wedge.ts [--url <deploy>]
+//   ./muxos run plugins/primitives/plugins/text-editor/plugins/caret-trigger/e2e/caret-trigger-wedge.ts [--url <deploy>]
 //
 // Exits non-zero on the first failed assertion, after dumping a screenshot.
 import {

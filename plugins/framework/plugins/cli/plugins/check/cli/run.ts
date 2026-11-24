@@ -234,7 +234,7 @@ const memoContext: MemoHolds = {
 const ADOPTED_TRANSCRIPT_LINES = 200;
 
 /**
- * The run-level single-flight for a check: an identical `./equin check`
+ * The run-level single-flight for a check: an identical `./muxos check`
  * already in flight in this worktree — same selection, same scope, same
  * `--always-run`, same TREE — is joined instead of run again. Its key carries
  * the tree hash, so a verdict is only ever adopted from a run that started on
@@ -285,7 +285,7 @@ function checkFlight(
       } else {
         console.error(`(the leader's transcript is gone: ${transcript})`);
       }
-      // Last line, so it survives `./equin check | tail`.
+      // Last line, so it survives `./muxos check | tail`.
       if (outcome !== "success")
         console.error(`\nFull check output: ${transcript}`);
       // A leader whose failure was only killed processes judged nothing; nor
@@ -340,7 +340,7 @@ const run: CliAction<
     }
     scope = parts as CheckScope[];
   } else if (checks.length === 0) {
-    // A bare `./equin check` asserts what THIS checkout owns: its tree and its
+    // A bare `./muxos check` asserts what THIS checkout owns: its tree and its
     // deploy. Host checks judge state every checkout shares (the data root),
     // so selecting them here let one agent's leftover file fail every other
     // agent's check. They run on main's hourly host audit, which files a
@@ -349,7 +349,7 @@ const run: CliAction<
     console.log(
       `Running the ${CHECKOUT_SCOPES.join(" + ")} checks. Host checks (shared machine ` +
         "state) are not this checkout's to assert: main's hourly checks.host-audit runs " +
-        "them and files a host-check report; `./equin check --scope host` runs them now.",
+        "them and files a host-check report; `./muxos check --scope host` runs them now.",
     );
   }
 
@@ -412,7 +412,7 @@ const run: CliAction<
   // CPU slot (minutes, under load) just to be told it was a typo. But `--list`
   // and `--status` acquire no grant and run no check, and `--status` is the tool
   // you reach for from a second shell WHILE a run is wedged. A stale
-  // `EQUIN_CHECK_JOBS=auto` in a shell profile must not be what stops you
+  // `MUXOS_CHECK_JOBS=auto` in a shell profile must not be what stops you
   // reading the progress log during an incident.
   //
   // Deliberately the runner's own `requestedJobs`, not a second check that
@@ -425,7 +425,7 @@ const run: CliAction<
   // CPU work, and the run-level single-flight below is keyed on it — a
   // duplicate must find the in-flight run without first queueing for a host
   // slot. Handed to `runChecks` so the cache is keyed on the same reading.
-  // `--no-cache` / EQUIN_CHECK_NO_CACHE mean "really run": no flight, so no
+  // `--no-cache` / MUXOS_CHECK_NO_CACHE mean "really run": no flight, so no
   // hash here — the runner hashes the tree itself, to scan it.
   // `--verify-records` recomputes every record, so its checks must really run.
   const verifyRecords = opts.verifyRecords === true;
@@ -523,7 +523,7 @@ const run: CliAction<
         // Commander hands every `<n>` option through as a string, so the
         // conversion happens here and the VALIDATION does not: `runChecks`
         // rejects anything that is not a positive integer, with one message
-        // covering both this flag and EQUIN_CHECK_JOBS (which it reads
+        // covering both this flag and MUXOS_CHECK_JOBS (which it reads
         // itself — that is the knob `build` and `push` reach, since they spawn
         // this command and inherit the environment). Splitting the check across
         // both sites would be two rules that could disagree about the same
@@ -546,7 +546,7 @@ const run: CliAction<
       // again, and the verdict stays the checks' (2026-11-12, a green pass
       // turned failed by a busy store at exit).
       await sharedRecords.flush();
-      // Last line, so it survives `./equin check | tail`.
+      // Last line, so it survives `./muxos check | tail`.
       if (!ok) console.error(`\nFull check output: ${checkLogPath}`);
       if (verification) {
         await verification.settled();

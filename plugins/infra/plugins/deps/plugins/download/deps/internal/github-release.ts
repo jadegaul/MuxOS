@@ -62,7 +62,7 @@ export interface GithubReleaseDownloadSource extends DownloadSource {
 
 /**
  * A `download` of one GitHub release asset, kept current by the
- * `github-release` updater (`./equin deps upgrade github-release`, and the
+ * `github-release` updater (`./muxos deps upgrade github-release`, and the
  * weekly Dependency upgrades detection): the updater asks GitHub for the
  * repository's newest release past its cooldown and rewrites `pinFile` with
  * its tag, publish instant and asset digest. A moved pin is a new identity,

@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-host-duress-latch",
+  "name": "@muxos/plugin-infra-host-duress-latch",
   "private": true,
   "version": "0.0.1"
 }

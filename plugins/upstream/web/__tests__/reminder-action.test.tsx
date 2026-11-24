@@ -47,7 +47,7 @@ function mount(done = vi.fn()) {
   return done;
 }
 
-describe("equin-update", () => {
+describe("muxos-update", () => {
   it("draws nothing once the release is no longer the update to make", () => {
     spy.view = {
       kind: "in-progress",

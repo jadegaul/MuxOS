@@ -7,7 +7,7 @@ import {
 } from "@plugins/apps/plugins/website/plugins/shell/web";
 
 /**
- * The story page at `/about/story` — where equin came from, for a reader who
+ * The story page at `/about/story` — where muxos came from, for a reader who
  * wants the context behind the project.
  *
  * Wears the shared site header (`actions: WebsiteHeader`), so the wordmark and

@@ -7,8 +7,8 @@
  * sees it with neither. Two reads did, and the conversations status sweep took
  * a spawn resuming from its checkout wait for a dead one (2026-11-04).
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

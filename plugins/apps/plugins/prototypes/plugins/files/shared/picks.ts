@@ -15,7 +15,7 @@ import {
 // holding the raw picks — `{ "palette": "azure" }`. Every surface reads and
 // writes that one file (main, every worktree deploy, every browser), so the
 // variant the user picked is the variant everybody sees, and an agent can read
-// it with `./equin prototype options <id>`.
+// it with `./muxos prototype options <id>`.
 //
 // One kind of per-prototype record (`record-store.ts`): the file layout, the
 // lock, the atomic write and the malformed-file rule live there.

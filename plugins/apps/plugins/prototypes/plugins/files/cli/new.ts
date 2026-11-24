@@ -6,7 +6,7 @@ import { prototypeUrlFormatter } from "./prototype-url";
 import { cliFiles, cliHistory } from "./tree";
 
 /**
- * `./equin prototype new [title]` — the terminal spelling of the mint.
+ * `./muxos prototype new [title]` — the terminal spelling of the mint.
  *
  * Calls {@link mintPrototype} straight against the data dir on disk rather than
  * `POST /api/prototypes`, which is the point of having the verb at all: the
@@ -25,7 +25,7 @@ export const newPrototypeAction: CliAction<
     {
       files: cliFiles(),
       history: cliHistory(),
-      writer: systemOrigin("./equin prototype new"),
+      writer: systemOrigin("./muxos prototype new"),
     },
     title === undefined ? {} : { title },
   );

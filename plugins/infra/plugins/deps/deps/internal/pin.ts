@@ -177,7 +177,7 @@ export interface PinnedInstall {
 /**
  * What a checkout declares against the pin: the pinned install itself, another
  * one — `blocked` saying why moving to it is not a plain switch (the pin's
- * `switchBlocked`), null when `./equin deps pin` is the whole move — or
+ * `switchBlocked`), null when `./muxos deps pin` is the whole move — or
  * underivable (the checkout cannot say).
  */
 export type DeclaredAgainstPin =

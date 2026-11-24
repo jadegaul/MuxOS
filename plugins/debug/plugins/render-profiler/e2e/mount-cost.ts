@@ -8,9 +8,9 @@
 // fiber names the mount was made of.
 //
 // Usage:
-//   ./equin run plugins/debug/plugins/render-profiler/e2e/mount-cost.ts \
+//   ./muxos run plugins/debug/plugins/render-profiler/e2e/mount-cost.ts \
 //     --path /agents --route /agents/c/<id> [--runs 3] [--settle 4000] [--top 25]
-//   ./equin run plugins/debug/plugins/render-profiler/e2e/mount-cost.ts \
+//   ./muxos run plugins/debug/plugins/render-profiler/e2e/mount-cost.ts \
 //     --path /agents/tasks --pre-click '<selector>' --click '<selector>' [--runs 3]
 //
 // --click / --pre-click take a Playwright selector (first match). --pre-click
@@ -95,7 +95,7 @@ const ok = await withBrowser(async (h) => {
       );
     if (!hasApi) {
       console.error(
-        `window.${RENDER_PROFILER_GLOBAL} is undefined after 60 s — run ./equin build and retry.`,
+        `window.${RENDER_PROFILER_GLOBAL} is undefined after 60 s — run ./muxos build and retry.`,
       );
       return false;
     }

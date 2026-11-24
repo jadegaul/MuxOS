@@ -14,7 +14,7 @@ import {
 
 export default {
   description:
-    "Runs stale and never-run test files while the host is idle: on host.idleBegan it brings the checkout's test digests current; each tests.digestsSettled (and each batch's end, after its record is ingested) starts the next tests.idle-batch — `./equin test` on files chosen by selectIdleBatch, opportunistic, origin idle — while the host is still idle; host.idleEnded cancels the running batch.",
+    "Runs stale and never-run test files while the host is idle: on host.idleBegan it brings the checkout's test digests current; each tests.digestsSettled (and each batch's end, after its record is ingested) starts the next tests.idle-batch — `./muxos test` on files chosen by selectIdleBatch, opportunistic, origin idle — while the host is still idle; host.idleEnded cancels the running batch.",
   register: [idleBatchJob, idleNextJob, idleBeganJob, idleEndedJob],
   contributions: [
     Trigger({ on: hostIdleBegan, do: idleBeganJob, with: {}, oneShot: false }),

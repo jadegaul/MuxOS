@@ -4,7 +4,7 @@
 // every animation on it (play state, currentTime, startTime) — and the
 // frames themselves, to see whether the unfold and the fold animate.
 //
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/key-fold-probe.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/key-fold-probe.ts \
 //     --composition promo-film [--out <dir>]
 //
 // Needs the song open in Sonata (the `pages` take imported it). Shows the

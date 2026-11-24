@@ -7,7 +7,7 @@ export interface EventPresentation {
 }
 
 /**
- * How the timeline names the events the equin website sends (its `track(…)`
+ * How the timeline names the events the muxos website sends (its `track(…)`
  * calls). Keyed by name; an event not listed still renders — by its own name,
  * with the generic icon — so a new event shows up before anyone describes it.
  */

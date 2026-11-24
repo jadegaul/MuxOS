@@ -20,7 +20,7 @@ const centralNamespace = "central"
 // `getMainRepoRoot()`): on 2026-11-17 one moved central's spec off slot-3, the
 // slot central kept running from, so that slot read as draining (a false
 // main-slot-drain-slow report) and a respawn would have booted central from the
-// checkout `./equin push` rewrites. Old checkouts keep running their old code
+// checkout `./muxos push` rewrites. Old checkouts keep running their old code
 // until they rebase, so the refusal has to live here.
 //
 // The rule, on a gateway that deploys main (-main-checkout) once main's

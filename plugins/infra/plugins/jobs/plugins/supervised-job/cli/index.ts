@@ -14,7 +14,7 @@ export { cliExecContext } from "./internal/cli-exec-context";
 // so a command that never relays pays nothing for it.
 export { runAttached } from "./internal/attached";
 export type { AttachedRun } from "./internal/attached";
-// An `./equin` command run as a supervised child records the exception it dies
+// An `./muxos` command run as a supervised child records the exception it dies
 // of in its run's error file (read by the built-in ledger, `../core`).
 export { takeRunErrorPath, writeRunErrorSync } from "./internal/run-error";
 
@@ -35,7 +35,7 @@ export { takeRunErrorPath, writeRunErrorSync } from "./internal/run-error";
  * command whose invoking shell went away, which for this command would kill the
  * very run the design exists to preserve.
  *
- * This file loads on EVERY `./equin` invocation (commander needs names and
+ * This file loads on EVERY `./muxos` invocation (commander needs names and
  * flags before it parses argv), so it imports the verb's own name and
  * `defineCliCommand` and nothing else; `runExec` and the task registry sit
  * behind the deferred `run: () => import(…)`. `cli:command-declarations-light`

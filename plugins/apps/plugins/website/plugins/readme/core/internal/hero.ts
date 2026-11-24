@@ -227,7 +227,7 @@ export function heroSvg(): string {
 </g>
 <rect x=".5" y=".5" width="${W - 1}" height="${H - 1}" rx="16" fill="none" stroke="${INK.border}"/>
 <g transform="translate(70 120) scale(2)">${logoMarkSvg({ master: "full", paint: "gradient", draw: { delayS: 0.2 }, idPrefix: "hero-logo-" })}</g>
-<g class="rise" style="animation-delay:.9s"><text x="300" y="206" class="word">equin</text></g>
+<g class="rise" style="animation-delay:.9s"><text x="300" y="206" class="word">muxos</text></g>
 <g class="rise" style="animation-delay:1.3s"><text x="304" y="256" class="tag">${esc(tagline[0]!)}</text><text x="304" y="290" class="tag">${esc(tagline[1]!)}</text></g>
 </svg>
 `;

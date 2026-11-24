@@ -94,7 +94,7 @@ async function github(path: string): Promise<unknown> {
   const res = await fetch(url, {
     headers: {
       // GitHub refuses requests without a User-Agent.
-      "User-Agent": "equin-deps-github-release-updater",
+      "User-Agent": "muxos-deps-github-release-updater",
       Accept: "application/vnd.github+json",
     },
     signal: AbortSignal.timeout(MINUTE),

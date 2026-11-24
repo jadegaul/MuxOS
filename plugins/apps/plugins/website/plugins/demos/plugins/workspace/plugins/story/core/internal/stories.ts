@@ -211,4 +211,4 @@ export const pushSha = (s: Story) =>
   );
 
 export const worktreePath = (s: Story) =>
-  `/home/demo/equin/.claude/worktrees/${attemptId(s)}`;
+  `/home/demo/muxos/.claude/worktrees/${attemptId(s)}`;

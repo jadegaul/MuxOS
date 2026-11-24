@@ -220,7 +220,7 @@ describe("doctor.sh", () => {
       const refused = await doctor(m, path, { CLAUDECODE: "1" });
       expect(refused.code).toBe(1);
       expect(refused.out).toContain("1 missing");
-      expect(refused.out).toContain("This window can't save equin's files");
+      expect(refused.out).toContain("This window can't save muxos's files");
       expect(refused.out).toContain("in the Terminal app");
       // Outside Claude Code the same home is not probed.
       const outside = await doctor(m, path);

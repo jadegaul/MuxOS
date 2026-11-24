@@ -3,7 +3,7 @@
  * a recording `QueryDb` (no database): the scratch-only base membership, the
  * profile filter over the joined attempt's spec, and the attempt route's gate.
  *
- * Run: `./equin test plugins/conversations/plugins/agent-thread`.
+ * Run: `./muxos test plugins/conversations/plugins/agent-thread`.
  */
 
 import { describe, expect, test } from "bun:test";

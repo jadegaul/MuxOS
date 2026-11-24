@@ -95,7 +95,7 @@ export type WorkerToTab =
 // worker's URL is content-addressed per networking build, so a tab only ever
 // meets a worker (and a lock) of its own version. Spelled here, not imported:
 // the worker is bundled whole from this plugin alone (web-artifacts).
-const NAME_PREFIX = "equin";
+const NAME_PREFIX = "muxos";
 
 /**
  * The SharedWorker name for one server URL and dialect. SharedWorker identity

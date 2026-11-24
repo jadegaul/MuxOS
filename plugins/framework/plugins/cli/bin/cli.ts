@@ -12,7 +12,7 @@ import { runCli } from "./run-cli";
 
 /**
  * The CLI proper: the commander program, the plugin-contributed command
- * registry, and the parse. This IS what `./equin <cmd>` runs, and it is
+ * registry, and the parse. This IS what `./muxos <cmd>` runs, and it is
  * reached ONLY through `./index.ts`'s `await import("./cli")`.
  *
  * Why the split from `./index.ts` exists: this file's very first line imports
@@ -24,12 +24,12 @@ import { runCli } from "./run-cli";
  * See that file's docblock for the whole contract.
  *
  * Commands are CONTRIBUTIONS, not a list here. A plugin drops a `cli/index.ts`
- * default-exporting `defineCliCommand(…)` and `./equin build` regenerates
+ * default-exporting `defineCliCommand(…)` and `./muxos build` regenerates
  * `../core/cli.generated.ts` from the filesystem; nothing in the framework CLI
  * names it. Each entry's loader pulls one plugin's declaration — data only, by
  * `cli:command-declarations-light` — and the command's IMPLEMENTATION stays
  * behind the declaration's own lazy `import()` until commander routes to it. So
- * `./equin build` no longer pays to load every other command's body.
+ * `./muxos build` no longer pays to load every other command's body.
  */
 
 // Every slow file call of this run (a build, a check, a test) is written to
@@ -43,7 +43,7 @@ recordFsWaits({
 program.name(CLI_NAME).description(`${PRODUCT_NAME} agent CLI`);
 
 // `strict`: a declaration that throws at load must not read as "that command
-// does not exist" — `./equin build` reporting "unknown command" would
+// does not exist" — `./muxos build` reporting "unknown command" would
 // look like a typo rather than a broken tree.
 //
 // `isPresent`: an entry whose declaration file is GONE is the opposite case —
@@ -97,7 +97,7 @@ function repoRootOf(selfPath: string): string {
  * (`deploy converge`) which this cannot — by the time `loadCollectedDir` has
  * returned, the items no longer carry which plugin they came from. What is left
  * here is the case the check cannot cover: a tree that changed since the last
- * `./equin check`, where refusing to run beats running the wrong command.
+ * `./muxos check`, where refusing to run beats running the wrong command.
  */
 function assertUniqueNames(commands: readonly CliCommand[]): void {
   const seen = new Map<string, number>();

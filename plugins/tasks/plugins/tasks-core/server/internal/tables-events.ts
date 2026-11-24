@@ -12,7 +12,7 @@ export interface PushLandedPayload {
   pushId: string;
   sha: string;
   attemptId: string;
-  /** Null when the push named only its attempt (a session equin did not launch). */
+  /** Null when the push named only its attempt (a session muxos did not launch). */
   conversationId: string | null;
   [key: string]: unknown;
 }

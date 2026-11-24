@@ -164,7 +164,7 @@ export const centralSecretStore: SecretStoreImpl = centralStoreAs(() =>
 /**
  * Central's store as a namespace the process names itself: a CLI acting on a
  * checkout has no runtime namespace but knows whose secrets it reads
- * (`./equin deploy` reads its checkout's SSH key, which a worktree keeps in
+ * (`./muxos deploy` reads its checkout's SSH key, which a worktree keeps in
  * its own layer).
  */
 export function centralSecretStoreFor(namespace: Namespace): SecretStoreImpl {

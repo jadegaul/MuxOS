@@ -7,7 +7,7 @@
 // loop (`ensureDep`, needing an ExecContext), take an installed one from a
 // request path (`readyNow`, paired with the server barrel's `requestDep`), and
 // read the state (`depState`). A host process with no ExecContext of its own
-// (a check, an e2e script) installs through a `./equin deps install`
+// (a check, an e2e script) installs through a `./muxos deps install`
 // child (`ensureDepViaCli`). Installer kinds implement `DepSource`; runners
 // take a `Ready`. A release seals its `bundle` dependencies for its platform
 // (`sealDep`, writing `deps.sealed.json`), and every read above resolves them
@@ -16,7 +16,7 @@
 // that something outside any checkout points at (a launchd job) from the sweep
 // (`sweepUnusedDeps`, run daily by the `sweep` sub-plugin). A declaration with a
 // `pin` (a host daemon's binaries) runs from the install its pin holds
-// (`pinnedDep`), moved only on purpose (`pinDep`, `./equin deps pin`).
+// (`pinnedDep`), moved only on purpose (`pinDep`, `./muxos deps pin`).
 export { defineDep, hostTarget } from "./internal/dep";
 export type {
   BundleSpec,

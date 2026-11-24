@@ -25,7 +25,7 @@ export interface PinnedBinDir {
  * `bun install` that moves the package changes nothing a start runs. The
  * first fresh start on a machine pins the checkout's install. When the checkout
  * declares another one, the start says so and keeps the pinned binaries: the
- * switch is `./equin deps pin postgres-binaries`, on purpose.
+ * switch is `./muxos deps pin postgres-binaries`, on purpose.
  *
  * Imported lazily by `start.ts`: a release's compiled `pg-start` is handed
  * its vendored binaries and never reaches the deps engine.
@@ -45,7 +45,7 @@ export async function pinnedBinDir(): Promise<PinnedBinDir> {
     case "differs":
       console.log(
         `pg: the checkout declares ${postgresBinaries.id} ${pinned.drift.checkout}, not the pinned ${ready.identity} — ` +
-          `keeping the pinned binaries; switch with \`./equin deps pin ${postgresBinaries.id}\`, then restart the cluster`,
+          `keeping the pinned binaries; switch with \`./muxos deps pin ${postgresBinaries.id}\`, then restart the cluster`,
       );
       break;
     case "failed":

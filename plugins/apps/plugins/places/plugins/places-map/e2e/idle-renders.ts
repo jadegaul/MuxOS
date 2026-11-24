@@ -7,7 +7,7 @@
 // the headless shell).
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/idle-renders.ts \
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/idle-renders.ts \
 //     [--headed] [--seconds 6] [--zoom 4]
 //
 // Prints each phase's commits/s and its top initiators; exits non-zero when

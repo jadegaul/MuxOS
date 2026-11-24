@@ -36,7 +36,12 @@ import {
   GATEWAY_PORT_RANGE,
   LEGACY_GATEWAY_PORT,
   isGatewayPort,
+  NAMESPACE_HOST_SUFFIX,
 } from "./namespace";
+import {
+  LEGACY_IDS,
+  PRODUCT_NAME,
+} from "@plugins/framework/plugins/product-name/core";
 
 const MAIN: CheckoutRef = { kind: "main" };
 const WT = (name: string): CheckoutRef => ({ kind: "worktree", name });
@@ -183,8 +188,17 @@ test("namespaceFromHost round-trips namespaceHost and rejects the loopback hosts
   expect(namespaceFromHost("a.b.c.localhost:9000")).toBeNull();
 
   // A host alias reads back as the namespace it stands for, in any spelling.
-  expect(namespaceFromHost("equin.localhost:9000")).toBe(MAIN_WORKTREE_NAME);
-  expect(namespaceFromHost("EQUIN.localhost.")).toBe(MAIN_WORKTREE_NAME);
+  // (Main's own label round-trips in the loop above, via namespaceHost.)
+  expect(
+    namespaceFromHost(
+      LEGACY_IDS.mainHostAlias + NAMESPACE_HOST_SUFFIX + ":9000",
+    ),
+  ).toBe(MAIN_WORKTREE_NAME);
+  expect(
+    namespaceFromHost(
+      LEGACY_IDS.mainHostAlias.toUpperCase() + NAMESPACE_HOST_SUFFIX + ".",
+    ),
+  ).toBe(MAIN_WORKTREE_NAME);
   // The namespace's own name stays a host that reaches it (the legacy address),
   // until no running agent dials it (rename track, Step 9).
   expect(namespaceFromHost("singularity.localhost:9000")).toBe(
@@ -200,9 +214,9 @@ test("a namespace URL handed over as text reads back as its origin", () => {
     "http://att-x.localhost:9000",
   );
   for (const bad of [
-    "equin",
+    PRODUCT_NAME,
     `${main}/api/mcp`,
-    "https://equin.localhost:9000",
+    "https://" + LEGACY_IDS.mainHostAlias + NAMESPACE_HOST_SUFFIX + ":9000",
     "http://evil.com:9000",
   ]) {
     expect(() => asNamespaceOrigin(bad)).toThrow(/Not a namespace URL/);
@@ -210,9 +224,13 @@ test("a namespace URL handed over as text reads back as its origin", () => {
 });
 
 test("a namespace is shown by its label and typed back by it", () => {
-  expect(namespaceLabel(MAIN_WORKTREE_NAME)).toBe("equin");
+  expect(namespaceLabel(MAIN_WORKTREE_NAME)).toBe(PRODUCT_NAME);
   expect(namespaceLabel(asNamespace("att-x"))).toBe("att-x");
-  expect(resolveNamespaceAlias("equin")).toBe(MAIN_WORKTREE_NAME);
+  expect(resolveNamespaceAlias(PRODUCT_NAME)).toBe(MAIN_WORKTREE_NAME);
+  // The previous generation's label still resolves to it (rename track, Step 9).
+  expect(resolveNamespaceAlias(LEGACY_IDS.mainHostAlias)).toBe(
+    MAIN_WORKTREE_NAME,
+  );
   // The namespace's own name, and any other, is returned as given.
   expect(resolveNamespaceAlias(MAIN_WORKTREE_NAME)).toBe(MAIN_WORKTREE_NAME);
   expect(resolveNamespaceAlias("att-x")).toBe("att-x");
@@ -221,13 +239,18 @@ test("a namespace is shown by its label and typed back by it", () => {
 
 test("main is handed out under its public host label; others under their own name", () => {
   expect(namespaceUrl(MAIN_WORKTREE_NAME, "", 8700)).toBe(
-    "http://equin.localhost:8700",
+    "http://" + PRODUCT_NAME + NAMESPACE_HOST_SUFFIX + ":8700",
   );
-  expect(namespaceHost(MAIN_WORKTREE_NAME, 9100)).toBe("equin.localhost:9100");
+  expect(namespaceHost(MAIN_WORKTREE_NAME, 9100)).toBe(
+    PRODUCT_NAME + NAMESPACE_HOST_SUFFIX + ":9100",
+  );
   expect(namespaceHost(asNamespace("att-x"), 8700)).toBe(
     "att-x.localhost:8700",
   );
-  expect(NAMESPACE_HOST_ALIASES).toEqual({ equin: MAIN_WORKTREE_NAME });
+  expect(NAMESPACE_HOST_ALIASES).toEqual({
+    [LEGACY_IDS.mainHostAlias]: MAIN_WORKTREE_NAME,
+    [PRODUCT_NAME]: MAIN_WORKTREE_NAME,
+  });
 });
 
 test("namespaceUrl builds an origin, and refuses a path that would double the slash", () => {
@@ -271,7 +294,7 @@ test("contentUrl puts the item in the host and the namespace label in the path",
       8700,
     ),
   ).toBe(
-    "http://proto-1.content.localhost:8700/equin/api/prototypes/proto-1/index.html",
+    "http://proto-1.content.localhost:8700/muxos/api/prototypes/proto-1/index.html",
   );
   expect(contentUrl("p", asNamespace("sonata.att-x"), "/api/x", 8080)).toBe(
     "http://p.content.localhost:8080/sonata.att-x/api/x",
@@ -283,7 +306,7 @@ test("contentUrl puts the item in the host and the namespace label in the path",
 test("contentUrlParts reads contentUrl back", () => {
   expect(
     contentUrlParts(
-      "http://proto-1.content.localhost:9000/equin/api/prototypes/proto-1/index.html?fit=b",
+      "http://proto-1.content.localhost:9000/muxos/api/prototypes/proto-1/index.html?fit=b",
     ),
   ).toEqual({
     item: "proto-1",
@@ -298,7 +321,7 @@ test("contentUrlParts reads contentUrl back", () => {
     path: "/api/x",
     port: 8080,
   });
-  expect(contentUrlParts("http://equin.localhost:9000/equin/api/x")).toBeNull();
+  expect(contentUrlParts("http://muxos.localhost:9000/muxos/api/x")).toBeNull();
   expect(contentUrlParts("http://p.content.localhost:9000/")).toBeNull();
   expect(contentUrlParts("not a url")).toBeNull();
 });
@@ -306,7 +329,7 @@ test("contentUrlParts reads contentUrl back", () => {
 test("a content host is never read as a namespace, and its names are reserved", () => {
   expect(isContentHost("proto-1.content.localhost:9000")).toBe(true);
   expect(isContentHost("content.localhost")).toBe(true);
-  expect(isContentHost("equin.localhost:9000")).toBe(false);
+  expect(isContentHost("muxos.localhost:9000")).toBe(false);
   expect(namespaceFromHost("proto-1.content.localhost:9000")).toBeNull();
   expect(isContentReservedNamespace("content")).toBe(true);
   expect(isContentReservedNamespace("sonata.content")).toBe(true);

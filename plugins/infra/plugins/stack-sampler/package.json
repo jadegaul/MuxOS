@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-infra-stack-sampler",
+  "name": "@muxos/plugin-infra-stack-sampler",
   "private": true,
   "version": "0.0.1",
-  "description": "The one owner of bun:jsc's JSC sampling profiler: claimStackSampler(owner) arms it once per process and hands a single reader drain() → normalized stacks (innermost → outermost, JSC's no-line sentinel as null), refusing a second owner because every read empties the shared buffer. Bun-only leaf in core, so a CLI process and a server can both import it; frameKey is the one spelling of a frame's identity."
+  "description": "The one owner of bun:jsc's JSC sampling profiler: claimStackSampler(owner) arms it once per process and hands a single reader drain() \u2192 normalized stacks (innermost \u2192 outermost, JSC's no-line sentinel as null), refusing a second owner because every read empties the shared buffer. Bun-only leaf in core, so a CLI process and a server can both import it; frameKey is the one spelling of a frame's identity."
 }

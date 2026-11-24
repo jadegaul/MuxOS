@@ -11,7 +11,7 @@ import { Logo } from "@plugins/ui/plugins/logo/web";
 import { useStatusLine } from "../internal/status-line";
 
 /**
- * A companion's header: the equin logo (`ui/logo`)
+ * A companion's header: the muxos logo (`ui/logo`)
  * and one status line joined from every `Companion.Status` part.
  */
 export function CompanionHeader() {
@@ -27,7 +27,7 @@ export function CompanionHeader() {
       <Fill>
         <Stack gap="none">
           <Text as="div" variant="label" className="font-semibold">
-            equin
+            muxos
           </Text>
           {line.kind === "pending" ? (
             <Loading variant="block" className="h-3 w-40" />

@@ -334,7 +334,7 @@ describe("useLiveReader", () => {
     await expect(read(v)).resolves.toEqual({
       status: "unavailable",
       message:
-        "Reading the checkout isn't available in this version of the app — it needs equin running on your computer.",
+        "Reading the checkout isn't available in this version of the app — it needs muxos running on your computer.",
     });
     expect(calls).toEqual([]);
   });

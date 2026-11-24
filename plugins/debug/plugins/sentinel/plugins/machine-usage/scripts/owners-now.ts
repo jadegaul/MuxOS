@@ -3,7 +3,7 @@
  * attribution the main backend persists to `health-owners` every 30 s, read on
  * demand (two `ps` readings `--window` seconds apart; default 10).
  *
- *   ./equin run plugins/debug/plugins/sentinel/plugins/machine-usage/scripts/owners-now.ts [--window 10]
+ *   ./muxos run plugins/debug/plugins/sentinel/plugins/machine-usage/scripts/owners-now.ts [--window 10]
  *
  * Reads each process's kernel usage record directly (packages/proc-rusage), as
  * the backend's probe does: its footprint, and its CPU with that of the

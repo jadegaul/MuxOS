@@ -2,7 +2,7 @@
  * A boot that throws before the app renders says so — never an endless
  * "Loading the app…".
  *
- * Incident 2026-11-12: equin.ai opened from Instagram (Android System WebView,
+ * Incident 2026-11-12: MuxOS.app opened from Instagram (Android System WebView,
  * no `SharedWorker`) sat on "Loading the app…" forever: the page transport's
  * `SharedWebSocket` threw at boot, inside a fire-and-forget async block, so the
  * boot screen never left its `loading-code` phase and nothing was reported.
@@ -10,7 +10,7 @@
  * Here `SharedWorker` is deleted before any page script runs; the boot screen
  * must turn `crashed` ("Couldn't start the app", the error in its text, Retry).
  *
- *   ./equin run plugins/framework/plugins/web-core/e2e/boot-crash.ts [--out "$EQUIN_SCRATCH/boot-crash"]
+ *   ./muxos run plugins/framework/plugins/web-core/e2e/boot-crash.ts [--out "$MUXOS_SCRATCH/boot-crash"]
  */
 import {
   arg,

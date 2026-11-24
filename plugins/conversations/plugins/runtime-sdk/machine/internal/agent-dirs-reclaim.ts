@@ -62,7 +62,7 @@ export interface AgentDirFacts {
    * no longer made, so it is never current.
    */
   cloneIsCurrent(path: AppPath): Promise<boolean>;
-  /** The machine-wide `equin · agent` bun clones, one per Bun version that made one. */
+  /** The machine-wide `muxos · agent` bun clones, one per Bun version that made one. */
   sharedAgentBuns(): Promise<AppPath[]>;
   /** Whether a shared agent bun is a current clone of the Bun a start here would run. */
   sharedBunIsCurrent(path: AppPath): Promise<boolean>;
@@ -184,7 +184,7 @@ export async function sweepReclaimedAgentDirs(
 }
 
 /**
- * The shared `equin · agent` buns a Bun upgrade left behind (one per Bun
+ * The shared `muxos · agent` buns a Bun upgrade left behind (one per Bun
  * version, `packages/process-name`'s `bun-<version>/processes/`): no start here
  * runs one again, and each pins its Bun's blocks. One a running agent executes
  * stays — by its launch.json's `namedBun`, in any namespace — and when a
@@ -257,7 +257,7 @@ async function runningAgentBuns(
  * next start reuses a current one. A clone an upgrade has since replaced is no
  * use to that start (it re-clones) and pins the old build's blocks, so it goes
  * here — unless the agent runs on it. So does a per-conversation bun clone an
- * older start made (the agent now runs the shared `equin · agent`).
+ * older start made (the agent now runs the shared `muxos · agent`).
  */
 async function pruneStaleClones(
   roots: AgentDirRoots,

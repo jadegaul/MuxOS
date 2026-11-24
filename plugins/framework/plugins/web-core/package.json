@@ -1,6 +1,8 @@
 {
-  "name": "@equin/web",
-  "equin": { "compositionRoot": true },
+  "name": "@muxos/web",
+  "muxos": {
+    "compositionRoot": true
+  },
   "private": true,
   "version": "0.0.1",
   "type": "module",

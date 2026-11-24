@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-sentinel-status-file",
+  "name": "@muxos/plugin-debug-sentinel-status-file",
   "private": true,
   "version": "0.0.1"
 }

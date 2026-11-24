@@ -10,7 +10,7 @@ import { z } from "zod";
  *   from the moment the conversation exists, like any held turn;
  * - `event` — something that happened elsewhere, delivered to a watching
  *   agent (tasks/orchestration/watch): the sender hands the raw body and the
- *   ledger wraps what is typed in the `<equin-event>` envelope
+ *   ledger wraps what is typed in the `<muxos-event>` envelope
  *   (`wrapEventTurn`, core/event-envelope.ts), so the transcript draws it as an
  *   event, never as something the user wrote;
  * - `compact` — the `/compact` an agent asked for itself

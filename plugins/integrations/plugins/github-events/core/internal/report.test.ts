@@ -7,7 +7,7 @@ import {
 } from "./report";
 
 const payload: GitHubRunFailedPayload = {
-  repo: "equinai/equin",
+  repo: "jadegaul/MuxOS",
   workflow: "installer-release.yml",
   workflowName: "Installer release",
   event: "push",
@@ -16,7 +16,7 @@ const payload: GitHubRunFailedPayload = {
   runId: "19456123987",
   attempt: 1,
   conclusion: "failure",
-  url: "https://github.com/equinai/equin/actions/runs/19456123987",
+  url: "https://github.com/jadegaul/MuxOS/actions/runs/19456123987",
   failedJobs: [
     {
       id: "1",
@@ -32,7 +32,7 @@ describe("github-run-failed", () => {
   test("one row per repo, workflow and head: a re-run collapses onto it", () => {
     const fp = githubRunFailedFingerprint(payload);
     expect(fp).toBe(
-      "github-run-failed:equinai/equin:installer-release.yml:v2026.11.18",
+      "github-run-failed:jadegaul/MuxOS:installer-release.yml:v2026.11.18",
     );
     expect(
       githubRunFailedFingerprint({ ...payload, runId: "2", attempt: 2 }),
@@ -44,7 +44,7 @@ describe("github-run-failed", () => {
 
   test("the message names the run and its failed jobs", () => {
     expect(githubRunFailedMessage(payload)).toBe(
-      "equinai/equin · Installer release failed on v2026.11.18 — Linux (linux-arm64)",
+      "jadegaul/MuxOS · Installer release failed on v2026.11.18 — Linux (linux-arm64)",
     );
     expect(
       githubRunFailedMessage({
@@ -52,7 +52,7 @@ describe("github-run-failed", () => {
         conclusion: "timed_out",
         failedJobs: [],
       }),
-    ).toBe("equinai/equin · Installer release timed out on v2026.11.18");
+    ).toBe("jadegaul/MuxOS · Installer release timed out on v2026.11.18");
   });
 
   test("a completed failure or timeout is reported, except a pull request's", () => {

@@ -13,7 +13,7 @@ import {
 } from "./internal/child-admission";
 
 /**
- * `./equin supervised-exec <taskId> <payloadJson> --namespace <ns>`.
+ * `./muxos supervised-exec <taskId> <payloadJson> --namespace <ns>`.
  *
  * The whole body sits inside `runExec`, which boots the plugin graph and never
  * returns: it exits 0 when the body resolves and 1 when anything in it throws,
@@ -43,7 +43,7 @@ const run: CliAction<
       : (await import("./job-reads.generated")).jobReads[taskId];
   if (opts.start !== undefined && reads === undefined) {
     throw new Error(
-      `[supervised-exec] job ${JSON.stringify(taskId)} is not in the build's job-reads table (cli/job-reads.generated.ts): run \`./equin build\`.`,
+      `[supervised-exec] job ${JSON.stringify(taskId)} is not in the build's job-reads table (cli/job-reads.generated.ts): run \`./muxos build\`.`,
     );
   }
   const pool =

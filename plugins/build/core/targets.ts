@@ -1,7 +1,7 @@
 import { MAIN_COMPOSITION_ID } from "@plugins/infra/plugins/namespace/core";
 
 /**
- * Is this run a plain build of the checkout's own app — i.e. `./equin
+ * Is this run a plain build of the checkout's own app — i.e. `./muxos
  * build` with no `--composition`?
  *
  * The one place the question is answered, because six surfaces used to answer it

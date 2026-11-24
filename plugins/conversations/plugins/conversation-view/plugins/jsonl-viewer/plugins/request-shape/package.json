@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-conversation-view-jsonl-viewer-request-shape",
+  "name": "@muxos/plugin-conversations-conversation-view-jsonl-viewer-request-shape",
   "private": true,
   "version": "0.0.1"
 }

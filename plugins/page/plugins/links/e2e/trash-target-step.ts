@@ -6,8 +6,8 @@
 // query_db).
 //
 // Usage:
-//   ./equin run plugins/page/plugins/links/e2e/trash-target-step.ts --trash <pageId>
-//   ./equin run plugins/page/plugins/links/e2e/trash-target-step.ts --restore <sourceId>/<entryId>
+//   ./muxos run plugins/page/plugins/links/e2e/trash-target-step.ts --trash <pageId>
+//   ./muxos run plugins/page/plugins/links/e2e/trash-target-step.ts --restore <sourceId>/<entryId>
 import {
   arg,
   boot,

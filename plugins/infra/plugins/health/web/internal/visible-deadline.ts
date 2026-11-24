@@ -12,7 +12,7 @@
  *   exist (or was not watching), so it cannot vouch for it. A SharedWorker
  *   outlives its pages — a phone's background tab left it mid-handshake, and
  *   the page opened next inherited a 15 s window it had watched for 0.2 s
- *   (equin.ai, 2026-11-19 03:56: that handshake was the phone's radio waking;
+ *   (MuxOS.app, 2026-11-19 03:56: that handshake was the phone's radio waking;
  *   the next attempt opened in 1 s). A fault still there once the page runs
  *   is seen by the page on its own clock (the next attempt's window).
  * - `arm(key, ms, onElapsed)`: call `onElapsed` once the page has been visible

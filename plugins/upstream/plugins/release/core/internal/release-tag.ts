@@ -27,7 +27,7 @@ export const RELEASE_TAG_GLOB = `${RELEASE_TAG_PREFIX}*`;
  * check. Only ERE syntax: `[0-9]`, not `\d`; no `(?:`. Groups: 1 year,
  * 2 month, 3 day, 5 the same-day sequence. The shape alone admits a few names
  * parseReleaseTag still refuses (month 13, `.1`), which the workflow's
- * release job never sees: `./equin version cut` names every tag.
+ * release job never sees: `./muxos version cut` names every tag.
  */
 export const RELEASE_TAG_ERE =
   "^v([0-9]{4})\\.([0-9]{2})\\.([0-9]{2})(\\.([0-9]+))?$";

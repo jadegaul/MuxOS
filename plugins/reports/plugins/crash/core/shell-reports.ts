@@ -12,4 +12,4 @@
  * life arrives, through the page's own report channel (the site's intake on
  * the website, the reports engine elsewhere).
  */
-export const SHELL_REPORT_QUEUE_GLOBAL = "__equinShellReports";
+export const SHELL_REPORT_QUEUE_GLOBAL = "__muxosShellReports";

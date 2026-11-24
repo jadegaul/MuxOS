@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-tooling-checks",
+  "name": "@muxos/plugin-framework-tooling-checks",
   "version": "0.0.1",
   "private": true,
-  "description": "Check runner and built-in checks for ./equin check"
+  "description": "Check runner and built-in checks for ./muxos check"
 }

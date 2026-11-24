@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-ui-tokens-material",
+  "name": "@muxos/plugin-ui-tokens-material",
   "private": true,
   "version": "0.0.1",
-  "description": "Material token group: what a floating panel is made of — its fill and the backdrop filter applied to what shows through it."
+  "description": "Material token group: what a floating panel is made of \u2014 its fill and the backdrop filter applied to what shows through it."
 }

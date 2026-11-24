@@ -20,7 +20,7 @@ import {
   readHomeDataRootLayoutSync,
 } from "./data-root-layout";
 
-// `./equin` decides the layout in shell (scripts/declare-data-root.sh) for the
+// `./muxos` decides the layout in shell (scripts/declare-data-root.sh) for the
 // whole process tree it starts; the TS decision is the authority. Every home
 // shape below must get the same answer from both — a split as "undeclared" in
 // shell, which leaves the throw to the CLI's own decision.

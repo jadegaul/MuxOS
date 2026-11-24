@@ -41,7 +41,7 @@ import type { MainToWorkerFrame, WorkerToMainFrame } from "./protocol";
 // only the worker thread could have renewed it.
 //
 // Isolation: the worker thread evaluates its module graph fresh, and Bun's
-// Worker `env` option overrides its environment — so EQUIN_DIR points
+// Worker `env` option overrides its environment — so MUXOS_DIR points
 // the worker's latch AND its duress-episodes channel at a throwaway temp dir
 // (the parent's own import-frozen paths are irrelevant — it asserts via raw
 // fs on the temp paths). Runtime process.env mutations do NOT propagate to
@@ -154,12 +154,12 @@ function spawnRig(dir: string): WorkerRig {
 }
 
 // The latch's declared data dir (`locks/duress`) under the worker's
-// EQUIN_DIR — the path the worker's `duressLatchDir` resolves to.
+// MUXOS_DIR — the path the worker's `duressLatchDir` resolves to.
 function latchPathIn(dir: string): string {
   return join(dir, "locks", "duress", LATCH_FILENAME);
 }
 
-// The vitals file under the worker's EQUIN_DIR — the status-file leaf's
+// The vitals file under the worker's MUXOS_DIR — the status-file leaf's
 // declared data dir (`locks/sentinel`).
 function readVitalsIn(dir: string): SentinelVitalsRecord {
   return SentinelVitalsRecordSchema.parse(

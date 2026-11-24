@@ -11,7 +11,7 @@
 // The loop lives only in the page's memory, so nothing is left behind.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/sonata/plugins/progress/plugins/loop/e2e/loop-drag.ts \
+//   ./muxos run plugins/apps/plugins/sonata/plugins/progress/plugins/loop/e2e/loop-drag.ts \
 //     --song <songId> [--url http://<namespace>.localhost:<port>] [--headed]
 
 import {

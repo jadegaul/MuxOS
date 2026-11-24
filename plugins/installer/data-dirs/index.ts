@@ -6,7 +6,7 @@ import { defineDataDir } from "@plugins/infra/plugins/paths/core";
  * `events.jsonl` (every event of the run, what the window and the terminal
  * drew), `events.fifo` (the hub every writer reaches), and `timing.json`
  * (how long each step took, when the install finished — the input of
- * `./equin installer estimates`). `latest` links the newest run.
+ * `./muxos installer estimates`). `latest` links the newest run.
  */
 export const installRunsDir = defineDataDir({
   kind: "logs",

@@ -31,7 +31,7 @@ export function renderInteractionBudgetTask(
         `| ${c.measured > c.budget ? "**over** " : ""}${c.label} | ${Math.round(c.measured)} | ${c.budget} | ${c.samples.join(", ")} |`,
     ),
     "",
-    "**Reproduce** (in a worktree, after `./equin build`; exits non-zero while over budget):",
+    "**Reproduce** (in a worktree, after `./muxos build`; exits non-zero while over budget):",
     "```",
     d.rerun,
     "```",

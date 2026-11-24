@@ -21,7 +21,7 @@ const BUILDERS = new Map<string, string>([
 
 /**
  * Check code: a file under a `check/` directory that sits DIRECTLY under a plugin
- * directory (the folder `./equin check` discovers checks from — the same
+ * directory (the folder `./muxos check` discovers checks from — the same
  * segment-by-segment spelling the thread watch uses, so a plugin NAMED `check`
  * does not match), or the check runner's own `checks/core/`.
  */

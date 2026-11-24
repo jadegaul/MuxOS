@@ -11,7 +11,7 @@ import { symbol } from "@plugins/ui/plugins/icons/core";
  * (`colorMode: "system"`), as the OS menu around it does, while Home keeps the
  * global setting. Mounted inside Home's path so the helper's URL is the one it
  * always was; the longest base path wins. `listed: false`: nothing inside
- * equin launches it — the native helper does.
+ * muxos launches it — the native helper does.
  */
 export const menuBarApp = defineApp({
   id: "menu-bar",

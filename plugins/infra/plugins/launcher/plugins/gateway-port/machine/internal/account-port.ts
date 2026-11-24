@@ -53,7 +53,7 @@ export async function writeGatewayPortRecord(
 /**
  * This account's gateway port, for a process acting on the account's gateway
  * from outside it: the gateway that started this process if one did
- * (`EQUIN_GATEWAY_PORT`), else the recorded port, else
+ * (`MUXOS_GATEWAY_PORT`), else the recorded port, else
  * {@link LEGACY_GATEWAY_PORT} — the port of an install that has not moved yet.
  * The CLI's blocking twin is `gatewayPortSync()` (data-dirs).
  */
@@ -118,14 +118,14 @@ export async function portHolder(port: number): Promise<string | null> {
 export class NoFreeGatewayPortError extends Error {
   constructor(readonly skipped: readonly SkippedPort[]) {
     super(
-      `Every port equin can use (${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last}) is taken:\n` +
+      `Every port muxos can use (${GATEWAY_PORT_RANGE.first}–${GATEWAY_PORT_RANGE.last}) is taken:\n` +
         skipped
           .map(
             (s) =>
               `  ${s.port}: ${s.holder ?? "in use by another user account"}`,
           )
           .join("\n") +
-        `\nStop one of them, then run \`./equin start\` again.`,
+        `\nStop one of them, then run \`./muxos start\` again.`,
     );
     this.name = "NoFreeGatewayPortError";
   }
@@ -158,21 +158,21 @@ export function describeChoice(choice: {
   port: number;
   skipped: readonly SkippedPort[];
 }): string {
-  if (choice.skipped.length === 0) return `equin chose port ${choice.port}.`;
+  if (choice.skipped.length === 0) return `muxos chose port ${choice.port}.`;
   const taken = choice.skipped
     .map((s) => `${s.port} (${s.holder ?? "another user account"})`)
     .join(", ");
-  return `equin chose port ${choice.port}: ${taken} ${choice.skipped.length === 1 ? "is" : "are"} taken.`;
+  return `muxos chose port ${choice.port}: ${taken} ${choice.skipped.length === 1 ? "is" : "are"} taken.`;
 }
 
-/** Who answers on a port, as `./equin start` needs to know before it launches. */
+/** Who answers on a port, as `./muxos start` needs to know before it launches. */
 export type GatewayProbe =
   | { kind: "none" }
   /** This account's gateway. */
   | { kind: "ours" }
-  /** Another equin: another user account's, or another data root's. */
-  | { kind: "other-equin"; uid: number; dataDir: string }
-  /** Something else entirely (or an equin too old to say who it is). */
+  /** Another muxos: another user account's, or another data root's. */
+  | { kind: "other-muxos"; uid: number; dataDir: string }
+  /** Something else entirely (or an muxos too old to say who it is). */
   | { kind: "foreign"; holder: string | null };
 
 const IdentitySchema = z.object({
@@ -182,10 +182,10 @@ const IdentitySchema = z.object({
 });
 
 /**
- * Who listens on `port`: nothing, this account's gateway, another equin, or
+ * Who listens on `port`: nothing, this account's gateway, another muxos, or
  * something else — read from `GET /gateway/identity`, which only a gateway
  * that knows it answers. A 200 from `/gateway/worktrees` alone (what `start`
- * used to trust) is any equin's, including another account's.
+ * used to trust) is any muxos's, including another account's.
  */
 export async function probeGateway(port: number): Promise<GatewayProbe> {
   if (await portIsFree(port)) return { kind: "none" };
@@ -194,13 +194,13 @@ export async function probeGateway(port: number): Promise<GatewayProbe> {
     res = await fetch(`${gatewayOriginFor(port)}/gateway/identity`, {
       signal: AbortSignal.timeout(2000),
     });
-    // eslint-disable-next-line promise-safety/no-bare-catch -- a listener that does not speak HTTP (or hangs) is, by definition, not an equin gateway: that IS the answer
+    // eslint-disable-next-line promise-safety/no-bare-catch -- a listener that does not speak HTTP (or hangs) is, by definition, not an muxos gateway: that IS the answer
   } catch {
     return { kind: "foreign", holder: await portHolder(port) };
   }
   if (!res.ok) return { kind: "foreign", holder: await portHolder(port) };
   const parsed = IdentitySchema.safeParse(await res.json());
-  if (!parsed.success || parsed.data.product !== "equin") {
+  if (!parsed.success || parsed.data.product !== "muxos") {
     return { kind: "foreign", holder: await portHolder(port) };
   }
   const { uid, dataDir } = parsed.data;
@@ -209,5 +209,5 @@ export async function probeGateway(port: number): Promise<GatewayProbe> {
   // account's port.
   return uid === process.getuid?.()
     ? { kind: "ours" }
-    : { kind: "other-equin", uid, dataDir };
+    : { kind: "other-muxos", uid, dataDir };
 }

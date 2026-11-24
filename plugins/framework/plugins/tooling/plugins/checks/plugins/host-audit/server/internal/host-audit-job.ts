@@ -14,7 +14,7 @@ const auditLog = defineLogSink({
  * The owner of every host-scoped check's verdict. A host check judges state
  * shared by every checkout on the machine (the data root, the keychain), so no
  * checkout's own check pass selects it — one agent's leftover directory used to
- * turn every other agent's `./equin check` red. Its verdict lands here instead:
+ * turn every other agent's `./muxos check` red. Its verdict lands here instead:
  * hourly, main only (a schedule's default), in main's checkout, each failing
  * check filed as a `host-check` report (`plugins/reports/plugins/host-check`).
  *

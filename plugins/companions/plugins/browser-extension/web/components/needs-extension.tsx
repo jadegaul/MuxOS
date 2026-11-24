@@ -15,7 +15,7 @@ export function NeedsExtension() {
         <Stack gap="xs" align="center" className="max-w-80 text-center">
           <Logo className="size-10 opacity-50" />
           <Text as="div" variant="label" className="font-semibold">
-            This page runs inside the equin browser extension
+            This page runs inside the muxos browser extension
           </Text>
           <Text as="div" variant="caption" tone="muted">
             Install it from Settings → Accounts → Browser extension, then open

@@ -22,7 +22,7 @@ function groupBy<T>(
 
 const byText = (a: string, b: string): number => a.localeCompare(b);
 
-/** `./equin exempt list`: a pure read of the manifests, no op, no grant. */
+/** `./muxos exempt list`: a pure read of the manifests, no op, no grant. */
 const run: CliAction<
   [],
   { rule?: string; plugin?: string; debt?: boolean }

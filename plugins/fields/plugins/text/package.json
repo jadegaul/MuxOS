@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-fields-text",
+  "name": "@muxos/plugin-fields-text",
   "version": "0.0.1",
   "private": true,
   "description": "Text field type: identity only. The data-view cell and filter (substring) capabilities live in the plugins/{table,filter} sub-plugins."

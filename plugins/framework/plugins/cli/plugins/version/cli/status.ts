@@ -14,7 +14,7 @@ function named(tag: string | null): string {
 }
 
 /**
- * `./equin version status` — the release local `main` is on, and the newest
+ * `./muxos version status` — the release local `main` is on, and the newest
  * one upstream has cut. Reads only: it fetches upstream's main and release
  * tags (the same `fetchUpstreamStatus` the app's daily check runs) and moves
  * nothing of yours.
@@ -63,7 +63,7 @@ const run: CliAction<[], object> = async () => {
     case "behind":
       console.log(
         `On ${named(status.current)}. ${status.remote} (${status.url}) has released ${releaseVersion(status.latest)}.\n` +
-          `Run \`./equin upstream merge\` in a worktree to bring it in.`,
+          `Run \`./muxos upstream merge\` in a worktree to bring it in.`,
       );
       return;
   }

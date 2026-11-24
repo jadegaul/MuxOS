@@ -1,12 +1,12 @@
-# monitor — the fs-latency monitor, provisioned by equin
+# monitor — the fs-latency monitor, provisioned by muxos
 
 The program behind io-health: a standalone binary that launchd runs **every
 30 s**, one tick per run, appending one JSON line to
-`~/.equin/logs/monitors/fs-latency.jsonl` (`debug`'s `monitorLogsDir`), which
+`~/.muxos/logs/monitors/fs-latency.jsonl` (`debug`'s `monitorLogsDir`), which
 the parent plugin follows. It used to be a hand-installed Python sidequest
 (`sidequests/monitors/fs-latency`); it lives here so the line it writes and the
 schema the app reads are one contract under tsc, and so a fresh machine gets it
-from `./equin start` with no `sudo`.
+from `./muxos start` with no `sudo`.
 
 ## Shape
 
@@ -23,11 +23,11 @@ from `./equin start` with no `sudo`.
   the Bun version. The build first bundles the program with a metafile and
   fails if it reads anything outside `bin/` — a file the identity does not hash
   would leave an installed binary stale.
-- `login-services/` — `dev.equin.fs-latency-monitor`: a `background`,
+- `login-services/` — `dev.muxos.fs-latency-monitor`: a `background`,
   **periodic** (`schedule: { everySeconds: 30 }`, launchd `StartInterval`),
   `interactive` (launchd `ProcessType Interactive`, so the foreground probe is
   a foreground reading) login service, macOS only (`platforms`). It runs from
-  the equin app bundle like every login service, and follows main's builds by
+  the muxos app bundle like every login service, and follows main's builds by
   itself once a `start` registered it.
 - `core/` — the label; `START_MONITOR_COMMAND`, which the Disk I/O row shows
   when the monitor is not installed.
@@ -36,7 +36,7 @@ from `./equin start` with no `sudo`.
 ## Install
 
 ```sh
-./equin start --only dev.equin.fs-latency-monitor   # or a plain ./equin start
+./muxos start --only dev.muxos.fs-latency-monitor   # or a plain ./muxos start
 ```
 
 No `sudo`. Every signal the detector reads — daemon CPU, pids and ages,
@@ -49,16 +49,16 @@ As root the same binary also records the top disk readers per process
 fseventsd's open log files (`fseventsd_logs`) and a 5 s `fs_usage` capture on
 a stall (`incident`) — diagnosis after the alert, not the alert. Root cannot be
 provisioned silently, so it is a step the user takes — one command, from any
-directory, run by the binary the login service installed into the equin app
+directory, run by the binary the login service installed into the muxos app
 (so the daemon follows main's builds too):
 
 ```sh
-sudo ~/.equin/state/macos-app/equin.app/Contents/MacOS/fs-latency-monitor install-root \
-  --dir ~/.equin/logs/monitors --root-label dev.equin.fs-latency-monitor --interval-s 30
+sudo ~/.muxos/state/macos-app/muxos.app/Contents/MacOS/fs-latency-monitor install-root \
+  --dir ~/.muxos/logs/monitors --root-label dev.muxos.fs-latency-monitor --interval-s 30
 ```
 
 It renders the plist to a temporary file beside
-`/Library/LaunchDaemons/dev.equin.fs-latency-monitor.plist`, checks it with
+`/Library/LaunchDaemons/dev.muxos.fs-latency-monitor.plist`, checks it with
 `plutil -lint`, renames it into place, bootstraps it and checks launchd holds
 it — and removes it again when launchd refuses, so a failed install leaves
 nothing behind. Running it again replaces the daemon. Back to the user agent
@@ -83,8 +83,8 @@ exact reinstall command): io-health raises it as the `root-daemon` finding (the
 Disk I/O row, a `host-io-degraded` report). Each root tick hands what it wrote
 back to the log directory's owner, so the user agent can always take over.
 
-Why: on 2026-11-04 the documented install was `./equin run … | sudo tee
-<plist>`, run outside a checkout. `./equin` was not found, `tee` still wrote
+Why: on 2026-11-04 the documented install was `./muxos run … | sudo tee
+<plist>`, run outside a checkout. `./muxos` was not found, `tee` still wrote
 an empty plist, `launchctl bootstrap` failed with error 5 — and the user agent,
 deferring to the file's existence, stopped too. Nothing ticked for hours.
 
@@ -121,15 +121,15 @@ tail of a replaced file (512 KB) and the detector drops ticks it has seen, so
 its one-hour window is intact. Archives are kept 90 days — **except one that
 starts before 2026-11-04T20:05Z**, the incident history every io-health
 threshold was chosen from (`CALIBRATION_END_ISO`), which is kept for good.
-Replay an archive with `gunzip -c <archive> > "$EQUIN_SCRATCH/x.jsonl"` and the parent's
-`replay-monitor-log.ts --log "$EQUIN_SCRATCH/x.jsonl"`.
+Replay an archive with `gunzip -c <archive> > "$MUXOS_SCRATCH/x.jsonl"` and the parent's
+`replay-monitor-log.ts --log "$MUXOS_SCRATCH/x.jsonl"`.
 
 ## Read it
 
 ```sh
-./equin run plugins/infra/plugins/host/plugins/io-health/plugins/monitor/scripts/report.ts --hours 24
-./equin run plugins/infra/plugins/host/plugins/io-health/plugins/monitor/scripts/report.ts --since 2026-11-04T03:29 --until 2026-11-04T16:23
-tail -1 ~/.equin/logs/monitors/fs-latency.jsonl
+./muxos run plugins/infra/plugins/host/plugins/io-health/plugins/monitor/scripts/report.ts --hours 24
+./muxos run plugins/infra/plugins/host/plugins/io-health/plugins/monitor/scripts/report.ts --since 2026-11-04T03:29 --until 2026-11-04T16:23
+tail -1 ~/.muxos/logs/monitors/fs-latency.jsonl
 ```
 
 Per hour: cold lstat / readdir per tier, slowest metadata op and slowest rename
@@ -143,9 +143,9 @@ tools in `sidequests/monitors/fs-latency`.
 ## Uninstall
 
 ```sh
-launchctl bootout "gui/$(id -u)/dev.equin.fs-latency-monitor"
-rm ~/Library/LaunchAgents/dev.equin.fs-latency-monitor.plist
-rm -rf ~/.equin/logs/monitors/fs-latency-corpus ~/.equin/logs/monitors/fs-latency.state.json
+launchctl bootout "gui/$(id -u)/dev.muxos.fs-latency-monitor"
+rm ~/Library/LaunchAgents/dev.muxos.fs-latency-monitor.plist
+rm -rf ~/.muxos/logs/monitors/fs-latency-corpus ~/.muxos/logs/monitors/fs-latency.state.json
 ```
 
 ## Cost
@@ -155,11 +155,11 @@ residency, one 50-file re-read, a `sysctl`, an `ioreg` and a `ps`; as root also
 a second `ps`, one `proc_pid_rusage` per process and an `lsof` of fseventsd.
 ~0.1 s warm (a compiled Bun binary starts in ~20 ms).
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 
-- Description: The fs-latency monitor, provisioned by equin: a standalone binary (bun build --compile of bin/) that a user LaunchAgent runs every 30 s, appending one tick per run to the monitors' log io-health reads — typed against io-health's tick schema, its log rotated into kept gzip archives; a root LaunchDaemon of the same binary is an opt-in for attribution.
+- Description: The fs-latency monitor, provisioned by muxos: a standalone binary (bun build --compile of bin/) that a user LaunchAgent runs every 30 s, appending one tick per run to the monitors' log io-health reads — typed against io-health's tick schema, its log rotated into kept gzip archives; a root LaunchDaemon of the same binary is an opt-in for attribution.
 - Deps:
   - Uses:
     - `infra/deps.defineDep`

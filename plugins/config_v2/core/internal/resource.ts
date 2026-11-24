@@ -217,7 +217,7 @@ export const configConflictLocations = liveValue(
 // reactive read.
 //
 // "Modified" is measured against the GIT LAYER — the generated origin ⊕ any
-// committed authored override, as propagated by `./equin build` — not
+// committed authored override, as propagated by `./muxos build` — not
 // against `descriptor.defaults`. A value the repo commits is not something the
 // user changed. Same basis as the per-field `config-v2.tiers` attribution the
 // detail pane's stripes and Reset buttons read, so badge and pane agree.
@@ -236,7 +236,7 @@ export const configModifiedCounts = liveValue("config-v2.modified-counts", {
 });
 
 // The raw text of one config document's four layered files: the user layer
-// (~/.equin/state/config/<wt>/) override + origin (what the running app
+// (~/.muxos/state/config/<wt>/) override + origin (what the running app
 // resolves to), and the git layer (<repo>/config/) override + origin (the
 // defaults). The settings raw view surfaces them as User → Git → Origin, and the
 // conflict / invalid diffs compare two of them. `*Path` is the on-disk location,

@@ -361,7 +361,7 @@ export default createFacet<DbSchemaFacetData>({
         // genuine bug already caught by tsc + the boundary checker at build
         // time, or a transient artifact of building this tree at runtime over a
         // live, mid-mutation working dir (e.g. the `main` checkout half-written
-        // during a `./equin push` merge). Skip rather than crash the tree
+        // during a `./muxos push` merge). Skip rather than crash the tree
         // build for an unrelated baseline tree.
         if (!r) continue;
         const parentPlugin = r.node.id;

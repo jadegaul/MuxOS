@@ -160,7 +160,7 @@ const typeScale = typeScaleGroup.fragment(
     // 78px / 1.02 — the one headline.
     fontSizeDisplay: "4.875rem",
     lineHeightDisplay: "4.9725rem",
-    // 30px / 1.15 — a section's title ("What is equin?").
+    // 30px / 1.15 — a section's title ("What is muxos?").
     fontSizeTitle: "1.875rem",
     lineHeightTitle: "2.15625rem",
     // 24px / 1.6 — a contact card's heading; the wordmark.
@@ -290,35 +290,35 @@ const popupCorner = shapeGroup.fragment(both({ radiusPopover: "0.875rem" }));
  * it — the site follows the desktop's colour mode, which is still global, and a
  * theme must resolve in both.
  */
-export const equinTheme = defineTheme({
-  id: "equin",
-  label: "equin",
+export const muxosTheme = defineTheme({
+  id: "muxos",
+  label: "muxos",
   fragments: [colorPalette, chart, fontFamily, popupShadow, popupCorner],
 });
 
 /**
  * The site's page sizes — the type scale, rhythm and corner radius a page read
  * at arm's length is designed on. Worn by every page through `WebsiteChrome`,
- * over `equinTheme`: this sets sizes only, so the colours are always the app's.
+ * over `muxosTheme`: this sets sizes only, so the colours are always the app's.
  * Popups opened from a page leave it and go back to the standard UI sizes.
  */
-export const equinDocumentTheme = defineSubTheme({
-  id: "equin-document",
-  label: "equin document",
+export const muxosDocumentTheme = defineSubTheme({
+  id: "muxos-document",
+  label: "muxos document",
   fragments: [typeScale, density, shape],
 });
 
 /**
  * An inner page's heading — the sizes `WebsiteHero kind="page"` wears over
- * `equinDocumentTheme`: a 58px headline on a 1.04 line, an 18px lede on 1.55,
+ * `muxosDocumentTheme`: a 58px headline on a 1.04 line, an 18px lede on 1.55,
  * 18px between them (`space-lg`) and 34px from the lede to what the heading
  * introduces (`space-2xl`, the Apps page's search). The homepage's title page
  * keeps the document's 78px display rung: it makes the site's one claim, while
  * an inner page's heading only names the page.
  */
-export const equinPageHeroTheme = defineSubTheme({
-  id: "equin-page-hero",
-  label: "equin page heading",
+export const muxosPageHeroTheme = defineSubTheme({
+  id: "muxos-page-hero",
+  label: "muxos page heading",
   fragments: [
     typeScaleGroup.fragment(
       both({

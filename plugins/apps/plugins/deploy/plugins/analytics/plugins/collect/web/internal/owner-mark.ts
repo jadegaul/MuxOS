@@ -27,7 +27,7 @@ export const ownerMarkStore = defineStore({
 export type MarkStore = Pick<Store<true>, "read" | "write" | "remove">;
 
 /**
- * Applies a mark link's fragment (`#equin-me` / `#equin-not-me`) to `store`;
+ * Applies a mark link's fragment (`#muxos-me` / `#muxos-not-me`) to `store`;
  * any other fragment is left alone. A refused write is announced by the store
  * itself, and the browser then simply stays unmarked.
  */

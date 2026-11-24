@@ -79,7 +79,7 @@ import { ErrorStoppedBanner } from "./error-stopped";
 // The Claude account menu's accounts (the agent manager's sidebar foot): which
 // Claude account new agents launch on: the computer's own Claude Code login —
 // the only plan account — an API key the user added, or a local model endpoint
-// (the user's own model server: OpenAI-compatible through equin's translator
+// (the user's own model server: OpenAI-compatible through muxos's translator
 // proxy, or Anthropic-shaped direct).
 // The computer's login shows its weekly room only — the 5-hour session resets
 // too often to read at a glance. Picking one switches; agents already running
@@ -370,7 +370,7 @@ function modelMapOf(maps: Record<ModelTier, string>): ModelMap | undefined {
 
 /**
  * Add or edit a local model endpoint: a model server the user runs (Ninfer,
- * LM Studio, Ollama, …) serves equin's agents and one-shot generations.
+ * LM Studio, Ollama, …) serves muxos's agents and one-shot generations.
  * `Test` runs one turn on it without saving anything (a temporary account,
  * deleted after); `Add` / `Save` run the same test first and store the
  * account only when it passes — its token, when it has one, going to the

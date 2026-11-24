@@ -12,7 +12,7 @@
 // resolves to a real length, `none` is zero, and the steps increase.
 //
 // Usage:
-//   ./equin run plugins/primitives/plugins/css/plugins/space-ramp/e2e/ramp-verify.ts \
+//   ./muxos run plugins/primitives/plugins/css/plugins/space-ramp/e2e/ramp-verify.ts \
 //     [--url http://<worktree>.localhost:<port>] [--headed]
 
 import {

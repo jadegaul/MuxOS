@@ -1,5 +1,5 @@
 #!/bin/sh
-# equin's prerequisite check: names EVERY missing prerequisite in one run,
+# muxos's prerequisite check: names EVERY missing prerequisite in one run,
 # each with the command that fixes it, then exits 1 if anything was missing.
 # Claude Code is not one: the app runs the build the Agent SDK ships (installed
 # with its dependencies) and the user signs in from the app
@@ -10,7 +10,7 @@
 # checkout):
 #
 #   mise run doctor      — by hand; also the tail of every `mise install`
-#   ./equin start / build — their first step (see ./cli/prerequisites.ts)
+#   ./muxos start / build — their first step (see ./cli/prerequisites.ts)
 #
 # It asks only "is it there". Which release (floors, holds, shadowing) is
 # `toolchain:resolved`'s job, and the tool list itself comes from mise.toml +
@@ -18,7 +18,7 @@
 #
 # Its messages follow the installer message rules
 # (plugins/infra/plugins/launcher/plugins/installer-notice/CLAUDE.md): a person
-# installing equin reads them, so <what> and <why> name no internal part and
+# installing muxos reads them, so <what> and <why> name no internal part and
 # say what it is for; raw facts (paths, tool output) go in <details>.
 #
 # Probes are builtins plus the tools being checked (id, uname, xcode-select,
@@ -49,32 +49,32 @@ miss() {
 # Same fact as assertSupportedHost (plugins/infra/plugins/launcher).
 if [ "$(id -u)" = "0" ]; then
   miss "Running as root (the administrator account)" \
-    "equin's database refuses to run as root, so equin could never start. Run it from your normal account." \
+    "muxos's database refuses to run as root, so muxos could never start. Run it from your normal account." \
     "id -u = 0; initdb refuses root" \
-    "adduser --disabled-password --gecos '' equin && su - equin"
+    "adduser --disabled-password --gecos '' muxos && su - muxos"
 fi
 
 # ── Not inside Claude Code's protected shell ────────────────────────────────
-# Claude Code's sandbox lets commands write only inside the project. equin's
+# Claude Code's sandbox lets commands write only inside the project. muxos's
 # data root and cargo's home are outside it, so a build there dies part-way —
 # a rustc killed mid-rename once left a half-written cargo cache behind (the
 # 2026-11 install report). Probed only when CLAUDECODE is set; the same probe
 # as install.sh's refused_write_dir — keep them alike.
 if [ -n "$CLAUDECODE" ]; then
-  if [ -n "$EQUIN_DIR" ]; then
-    data_root="$EQUIN_DIR"
-  elif { [ -e "$HOME/.singularity" ] || [ -L "$HOME/.singularity" ]; } && ! [ "$HOME/.singularity" -ef "$HOME/.equin" ]; then
-    data_root="$HOME/.singularity"
-  else
+  if [ -n "$MUXOS_DIR" ]; then
+    data_root="$MUXOS_DIR"
+  elif { [ -e "$HOME/.equin" ] || [ -L "$HOME/.equin" ]; } && ! [ "$HOME/.equin" -ef "$HOME/.muxos" ]; then
     data_root="$HOME/.equin"
+  else
+    data_root="$HOME/.muxos"
   fi
   for dir in "$data_root" "${CARGO_HOME:-$HOME/.cargo}"; do
     [ -d "$dir" ] || dir="$HOME"
-    probe="$dir/.equin-write-probe.$$"
+    probe="$dir/.muxos-write-probe.$$"
     if ! { : > "$probe" && mv "$probe" "$probe.moved" && rm -f "$probe.moved"; } 2>/dev/null; then
       rm -f "$probe" "$probe.moved" 2>/dev/null
-      miss "This window can't save equin's files" \
-        "It is Claude Code, which runs commands in a protected mode that can't save files outside the current project. equin keeps its app, its database and its build tools in your home folder, so installing or starting it from here stops part-way. Run it from the Terminal app instead: nothing is lost, it picks up where it stopped. (Details: CLAUDECODE is set; creating and renaming a file in $dir was refused.)" \
+      miss "This window can't save muxos's files" \
+        "It is Claude Code, which runs commands in a protected mode that can't save files outside the current project. muxos keeps its app, its database and its build tools in your home folder, so installing or starting it from here stops part-way. Run it from the Terminal app instead: nothing is lost, it picks up where it stopped. (Details: CLAUDECODE is set; creating and renaming a file in $dir was refused.)" \
         "cd '$PWD' && ./install.sh   # in the Terminal app"
       break
     fi
@@ -85,12 +85,12 @@ fi
 os="$(uname -s)"
 if [ "$os" = "Darwin" ] && ! xcode-select -p >/dev/null 2>&1; then
   miss "Apple's command-line tools (Xcode)" \
-    "equin needs them to download its code and build parts of itself on your Mac." \
+    "muxos needs them to download its code and build parts of itself on your Mac." \
     "xcode-select -p finds no developer directory" \
     "xcode-select --install"
 elif ! git --version >/dev/null 2>&1; then
   # On macOS without the CLT, /usr/bin/git is a stub — reported above instead.
-  miss "git" "equin downloads and saves its own code with git." "" \
+  miss "git" "muxos downloads and saves its own code with git." "" \
     "sudo apt install git curl build-essential   # or your distro's equivalent"
 fi
 
@@ -120,7 +120,7 @@ fi
 
 if [ -z "$mise_bin" ]; then
   miss "mise" \
-    "It installs the exact Bun, Go and Rust versions equin is built with." "" \
+    "It installs the exact Bun, Go and Rust versions muxos is built with." "" \
     "curl https://mise.run | sh" "$activate" "mise install"
 else
   # Active = either `mise activate` ran in this shell (it exports MISE_SHELL),
@@ -128,7 +128,7 @@ else
   # under `mise run` whether or not the user's own shell can find them.
   # The runtime does not need this — it locates the shims itself (miseShimsDir
   # in plugins/infra/plugins/launcher/core, same lookup order as here) — but the
-  # shell does: ./equin finds `bun` through the shell's own PATH.
+  # shell does: ./muxos finds `bun` through the shell's own PATH.
   shims="${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/mise}/shims"
   case ":$PATH:" in
     *":$shims:"* | *":$shims/:"*) active=1 ;;
@@ -136,7 +136,7 @@ else
   esac
   if [ "$active" = "0" ]; then
     miss "mise is installed, but your terminal does not use it yet" \
-      "Without it your terminal cannot find the tools ./equin runs on." \
+      "Without it your terminal cannot find the tools ./muxos runs on." \
       "mise not active in your shell: no MISE_SHELL, $shims not on PATH" \
       "$activate"
   fi
@@ -154,7 +154,7 @@ else
   done
   if [ -n "$broken" ]; then
     miss "The links your tools start through are broken" \
-      "No Bun or Go program — equin included — can start until mise rebuilds them." \
+      "No Bun or Go program — muxos included — can start until mise rebuilds them." \
       "mise shims do not resolve (a symlink loop, or mise moved):$broken; spawns fail with posix_spawn ENOENT" \
       "$mise_bin reshim --force"
   fi
@@ -182,7 +182,7 @@ else
     # not a list that comes back empty.
     if [ -n "$tools" ]; then
       miss "Bun, Go or Rust is not installed yet" \
-        "equin is built with these exact versions." \
+        "muxos is built with these exact versions." \
         "missing: $tools" \
         "mise install"
     else
@@ -196,10 +196,10 @@ else
 fi
 
 if [ "$missing" -eq 0 ]; then
-  echo "equin prerequisites: all present."
+  echo "muxos prerequisites: all present."
   exit 0
 fi
-echo "equin prerequisites: $missing missing.$report
+echo "muxos prerequisites: $missing missing.$report
 
 The whole setup, step by step, is in docs/setup.md."
 exit 1

@@ -47,7 +47,7 @@ export interface ManifestFreezeInput {
 
 /** Which process a finding is about. */
 export type FreezeClosure =
-  /** What EVERY `./equin` invocation loads, whatever the verb. */
+  /** What EVERY `./muxos` invocation loads, whatever the verb. */
   | { kind: "startup"; entry: string }
   /** One command's body, in a process that also regenerates the manifests. */
   | {

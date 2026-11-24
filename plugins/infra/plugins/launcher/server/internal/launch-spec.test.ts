@@ -18,10 +18,10 @@ import { LOOPBACK_BIND } from "./listen";
 describe("gatewayLaunchSpec", () => {
   // The installed gateway as the deps cache names it: a path per identity.
   const dir = asAppPath(
-    "/h/me/.equin/cache/deps/gateway-binary/0123456789abcdef/env",
+    "/h/me/.muxos/cache/deps/gateway-binary/0123456789abcdef/env",
   );
   const ready = readyForTests(gatewayBinary, dir, "0123456789abcdef");
-  const checkout = "/h/me/src/equin";
+  const checkout = "/h/me/src/muxos";
   const executable = unbundledExecutable(gatewayBuild(ready));
   const spec = gatewayLaunchSpec({
     executable,
@@ -63,7 +63,7 @@ describe("gatewayLaunchSpec", () => {
 
   test("a bundled gateway runs from the app, its build named in the job's environment", () => {
     const inApp = {
-      path: "/h/me/.equin/state/macos-app/equin.app/Contents/MacOS/gateway",
+      path: "/h/me/.muxos/state/macos-app/muxos.app/Contents/MacOS/gateway",
       identity: gatewayBuild(ready).identity,
       bundled: true,
     };
@@ -77,7 +77,7 @@ describe("gatewayLaunchSpec", () => {
       logLevel: "info",
     });
     expect(bundled.argv[0]).toBe(
-      "/h/me/.equin/state/macos-app/equin.app/Contents/MacOS/gateway",
+      "/h/me/.muxos/state/macos-app/muxos.app/Contents/MacOS/gateway",
     );
     expect(bundled.env).toMatchObject(added);
     // Not one of the names the gateway hands its children.

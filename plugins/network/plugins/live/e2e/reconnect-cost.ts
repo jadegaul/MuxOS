@@ -15,7 +15,7 @@
  *
  * research/2026-11-04-global-live-reconnect-linger-and-version-clock.md
  *
- *   ./equin run plugins/network/plugins/live/e2e/reconnect-cost.ts \
+ *   ./muxos run plugins/network/plugins/live/e2e/reconnect-cost.ts \
  *     [--paths /,/agents] [--runs 3] [--gap 0] [--headed]
  */
 

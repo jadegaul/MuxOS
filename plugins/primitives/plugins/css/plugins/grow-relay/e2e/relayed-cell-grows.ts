@@ -13,7 +13,7 @@
  *
  * Manual, like every `e2e/` script here:
  *
- *   ./equin run plugins/primitives/plugins/css/plugins/grow-relay/e2e/relayed-cell-grows.ts \
+ *   ./muxos run plugins/primitives/plugins/css/plugins/grow-relay/e2e/relayed-cell-grows.ts \
  *     --conv <conversationId> [--headed]
  */
 import {

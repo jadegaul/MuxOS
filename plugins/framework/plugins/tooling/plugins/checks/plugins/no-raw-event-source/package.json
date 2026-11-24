@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-checks-no-raw-event-source",
+  "name": "@muxos/plugin-framework-tooling-checks-no-raw-event-source",
   "version": "0.0.1",
   "private": true
 }

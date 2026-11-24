@@ -12,13 +12,13 @@
 // neighbours, to --out. CSS animations are stepped on the same fake clock.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-flashes.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/pages/plugins/vision/e2e/vision-flashes.ts \
 //     [--chapter 2] [--seconds 23] [--fps 60] [--width 390] [--height 844] [--dpr 1] [--gpu]
 //     [--out /tmp/vision-flashes] [--top 8] [--hide cursor,ripple] [--realtime --no-record]
 //     [--read 0.77]
 //
 // --read puts the card's centre at that fraction of the screen's height instead of on the page's
-// own reading line (needed for a build from before it, e.g. an older equin.ai release).
+// own reading line (needed for a build from before it, e.g. an older MuxOS.app release).
 //
 // --realtime leaves the page on its own clock and films it with a screencast (every frame the
 // compositor produces, the whole viewport): what stepping cannot show — frames that interleave with

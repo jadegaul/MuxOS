@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-cli-push",
+  "name": "@muxos/plugin-framework-cli-push",
   "private": true,
   "version": "0.0.1",
-  "description": "`./equin push` — the one path work reaches main: commit, rebase onto main, re-normalize generated artifacts, run the tree-scoped checks, fast-forward and push, all under the host-wide push mutex."
+  "description": "`./muxos push` \u2014 the one path work reaches main: commit, rebase onto main, re-normalize generated artifacts, run the tree-scoped checks, fast-forward and push, all under the host-wide push mutex."
 }

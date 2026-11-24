@@ -1,4 +1,4 @@
-// Content-addressed artifact store at `~/.equin/cache/web-artifacts/`, shared
+// Content-addressed artifact store at `~/.muxos/cache/web-artifacts/`, shared
 // across worktrees: a dir per artifact keyed by its inputs hash. Reuse bumps the
 // dir's mtime; pruning (age + a count bound over unreferenced entries) runs
 // under the store lock with build leases as roots — `lease.ts`.
@@ -27,7 +27,7 @@ import { precompressDir } from "./precompress";
 
 // Read off the declaration in this plugin's `data-dirs/index.ts` rather than
 // joining the data root by hand. These stay module-level consts, exactly as
-// they were when they read a frozen `EQUIN_DIR`: three sibling modules
+// they were when they read a frozen `MUXOS_DIR`: three sibling modules
 // (`check/index.ts`, `vendors.ts`, `global-css.ts`) already join them into
 // their own module-level consts, so the whole family freezes at first import
 // either way. They become functions when the store actually moves off its

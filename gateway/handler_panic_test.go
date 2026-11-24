@@ -17,11 +17,11 @@ import (
 // test (plugins/debug/plugins/gateway-panic/core/kind.test.ts).
 func TestGatewayPanicEntryMatchesTheGolden(t *testing.T) {
 	p := gatewayPanic{
-		Site:    "equin/gateway.(*backend).incHTTP",
+		Site:    "muxos/gateway.(*backend).incHTTP",
 		Value:   "runtime error: invalid memory address or nil pointer dereference",
-		Stack:   []string{"goroutine 1 [running]:", "equin/gateway.(*backend).incHTTP(0x0)", "\t/x/gateway/worktree.go:227 +0x1c"},
+		Stack:   []string{"goroutine 1 [running]:", "muxos/gateway.(*backend).incHTTP(0x0)", "\t/x/gateway/worktree.go:227 +0x1c"},
 		Method:  "GET",
-		Host:    "equin.localhost:9000",
+		Host:    "muxos.localhost:9000",
 		Path:    "/api/health",
 		Count:   240,
 		FirstAt: 1794158464000,
@@ -59,7 +59,7 @@ func panickingHandler(pr *panicReporter) http.HandlerFunc {
 
 func servePath(h http.Handler, path string) *httptest.ResponseRecorder {
 	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "http://equin.localhost:9000"+path, nil))
+	h.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "http://muxos.localhost:9000"+path, nil))
 	return rec
 }
 
@@ -80,7 +80,7 @@ func TestHandlerPanicIsReportedAndCoalesced(t *testing.T) {
 		t.Fatalf("entries after the first panic: %d, want 1", len(es))
 	}
 	d := es[0].Data
-	if es[0].Kind != gatewayPanicKind || d.Site != "equin/gateway.(*backend).incHTTP" || d.Count != 1 || d.Path != "/api/health" || len(d.Stack) == 0 {
+	if es[0].Kind != gatewayPanicKind || d.Site != "muxos/gateway.(*backend).incHTTP" || d.Count != 1 || d.Path != "/api/health" || len(d.Stack) == 0 {
 		t.Fatalf("first entry: %+v", es[0])
 	}
 

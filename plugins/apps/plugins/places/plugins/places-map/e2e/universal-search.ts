@@ -7,7 +7,7 @@
 // places and the Google Maps Places key.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/universal-search.ts \
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/universal-search.ts \
 //     [--query ramen] [--save] [--out /tmp/places-search]
 //
 // Writes `<out>-<step>.png`; exits non-zero on the first broken expectation.

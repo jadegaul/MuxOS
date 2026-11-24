@@ -18,11 +18,11 @@ import type { LogClaim, NotLogs } from "./log-claims";
 import { isHostSingleton, isRelease, resolveDataRoot } from "./paths";
 import { REPO_ROOT } from "@plugins/infra/plugins/paths/plugins/repo-root/core";
 
-// The declared-directory registry for `~/.equin/`.
+// The declared-directory registry for `~/.muxos/`.
 //
 // The root used to be a shared mutable namespace with no owner and no reader:
-// `EQUIN_DIR` was a plain string and ~37 call sites across ~30 plugins
-// wrote `join(EQUIN_DIR, "<whatever>")`. Nothing ever read the directory
+// `MUXOS_DIR` was a plain string and ~37 call sites across ~30 plugins
+// wrote `join(MUXOS_DIR, "<whatever>")`. Nothing ever read the directory
 // as a whole, so nine orphaned entries (~1 GB) accumulated with zero references
 // left in the repo, ten `<name>-slots` dirs were minted by ONE primitive, and
 // ~7 GB of pure cache sat indistinguishable from the only copy of a secret.
@@ -112,7 +112,7 @@ export interface DataDirSpec {
    *
    * `path` is **relative to the data root**, never absolute. Two reasons, both
    * load-bearing: an absolute literal would be frozen at module eval and so
-   * would not follow `EQUIN_DIR` (see {@link dataRoot}), and it would
+   * would not follow `MUXOS_DIR` (see {@link dataRoot}), and it would
    * have to spell out the home directory, which `paths:no-hardcoded-paths`
    * bans outright.
    */
@@ -288,13 +288,13 @@ const APP_DIR_RECLAIM_REASON =
  * The data root ITSELF.
  *
  * Its ONE legitimate use is handing the root to a child process as its
- * `EQUIN_DIR` (the gateway spawn, a release launch, a remote deploy's
+ * `MUXOS_DIR` (the gateway spawn, a release launch, a remote deploy's
  * env line). `join(dataRoot(), …)` is exactly what `defineDataDir` exists to
  * replace — a joined root is an undeclared directory, which is the failure mode
  * this whole registry is here to make impossible.
  *
  * A FUNCTION, not a const, and its result must not be cached by a caller:
- * `EQUIN_DIR` is env-overridable and the release launcher sets it before
+ * `MUXOS_DIR` is env-overridable and the release launcher sets it before
  * importing anything path-dependent, so a value frozen at module eval captures
  * whatever the environment said when that module was FIRST imported. This is
  * the same reasoning that made `webDistDir()` a function — see its docblock in
@@ -480,7 +480,7 @@ function makeDataDir(spec: DataDirSpec): DataDir {
 // - SETTLING (`settleDataDirMoves`, async) inspects both locations of every
 //   declared move and — only in the one process allowed to, a backend's boot
 //   before it listens — performs a pending one. It DECLARES what it found, for
-//   this process and every process it starts (`EQUIN_DATA_DIR_MOVES`), the way
+//   this process and every process it starts (`MUXOS_DATA_DIR_MOVES`), the way
 //   a tree's root declares the data root's layout.
 // - RESOLVING (every getter) reads that declaration and nothing else: no disk,
 //   on any thread. A process whose tree declared nothing throws
@@ -501,7 +501,7 @@ const MOVE_STATES: ReadonlySet<string> = new Set<MoveState>([
  * the environment as JSON, so a backend's workers and the children it spawns
  * resolve without reading the disk either.
  *
- * Keyed by ROOT: a process that repoints `EQUIN_DIR` (a test, the release
+ * Keyed by ROOT: a process that repoints `MUXOS_DIR` (a test, the release
  * launcher) holds no declaration for the new root, rather than trusting the old
  * one's answer.
  */

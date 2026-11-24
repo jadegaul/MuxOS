@@ -5,8 +5,8 @@
 // the long tasks, for comparing a change to the renderer before and after.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/isle/plugins/world-view/e2e/perf-sweep.ts \
-//     [--apps <n> [--bake workers|page]] [--runs 3] [--out "$EQUIN_SCRATCH/isle-perf"]
+//   ./muxos run plugins/apps/plugins/isle/plugins/world-view/e2e/perf-sweep.ts \
+//     [--apps <n> [--bake workers|page]] [--runs 3] [--out "$MUXOS_SCRATCH/isle-perf"]
 //
 // Without --apps it drives /isle (the real apps; presses Start). With --apps it
 // drives the growth exhibit (`isle/growth`, the dev plugin) at that many apps:

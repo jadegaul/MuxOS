@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-primitives-announce",
+  "name": "@muxos/plugin-primitives-announce",
   "description": "Screen-reader announcement primitive: announce() writes into a page-global live region mounted at Core.Root.",
   "private": true,
   "version": "0.0.1"

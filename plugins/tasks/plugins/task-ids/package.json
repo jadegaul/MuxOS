@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-tasks-task-ids",
+  "name": "@muxos/plugin-tasks-task-ids",
   "private": true,
   "version": "0.0.1",
-  "description": "The task / attempt / conversation id kinds (defineIdKind): mint, branded type, validation and inline recognition for `task-…`, `att-…` and `conv-…` (legacy alias `claude-…`). A leaf, so infra/worktree can read the attempt kind without a cycle through tasks-core."
+  "description": "The task / attempt / conversation id kinds (defineIdKind): mint, branded type, validation and inline recognition for `task-\u2026`, `att-\u2026` and `conv-\u2026` (legacy alias `claude-\u2026`). A leaf, so infra/worktree can read the attempt kind without a cycle through tasks-core."
 }

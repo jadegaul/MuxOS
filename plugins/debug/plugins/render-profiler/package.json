@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-render-profiler",
+  "name": "@muxos/plugin-debug-render-profiler",
   "private": true,
   "version": "0.0.1"
 }

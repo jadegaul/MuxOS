@@ -4,8 +4,8 @@
 // writes, atomic rename-over writes (write a staging sibling, rename it over
 // the target), creates and deletes — and how late.
 //
-//   ./equin run plugins/infra/plugins/file-watcher/scripts/measure-kqueue-children.ts [--rounds 50]
-//   ./equin run …/measure-kqueue-children.ts --sizes   # kqueue open cost and descriptors by dir size
+//   ./muxos run plugins/infra/plugins/file-watcher/scripts/measure-kqueue-children.ts [--rounds 50]
+//   ./muxos run …/measure-kqueue-children.ts --sizes   # kqueue open cost and descriptors by dir size
 //
 // Research: research/2026-11-09-infra-file-watcher-kqueue-children.md
 import {

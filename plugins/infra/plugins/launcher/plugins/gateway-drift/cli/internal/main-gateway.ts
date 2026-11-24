@@ -37,9 +37,9 @@ export interface PreparedGateway {
 /**
  * Ensure main's gateway binary and derive the launch options — every input to
  * a launch, nothing applied yet: the executable is where the build WOULD run
- * (inside the equin app bundle on macOS), not installed there. Built only when
+ * (inside the muxos app bundle on macOS), not installed there. Built only when
  * main's gateway source (or Go) changed since the last build (the identity is
- * the source hash), so an unchanged one costs a hash. Shared by `./equin
+ * the source hash), so an unchanged one costs a hash. Shared by `./muxos
  * start` and main's follow-main restart ({@link followMainGateway}), so both
  * install the one launch the health report's Gateway row compares against.
  */
@@ -91,7 +91,7 @@ export async function prepareMainGateway(opts: {
 }
 
 /**
- * Apply a prepared launch before it runs: the binary installed into the equin
+ * Apply a prepared launch before it runs: the binary installed into the muxos
  * app bundle (macOS; re-signed there when this machine's identity changed) and
  * `database.json` written. Only on the paths that launch — swapping the
  * bundle's gateway is not a staleness report's to do, and the running

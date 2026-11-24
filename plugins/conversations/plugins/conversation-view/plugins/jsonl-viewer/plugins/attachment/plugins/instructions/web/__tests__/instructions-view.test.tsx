@@ -68,7 +68,7 @@ afterEach(cleanup);
 /** The real payloads carry an absolute path under the user's home. A literal,
  *  made-up one: `paths/core` names the real home through Node, which this jsdom
  *  test is not — and the card only echoes the path it is handed. */
-const MEMORY = "/Users/someone/.claude/projects/equin/memory/MEMORY.md";
+const MEMORY = "/Users/someone/.claude/projects/muxos/memory/MEMORY.md";
 
 function event(attachment: unknown): AttachmentEvent {
   return {

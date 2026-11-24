@@ -24,11 +24,11 @@ const HIT = {
 describe("extractBeforeAfterHits", () => {
   test("a register_before_after call is one pair, keyed by its tool-use id", () => {
     expect(
-      extractBeforeAfterHits(call("mcp__equin__register_before_after")),
+      extractBeforeAfterHits(call("mcp__muxos__register_before_after")),
     ).toEqual([HIT]);
     expect(
       extractBeforeAfterHits(
-        call("mcp__equin__register_before_after", { content: "ba-1-abcdef" }),
+        call("mcp__muxos__register_before_after", { content: "ba-1-abcdef" }),
       ),
     ).toEqual([HIT]);
   });
@@ -36,12 +36,12 @@ describe("extractBeforeAfterHits", () => {
   test("a failed call registered nothing; an interrupted one may have", () => {
     expect(
       extractBeforeAfterHits(
-        call("mcp__equin__register_before_after", { isError: true }),
+        call("mcp__muxos__register_before_after", { isError: true }),
       ),
     ).toEqual([]);
     expect(
       extractBeforeAfterHits(
-        call("mcp__equin__register_before_after", {
+        call("mcp__muxos__register_before_after", {
           isError: true,
           outcomeUnknown: true,
         }),
@@ -51,7 +51,7 @@ describe("extractBeforeAfterHits", () => {
 
   test("other calls are not pairs", () => {
     expect(
-      extractBeforeAfterHits(call("mcp__equin__browser_screenshot")),
+      extractBeforeAfterHits(call("mcp__muxos__browser_screenshot")),
     ).toEqual([]);
     expect(extractBeforeAfterHits(call("register_before_after"))).toEqual([]);
     expect(

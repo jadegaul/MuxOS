@@ -14,7 +14,7 @@
 //
 // THE TREE ONLY. A gitignored file does not exist for the check, even under
 // the tsconfig `include`: the per-composition `*.composition.*.generated.ts`
-// registries are build output, rewritten by any `./equin build` of the
+// registries are build output, rewritten by any `./muxos build` of the
 // checkout — so a check that read them (they were once an "overlay" beside the
 // tree) gave a verdict that was not a function of its tree, and died whenever
 // a build rewrote one mid-run (the daily backstop on main, 2026-11-09 and

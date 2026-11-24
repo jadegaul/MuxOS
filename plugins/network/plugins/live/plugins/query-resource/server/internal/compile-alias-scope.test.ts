@@ -15,7 +15,7 @@
  * field not projected). The DB-backed oracle over the real feed is
  * network/live's `serve-collection-all-scoped-oracle.test.ts`.
  *
- * Run: `./equin test plugins/network/plugins/live/plugins/query-resource`.
+ * Run: `./muxos test plugins/network/plugins/live/plugins/query-resource`.
  */
 
 import { describe, expect, test } from "bun:test";

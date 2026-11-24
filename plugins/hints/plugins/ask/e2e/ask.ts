@@ -1,7 +1,7 @@
-// The Ask equin card, end to end — WITHOUT asking anything (no agent is
+// The Ask muxos card, end to end — WITHOUT asking anything (no agent is
 // launched: no cost, nothing nondeterministic):
 //
-//   1. ? (through the folded action bar) → Ask equin how to… opens the empty
+//   1. ? (through the folded action bar) → Ask muxos how to… opens the empty
 //      card in the bottom-right corner, its 3 suggestions led by the two fixed
 //      newcomer questions
 //   2. a real mouse drag of the header moves it freely: dropped mid-screen it
@@ -10,7 +10,7 @@
 //   4. reload: the card is still open, where it was left
 //   5. Close (×) closes it
 //
-//   ./equin run plugins/hints/plugins/ask/e2e/ask.ts [--out /tmp/ask] [--headed]
+//   ./muxos run plugins/hints/plugins/ask/e2e/ask.ts [--out /tmp/ask] [--headed]
 
 import type { Locator, Page } from "playwright";
 import {
@@ -29,12 +29,12 @@ import {
 } from "@plugins/hints/plugins/ask/core";
 
 const out = arg("out") ?? "/tmp/ask";
-const r = report("hints/ask: the Ask equin card");
+const r = report("hints/ask: the Ask muxos card");
 
 /** How far off a placement may land (sub-pixel rounding). */
 const TOLERANCE = 2;
 
-const card = (page: Page) => page.getByRole("dialog", { name: "Ask equin" });
+const card = (page: Page) => page.getByRole("dialog", { name: "Ask muxos" });
 /** The card's header row — the whole of it is the drag handle. */
 const header = (c: Locator) => c.locator(".cursor-grab").first();
 
@@ -47,14 +47,14 @@ async function box(l: Locator) {
 const near = (a: number, b: number) => Math.abs(a - b) <= TOLERANCE;
 
 /**
- * Open the empty card from ? → Ask equin. A fresh browser tab holds no run
+ * Open the empty card from ? → Ask muxos. A fresh browser tab holds no run
  * (the card is the tab's own: no run is taken back on load), so the entry
- * reads "Ask equin how to…" and opens the empty card.
+ * reads "Ask muxos how to…" and opens the empty card.
  */
 async function openEmptyCard(page: Page): Promise<Locator> {
   await openFloatingActionBar(page);
   await page.getByRole("button", { name: "Getting started" }).click();
-  await page.getByText("Ask equin how to…", { exact: true }).first().click();
+  await page.getByText("Ask muxos how to…", { exact: true }).first().click();
   const c = card(page);
   await c.waitFor();
   await c.getByRole("button", { name: "Close", exact: true }).waitFor();

@@ -3,7 +3,7 @@
  * have gone undelivered, split by who holds them: `pushStallMs` while EVERY push
  * is stopped (0 when nothing is owed that way), and `stalledResources` — the
  * leaves whose own drain lane is stuck while every other push flows. Run with
- * `./equin test plugins/network/plugins/live/plugins/resource-runtime`.
+ * `./muxos test plugins/network/plugins/live/plugins/resource-runtime`.
  *
  * The 2026-09-11 incident: a DB socket was closed under a query inside a flush,
  * the query's promise never settled, and — flushes being single-active — every

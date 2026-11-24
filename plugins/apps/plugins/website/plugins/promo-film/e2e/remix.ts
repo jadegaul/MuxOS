@@ -8,8 +8,8 @@
 // Writes `<film>-music-<slug>.mp4` beside the film (and its `-web.mp4` when
 // the film has one), never over an existing file.
 //
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/remix.ts \
-//     --film ~/Downloads/showcase/equin-v23.mp4 --music go-to-the-picnic
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/remix.ts \
+//     --film ~/Downloads/showcase/muxos-v23.mp4 --music go-to-the-picnic
 
 import { HOME_DIR } from "@plugins/infra/plugins/paths/plugins/data-root-layout/core";
 import {

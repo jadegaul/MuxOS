@@ -130,7 +130,7 @@ export interface AppRef {
   /**
    * `false` keeps the app out of every launcher — the rail, the app galleries
    * and launchers, the installable set — for an app that is opened at its URL
-   * by something outside equin rather than picked from inside it (the
+   * by something outside muxos rather than picked from inside it (the
    * menu-bar panel the native helper loads). Omitted, the app is listed.
    */
   readonly listed?: false;

@@ -26,10 +26,10 @@
  * deferred. Defaults below; override with `--deferred` / `--eager` (plugin
  * paths, e.g. `apps/plugins/story/plugins/lenses`).
  *
- * Manual only; nothing runs this automatically. Run it after `./equin
+ * Manual only; nothing runs this automatically. Run it after `./muxos
  * build` with:
  *
- *   ./equin run plugins/build/e2e/stale-tab-reload.ts [--color-scheme dark|light] [--out /tmp/stale-tab] [--deferred <plugin path>] [--eager <plugin path>] [--headed]
+ *   ./muxos run plugins/build/e2e/stale-tab-reload.ts [--color-scheme dark|light] [--out /tmp/stale-tab] [--deferred <plugin path>] [--eager <plugin path>] [--headed]
  *
  * Screenshots land at `<out>-{deferred,eager}-<scheme>.png`; run once per
  * scheme to get both.
@@ -56,7 +56,7 @@ import {
 } from "@plugins/framework/plugins/tooling/plugins/e2e-harness/plugins/page-ready/core";
 
 const USAGE =
-  "usage: ./equin run plugins/build/e2e/stale-tab-reload.ts [--color-scheme dark|light] [--out <prefix>] [--deferred <plugin path>] [--eager <plugin path>] [--headed]";
+  "usage: ./muxos run plugins/build/e2e/stale-tab-reload.ts [--color-scheme dark|light] [--out <prefix>] [--deferred <plugin path>] [--eager <plugin path>] [--headed]";
 
 const schemeArg = arg("color-scheme");
 if (schemeArg !== undefined && schemeArg !== "dark" && schemeArg !== "light") {
@@ -87,7 +87,7 @@ const r = report(`stale-tab reload (${colorScheme})`);
 // them (and, for a boot chunk the registry also imports statically, the page
 // itself). What the build publishes per plugin is its registry entry
 //
-//   { pluginPath: "<p>", …, loader: …(() => __equinImportOnce("<chunk>",
+//   { pluginPath: "<p>", …, loader: …(() => __muxosImportOnce("<chunk>",
 //       () => import("<chunk>"))…), … }
 //
 // in the registry chunk the page boots from. The script points THAT entry's

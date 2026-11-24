@@ -26,7 +26,7 @@ const COMMIT: CommitDetail = {
     { key: PUSH_TRAILER_KEY, value: "2507afe6-0c1d-4f7e-9a51-1d2e3f4a5b6c" },
   ],
   body: [
-    "The gateway's `/gateway/*` control API was reachable from the internet: Caddy forwards every path, a public host counted as an equin host, and a request with no Sec-Fetch-Site and no Origin was the owner.",
+    "The gateway's `/gateway/*` control API was reachable from the internet: Caddy forwards every path, a public host counted as an muxos host, and a request with no Sec-Fetch-Site and no Origin was the owner.",
     "",
     "- gateway: a new principal, `visitor` — a request whose Host is a public host or that carries any forwarding header came through an edge and is never the owner.",
     "- principal (TS): `visitor` kind, `PRINCIPAL_STAMPS` pinned to the Go constants by `principal:header-in-sync`.",

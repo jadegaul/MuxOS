@@ -13,8 +13,8 @@ set -euo pipefail
 out="$RUNNER_TEMP/dist/$ASSET"
 mkdir -p "$(dirname "$out")"
 lipo -create -output "$out" \
-  "$CRATE/target/aarch64-apple-darwin/release/equin-installer" \
-  "$CRATE/target/x86_64-apple-darwin/release/equin-installer"
+  "$CRATE/target/aarch64-apple-darwin/release/muxos-installer" \
+  "$CRATE/target/x86_64-apple-darwin/release/muxos-installer"
 codesign --force --sign - "$out"
 codesign --verify --verbose "$out"
 archs="$(lipo -archs "$out")"

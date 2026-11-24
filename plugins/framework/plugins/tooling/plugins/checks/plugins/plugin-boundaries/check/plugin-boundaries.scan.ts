@@ -196,7 +196,7 @@ function judgeImports(
   const found = findImports(src, undefined, { dynamic: true });
   const imports = found.filter((imp) => !imp.dynamic);
 
-  // R7: forbid direct workspace-name imports (`@equin/plugin-*`).
+  // R7: forbid direct workspace-name imports (`@muxos/plugin-*`).
   // Cross-plugin imports must go through `@plugins/...` so R4/R5/R6 can
   // see them; workspace-name imports resolve via node_modules symlinks
   // and silently bypass the boundary system.
@@ -340,12 +340,12 @@ function judgeImports(
 // ============================================================================
 
 // The name is DERIVED (`packageNameFor`) and written by the repo-tree codegen
-// (`syncPluginPackageNames`, run by `./equin build` and
-// `./equin regen-generated`). R1 is its in-sync guard, the same role
+// (`syncPluginPackageNames`, run by `./muxos build` and
+// `./muxos regen-generated`). R1 is its in-sync guard, the same role
 // `plugins-registry-in-sync` plays for the registries.
 
 export const REGEN_HINT =
-  "run `./equin build` (or `./equin regen-generated`), which writes the derived name";
+  "run `./muxos build` (or `./muxos regen-generated`), which writes the derived name";
 
 function checkPackageNaming(
   pluginPath: string,

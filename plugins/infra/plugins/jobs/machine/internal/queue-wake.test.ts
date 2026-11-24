@@ -4,8 +4,8 @@
  * still run every row no insert announces — a future `run_at`, a retry's
  * backoff, a row behind a serial lane another runner released.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

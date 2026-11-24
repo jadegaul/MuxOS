@@ -20,11 +20,11 @@ func testChildEnv(t *testing.T) ChildEnv {
 }
 
 func TestParseChildEnvFlag(t *testing.T) {
-	got, err := parseChildEnvFlag(" HOME, PATH ,EQUIN_AUTH_*")
+	got, err := parseChildEnvFlag(" HOME, PATH ,MUXOS_AUTH_*")
 	if err != nil {
 		t.Fatalf("parseChildEnvFlag: %v", err)
 	}
-	if want := []string{"HOME", "PATH", "EQUIN_AUTH_*"}; !reflect.DeepEqual(got, want) {
+	if want := []string{"HOME", "PATH", "MUXOS_AUTH_*"}; !reflect.DeepEqual(got, want) {
 		t.Fatalf("declared = %q, want %q", got, want)
 	}
 
@@ -35,8 +35,8 @@ func TestParseChildEnvFlag(t *testing.T) {
 			t.Fatalf("parseChildEnvFlag(%q) err = %v, want errChildEnvRequired", raw, err)
 		}
 	}
-	if !strings.Contains(errChildEnvRequired.Error(), "./equin start") {
-		t.Fatalf("required-flag error should name ./equin start, got %q", errChildEnvRequired)
+	if !strings.Contains(errChildEnvRequired.Error(), "./muxos start") {
+		t.Fatalf("required-flag error should name ./muxos start, got %q", errChildEnvRequired)
 	}
 
 	// A malformed entry is an error, never skipped — and a bare `*` would be
@@ -49,30 +49,30 @@ func TestParseChildEnvFlag(t *testing.T) {
 }
 
 // TestNewChildEnvKeepsOnlyDeclared is the incident regression: an agent
-// shell's identity and terminal state (EQUIN_CONVERSATION_ID,
+// shell's identity and terminal state (MUXOS_CONVERSATION_ID,
 // CLAUDE_*) must not survive into the base, and must be reported as dropped.
 func TestNewChildEnvKeepsOnlyDeclared(t *testing.T) {
 	environ := []string{
 		"HOME=/home/me",
-		"EQUIN_CONVERSATION_ID=conv-1",
+		"MUXOS_CONVERSATION_ID=conv-1",
 		"PATH=/usr/bin:/bin",
 		"TERM_SESSION_ID=w0t0p0",
 		"HOMEBREW_PREFIX=/opt/homebrew", // shares a prefix with HOME, but HOME is exact
-		"EQUIN_AUTH_GOOGLE_CLIENT_ID=abc",
-		"EQUIN_AUTHX=nope", // the prefix is EQUIN_AUTH_, underscore included
+		"MUXOS_AUTH_GOOGLE_CLIENT_ID=abc",
+		"MUXOS_AUTHX=nope", // the prefix is MUXOS_AUTH_, underscore included
 		"CLAUDE_CODE_SESSION_ID=s-1",
 	}
-	env, dropped := NewChildEnv([]string{"HOME", "PATH", "EQUIN_AUTH_*"}, environ)
+	env, dropped := NewChildEnv([]string{"HOME", "PATH", "MUXOS_AUTH_*"}, environ)
 
-	wantBase := []string{"HOME=/home/me", "PATH=/usr/bin:/bin", "EQUIN_AUTH_GOOGLE_CLIENT_ID=abc"}
+	wantBase := []string{"HOME=/home/me", "PATH=/usr/bin:/bin", "MUXOS_AUTH_GOOGLE_CLIENT_ID=abc"}
 	if got := env.With(); !reflect.DeepEqual(got, wantBase) {
 		t.Fatalf("base = %q, want %q", got, wantBase)
 	}
-	wantDropped := []string{"EQUIN_CONVERSATION_ID", "TERM_SESSION_ID", "HOMEBREW_PREFIX", "EQUIN_AUTHX", "CLAUDE_CODE_SESSION_ID"}
+	wantDropped := []string{"MUXOS_CONVERSATION_ID", "TERM_SESSION_ID", "HOMEBREW_PREFIX", "MUXOS_AUTHX", "CLAUDE_CODE_SESSION_ID"}
 	if !reflect.DeepEqual(dropped, wantDropped) {
 		t.Fatalf("dropped = %q, want %q", dropped, wantDropped)
 	}
-	if got, want := env.Names(), []string{"HOME", "PATH", "EQUIN_AUTH_GOOGLE_CLIENT_ID"}; !reflect.DeepEqual(got, want) {
+	if got, want := env.Names(), []string{"HOME", "PATH", "MUXOS_AUTH_GOOGLE_CLIENT_ID"}; !reflect.DeepEqual(got, want) {
 		t.Fatalf("Names() = %q, want %q", got, want)
 	}
 }
@@ -133,7 +133,7 @@ func TestCommandSetsEnv(t *testing.T) {
 	}
 }
 
-// TestReadEnv: the app variable's EQUIN_ name, empty meaning unset.
+// TestReadEnv: the app variable's MUXOS_ name, empty meaning unset.
 func TestReadEnv(t *testing.T) {
 	const key = "TEST_READ_ENV"
 	t.Setenv(envPrefix+key, "")

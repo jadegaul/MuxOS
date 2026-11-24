@@ -41,11 +41,11 @@
  * only).
  *
  * `--site` drives the standalone website's live demo (a build of the
- * `website` composition: `./equin build --composition website`, then
+ * `website` composition: `./muxos build --composition website`, then
  * `--composition website`) instead of main's `/about`.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/places-in-demo.ts [--out /tmp/demo-places] [--site --composition website] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/places-in-demo.ts [--out /tmp/demo-places] [--site --composition website] [--headed]
  */
 import type { Locator, Page, WebSocket } from "playwright";
 import { pickFromLauncher } from "@plugins/apps-core/plugins/app-launcher/e2e";

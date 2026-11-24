@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-page-formatting-italic",
+  "name": "@muxos/plugin-page-formatting-italic",
   "description": "Italic mark button for the page editor's selection toolbar.",
   "private": true,
   "version": "0.0.1"

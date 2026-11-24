@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-hints-help-menu",
-  "description": "The ? Getting started menu in the global action bar: replay the tour, show tips again, read the guide — an open HelpMenu.Entry slot other plugins add to (hints/ask's Ask equin) — and the Help task category Ask equin questions are filed under.",
+  "name": "@muxos/plugin-hints-help-menu",
+  "description": "The ? Getting started menu in the global action bar: replay the tour, show tips again, read the guide \u2014 an open HelpMenu.Entry slot other plugins add to (hints/ask's Ask muxos) \u2014 and the Help task category Ask muxos questions are filed under.",
   "private": true,
   "version": "0.0.1"
 }

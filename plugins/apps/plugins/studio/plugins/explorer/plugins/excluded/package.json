@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-studio-explorer-excluded",
+  "name": "@muxos/plugin-apps-studio-explorer-excluded",
   "description": "Not-in-the-app badge in the explorer plugin tree row.",
   "private": true,
   "version": "0.0.1"

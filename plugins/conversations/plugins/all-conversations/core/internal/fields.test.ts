@@ -4,7 +4,7 @@
  * filter preset) names are unchanged, the sortable ones are exactly
  * `CONVERSATION_SORTABLE`, and the search columns are filterable text.
  *
- * Run: `./equin test plugins/conversations/plugins/all-conversations`.
+ * Run: `./muxos test plugins/conversations/plugins/all-conversations`.
  */
 
 import { describe, expect, test } from "bun:test";

@@ -181,7 +181,7 @@ function mount(live: LiveStateHarness) {
 const note = (over: Partial<Notification> = {}): Notification => ({
   id: notificationIdKind.key("notif-arrived"),
   type: "build",
-  title: "equin was updated",
+  title: "muxos was updated",
   description: "",
   variant: "info",
   dismissed: false,
@@ -344,7 +344,7 @@ describe("BellButton — toasts mirror the bell", () => {
       ),
     );
     const view = container.querySelector("[data-notification-view]");
-    expect(view?.textContent).toContain("equin was updated");
+    expect(view?.textContent).toContain("muxos was updated");
     expect(view?.textContent).toContain("Fix login bug");
     // The toast's body is no link: its only control is the action button
     // (a click elsewhere is the toast host's click-to-dismiss, never a
@@ -352,7 +352,7 @@ describe("BellButton — toasts mirror the bell", () => {
     expect(screen.getAllByRole("button").map((b) => b.textContent)).toEqual([
       "Open",
     ]);
-    fireEvent.click(screen.getByText("equin was updated"));
+    fireEvent.click(screen.getByText("muxos was updated"));
     expect(spy.opened).toEqual([]);
     // The action, resolved through the registry; running it navigates and
     // dismisses the toast.
@@ -559,7 +559,7 @@ describe("BellButton — chips by category", () => {
     });
     // The row is the same view the toast draws.
     expect(screen.getByTestId("notification-list").textContent).toContain(
-      "equin was updated",
+      "muxos was updated",
     );
   });
 });

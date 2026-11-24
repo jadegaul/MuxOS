@@ -10,7 +10,7 @@ export type LogoProps = {
 };
 
 /**
- * The equin logo. Holds both masters and shows the small one when it is drawn
+ * The muxos logo. Holds both masters and shows the small one when it is drawn
  * narrower than `LOGO.smallBelowPx` (a container query on its own box), so a
  * caller only sizes it. Decorative: hidden from the a11y tree.
  */

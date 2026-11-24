@@ -1,15 +1,15 @@
 # Prototypes
 
 A prototype is a throwaway UI mockup: one flat folder in
-`~/.equin/apps/prototypes/<id>/`, with an `index.html`. It is **not in
+`~/.muxos/apps/prototypes/<id>/`, with an `index.html`. It is **not in
 the repo**: write there directly and commit nothing. That folder is shared by
-every worktree and main and shows at `http://equin.localhost:<port>` as
+every worktree and main and shows at `http://muxos.localhost:<port>` as
 soon as you save. No build is needed. Its pin, Done mark, tag and deletion are not in
 the folder: they are per-instance DB state, set in the app.
 
 ## Creating one
 
-- `./equin prototype new "Title"` mints the folder from `_template/` and
+- `./muxos prototype new "Title"` mints the folder from `_template/` and
   prints its id. Never copy the template by hand, and never name the folder:
   other places refer to the prototype by its id, so the id must never change.
   Its name is the `<title>`.
@@ -31,13 +31,13 @@ request that caused it. Before changing a prototype that already has versions,
 read how it got there:
 
 ```bash
-./equin prototype log <id> -p      # versions, requests, diffs
-./equin prototype restore <id> v3
-./equin prototype checkpoint <id> -m "…"   # only for edits outside an agent turn
+./muxos prototype log <id> -p      # versions, requests, diffs
+./muxos prototype restore <id> v3
+./muxos prototype checkpoint <id> -m "…"   # only for edits outside an agent turn
 ```
 
 The history is a bare git repo per prototype,
-`~/.equin/apps/prototypes/_history/<id>.git`; plain `git --git-dir …` may
+`~/.muxos/apps/prototypes/_history/<id>.git`; plain `git --git-dir …` may
 **read** it (`log -S`, `show <sha>:index.html`). Never write to `_history/`, and
 never create a `.git` inside a prototype folder.
 
@@ -118,7 +118,7 @@ and thumbnails.
   (`sidebar-width` under "Sidebar" reads "Width").
 - An invalid line is left out of the picker and reported on the card.
 
-`./equin prototype options <id>` prints the variant the user is looking
+`./muxos prototype options <id>` prints the variant the user is looking
 at (one shared pick for every tab and deploy) and its URL — on the prototype's
 own content host (`http://<id>.content.localhost:<port>/<ns>/api/prototypes/<id>/…`).
 To render a variant, change that URL's query (`?pane=floating&accent=%2310b981`)

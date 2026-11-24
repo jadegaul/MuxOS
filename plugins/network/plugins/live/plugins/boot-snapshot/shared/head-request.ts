@@ -6,7 +6,7 @@
  * the boot task takes it (once) instead of issuing its own request, so the
  * snapshot no longer waits for the eager tier to download and evaluate.
  */
-export const HEAD_REQUEST_GLOBAL = "__equinBootSnapshotRequest";
+export const HEAD_REQUEST_GLOBAL = "__muxosBootSnapshotRequest";
 
 /** What the head script parks: the in-flight response, and when it was asked for. */
 export interface HeadRequest {

@@ -128,7 +128,7 @@ import {
 
 /**
  * Single source of truth for the ordered **app-artifact** pipeline: the part of
- * `./equin build` that is a deterministic function of (source tree,
+ * `./muxos build` that is a deterministic function of (source tree,
  * composition) — filesystem, CPU and network-for-deps only.
  *
  * `build`'s action conflates two jobs: *produce the artifact set* and *deploy it
@@ -161,7 +161,7 @@ import {
  *   - the per-namespace deploy sequence (`./deploy-namespace.ts`): the
  *     `composition.json` provenance marker, the database, the spec, the restart.
  *   - `propagateConfigToUser` — same function, different sink per caller (build
- *     targets `~/.equin/state/config/<worktree>`, a release targets its own
+ *     targets `~/.muxos/state/config/<worktree>`, a release targets its own
  *     `config-seed`), so the sink IS the parameterization. Mirrors
  *     regen-pipeline.ts's own out-of-scope note.
  *   - `sweepDistLeftovers` — the caller sweeps its own dist dir right after
@@ -174,7 +174,7 @@ import {
  *     all resolved out of `node_modules`, and a release additionally vendors the
  *     embedded-postgres / pgbouncer natives from there. Including it is what
  *     makes a fresh `git clone` work. Freshness-gated, so for a dev build —
- *     whose `./equin` bootstrap just ran the same function — it collapses
+ *     whose `./muxos` bootstrap just ran the same function — it collapses
  *     to a no-op instead of a second 10–25 s install.
  *   - registry codegen BEFORE the composition registry: the filtered
  *     per-composition registries are emitted beside the full committed ones the
@@ -228,7 +228,7 @@ import {
  * — and never the reverse: nothing anywhere acquires the build lock while
  * holding the install lock, so the two can never form a cycle. The install lock
  * is deliberately NOT `.build.lock` itself: sharing them would make a plain
- * `./equin check` — which installs, but builds nothing — block for the
+ * `./muxos check` — which installs, but builds nothing — block for the
  * entire duration of a concurrent build in the same checkout.
  *
  * FAILURE IS A TYPE, not a value: stage 3 returns a discriminated
@@ -458,7 +458,7 @@ export async function prepareCompositionSources(opts: {
   //
   // Through `ensureDeps` — the repo's ONE install chokepoint (freshness-gated,
   // serialized on `.install.lock`, loud on failure), the same function the
-  // `./equin` bootstrap already ran moments ago. So for a dev build this
+  // `./muxos` bootstrap already ran moments ago. So for a dev build this
   // is normally a ~140 ms no-op reporting `installed: false`, and the old
   // double 10–25 s install per build (wrapper, then here) is gone. The call
   // stays because `build --hermetic` on a bare host from a fresh `git clone`
@@ -573,7 +573,7 @@ export async function prepareCompositionSources(opts: {
   // The MAIN composition is filtered out of it, and that is not a carve-out: its
   // registry IS the committed one (`compositionRegistryFileName`), so
   // `generateCompositionRegistry` would return without writing anything anyway —
-  // dropping it is what keeps a plain `./equin build` in a checkout that
+  // dropping it is what keeps a plain `./muxos build` in a checkout that
   // composes NOTHING from paying for the faceted plugin-tree walk below to
   // produce nothing. A checkout that does compose something pays the walk on
   // every build, which is the price of the registries it hosts being true.
@@ -1042,7 +1042,7 @@ export type WebDistTarget =
  * about to be published is precisely the drift this seam exists to prevent, so
  * the caller resolves its `target` through here rather than spelling a path.
  *
- * Both arms live under `~/.equin/worktrees/`: no dist is written into a
+ * Both arms live under `~/.muxos/worktrees/`: no dist is written into a
  * checkout any more, so a checkout carries no build output and the served tree
  * survives operations on the checkout (a `git clean`, a worktree re-checkout).
  * It takes no checkout path at all — a build's `webDir` is the `.build.lock`'s
@@ -1216,7 +1216,7 @@ export interface BuildWebDistOptions {
    * Copy each artifact out of the shared content-addressed store instead of
    * symlinking it, so the produced dist is SELF-CONTAINED. Only the release
    * path (`build --hermetic`) wants this: its dist is `cpSync`'d into a
-   * shippable bundle, and symlinks into `~/.equin/cache/web-artifacts/`
+   * shippable bundle, and symlinks into `~/.muxos/cache/web-artifacts/`
    * would
    * ship as dangling links on any other machine.
    *
@@ -1230,7 +1230,7 @@ export interface BuildWebDistOptions {
   materialize: boolean;
   /**
    * Stamp the served `index.html` as an experimental (agent-worktree) deploy —
-   * the red frame. Only `./equin build` from a non-main worktree says
+   * the red frame. Only `./muxos build` from a non-main worktree says
    * true; every other producer of a dist is clean. See ./experimental-marker.ts.
    */
   experimental: boolean;

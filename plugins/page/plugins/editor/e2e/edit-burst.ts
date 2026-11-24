@@ -12,7 +12,7 @@
 // worktree build.
 //
 // Usage:
-//   ./equin run plugins/page/plugins/editor/e2e/edit-burst.ts \
+//   ./muxos run plugins/page/plugins/editor/e2e/edit-burst.ts \
 //     [--edits 20] [--gap 1500] [--settle 15000]
 
 import {

@@ -31,7 +31,7 @@ export const browserExtensionDir = defineDataDir({
 /**
  * Where a namespace's extension lives: main's in the data dir above (the one
  * the user installs), any other namespace's beside its build artifacts
- * (`~/.equin/worktrees/<ns>/browser-extension`, loaded unpacked only to try a
+ * (`~/.muxos/worktrees/<ns>/browser-extension`, loaded unpacked only to try a
  * branch, and reclaimed with the namespace). Holds:
  *
  * - {@link SHELL_FOLDER}: the shell itself, replaced whole on each change;

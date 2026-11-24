@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-debug-slow-ops",
+  "name": "@muxos/plugin-debug-slow-ops",
   "private": true,
   "version": "0.0.1"
 }

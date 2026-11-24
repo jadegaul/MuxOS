@@ -6,7 +6,7 @@ import {
   rewriteText,
 } from "./rewrite";
 
-const MOVES = [{ from: "/home/u/.old", to: "/home/u/.equin" }];
+const MOVES = [{ from: "/home/u/.old", to: "/home/u/.muxos" }];
 
 describe("rewriteText", () => {
   test("rewrites every path under the prefix, and the prefix itself", () => {
@@ -16,7 +16,7 @@ describe("rewriteText", () => {
         MOVES,
       ),
     ).toBe(
-      '{"a":"/home/u/.equin/state/x","b":"/home/u/.equin","c":"see /home/u/.equin/y"}',
+      '{"a":"/home/u/.muxos/state/x","b":"/home/u/.muxos","c":"see /home/u/.muxos/y"}',
     );
   });
 
@@ -30,9 +30,9 @@ describe("rewriteText", () => {
 describe("rewriteDbValue", () => {
   test("a value that is a path is rewritten", () => {
     expect(rewriteDbValue("/home/u/.old/apps/a.png", MOVES)).toBe(
-      "/home/u/.equin/apps/a.png",
+      "/home/u/.muxos/apps/a.png",
     );
-    expect(rewriteDbValue("/home/u/.old", MOVES)).toBe("/home/u/.equin");
+    expect(rewriteDbValue("/home/u/.old", MOVES)).toBe("/home/u/.muxos");
   });
 
   test("a mention inside prose is history, left as written", () => {

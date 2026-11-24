@@ -33,7 +33,7 @@ const BACKGROUND_POOL_SIZE = PGBOUNCER_LANES.background.poolSize;
 // what runs out is PgBouncer's background pool, not the app's own.
 //
 // Needs the machine's PgBouncer serving the lanes (the background role and its
-// PgBouncer user), which every backend's boot converges — `./equin build`.
+// PgBouncer user), which every backend's boot converges — `./muxos build`.
 // ---------------------------------------------------------------------------
 
 const als = new AsyncLocalStorage<EntryContext>();

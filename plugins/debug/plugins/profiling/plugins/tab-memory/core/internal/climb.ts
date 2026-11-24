@@ -58,7 +58,7 @@ export const TAB_MEMORY_GROWTH = [
   "dom",
   /** Pages sampled through the window, but none of their figures explain it. */
   "native",
-  /** No page sampled itself through the window (not equin, or an old build). */
+  /** No page sampled itself through the window (not muxos, or an old build). */
   "unattributed",
 ] as const;
 export type TabMemoryGrowth = (typeof TAB_MEMORY_GROWTH)[number];

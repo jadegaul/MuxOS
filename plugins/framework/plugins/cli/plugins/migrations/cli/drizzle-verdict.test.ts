@@ -121,7 +121,7 @@ describe("drizzleVerdictKey", () => {
     const s = withText(snapshot, "bun.lock", (text) =>
       text.replace(
         '  "workspaces": {\n',
-        '  "workspaces": {\n    "plugins/verdict-probe": {\n      "name": "@equin/plugin-verdict-probe",\n    },\n',
+        '  "workspaces": {\n    "plugins/verdict-probe": {\n      "name": "@muxos/plugin-verdict-probe",\n    },\n',
       ),
     );
     expect((await drizzleVerdictKey(s, store)).key).toBe(base);

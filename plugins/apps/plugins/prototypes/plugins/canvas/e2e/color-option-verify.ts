@@ -14,7 +14,7 @@
 // prototype, left in the gallery for the next run.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/prototypes/plugins/canvas/e2e/color-option-verify.ts \
+//   ./muxos run plugins/apps/plugins/prototypes/plugins/canvas/e2e/color-option-verify.ts \
 //     [--name <prototype id> | --make-fixture] [--out <prefix>] [--headed]
 
 import { writeFileSync } from "node:fs";
@@ -299,7 +299,7 @@ await withBrowser(async (h) => {
     `${doc.status} ${/<html[^>]*>/.exec(html)?.[0] ?? ""}`,
   );
   console.log(
-    `check by hand: ./equin prototype options ${meta.name} prints ${option.name}  ${finalColor}`,
+    `check by hand: ./muxos prototype options ${meta.name} prints ${option.name}  ${finalColor}`,
   );
 
   // Open the picker once more for the screenshot of its popover.

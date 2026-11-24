@@ -3,7 +3,7 @@ import type { SymbolRef } from "@plugins/ui/plugins/icons/core";
 
 /** The site a page action belongs to: its section's title, and which pages it is on. */
 export interface PageActionSite {
-  /** The section title ("equin.ai"); actions sharing a label share a section. */
+  /** The section title ("MuxOS.app"); actions sharing a label share a section. */
   label: string;
   matches: (url: URL) => boolean;
 }

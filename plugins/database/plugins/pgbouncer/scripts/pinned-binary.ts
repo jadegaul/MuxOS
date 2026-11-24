@@ -20,7 +20,7 @@ export interface PinnedBinary {
  * install` that moves the package changes nothing a start runs. The first
  * fresh start on a machine pins the checkout's install. When the checkout declares
  * another one, the start says so and keeps the pinned binary: the switch is
- * `./equin deps pin pgbouncer-binary`, on purpose.
+ * `./muxos deps pin pgbouncer-binary`, on purpose.
  *
  * Imported lazily by `start.ts`: a release's compiled `pgbouncer-start` is
  * handed its vendored binary and never reaches the deps engine.
@@ -40,7 +40,7 @@ export async function pinnedBinary(): Promise<PinnedBinary> {
     case "differs":
       console.log(
         `pgbouncer: the checkout declares ${pgbouncerBinary.id} ${pinned.drift.checkout}, not the pinned ${ready.identity} — ` +
-          `keeping the pinned binary; switch with \`./equin deps pin ${pgbouncerBinary.id}\`, then restart PgBouncer`,
+          `keeping the pinned binary; switch with \`./muxos deps pin ${pgbouncerBinary.id}\`, then restart PgBouncer`,
       );
       break;
     case "failed":

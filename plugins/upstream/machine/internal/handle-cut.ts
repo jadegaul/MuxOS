@@ -14,7 +14,7 @@ import {
 const CUT_TIMEOUT_MS = 10 * 60_000;
 
 /**
- * `POST /api/upstream/release`: `./equin version cut`, in this backend's
+ * `POST /api/upstream/release`: `./muxos version cut`, in this backend's
  * checkout. The CLI IS the implementation — the button runs it rather than a
  * second copy of its checks, so the two can never disagree about what may be
  * released. On a worktree's backend the CLI refuses (a release is cut from

@@ -31,7 +31,7 @@ const run: CliAction<[], object> = async () => {
       const held = await heldDep(dep, dep.pin.holder);
       console.log(
         held.kind === "held"
-          ? `  pinned ${held.ready.identity} — what runs; \`./equin deps pin ${dep.id}\` switches it to this checkout's`
+          ? `  pinned ${held.ready.identity} — what runs; \`./muxos deps pin ${dep.id}\` switches it to this checkout's`
           : `  nothing pinned yet — the first start pins this checkout's install`,
       );
     }

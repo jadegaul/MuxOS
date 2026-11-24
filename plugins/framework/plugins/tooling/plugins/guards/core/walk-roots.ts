@@ -43,7 +43,7 @@ export interface WalkRoot {
   /**
    * A glob with ONE glob segment, which the shell expands into the entries of
    * `path` matching `segment`, each followed by `rest`. Judging only `path`
-   * would refuse `rg foo ~/.equin/logs/gateway/*.log` — a list of files — the
+   * would refuse `rg foo ~/.muxos/logs/gateway/*.log` — a list of files — the
    * same as `rg foo ~/.claude/projects/*`, a walk of every project; the
    * entries tell them apart.
    */

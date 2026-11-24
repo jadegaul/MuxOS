@@ -161,9 +161,9 @@ export function AddDeploymentDialog({
 
       <Field
         label="Hostnames"
-        hint="Comma-separated, e.g. equin.ai, www.equin.ai. Leave empty to serve on loopback only — a deployment with no hostname gets no Caddy site and is not internet-reachable."
+        hint="Comma-separated, e.g. MuxOS.app, www.MuxOS.app. Leave empty to serve on loopback only — a deployment with no hostname gets no Caddy site and is not internet-reachable."
       >
-        <Input keep={hostnamesKept} placeholder="equin.ai" />
+        <Input keep={hostnamesKept} placeholder="MuxOS.app" />
       </Field>
 
       <Field

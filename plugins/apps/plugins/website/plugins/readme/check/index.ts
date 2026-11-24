@@ -19,7 +19,7 @@ const filesInSync: Check = {
     return {
       ok: false,
       message: `Out of sync with what the README's renderer draws:\n${stale.map((p) => `  ${p}`).join("\n")}`,
-      hint: "Run `./equin run plugins/apps/plugins/website/plugins/readme/scripts/render.ts` and commit the result.",
+      hint: "Run `./muxos run plugins/apps/plugins/website/plugins/readme/scripts/render.ts` and commit the result.",
     };
   },
 };

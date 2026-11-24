@@ -4,7 +4,7 @@
  *
  * Point it at a conversation whose transcript contains the calls:
  *
- *   ./equin run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/plugins/tool-call/plugins/page-tools/e2e/page-tools-verify.ts \
+ *   ./muxos run plugins/conversations/plugins/conversation-view/plugins/jsonl-viewer/plugins/tool-call/plugins/page-tools/e2e/page-tools-verify.ts \
  *     --conv conv-1786847461-nwja
  *
  * A rendered row is recognized by what only the renderer paints: content beside
@@ -21,9 +21,9 @@ import {
 } from "@plugins/framework/plugins/tooling/plugins/e2e-harness/e2e";
 
 const TOOLS = [
-  "mcp__equin__read_page",
-  "mcp__equin__write_agent_note",
-  "mcp__equin__edit_page",
+  "mcp__muxos__read_page",
+  "mcp__muxos__write_agent_note",
+  "mcp__muxos__edit_page",
 ] as const;
 
 const convId = requireArg(
@@ -60,7 +60,7 @@ await withBrowser(async (h) => {
       .evaluate((el) => el.scrollIntoView({ block: "center" }));
     await page.waitForTimeout(1500);
     await page.screenshot({
-      path: `/tmp/page-tools-${tool.replace("mcp__equin__", "")}.png`,
+      path: `/tmp/page-tools-${tool.replace("mcp__muxos__", "")}.png`,
     });
   }
 
@@ -82,7 +82,7 @@ await withBrowser(async (h) => {
   // The write report is the page-specific half of these rows: how much of the
   // page the write actually moved. Open one write row and look for it.
   const writeBadge = page
-    .getByText("mcp__equin__write_agent_note", { exact: true })
+    .getByText("mcp__muxos__write_agent_note", { exact: true })
     .first();
   if ((await writeBadge.count()) > 0) {
     await writeBadge.evaluate((el) => el.scrollIntoView({ block: "center" }));

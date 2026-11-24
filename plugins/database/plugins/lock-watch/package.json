@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-database-lock-watch",
+  "name": "@muxos/plugin-database-lock-watch",
   "private": true,
   "version": "0.0.1"
 }

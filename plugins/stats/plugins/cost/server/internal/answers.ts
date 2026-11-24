@@ -28,7 +28,7 @@ import {
 // (`claude_usage_sources`: the repo scope, a title). `./served.ts` is only
 // wiring.
 //
-// - A "session" is a ledger SOURCE that is a conversation or a session equin
+// - A "session" is a ledger SOURCE that is a conversation or a session muxos
 //   did not launch (`conv:` / `session:` — a conversation's whole chain and
 //   its sub-agents are one). A `cli:` source (every one-shot call of one
 //   kind) is spend, not a session: it counts in the per-day cost and tokens,

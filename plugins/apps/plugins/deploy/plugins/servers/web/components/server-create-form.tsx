@@ -93,7 +93,7 @@ export function ServerCreateForm({
           bare
           keep={nameKept}
           className={fieldInputClass}
-          placeholder="e.g. equin-prod"
+          placeholder="e.g. muxos-prod"
         />
       </FieldShell>
       <FieldShell label="Host" required>

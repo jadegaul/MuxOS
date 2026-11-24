@@ -51,7 +51,7 @@ const readLocalAppPort = (): number => localAppPortFor(window.location);
 
 /**
  * The local app's address as a {@link DownloadLink}: on a local instance, the
- * port this page was served on; on equin.ai (and in the static render robots
+ * port this page was served on; on MuxOS.app (and in the static render robots
  * read), the port a fresh install takes — the site cannot know a visitor's.
  */
 export function LocalAppLink() {

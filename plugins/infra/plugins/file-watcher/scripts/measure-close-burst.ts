@@ -8,7 +8,7 @@
 // Bun runs those on the same worker pool as parcel's napi work, so a probe
 // that waits is a pool thread held by the watcher.
 //
-//   ./equin run plugins/infra/plugins/file-watcher/scripts/measure-close-burst.ts [--n 60] [--entries 40] [--rounds 3]
+//   ./muxos run plugins/infra/plugins/file-watcher/scripts/measure-close-burst.ts [--n 60] [--entries 40] [--rounds 3]
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";

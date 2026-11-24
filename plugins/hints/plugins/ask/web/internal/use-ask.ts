@@ -106,7 +106,7 @@ export function useAskQuestion(): {
     loading: (): AskSettings => ({ model: null, blocked: "Loading settings…" }),
     error: (): AskSettings => ({
       model: null,
-      blocked: "Ask equin's settings could not be read",
+      blocked: "Ask muxos's settings could not be read",
     }),
     ready: (c): AskSettings => ({
       model: normalizeModelChoice(c.model),
@@ -137,7 +137,7 @@ export function useAskQuestion(): {
       toast({
         type: "ask-start-failed",
         category: "conversations",
-        title: "equin can't be asked right now",
+        title: "muxos can't be asked right now",
         description: result.message,
         variant: "error",
       });

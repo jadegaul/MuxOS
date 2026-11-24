@@ -15,7 +15,7 @@ import { onMainMoved } from "./reaction";
 export const pinnedDepsWatcher = defineFileWatcher({
   name: "deps.pinned",
   description:
-    "While the health report reads the pinned binaries' row, watches the pinned dependencies' cache dirs and their review records, so a moved pin (`./equin deps pin`), a daemon's fresh start (its running hold) or a stay (`./equin deps pin-stay`) shows at once.",
+    "While the health report reads the pinned binaries' row, watches the pinned dependencies' cache dirs and their review records, so a moved pin (`./muxos deps pin`), a daemon's fresh start (its running hold) or a stay (`./muxos deps pin-stay`) shows at once.",
   // The payloads: only the holds and state files beside them matter.
   ignore: ["**/env/**"],
 });
@@ -23,7 +23,7 @@ export const pinnedDepsWatcher = defineFileWatcher({
 /**
  * The pinned dependencies against main, pushed. Its inputs change two ways,
  * both observed: main's checkout moves (its bun.lock — the ref reaction) and
- * the pins' holds move (`./equin deps pin`, a daemon's fresh start — a
+ * the pins' holds move (`./muxos deps pin`, a daemon's fresh start — a
  * watcher on just the pinned dependencies' cache dirs, a handful of small
  * files). External: nothing is DB-backed.
  */

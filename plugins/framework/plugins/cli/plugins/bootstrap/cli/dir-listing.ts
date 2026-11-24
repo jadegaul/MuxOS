@@ -2,7 +2,7 @@
  * The workspace roots' directory listing, kept between runs so a walk lists
  * only the directories that changed.
  *
- * `ensureDeps` runs in EVERY `./equin` process, and the set of dep inputs it
+ * `ensureDeps` runs in EVERY `./muxos` process, and the set of dep inputs it
  * fingerprints is "every `package.json` (and `provision/index.ts`) at any depth
  * under the workspace roots". Finding them was a readdir of every directory
  * under `plugins/` — 8,307 dirs and 19.7k files on 2026-11-06, ~0.5 s of mostly

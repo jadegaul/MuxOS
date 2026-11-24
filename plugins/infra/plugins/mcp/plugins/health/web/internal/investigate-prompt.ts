@@ -5,7 +5,7 @@ import {
 
 /**
  * The first turn of the agent the MCP server row's Investigate launches: what
- * the server's own requests saw, and where to look. Its own `equin` tools
+ * the server's own requests saw, and where to look. Its own `muxos` tools
  * ride the server under investigation, so it is told they may be missing.
  */
 export function buildMcpInvestigatePrompt(
@@ -32,7 +32,7 @@ export function buildMcpInvestigatePrompt(
   }
   parts.push(
     "",
-    `Find the root cause and fix it structurally. Your own \`${MCP_SERVER_NAME}\` MCP tools go through this server, so they may be missing or fail — work from the backend's server log and Debug → Reports (the \`debug\` skill says where each is), and reproduce with \`./equin test plugins/infra/plugins/mcp\`. Then confirm the row reads healthy again.`,
+    `Find the root cause and fix it structurally. Your own \`${MCP_SERVER_NAME}\` MCP tools go through this server, so they may be missing or fail — work from the backend's server log and Debug → Reports (the \`debug\` skill says where each is), and reproduce with \`./muxos test plugins/infra/plugins/mcp\`. Then confirm the row reads healthy again.`,
   );
   const context = extra.trim();
   if (context) parts.push("", "## Context", "", context);

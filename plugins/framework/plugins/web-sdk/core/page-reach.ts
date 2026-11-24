@@ -11,7 +11,7 @@ import {
 // device goes offline or to sleep, or the page is leaving. The import then rejects
 // ("Failed to fetch dynamically imported module", WebKit's "Importing a module
 // script failed") exactly as it would for a file the server failed to serve.
-// equin.ai's edge access log showed it is the former: every such failure lined
+// MuxOS.app's edge access log showed it is the former: every such failure lined
 // up with the visitor's browser cancelling its requests or going silent until
 // QUIC's idle timeout, never with the box failing to answer (2026-11-19). A demo
 // boot is ~2,700 files over a minute or two, so a visitor who switches apps
@@ -27,7 +27,7 @@ import {
 // A sleep fires none of those events: a laptop closed with the tab in front
 // stays "visible" and "online" throughout. Its requests in flight die with
 // their connections (the server idles them out while the machine sleeps) and
-// reject the moment it wakes. equin.ai's edge log showed exactly that for a
+// reject the moment it wakes. MuxOS.app's edge log showed exactly that for a
 // Firefox visitor on /foundations (2026-11-19): the page's load stopped
 // mid-way at 13:34:43, nothing for 39 minutes, then at 14:13:54 the rest of
 // its chunks arrived and the shared-ws worker and an idle page-body preload

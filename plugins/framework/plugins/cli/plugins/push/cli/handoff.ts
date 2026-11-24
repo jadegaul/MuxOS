@@ -82,7 +82,7 @@ export function takeLandPayload(): LandPayload | undefined {
     throw new Error(
       `push: this land phase cannot read the hand-off it was given (${raw}): ` +
         `${parsed.error.message}. The push that spawned it is a different version ` +
-        `of handoff.ts; re-run ./equin push.`,
+        `of handoff.ts; re-run ./muxos push.`,
     );
   }
   return parsed.data;
@@ -153,7 +153,7 @@ export type LandResult =
  * mutex, right after the rebase — nothing of the driver's own runs between the
  * rebase and this, nor after it but the record.
  *
- * Spawned through the `./equin` script, never `process.execPath`: the script
+ * Spawned through the `./muxos` script, never `process.execPath`: the script
  * resolves the Bun to run from the rebased tree, and the driver's own executable
  * is exactly the kind of path a rebase may have moved. Frozen lockfile, since the
  * child's bootstrap installs what the rebase brought in and a mid-push tree must

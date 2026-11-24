@@ -7,7 +7,7 @@
 // (`[data-pane-id]`) at each step.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/agent-manager/plugins/pages-nav/e2e/pages-tree-verify.ts \
+//   ./muxos run plugins/apps/plugins/agent-manager/plugins/pages-nav/e2e/pages-tree-verify.ts \
 //     --conv <conversationId> [--url http://<worktree>.localhost:<port>] [--headed]
 
 import {

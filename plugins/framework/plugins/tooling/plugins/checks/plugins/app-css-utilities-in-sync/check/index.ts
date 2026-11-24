@@ -31,7 +31,7 @@ const check: Check = {
       return {
         ok: false,
         message: `app.css custom-@utility markers are invalid: ${err instanceof Error ? err.message : String(err)}`,
-        hint: "Fix the `/* twmerge: … */` marker in app.css, then run `./equin build`.",
+        hint: "Fix the `/* twmerge: … */` marker in app.css, then run `./muxos build`.",
       };
     }
 
@@ -39,7 +39,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     if (
@@ -49,7 +49,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is out of sync with the app.css @utility markers`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     return { ok: true };

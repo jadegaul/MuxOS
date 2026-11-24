@@ -2,9 +2,9 @@ import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
  * `data-dir` is a GROUP: it routes and never runs. `migrate` moves an install
- * still on the legacy data root onto `~/.equin` — a one-shot the user runs from
+ * still on the legacy data root onto `~/.muxos` — a one-shot the user runs from
  * a terminal while nothing else of the app is running. Design:
- * research/2026-10-26-global-equin-data-dir-migration-v2.md
+ * research/2026-10-26-global-muxos-data-dir-migration-v2.md
  */
 export default defineCliCommand({
   name: "data-dir",

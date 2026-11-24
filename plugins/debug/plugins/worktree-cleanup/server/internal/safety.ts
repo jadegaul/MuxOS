@@ -17,12 +17,12 @@ import { spawnCaptured } from "@plugins/infra/plugins/spawn/core";
 // ahead-of-upstream, not merged into main. Reaping removes the worktree DIR and
 // leaves every ref in the main repo standing (nothing in reapAttempt, nor
 // anywhere else, deletes a branch), so a branch's commits survive the reap and
-// `git worktree add <path> <branch>` restores them. A `./equin push` that
+// `git worktree add <path> <branch>` restores them. A `./muxos push` that
 // committed but failed to merge is exactly this case: its commit is on
 // `claude-web/<id>`, which outlives the checkout.
 //
 // This used to carry an `unpushedCount` read from `# branch.ab`, with a missing
-// upstream read as "never pushed". `./equin push` lands work by merging
+// upstream read as "never pushed". `./muxos push` lands work by merging
 // into local main and many branches never get an upstream, so ~200 clean,
 // finished checkouts failed that term on every hourly sweep and none was ever
 // reaped — while the term protected nothing the branch ref does not already keep.

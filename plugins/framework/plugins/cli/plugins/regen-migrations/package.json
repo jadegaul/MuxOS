@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-cli-regen-migrations",
+  "name": "@muxos/plugin-framework-cli-regen-migrations",
   "private": true,
   "version": "0.0.1",
-  "description": "`./equin regen-migrations` — discard branch-local migrations and re-generate them against the rebased schema, for the post-rebase normalize step in `push`; aborts on hand-edited SQL."
+  "description": "`./muxos regen-migrations` \u2014 discard branch-local migrations and re-generate them against the rebased schema, for the post-rebase normalize step in `push`; aborts on hand-edited SQL."
 }

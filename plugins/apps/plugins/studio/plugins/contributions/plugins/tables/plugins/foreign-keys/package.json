@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-apps-studio-contributions-tables-foreign-keys",
+  "name": "@muxos/plugin-apps-studio-contributions-tables-foreign-keys",
   "description": "FK relationships section (outgoing and incoming) in the table detail view.",
   "private": true,
   "version": "0.0.1"

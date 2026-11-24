@@ -12,7 +12,7 @@ function repoWord(n: number): string {
   return `${n} ${n === 1 ? "repo" : "repos"}`;
 }
 
-/** "equinai/equin: <why>" for the forwarders in `state`. */
+/** "jadegaul/MuxOS: <why>" for the forwarders in `state`. */
 function named(fs: readonly ForwarderStatus[]): string {
   return fs
     .map((f) => (f.detail === null ? f.repo : `${f.repo}: ${f.detail}`))

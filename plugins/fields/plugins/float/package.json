@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-float",
+  "name": "@muxos/plugin-fields-float",
   "version": "0.0.1",
   "private": true,
-  "description": "Float field type: identity only, extends number — reuses number's cell and filter via the extends chain."
+  "description": "Float field type: identity only, extends number \u2014 reuses number's cell and filter via the extends chain."
 }

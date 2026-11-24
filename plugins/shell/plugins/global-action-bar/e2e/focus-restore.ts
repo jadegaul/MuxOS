@@ -10,7 +10,7 @@
 // Also checks the mouse-only path (outside click). Writes `<out>-escape.png`.
 //
 // Usage:
-//   ./equin run plugins/shell/plugins/global-action-bar/e2e/focus-restore.ts \
+//   ./muxos run plugins/shell/plugins/global-action-bar/e2e/focus-restore.ts \
 //     [--out /tmp/focus-restore]
 
 import {

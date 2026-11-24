@@ -1,4 +1,4 @@
-// Shared CLI machinery, not a command (no default export): what `./equin push
+// Shared CLI machinery, not a command (no default export): what `./muxos push
 // --fixes-report` asks of main's reports before it stamps the trailer.
 export {
   fixesReportTrailer,

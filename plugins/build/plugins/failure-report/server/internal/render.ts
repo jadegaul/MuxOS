@@ -43,9 +43,9 @@ export function renderBuildFailedTask(
     "**Where to dig:** the run's transcript (Build → this run: each step's output, " +
       "the failing one last) and its ledger row " +
       `(\`select * from build_runs where id = '${d.runId}'\` via \`query_db\` on main). ` +
-      "Reproduce from a worktree on main's commit with `./equin build`.",
+      "Reproduce from a worktree on main's commit with `./muxos build`.",
     "",
-    "Find the root cause and fix it. A fix that lands with `./equin push --fixes-report <this report's id>` " +
+    "Find the root cause and fix it. A fix that lands with `./muxos push --fixes-report <this report's id>` " +
       "is marked Fixed once main builds it, and Regressed if this failure comes back.",
     "",
     `**Occurrences:** ${row.count}`,

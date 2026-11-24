@@ -385,7 +385,7 @@ describe("visitor access per tuple", () => {
 });
 
 // The answer trail a visitor's tab asks when its sub went unanswered
-// (report-1794962221-4ztwpq: equin.ai's visitors could only report "HTTP 403").
+// (report-1794962221-4ztwpq: MuxOS.app's visitors could only report "HTTP 403").
 const trail = (key: string, params: Record<string, string> = {}) =>
   new Request(
     `http://backend/api/resources/_answer?${new URLSearchParams({

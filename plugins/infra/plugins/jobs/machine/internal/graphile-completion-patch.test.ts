@@ -6,8 +6,8 @@
  * `add_job` transaction, graphile's batch retry never ran (a stray `break`), and
  * the one `40P01` stopped main's `wide` runner and the cron schedule with it.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
@@ -157,14 +157,14 @@ describe("graphile completion patch", () => {
   }, 30_000);
 
   // `job:complete` fires before the outcome is written; the patch's
-  // `equin:outcomeWritten` fires after, which is what the slot ledger announces
+  // `muxos:outcomeWritten` fires after, which is what the slot ledger announces
   // database-visible activity on. Read the row the instant the event fires.
-  test("equin:outcomeWritten fires once the outcome is in the database", async () => {
+  test("muxos:outcomeWritten fires once the outcome is in the database", async () => {
     const { pool } = faultyPool(0);
     const events: WorkerEvents = new EventEmitter();
     const seen: Promise<{ failed: boolean; row: unknown }>[] = [];
     (events as unknown as EventEmitter).on(
-      "equin:outcomeWritten",
+      "muxos:outcomeWritten",
       ({ job, failed }: { job: { id: string }; failed: boolean }) => {
         seen.push(
           admin

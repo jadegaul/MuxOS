@@ -68,7 +68,7 @@ const MINUTE = 60_000;
 
 /**
  * The oldest macOS the addon loads on — upstream's prebuild's floor, and the
- * `LSMinimumSystemVersion` equin's app bundles declare. Without it clang stamps
+ * `LSMinimumSystemVersion` muxos's app bundles declare. Without it clang stamps
  * the build host's SDK version, so a release built on a new Mac refuses to
  * load (`dlopen`) on any older one.
  */
@@ -121,7 +121,7 @@ function darwinOnly(
  * plugin's `package.json` (the Node-API headers' version) and
  * `$CXX --version`. Every install ensures it and copies it into the
  * checkout's `@parcel/watcher/build/Release/` (this plugin's `provision/`),
- * and `./equin build` refreshes it there; the patched `index.js` loads it on
+ * and `./muxos build` refreshes it there; the patched `index.js` loads it on
  * darwin in place of the prebuild, which it never falls back to
  * (`linkParcelWatcherAddon`, the `cli/` barrel).
  *
@@ -166,7 +166,7 @@ export const parcelWatcherAddon = defineDep({
       );
       if (!kqueue.includes(PATCH_MARKER)) {
         throw new Error(
-          `${pkg} holds upstream's kqueue backend, not the patched one: run \`./equin install\` so bun applies patches/@parcel%2Fwatcher@*.patch`,
+          `${pkg} holds upstream's kqueue backend, not the patched one: run \`./muxos install\` so bun applies patches/@parcel%2Fwatcher@*.patch`,
         );
       }
       // node-addon-api is @parcel/watcher's own dependency, resolved from it;

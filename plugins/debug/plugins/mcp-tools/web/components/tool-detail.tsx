@@ -182,7 +182,7 @@ function VisibleTo({ tool }: { tool: McpCatalogTool }): ReactElement {
         <>
           {VISIBILITY_LABEL.everywhere} in the default scope.
           {tool.unattached
-            ? " Also served to sessions equin did not launch (a claude started in a terminal), with no conversation."
+            ? " Also served to sessions muxos did not launch (a claude started in a terminal), with no conversation."
             : ""}
         </>
       );

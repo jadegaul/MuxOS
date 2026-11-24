@@ -1,8 +1,10 @@
 {
-  "name": "equin",
+  "name": "muxos",
   "private": true,
   "license": "Apache-2.0",
-  "workspaces": ["plugins/**"],
+  "workspaces": [
+    "plugins/**"
+  ],
   "scripts": {
     "playwright": "playwright",
     "test:dom": "vitest run",
@@ -62,7 +64,10 @@
     "vitest": "^5.1.1"
   },
   "dependencyPolicy": {
-    "ownScopes": ["@equin"],
+    "ownScopes": [
+      "@muxos",
+      "@equin"
+    ],
     "groups": [
       {
         "id": "lexical",
@@ -90,21 +95,27 @@
     ],
     "holds": [
       {
-        "names": ["drizzle-orm"],
+        "names": [
+          "drizzle-orm"
+        ],
         "below": "0.39.0",
         "reason": "Two changes need our side first (task-1793083762-bu58fd). 0.39 types select().from(source) as a conditional over the source, which TypeScript cannot resolve for a generic table: infra/retention's sweepExpired (select().from(T) feeding T's rows to beforeDelete) fails type-check on 0.43.1 and 0.45.4, and the cast-free fix needs a typed path for generic tables. 0.44 then wraps every driver error in DrizzleQueryError (the Postgres error under .cause), and ~21 production files classify Postgres errors by err.code / message, which would silently misclassify (0.45.4: six tests failed). Checked 2026-10-27. Lift with that task.",
         "issue": "https://github.com/drizzle-team/drizzle-orm/releases/tag/0.44.0",
         "reviewBy": "2027-01-25"
       },
       {
-        "names": ["@vitejs/plugin-react"],
+        "names": [
+          "@vitejs/plugin-react"
+        ],
         "below": "6.0.0",
         "reason": "plugin-react 6.0 removed every Babel feature, the `babel` option included (vitejs/vite-plugin-react#1123): Babel plugins move to @rolldown/plugin-babel (reactCompilerPreset) or the experimental native compiler. Our React Compiler reaches the build through that option (web-core vite-contributions, web-artifacts vite-builder), so 6.1.2 failed type-check on 2026-10-27; moving changes how every web artifact compiles and is a build-pipeline change of its own (task-1793076072-gwttlf). Lift with that migration. (Vite 8 itself is in: 5.x peers it.)",
         "issue": "https://github.com/vitejs/vite-plugin-react/pull/1123",
         "reviewBy": "2027-01-25"
       },
       {
-        "names": ["typescript"],
+        "names": [
+          "typescript"
+        ],
         "below": "7.0.0",
         "reason": "TypeScript 7.0 ships no programmatic compiler API (its main entry exports only `version`; the API is under `typescript/unstable/*` until 7.1). typescript-eslint, which runs our type-aware lint in the type-check check, does not support TS 7 (closed as not planned in #12518, tracked in #10940), and our 25 compiler-API users (codegen, scanners) crash on `ts.ScriptTarget`. Checked 2026-10-19 against 7.0.2: regen-generated fails with `undefined is not an object (evaluating 'ts.ScriptTarget.Latest')`. Lift when typescript-eslint supports TS 7.",
         "issue": "https://github.com/typescript-eslint/typescript-eslint/issues/10940",

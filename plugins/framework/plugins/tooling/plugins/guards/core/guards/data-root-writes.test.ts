@@ -19,7 +19,7 @@ function verdict(input: Input): Verdict {
     null,
     null,
     WT,
-    "/tmp/equin-scratch/conv-1-abc",
+    "/tmp/muxos-scratch/conv-1-abc",
   );
   return (dataRootWritesGuard.check(input, ctx) ?? {
     kind: "allow",
@@ -40,7 +40,7 @@ describe("data-root-writes guard", () => {
     expect(blocks({ file_path: `${ROOT}/tmp-probe-8b6a96-d8cdc3.png` })).toBe(
       true,
     );
-    expect(cmd(`./equin run x.ts --out ${ROOT}/shots`)).toBe(true);
+    expect(cmd(`./muxos run x.ts --out ${ROOT}/shots`)).toBe(true);
     expect(cmd(`echo x > ${ROOT}/notes.txt`)).toBe(true);
     expect(cmd(`bash -c 'touch ${ROOT}/x'`)).toBe(true);
   });

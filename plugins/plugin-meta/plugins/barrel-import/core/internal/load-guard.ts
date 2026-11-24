@@ -47,12 +47,12 @@ import { envName } from "@plugins/infra/plugins/launcher/plugins/env-names/core"
  * evaluator identity):
  *
  * - `NODE_ENV` — React picks its build by it as it evaluates;
- * - the data root, its override `EQUIN_DIR` and its declared home layout
- *   `EQUIN_DATA_ROOT_LAYOUT` (infra/paths) — every data dir's path is
+ * - the data root, its override `MUXOS_DIR` and its declared home layout
+ *   `MUXOS_DATA_ROOT_LAYOUT` (infra/paths) — every data dir's path is
  *   resolved from them, and path constants are frozen at import by design
  *   (`database/embedded`'s cluster dir);
- * - `EQUIN_PG_PORT` / `EQUIN_PG_SOCKET_DIR` — the cluster's address, and
- *   `EQUIN_MIGRATIONS_DIR` — a release's vendored migrations: the same kind of
+ * - `MUXOS_PG_PORT` / `MUXOS_PG_SOCKET_DIR` — the cluster's address, and
+ *   `MUXOS_MIGRATIONS_DIR` — a release's vendored migrations: the same kind of
  *   import-frozen constant, set by the launcher before anything loads.
  *
  * Each is a fact of the machine or the install, the same for every process
@@ -90,7 +90,7 @@ export class BarrelLoadReadError extends Error {
   override name = "BarrelLoadReadError";
 }
 
-const NAMESPACE = "equin-barrel-load";
+const NAMESPACE = "muxos-barrel-load";
 const SELF = fileURLToPath(import.meta.url);
 
 /** Barrels a guarded import already evaluated: their modules never run again. */

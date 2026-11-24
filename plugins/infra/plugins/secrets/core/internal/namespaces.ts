@@ -39,4 +39,4 @@ export function defineSecretNamespace(
  * central's store. The caller's own claim — an accident guard against our own
  * code writing another instance's secrets, not authentication.
  */
-export const SECRETS_CALLER_HEADER = "x-equin-secrets-caller";
+export const SECRETS_CALLER_HEADER = "x-muxos-secrets-caller";

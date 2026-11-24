@@ -1,7 +1,7 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * The repo-tree half of `./equin build`'s codegen, standalone. `push`
+ * The repo-tree half of `./muxos build`'s codegen, standalone. `push`
  * needs it after a rebase — the merge driver may have auto-resolved a generated
  * file to a side that no longer matches the merged sources — and paying for a
  * whole build there would mean a build lock, a Postgres wait and a DB fork for
@@ -14,7 +14,7 @@ export default defineCliCommand({
     "plugin registries, plugin docs (compact/details/CLAUDE.md autogen blocks), " +
     "the reorderable-slots / data-views / token-group-vars manifests, the icon " +
     "names derived from the installed @iconify-json sets, and config origins. " +
-    "This is the SAME ordered repo-tree pipeline `./equin build` runs " +
+    "This is the SAME ordered repo-tree pipeline `./muxos build` runs " +
     "(shared via codegen core), " +
     "so a full build immediately after is a no-op. " +
     "Used by the post-rebase normalize step in `push`. Idempotent.",

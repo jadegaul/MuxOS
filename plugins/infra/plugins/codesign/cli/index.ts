@@ -1,7 +1,7 @@
 import { defineCliCommand } from "@plugins/framework/plugins/cli/core";
 
 /**
- * `./equin codesign status|reset` — which identity this machine signs the
+ * `./muxos codesign status|reset` — which identity this machine signs the
  * gateway with, and starting the local one over.
  */
 export default defineCliCommand({
@@ -18,7 +18,7 @@ export default defineCliCommand({
     defineCliCommand<[], object>({
       name: "reset",
       description:
-        "Delete this machine's local code-signing identity (state/codesign/local). The next gateway build (`./equin start`) creates a new one and re-signs; macOS then asks again for every permission the gateway had.",
+        "Delete this machine's local code-signing identity (state/codesign/local). The next gateway build (`./muxos start`) creates a new one and re-signs; macOS then asks again for every permission the gateway had.",
       run: () => import("./internal/reset"),
     }),
   ],

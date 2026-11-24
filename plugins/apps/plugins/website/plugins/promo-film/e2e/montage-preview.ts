@@ -2,7 +2,7 @@
 // real time, unrecorded, and saves a still after each window lands — to judge
 // a layout (`MONTAGE` in internal/segments.ts) before a desktop take.
 //
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/montage-preview.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/montage-preview.ts \
 //     --composition promo-film [--out <dir>]   # default: a fresh mkdtemp dir
 //
 // It un-hides Circle (as the desktop take does): run it after the prototype

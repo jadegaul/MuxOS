@@ -120,7 +120,7 @@ export async function serve({
   // ── Slow file calls (fs-wait) ───────────────────────────────────
   // A process root names its own fs-wait record, once: this one is a serving
   // backend. The CLI root (`framework/cli/bin/cli.ts`) does the same for every
-  // `./equin <verb>`, which is also where an `exec` boot (`runExec`) runs — so
+  // `./muxos <verb>`, which is also where an `exec` boot (`runExec`) runs — so
   // the plugin graph never names the process, and no process gets two names.
   recordFsWaits({ process: "backend", namespace: runtimeNamespace() });
 

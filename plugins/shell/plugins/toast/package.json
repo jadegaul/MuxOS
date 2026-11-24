@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-shell-toast",
+  "name": "@muxos/plugin-shell-toast",
   "private": true,
   "version": "0.0.1",
   "dependencies": {

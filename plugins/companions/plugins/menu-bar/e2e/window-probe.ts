@@ -1,7 +1,7 @@
 /**
  * An installed app's window keeps to its namespace, probed on the real helper
  * (research/2026-10-29-menu-bar-app-window-main-frame-gate.md, Verification):
- * this checkout's `equin-desktop` runs `probe-window` on this checkout's
+ * this checkout's `muxos-desktop` runs `probe-window` on this checkout's
  * deploy — the real app window (`window::build_window`: its native main-frame
  * gate and hand-off burst gate, on WebKit), hidden, with nothing handed to the
  * browser. The helper evaluates a navigator script in the window's main frame
@@ -19,7 +19,7 @@
  *   the whole run       no page off the namespace ever loaded
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/companions/plugins/menu-bar/e2e/window-probe.ts
+ *   ./muxos run plugins/companions/plugins/menu-bar/e2e/window-probe.ts
  */
 import { pathUrl } from "@plugins/framework/plugins/tooling/plugins/e2e-harness/e2e";
 import { runHelperProbe } from "./helper-probe";

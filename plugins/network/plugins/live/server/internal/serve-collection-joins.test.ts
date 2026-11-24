@@ -14,7 +14,7 @@
  * - A4 / T2: every misdeclared join or override throws at module eval, or
  *   does not compile.
  *
- * Run: `./equin test plugins/network/plugins/live`.
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { describe, expect, test } from "bun:test";

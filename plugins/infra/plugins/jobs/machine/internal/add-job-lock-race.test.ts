@@ -9,8 +9,8 @@
  * `add_job` return an all-NULL record — `watch.ingest` failed on
  * `column "id": expected string, received null`. `insertJobRow` calls again.
  *
- * Run: `./equin test plugins/infra/plugins/jobs`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/infra/plugins/jobs`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

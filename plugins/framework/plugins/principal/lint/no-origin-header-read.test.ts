@@ -18,7 +18,7 @@ ruleTester.run("no-origin-header-read", rule, {
     { code: `url.searchParams.get("origin");`, filename: FILE },
     { code: `map.get("origin");`, filename: FILE },
     { code: `req.headers.get(name);`, filename: FILE },
-    { code: `req.headers.get("x-equin-principal");`, filename: FILE },
+    { code: `req.headers.get("x-muxos-principal");`, filename: FILE },
   ],
   invalid: [
     {

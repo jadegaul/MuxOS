@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-framework-tooling-e2e-harness-page-ready",
+  "name": "@muxos/plugin-framework-tooling-e2e-harness-page-ready",
   "private": true,
   "version": "0.0.1"
 }

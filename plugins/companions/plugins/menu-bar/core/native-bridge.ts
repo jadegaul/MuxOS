@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /**
- * What the native helper (`menu-bar/rust`, the `equin-desktop` tray) can do on
+ * What the native helper (`menu-bar/rust`, the `muxos-desktop` tray) can do on
  * this machine. A capability the platform lacks is `false`, and the panel hides
  * the UI that would use it — never fakes it.
  */
@@ -63,11 +63,11 @@ export const NativeAppsSchema: z.ZodType<NativeApps> = z.object({
 });
 
 /**
- * The bridge the native helper injects as `window.equinNative` — in its panel
+ * The bridge the native helper injects as `window.muxosNative` — in its panel
  * window only (app windows and other origins get none). The helper implements
  * exactly this; every method is asynchronous IPC.
  */
-export interface EquinNativeBridge {
+export interface MuxOSNativeBridge {
   hostInfo(): Promise<unknown>;
   setAttention(on: boolean): Promise<void>;
   notify(notification: NativeNotification): Promise<void>;
@@ -82,7 +82,7 @@ export interface EquinNativeBridge {
 }
 
 /**
- * The method names {@link EquinNativeBridge} must carry, checked at the
+ * The method names {@link MuxOSNativeBridge} must carry, checked at the
  * boundary. `apps` / `pinApp` are checked only when `hostInfo()` says the
  * helper keeps apps (a helper built before them has neither).
  */
@@ -94,7 +94,7 @@ export const BRIDGE_METHODS = [
   "launchApp",
   "hidePanel",
   "setPanelHeight",
-] as const satisfies readonly (keyof EquinNativeBridge)[];
+] as const satisfies readonly (keyof MuxOSNativeBridge)[];
 
 /** Parses `hostInfo()`'s untrusted answer: anything else is a broken bridge. */
 export const NativeHostInfoSchema: z.ZodType<NativeHostInfo> = z.object({

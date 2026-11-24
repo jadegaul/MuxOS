@@ -17,7 +17,7 @@ index d8f277f..d31d441 100644
 @@ -1,5 +1,14 @@
  const manualPrepare = false;
  export async function batchCompleteJobs(compiledSharedOptions, withPgClient, poolId, jobs) {
-+    // equin patch: one row per transaction. A multi-row DELETE holds each row it
++    // muxos patch: one row per transaction. A multi-row DELETE holds each row it
 +    // has reached while waiting on the next, so it deadlocks against cron's
 +    // multi-row transaction, which takes the same rows in another order.
 +    if (jobs.length > 1) {
@@ -33,11 +33,11 @@ index d8f277f..d31d441 100644
              }));
          }
      }
-+    // equin patch: announce each outcome once it is in the database. graphile
++    // muxos patch: announce each outcome once it is in the database. graphile
 +    // emits `job:complete` before this write lands, so a reader that must see
 +    // the row gone (or its serial lane released) listens here instead.
 +    for (const job of jobs) {
-+        compiledSharedOptions.events.emit("equin:outcomeWritten", { job, failed: false });
++        compiledSharedOptions.events.emit("muxos:outcomeWritten", { job, failed: false });
 +    }
  }
  //# sourceMappingURL=completeJobs.js.map
@@ -48,7 +48,7 @@ index 45b180e..38bc483 100644
 +++ b/dist/sql/failJobs.js
 @@ -1,4 +1,11 @@
  export async function batchFailJobs(compiledSharedOptions, withPgClient, poolId, specs) {
-+    // equin patch: one row per transaction, for the same reason as batchCompleteJobs.
++    // muxos patch: one row per transaction, for the same reason as batchCompleteJobs.
 +    if (specs.length > 1) {
 +        for (const spec of specs) {
 +            await batchFailJobs(compiledSharedOptions, withPgClient, poolId, [spec]);
@@ -62,10 +62,10 @@ index 45b180e..38bc483 100644
              name: !preparedStatements ? undefined : `fail_job/${workerSchema}`,
          }));
      }
-+    // equin patch: announce each outcome once it is in the database, as
++    // muxos patch: announce each outcome once it is in the database, as
 +    // batchCompleteJobs does — the row is unlocked for its retry, or dead.
 +    for (const { job } of specs) {
-+        compiledSharedOptions.events.emit("equin:outcomeWritten", { job, failed: true });
++        compiledSharedOptions.events.emit("muxos:outcomeWritten", { job, failed: true });
 +    }
  }
  export async function failJobs(compiledSharedOptions, withPgClient, poolId, jobs, message) {

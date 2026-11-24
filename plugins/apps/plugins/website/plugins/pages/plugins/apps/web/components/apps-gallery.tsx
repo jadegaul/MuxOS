@@ -6,7 +6,7 @@ import { Theme } from "@plugins/primitives/plugins/css/plugins/theme-boundary/we
 import { subThemeScope } from "@plugins/primitives/plugins/css/plugins/ui-kit/core";
 import { CATEGORIES, type AppCategoryId } from "../../core";
 import { APPS, type CatalogApp } from "../internal/catalog";
-import { equinGalleryTheme } from "../internal/theme";
+import { muxosGalleryTheme } from "../internal/theme";
 import { AppCard } from "./app-card";
 import "./apps-gallery.css";
 
@@ -52,11 +52,11 @@ export function AppsGallery({
   ];
 
   return (
-    // The gallery's own sizes over the site's (`equinGalleryTheme`). Not a
+    // The gallery's own sizes over the site's (`muxosGalleryTheme`). Not a
     // band of its own: it sits in the page body's band with the closing block,
     // and its vertical score (the chip row's air, each group's) is the
     // gallery's, declared in `apps-gallery.css`.
-    <Theme name={subThemeScope(equinGalleryTheme)} surface="none">
+    <Theme name={subThemeScope(muxosGalleryTheme)} surface="none">
       <Stack
         direction="row"
         gap="xs"

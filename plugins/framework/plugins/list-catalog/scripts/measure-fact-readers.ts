@@ -4,7 +4,7 @@
  * list directly touch a CODE field of its entries — the size of the edit stage
  * 3 (code on use) would make, since a reader of facts cannot hold code.
  *
- *   ./equin run plugins/framework/plugins/list-catalog/scripts/measure-fact-readers.ts [--list]
+ *   ./muxos run plugins/framework/plugins/list-catalog/scripts/measure-fact-readers.ts [--list]
  *
  * How: every file calling `.useContributions()` (the direct read of a web
  * list) is type-checked twice in memory, in one TypeScript program over the

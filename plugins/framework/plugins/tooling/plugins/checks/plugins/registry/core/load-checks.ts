@@ -75,7 +75,7 @@ export async function loadChecks(): Promise<LoadedCheck[]> {
   // `strict`: a check whose module fails to load (or exports no check) is not
   // a check that passed — skipped with a warning, it would read as green.
   // A registry line whose `check/` was deleted fails here too (naming it)
-  // until `./equin build` regenerates the registry, which a build does before
+  // until `./muxos build` regenerates the registry, which a build does before
   // it checks.
   const loaded = await loadCollectedDirEntries<Check>(checkEntries, {
     isItem: isCheck,

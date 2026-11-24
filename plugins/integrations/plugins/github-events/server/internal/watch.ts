@@ -10,7 +10,7 @@ export interface WatchedRunFailure {
 }
 
 /**
- * One GitHub workflow equin follows, declared by the plugin that owns the
+ * One GitHub workflow muxos follows, declared by the plugin that owns the
  * repo (the installer's release workflow, the embedded Postgres builds…).
  * Only events of a watched workflow (and, with `releases`, the repo's
  * Releases) are stored; everything else a forwarder delivers is dropped.

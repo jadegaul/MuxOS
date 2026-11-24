@@ -119,7 +119,7 @@ describe("main-writes guard", () => {
     test("a sed script whose text contains `..` sequences (the reported false positive)", () => {
       // `path.resolve` used to normalise the `..` inside the SCRIPT and land it
       // under the repo root; the file actually edited is in the worktree.
-      const cmd = `sed -i '' 's|resolve(HERE, "../../../..");|const REPO_ROOT = resolve(HERE, "..");|' cli/equin-cli.ts`;
+      const cmd = `sed -i '' 's|resolve(HERE, "../../../..");|const REPO_ROOT = resolve(HERE, "..");|' cli/muxos-cli.ts`;
       expect(blocks(cmd, WT)).toBe(false);
     });
 
@@ -202,10 +202,10 @@ describe("main-writes guard", () => {
 
   // `ln` writes only the link: a target is never written, and a relative `-s`
   // target resolves from the link's folder. Reading every operand as a write
-  // resolved against cwd blocked `cd <main> && ln -s .equin ~/<legacy data dir>`.
+  // resolved against cwd blocked `cd <main> && ln -s .muxos ~/<legacy data dir>`.
   describe("ln writes only the link", () => {
     test("a relative target while the shell sits in main is not a write", () => {
-      expect(blocks(`cd ${REPO} && ln -s .equin /tmp/home/.legacy`, WT)).toBe(
+      expect(blocks(`cd ${REPO} && ln -s .muxos /tmp/home/.legacy`, WT)).toBe(
         false,
       );
     });
@@ -255,7 +255,7 @@ describe("main-writes guard", () => {
   });
 });
 
-// An app-launched agent names its workspace (EQUIN_WORKSPACE_ROOT); in a
+// An app-launched agent names its workspace (MUXOS_WORKSPACE_ROOT); in a
 // scratch workspace — outside every checkout — the protected tree is the main
 // checkout of the code the guards run from.
 describe("main-writes guard in a launch-named workspace", () => {

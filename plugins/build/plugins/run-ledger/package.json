@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-build-run-ledger",
+  "name": "@muxos/plugin-build-run-ledger",
   "private": true,
   "version": "0.0.1"
 }

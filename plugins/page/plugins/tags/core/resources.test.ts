@@ -3,7 +3,7 @@
  * id `tags` (the pages sidebar's id before it was derived — saved views name
  * it), as a tags-typed string array; an untagged page reads NULL (no tags).
  *
- * Run: `./equin test plugins/page/plugins/tags/core/resources.test.ts`.
+ * Run: `./muxos test plugins/page/plugins/tags/core/resources.test.ts`.
  */
 
 import { expect, test } from "bun:test";

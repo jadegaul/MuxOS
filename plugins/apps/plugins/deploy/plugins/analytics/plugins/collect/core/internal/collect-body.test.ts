@@ -40,24 +40,24 @@ describe("CollectBodySchema", () => {
     const blob = "A".repeat(1500);
     const body = CollectBodySchema.parse({
       kind: "pageview",
-      host: "equin.ai",
+      host: "MuxOS.app",
       path: `/demo/at/desktop/places;view.places.presets=all~${blob}`,
     });
     expect(body).toEqual({
       kind: "pageview",
-      host: "equin.ai",
+      host: "MuxOS.app",
       path: "/demo/at/desktop/places",
     });
   });
   test("a pageview path loses its query string server-side too", () => {
     const body = CollectBodySchema.parse({
       kind: "pageview",
-      host: "Equin.dev",
+      host: "MuxOS.dev",
       path: "/harness?token=secret",
     });
     expect(body).toEqual({
       kind: "pageview",
-      host: "equin.dev",
+      host: "muxos.dev",
       path: "/harness",
     });
   });

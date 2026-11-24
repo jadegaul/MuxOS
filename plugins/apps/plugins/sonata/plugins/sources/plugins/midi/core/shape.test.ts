@@ -4,7 +4,7 @@
  * `trackCount` null and `sourceMissing` false (its declared default), and the
  * server-only content hash is never exposed.
  *
- * Run: `./equin test plugins/apps/plugins/sonata/plugins/sources/plugins/midi`.
+ * Run: `./muxos test plugins/apps/plugins/sonata/plugins/sources/plugins/midi`.
  */
 
 import { describe, expect, test } from "bun:test";

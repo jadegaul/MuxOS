@@ -26,7 +26,7 @@ import "./live-demo-section.css";
 
 const NO_WINDOW: ViewportSize = { width: 0, height: 0 };
 
-const CAPTION = "equin, running entirely in your browser.";
+const CAPTION = "muxos, running entirely in your browser.";
 
 /** The frame's aspect in the reading measure. */
 const ASPECT = 16 / 9.4;
@@ -38,11 +38,11 @@ const GROWN_MAX_WIDTH = 1400;
 const FOOT_ROOM = 56;
 
 /**
- * The homepage's live demo, where the desktop picture was: equin itself —
+ * The homepage's live demo, where the desktop picture was: muxos itself —
  * its real server code in a worker, on the workspace demo's data — drawn in
  * a frame this band claims (`live-demo`'s `DemoTarget`; the demo's server is
  * the site's resident, so it outlives the page). Nothing downloads until the
- * visitor clicks Enter equin (the gate, shown on every visit; a browser that
+ * visitor clicks Enter muxos (the gate, shown on every visit; a browser that
  * already holds the demo's data starts it behind the gate, so entering is
  * instant).
  *

@@ -16,7 +16,7 @@
  * providers and registers its graph's resources process-wide, which would
  * leak into every suite after it in the shared `bun test` process.
  *
- * Run: `./equin test plugins/apps/plugins/prototypes/plugins/fixtures`.
+ * Run: `./muxos test plugins/apps/plugins/prototypes/plugins/fixtures`.
  */
 
 import { beforeAll, describe, expect, setDefaultTimeout, test } from "bun:test";

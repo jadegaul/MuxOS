@@ -1,7 +1,7 @@
 import { defineDeploySecret } from "@plugins/apps/plugins/deploy/plugins/deploy-secrets/core";
 
 /**
- * The browser key a DEPLOYED site draws its maps with (equin.ai's live demo):
+ * The browser key a DEPLOYED site draws its maps with (MuxOS.app's live demo):
  * a key of its own, restricted to the site's domains and to the Maps
  * JavaScript API, delivered to the box as an approved deploy secret — never
  * committed, never in a build or a demo snapshot. On the computer it is unset

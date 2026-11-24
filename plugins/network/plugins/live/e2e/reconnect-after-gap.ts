@@ -41,7 +41,7 @@
  * it in a `finally`, whatever the run's outcome.
  *
  * Usage:
- *   ./equin run plugins/network/plugins/live/e2e/reconnect-after-gap.ts [--headed]
+ *   ./muxos run plugins/network/plugins/live/e2e/reconnect-after-gap.ts [--headed]
  */
 
 import {

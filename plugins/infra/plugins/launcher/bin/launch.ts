@@ -19,7 +19,7 @@ import { asAppPath } from "@plugins/infra/plugins/host-fs/plugins/user-path/core
  * `DataDir.path` is a getter, so nothing there captures an env read. What still
  * freezes is the embedded-PG family — `PG_PORT`, `PG_SOCKET_DIR` and the paths
  * derived from them (`database/embedded/shared/internal/paths.ts`) are
- * module-level consts over `EQUIN_PG_PORT` / `EQUIN_PG_SOCKET_DIR`.
+ * module-level consts over `MUXOS_PG_PORT` / `MUXOS_PG_SOCKET_DIR`.
  * One frozen constant anywhere in the closure is enough to make the ordering
  * load-bearing, so keep the dynamic import until that family is lazy too.
  */
@@ -57,7 +57,7 @@ const bundleRoot = dirname(process.execPath);
 // goes on that list too; the `launcher:runtime-env-declared` check makes you
 // decide.
 // Re-root the entire install under the bundle (data, logs, the PG cluster, the
-// registry, the pid file) so a release never touches the dev `~/.equin`.
+// registry, the pid file) so a release never touches the dev `~/.muxos`.
 // `??=` lets an operator override the data root (e.g. point at a persistent
 // volume) without editing the binary.
 setEnvDefault("DIR", join(bundleRoot, "data"));
@@ -159,7 +159,7 @@ async function main(): Promise<void> {
   // subdomain, a spec dir and a database name.
   const name = asNamespace(manifest.composition);
 
-  // Where to listen: `EQUIN_LISTEN=host:port` if set, else the port baked
+  // Where to listen: `MUXOS_LISTEN=host:port` if set, else the port baked
   // into RELEASE.json on loopback (127.0.0.1 and [::1]); `:port` is the explicit
   // wildcard opt-in. That env var is the ONE runtime
   // authority — it replaced the older `PORT` override rather than joining it,
@@ -278,7 +278,7 @@ async function main(): Promise<void> {
   // serve the FIRST bundle's config forever. Only the build-owned origin layer
   // is written; the user's own `.jsonc` overrides are left alone. worktreeName
   // = composition = the backend's runtime namespace, so this lands exactly where
-  // config-dir.ts reads (EQUIN_DIR/config/<worktree>). Runs before the
+  // config-dir.ts reads (MUXOS_DIR/config/<worktree>). Runs before the
   // gateway spawns the backend, so CONFIG_DIR is current on first read.
   await propagateReleaseConfig({
     bundleRoot: asAppPath(bundleRoot),
@@ -329,7 +329,7 @@ async function main(): Promise<void> {
   // used to leave a detached stack behind, which read as "started successfully"
   // locally (nothing was watching) and as a restart loop under systemd.
   //
-  // `./equin start` is the deliberate exception: it is the one command
+  // `./muxos start` is the deliberate exception: it is the one command
   // whose job is to leave a daemon running, and it does not `.ref()`.
   //
   // The gateway handle serves both jobs at once — it keeps the event loop alive

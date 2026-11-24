@@ -29,9 +29,9 @@ import { LocalAppLink } from "./download-link";
 import { DownloadNextSteps } from "./download-next-steps";
 import { DownloadTryDemo } from "./download-try-demo";
 import {
-  equinDownloadNoteTheme,
-  equinDownloadTabsTheme,
-  equinDownloadTheme,
+  muxosDownloadNoteTheme,
+  muxosDownloadTabsTheme,
+  muxosDownloadTheme,
 } from "../internal/theme";
 import "./download.css";
 
@@ -49,15 +49,15 @@ const AUDIENCES = [
  * then its steps (its plan's groups), then how it shows them.
  */
 const INSTALLER_STEPS = [
-  "Downloads the newest equin release and checks it against the release's published checksums",
+  "Downloads the newest muxos release and checks it against the release's published checksums",
   "Installs Apple's developer tools and mise, the tool manager",
-  "Clones equin and installs its pinned Bun, Go and Rust",
-  "Starts equin's services in the background and builds every app",
+  "Clones muxos and installs its pinned Bun, Go and Rust",
+  "Starts muxos's services in the background and builds every app",
   "Shows its progress in your terminal (or in a small window: end the command with bash -s -- --window). If a step fails, it pauses and offers Try again, Fix with Claude or Report issue",
 ];
 
 /** The same install, said to an agent: run the command, repair, report back. */
-const AGENT_PROMPT = `Install equin (${SOURCE_REPO_URL}) on this Mac with its installer: ${INSTALL_COMMAND}
+const AGENT_PROMPT = `Install muxos (${SOURCE_REPO_URL}) on this Mac with its installer: ${INSTALL_COMMAND}
 If a step fails, fix it and run the installer again. When it is done, give me the link to the app.`;
 
 /**
@@ -77,17 +77,17 @@ const CLAUDE_APP_LINK = `claude://code/new?q=${PROMPT_QUERY}`;
  * Its column is narrower than the site's measure (820px): a code panel as wide
  * as the homepage's cards leaves the command stranded at one edge. It caps
  * itself inside the band, as the band asks, rather than narrowing the band. It
- * wears the page's own sizes (`equinDownloadTheme`); the distances between its
+ * wears the page's own sizes (`muxosDownloadTheme`); the distances between its
  * parts are the page's score, in `download.css`.
  */
 export function DownloadInstall() {
   const [audience, setAudience] = useState<Audience>("human");
   return (
     <WebsiteBand section="install" rhythm="page-body">
-      <Theme name={subThemeScope(equinDownloadTheme)} surface="none">
+      <Theme name={subThemeScope(muxosDownloadTheme)} surface="none">
         <Stack gap="none" className="website-download mx-auto max-w-[51.25rem]">
           <Stack gap="2xl">
-            <Theme name={subThemeScope(equinDownloadTabsTheme)} surface="none">
+            <Theme name={subThemeScope(muxosDownloadTabsTheme)} surface="none">
               <Stack gap="none" align="center">
                 <SegmentedControl
                   options={AUDIENCES}
@@ -195,11 +195,11 @@ const CAVEATS = [
 
 /**
  * The caveats, as bullets in one bordered note between the install and what
- * to do once it runs — in the note's own size (`equinDownloadNoteTheme`).
+ * to do once it runs — in the note's own size (`muxosDownloadNoteTheme`).
  */
 function Disclaimer() {
   return (
-    <Theme name={subThemeScope(equinDownloadNoteTheme)} surface="none">
+    <Theme name={subThemeScope(muxosDownloadNoteTheme)} surface="none">
       <Stack
         direction="row"
         gap="smd"

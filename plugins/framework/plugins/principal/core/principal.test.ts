@@ -27,7 +27,7 @@ describe("principalOf", () => {
   });
 
   test("the header name is case-insensitive", () => {
-    expect(principalOf(req({ "X-Equin-Principal": "owner" })).kind).toBe(
+    expect(principalOf(req({ "X-MuxOS-Principal": "owner" })).kind).toBe(
       "owner",
     );
   });

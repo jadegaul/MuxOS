@@ -5,7 +5,7 @@
 //   - a `;bar` link opens with both keys, and switching lens keeps the bar.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/sonata/plugins/library/e2e/display-url.ts \
+//   ./muxos run plugins/apps/plugins/sonata/plugins/library/e2e/display-url.ts \
 //     --song <songId> [--url http://<worktree>.localhost:<port>] [--headed]
 
 import {

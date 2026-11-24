@@ -3,7 +3,7 @@
  * boundary transform separates exactly the pairs that would fuse once
  * serialized, and nothing else.
  *
- * Run with `./equin test plugins/primitives/plugins/text-editor/plugins/token-extension`.
+ * Run with `./muxos test plugins/primitives/plugins/text-editor/plugins/token-extension`.
  */
 
 import { describe, expect, test } from "bun:test";

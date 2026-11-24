@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-page-annotations-agent-access",
+  "name": "@muxos/plugin-page-annotations-agent-access",
   "description": "The agent-facing tool surface over a page: redacted reads, notes-only writes.",
   "private": true,
   "version": "0.0.1"

@@ -22,7 +22,7 @@ import { execContextForTests } from "@plugins/infra/plugins/jobs/plugins/supervi
 import { parcelWatcherAddon } from "./parcel-addon";
 
 // The patched addon, loaded on its own (not through the checkout's
-// `build/Release` copy, which only `./equin build` writes), under kqueue: every
+// `build/Release` copy, which only `./muxos build` writes), under kqueue: every
 // descriptor a watch took is given back when what it watched goes. Upstream
 // 2.6.0 kept them for the life of the process — a followed file deleted or
 // renamed, the entries of a watched directory that went, and a path two
@@ -689,7 +689,7 @@ describe.skipIf(process.platform !== "darwin")(
 
     test("beside upstream's prebuild in one process, a subscribe that fails rejects in either load order", async () => {
       // A test run that covers the engine and this file loads both: the
-      // engine's `@parcel/watcher` (the prebuild, in a checkout `./equin
+      // engine's `@parcel/watcher` (the prebuild, in a checkout `./muxos
       // build` never linked) and the built file above. Built with default
       // visibility, the two exported the same weak C++ definitions and dyld
       // bound one image's async work to the other's `PromiseRunner::onExecute`:

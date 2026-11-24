@@ -2,7 +2,7 @@
 // (pointer input keeps the tracker non-idle), returns to Home, switches the app
 // grid to its Stats table view and snapshots it.
 //
-//   ./equin run plugins/apps/plugins/home/plugins/usage-fields/e2e/stats-view.ts [--out /tmp/stats]
+//   ./muxos run plugins/apps/plugins/home/plugins/usage-fields/e2e/stats-view.ts [--out /tmp/stats]
 import {
   arg,
   pathUrl,

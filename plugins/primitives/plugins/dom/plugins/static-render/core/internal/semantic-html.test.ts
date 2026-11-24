@@ -27,18 +27,18 @@ describe("semanticHtml", () => {
   });
 
   test("a span a word is written straight against is part of that word", () => {
-    // The wordmark: `equin` with its styled full stop.
+    // The wordmark: `muxos` with its styled full stop.
     expect(
       semanticHtml(
-        '<a href="/"><span class="b">equin<span class="t">.</span></span></a><p>x</p>',
+        '<a href="/"><span class="b">muxos<span class="t">.</span></span></a><p>x</p>',
       ),
-    ).toBe('<p><a href="/">equin.</a></p>\n<p>x</p>');
+    ).toBe('<p><a href="/">muxos.</a></p>\n<p>x</p>');
     expect(semanticHtml("<p>Price <span>$</span>5 today</p>")).toBe(
       "<p>Price $5 today</p>",
     );
     // A space written beside it, or a box beside it, still separates.
-    expect(semanticHtml("<p>equin <span>.</span> x</p>")).toBe(
-      "<p>equin . x</p>",
+    expect(semanticHtml("<p>muxos <span>.</span> x</p>")).toBe(
+      "<p>muxos . x</p>",
     );
     expect(
       semanticHtml("<p><span>name</span><span>description</span></p>"),
@@ -130,17 +130,17 @@ describe("semanticHtml", () => {
   });
 
   test("a link holding only an image keeps it", () => {
-    expect(semanticHtml('<a href="/"><img src="/l.png" alt="equin"></a>')).toBe(
-      '<p><a href="/"><img src="/l.png" alt="equin"></a></p>',
+    expect(semanticHtml('<a href="/"><img src="/l.png" alt="muxos"></a>')).toBe(
+      '<p><a href="/"><img src="/l.png" alt="muxos"></a></p>',
     );
   });
 
   test("an icon-only link keeps its aria-label as its text", () => {
     expect(
       semanticHtml(
-        '<footer><a href="https://github.com/x" aria-label="equin on GitHub"><svg><path/></svg></a></footer>',
+        '<footer><a href="https://github.com/x" aria-label="muxos on GitHub"><svg><path/></svg></a></footer>',
       ),
-    ).toBe('<p><a href="https://github.com/x">equin on GitHub</a></p>');
+    ).toBe('<p><a href="https://github.com/x">muxos on GitHub</a></p>');
   });
 
   test("a data-link control with no text keeps its aria-label", () => {
@@ -178,9 +178,9 @@ describe("semanticHtml", () => {
   test("an icon-only link holding an img[alt] keeps the image", () => {
     expect(
       semanticHtml(
-        '<a href="/" aria-label="Home"><img src="/l.png" alt="equin"></a>',
+        '<a href="/" aria-label="Home"><img src="/l.png" alt="muxos"></a>',
       ),
-    ).toBe('<p><a href="/"><img src="/l.png" alt="equin"></a></p>');
+    ).toBe('<p><a href="/"><img src="/l.png" alt="muxos"></a></p>');
   });
 
   test("a link whose only image is decorative (empty alt) and has no name goes", () => {
@@ -265,8 +265,8 @@ describe("semanticHtml", () => {
 
     test("inside a link its alt is the link's text", () => {
       expect(
-        semanticHtml(`<a href="/"><img src="${data}" alt="equin"></a>`),
-      ).toBe('<p><a href="/">equin</a></p>');
+        semanticHtml(`<a href="/"><img src="${data}" alt="muxos"></a>`),
+      ).toBe('<p><a href="/">muxos</a></p>');
       expect(
         semanticHtml(
           `<span data-link="/apps"><img src="${data}" alt="Sonata"><span>Music</span></span>`,

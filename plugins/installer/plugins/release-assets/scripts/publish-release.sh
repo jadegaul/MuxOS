@@ -12,6 +12,6 @@ fi
 # A draft is invisible, so `releases/latest` never names a Release
 # whose files are still uploading: it turns public with all of them.
 gh release create "$TAG" "$ASSETS"/* --draft --verify-tag --notes-from-tag \
-  --title "equin ${TAG#v}"
+  --title "muxos ${TAG#v}"
 gh release edit "$TAG" --draft=false --latest="$LATEST"
 gh release view "$TAG"

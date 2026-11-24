@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-screenshot-draw-canvas",
+  "name": "@muxos/plugin-screenshot-draw-canvas",
   "private": true,
   "version": "0.0.1"
 }

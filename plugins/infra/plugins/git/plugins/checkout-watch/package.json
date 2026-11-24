@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-infra-git-checkout-watch",
+  "name": "@muxos/plugin-infra-git-checkout-watch",
   "private": true,
   "version": "0.0.1"
 }

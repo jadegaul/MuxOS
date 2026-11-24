@@ -112,7 +112,7 @@ export const handleDeliver = implement(
     if (isBrowserRequest(req)) {
       throw new HttpError(
         403,
-        "The approved deploy env is read only by `./equin deploy converge`, never by a browser.",
+        "The approved deploy env is read only by `./muxos deploy converge`, never by a browser.",
       );
     }
     const plan = await loadSecretPlan(params.deploymentId, {

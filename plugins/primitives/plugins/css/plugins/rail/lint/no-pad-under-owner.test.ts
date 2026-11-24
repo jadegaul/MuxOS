@@ -1,4 +1,4 @@
-/** Tests for `rail/no-pad-under-owner`. Run with `./equin test`. */
+/** Tests for `rail/no-pad-under-owner`. Run with `./muxos test`. */
 import {
   createRuleTester,
   lintToolkit,

@@ -14,7 +14,7 @@
 // (`--page`), before `block-selection-scope.css` existed:
 //
 //   gutter rail, rows 3 -> 5    native selection NON-EMPTY, anchored at row 3:
-//                               "\nequin test\n\nSelected.\nequin
+//                               "\nmuxos test\n\nSelected.\nmuxos
 //                               check\n\nSelected." — the rows' sr-only
 //                               selection markers, which is what a cross-host
 //                               selection copies instead of their text
@@ -29,7 +29,7 @@
 // padding the press lands in, which is exactly why the report says "sometimes".
 //
 // Usage:
-//   ./equin run plugins/page/plugins/editor/e2e/gutter-drag-selection-verify.ts \
+//   ./muxos run plugins/page/plugins/editor/e2e/gutter-drag-selection-verify.ts \
 //     [--url <deploy>] [--page <page url>] [--headed]
 //
 // `--page` drives an EXISTING document instead of creating a blank one (it seeds

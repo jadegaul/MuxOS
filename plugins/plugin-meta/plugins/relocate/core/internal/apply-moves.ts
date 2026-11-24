@@ -1,5 +1,5 @@
 // Replays the plugin-move ledger onto one namespace's USER-layer config dir
-// (`~/.equin/state/config/<namespace>/`). Run by `./equin build`
+// (`~/.muxos/state/config/<namespace>/`). Run by `./muxos build`
 // right before it propagates the git config into that dir, so the dir is
 // already shaped like the code being deployed when propagation reads it.
 //

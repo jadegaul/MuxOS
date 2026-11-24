@@ -3,7 +3,7 @@
 // in and down → assert the frame took that size, and kept it across a reload
 // → double-click the corner → assert it is back to full width, 16:9.
 //
-// Usage: ./equin run plugins/page/plugins/prototype/e2e/prototype-resize.ts --path /pages/page/<id>
+// Usage: ./muxos run plugins/page/plugins/prototype/e2e/prototype-resize.ts --path /pages/page/<id>
 import {
   requirePage,
   snap,

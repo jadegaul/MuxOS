@@ -1,6 +1,6 @@
 # Monitors — host-level observers that outlive the app
 
-Standalone launchd jobs that watch the machine from **outside** equin.
+Standalone launchd jobs that watch the machine from **outside** muxos.
 
 Each answers a question the app cannot answer about itself: the app's own
 observability dies with the process, and the failures worth chasing here are
@@ -9,7 +9,7 @@ exactly the ones that kill it, restart it, or happen while it is down.
 | monitor | question | shape |
 |---|---|---|
 | [`fd/`](fd/CLAUDE.md) | which process is leaking file descriptors before a "too many files open" crash? | LaunchAgent, polls every 5s |
-| [`fs-latency/`](fs-latency/CLAUDE.md) | who churns the vnode table without root (`census.py`), and which client makes fseventsd replay its history (`fseventsd-bisect.py`)? The fs-latency **monitor** itself moved into equin (`plugins/infra/plugins/host/plugins/io-health/plugins/monitor`, installed by `./equin start`) | on demand |
+| [`fs-latency/`](fs-latency/CLAUDE.md) | who churns the vnode table without root (`census.py`), and which client makes fseventsd replay its history (`fseventsd-bisect.py`)? The fs-latency **monitor** itself moved into muxos (`plugins/infra/plugins/host/plugins/io-health/plugins/monitor`, installed by `./muxos start`) | on demand |
 
 ## Conventions
 
@@ -20,7 +20,7 @@ exactly the ones that kill it, restart it, or happen while it is down.
   (an absolute path into the user's checkout, under `sidequests/monitors/<name>/`), never at a
   worktree. So a monitor only picks up an edit once it is merged to main, and a
   worktree being deleted can never take a monitor down with it.
-- **Logs go to `~/.equin/logs/monitors/<name>.log|.jsonl`**, in their own
+- **Logs go to `~/.muxos/logs/monitors/<name>.log|.jsonl`**, in their own
   declared corner of the app's log kind, so one place holds every trail. (This
   subtree runs outside the build, so it can declare nothing itself — `debug`
   owns the `logs/monitors` data dir on the monitors' behalf.)

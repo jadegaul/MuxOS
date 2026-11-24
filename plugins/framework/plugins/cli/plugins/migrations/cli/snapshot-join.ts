@@ -139,7 +139,7 @@ export async function joinSnapshotTips(
   if (other !== "") {
     throw new SnapshotJoinError(
       `the migration snapshot DAG has ${tips.length} tips and is also broken, so they cannot be joined:\n${other}\n` +
-        "Run `./equin check snapshot-chain-intact` for the diagnosis.",
+        "Run `./muxos check snapshot-chain-intact` for the diagnosis.",
     );
   }
   const published = (t: SnapshotNode) => origins.has(t.file);
@@ -151,7 +151,7 @@ export async function joinSnapshotTips(
           .map((t) => `  ${t.file}${published(t) ? "" : "  (branch-local)"}`)
           .join("\n") +
         "\nRebase onto `main`, then re-run\n" +
-        "  ./equin build --reset-migration --migration-name <slug>\n" +
+        "  ./muxos build --reset-migration --migration-name <slug>\n" +
         "to drop this branch's migration and regenerate it against the new tip.",
     );
   }

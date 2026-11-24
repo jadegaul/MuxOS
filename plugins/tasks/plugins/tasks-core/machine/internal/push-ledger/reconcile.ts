@@ -1,7 +1,7 @@
 /**
  * The `pushes` ledger as a PROJECTION of `main`'s trailer-bearing history.
  *
- * Every row is derivable from git: `./equin push` stamps each commit with
+ * Every row is derivable from git: `./muxos push` stamps each commit with
  * the push trailer and (on an attempt's branch) the attempt trailer, the
  * prepare-commit-msg hook adds the conversation trailer, and the pre-push
  * `conversation-trailer` check FAILS a push whose commits name neither (and do

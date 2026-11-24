@@ -36,7 +36,7 @@ import { asPluginId } from "@plugins/framework/plugins/plugin-id/core";
  * ones included — a sole host runs every scope) and the retention sweeps are
  * mounted, one of them run through the in-process queue against PGlite.
  *
- * Run: `./equin test plugins/apps/plugins/website/plugins/demos/plugins/workspace`.
+ * Run: `./muxos test plugins/apps/plugins/website/plugins/demos/plugins/workspace`.
  */
 
 import { defineMandate } from "@plugins/tasks/plugins/orchestration/plugins/mandate/plugins/policy/core";
@@ -306,14 +306,14 @@ describe.if(IN_CHILD)("the demo's browser host", () => {
     // It reads the page it was launched from and the spec first, writes its
     // plan on the page, works in code, and ends rewriting its card.
     expect(names.slice(0, 2)).toEqual([
-      "mcp__equin__read_page",
-      "mcp__equin__read_page",
+      "mcp__muxos__read_page",
+      "mcp__muxos__read_page",
     ]);
-    expect(names).toContain("mcp__equin__edit_page");
+    expect(names).toContain("mcp__muxos__edit_page");
     expect(names).toEqual(
       expect.arrayContaining(["Grep", "Read", "Edit", "Write", "Bash"]),
     );
-    expect(names.at(-1)).toBe("mcp__equin__write_agent_note");
+    expect(names.at(-1)).toBe("mcp__muxos__write_agent_note");
     expect(events.at(-1)?.kind).toBe("assistant-text");
   });
 
@@ -337,7 +337,7 @@ describe.if(IN_CHILD)("the demo's browser host", () => {
       const call = events
         .filter((e): e is ToolCallEvent => e.kind === "tool-call")
         .find((e) => e.toolUseId === pair.toolUseId);
-      expect(call?.name).toBe("mcp__equin__register_before_after");
+      expect(call?.name).toBe("mcp__muxos__register_before_after");
       expect(call?.result?.content).toContain(pair.id);
       const [row] = await db
         .select()
@@ -408,7 +408,7 @@ describe.if(IN_CHILD)("the demo's browser host", () => {
     const pages = await livePages();
     const { welcome, practice, spec, blockTour, journal, ideas } =
       DEMO_PAGE_IDS;
-    expect(pages.get(welcome)).toEqual([null, null, "Welcome to equin"]);
+    expect(pages.get(welcome)).toEqual([null, null, "Welcome to muxos"]);
     expect(pages.get(practice)).toEqual([null, null, "Piano practice"]);
     expect(pages.get(blockTour)).toEqual([null, null, "Block tour"]);
     expect(pages.get(journal)).toEqual([null, null, "Journal"]);

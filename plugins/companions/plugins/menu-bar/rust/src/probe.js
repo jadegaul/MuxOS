@@ -1,13 +1,13 @@
 // The probe's attacker (src/probe.rs): evaluated natively in the panel's main
 // frame once the pinned page has loaded — the stand-in for content that
 // reached the panel. Each row tries one way to the bridge and reports what
-// it got; the helper judges. `__EQUIN_PROBE__` = { otherOrigin, sameOrigin,
+// it got; the helper judges. `__MUXOS_PROBE__` = { otherOrigin, sameOrigin,
 // newWindow } (filled by probe.rs). Results go back as `document.title`
-// (`equin-probe:<json>`, one per row), the one channel that needs no bridge.
+// (`muxos-probe:<json>`, one per row), the one channel that needs no bridge.
 (async function () {
-  var P = __EQUIN_PROBE__;
+  var P = __MUXOS_PROBE__;
   window.addEventListener("error", function (e) {
-    document.title = "equin-probe:" + JSON.stringify({ phase: "error", message: String(e.message) });
+    document.title = "muxos-probe:" + JSON.stringify({ phase: "error", message: String(e.message) });
   });
   var WAIT = 2500;
   // Reports go out one at a time, spaced: WebKit coalesces title changes
@@ -15,7 +15,7 @@
   var sent = Promise.resolve();
   function send(report) {
     sent = sent.then(function () {
-      document.title = "equin-probe:" + JSON.stringify(report);
+      document.title = "muxos-probe:" + JSON.stringify(report);
       return sleep(250);
     });
     return sent;
@@ -45,16 +45,16 @@
   }
 
   // 1. The pinned page itself: the one caller that must be answered.
-  var main = await settle(window.equinNative.hostInfo());
+  var main = await settle(window.muxosNative.hostInfo());
   row("main-frame", main.outcome, main.detail);
 
   // 2. Frames whose own script tries the bridge through `top` and reports
   //    back by postMessage — a frame the panel refuses never reports.
   var attack =
     "<script>(async function(){var out={};" +
-    "function rep(o){parent.postMessage({equinProbe:ROW,result:o},'*');}" +
+    "function rep(o){parent.postMessage({muxosProbe:ROW,result:o},'*');}" +
     "try{var t=top;" +
-    "var a=t.equinNative?t.equinNative.hostInfo():Promise.reject('no equinNative');" +
+    "var a=t.muxosNative?t.muxosNative.hostInfo():Promise.reject('no muxosNative');" +
     "var b=t.__TAURI_INTERNALS__?t.__TAURI_INTERNALS__.invoke('host_info'):Promise.reject('no internals');" +
     // A device power too: pinning an app to the Dock.
     "var c=t.__TAURI_INTERNALS__?t.__TAURI_INTERNALS__.invoke('pin_app',{appId:'probe'}):Promise.reject('no internals');" +
@@ -77,7 +77,7 @@
         resolve();
       }
       function onMessage(e) {
-        if (e.data && e.data.equinProbe === id) finish(e.data.result.outcome, e.data.result.detail);
+        if (e.data && e.data.muxosProbe === id) finish(e.data.result.outcome, e.data.result.detail);
       }
       window.addEventListener("message", onMessage);
       var el = setup(attack.replace("ROW", JSON.stringify(id)));
@@ -150,10 +150,10 @@
   // 4. The panel's own document moved to another route (no navigation).
   var home = location.href;
   history.pushState(null, "", "/agents");
-  var moved = await settle(window.equinNative.hostInfo());
+  var moved = await settle(window.muxosNative.hostInfo());
   row("pushstate-away", moved.outcome, moved.detail);
   history.replaceState(null, "", home);
-  var back = await settle(window.equinNative.hostInfo());
+  var back = await settle(window.muxosNative.hostInfo());
   row("pushstate-back", back.outcome, back.detail);
 
   // 5. A new window: none may open (the helper hands it to the browser).
@@ -167,5 +167,5 @@
   await sleep(WAIT);
   await send({ phase: "stayed", href: location.href });
 })().catch(function (e) {
-  document.title = "equin-probe:" + JSON.stringify({ phase: "error", message: String(e && e.stack ? e.stack : e) });
+  document.title = "muxos-probe:" + JSON.stringify({ phase: "error", message: String(e && e.stack ? e.stack : e) });
 });

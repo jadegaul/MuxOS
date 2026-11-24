@@ -1,5 +1,5 @@
 // The changed-file set, computed ONCE and shared by every consumer: the build's
-// format pass, `./equin format`, and the `format-clean` check. If the
+// format pass, `./muxos format`, and the `format-clean` check. If the
 // writer and the checker computed different sets, the build would format one
 // set and the check would assert another.
 //
@@ -113,7 +113,7 @@ function expandCoupledSets(root: AppPath, files: Set<string>): string[] {
  * On `main`, `merge-base(HEAD, main) === HEAD`, so the set is just the dirty and
  * untracked files.
  *
- * A branch that merges an upstream release (`./equin upstream merge`) is
+ * A branch that merges an upstream release (`./muxos upstream merge`) is
  * measured against that release too: a file whose bytes are the release's is
  * upstream's own, written and checked there, and is not in the set; a file the
  * release has that the branch still changed (a resolved conflict, a local edit
@@ -193,6 +193,63 @@ export async function listChangedFormattableFiles(
   );
   for (const member of expandCoupledSets(root, files)) whole.add(member);
 
+  // Every lines-scoped file's base bytes in ONE `git cat-file --batch`, not
+  // one `git show` per file: on a branch that changes thousands of files the
+  // per-file spawns are thousands of temp-file captures — slow, and enough to
+  // trip the check runner's whole-tree read budget on the very branches this
+  // set exists for. The batch protocol frames each object as
+  // `<sha> <type> <size>\n<size bytes>\n` (or `<spec> missing\n`), in request
+  // order, so the size bounds the slice: the bytes come back exactly, with no
+  // trailing newline added or stripped.
+  const baseBytes = new Map<string, string>();
+  const refs: { file: string; ref: string }[] = [];
+  for (const file of files) {
+    const origin = origins.get(file);
+    if (whole.has(file) || origin === undefined || origin === null) continue;
+    refs.push({ file, ref: `${baseRefs.get(file)!}:${origin}` });
+  }
+  if (refs.length > 0) {
+    const argv = ["git", "cat-file", "--batch"];
+    const result = await spawnCaptured(argv, {
+      cwd: root,
+      stdin: refs.map((r) => r.ref).join("\n") + "\n",
+      timeoutMs: GIT_TIMEOUT_MS,
+    });
+    if (result.exitCode !== 0) {
+      throw new Error(
+        `git ${argv.join(" ")} failed in ${root} (exit ${result.exitCode}): ${result.stderr.trim()}`,
+      );
+    }
+    const buf = result.stdoutBytes;
+    const decoder = new TextDecoder();
+    let i = 0;
+    for (const { file, ref } of refs) {
+      const nl = buf.indexOf(0x0a, i);
+      if (nl < 0)
+        throw new Error(`git cat-file --batch output ends before \`${file}\``);
+      const header = decoder.decode(buf.subarray(i, nl));
+      i = nl + 1;
+      // The diff said this path has bytes at its base ref: a missing frame is
+      // git state drifting under us, which the old per-file `git show` threw
+      // on — a failure here, not a skip.
+      if (header.endsWith(" missing")) {
+        throw new Error(
+          `git cat-file --batch: \`${ref}\` is missing in ${root}`,
+        );
+      }
+      const size = Number.parseInt(header.split(" ")[2] ?? "", 10);
+      // Framing desync or a short stream: stop rather than mis-slice, and say
+      // so rather than hand back a map missing every file after this one.
+      if (!Number.isFinite(size) || i + size > buf.length) {
+        throw new Error(
+          `git cat-file --batch: unreadable object header \`${header}\` for \`${file}\``,
+        );
+      }
+      baseBytes.set(file, decoder.decode(buf.subarray(i, i + size)));
+      i += size + 1; // content + trailing newline
+    }
+  }
+
   const changed: ChangedFile[] = [];
   for (const file of [...files].filter(isFormattable).sort()) {
     const origin = origins.get(file);
@@ -203,11 +260,8 @@ export async function listChangedFormattableFiles(
           ? { kind: "file" }
           : {
               kind: "lines",
-              // Bytes at the base, exactly: `git show` adds no trailing newline.
-              base: await git(root, [
-                "show",
-                `${baseRefs.get(file)!}:${origin}`,
-              ]),
+              // Bytes at the base, exactly (the batch framing is size-bounded).
+              base: baseBytes.get(file)!,
             },
     });
   }

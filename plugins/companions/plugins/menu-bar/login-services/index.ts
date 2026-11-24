@@ -1,6 +1,6 @@
-// The menu-bar helper as a per-user login service: `./equin start` registers
+// The menu-bar helper as a per-user login service: `./muxos start` registers
 // it next to the gateway (ensuring and holding `menu-bar-helper` from the main
-// checkout), so the equin icon is in the menu bar / top bar after every login,
+// checkout), so the muxos icon is in the menu bar / top bar after every login,
 // and relaunched if it dies. `graphical`: it needs the desktop session.
 import { userInfo } from "node:os";
 import { HOME_DIR } from "@plugins/infra/plugins/paths/plugins/data-root-layout/core";
@@ -19,7 +19,7 @@ import { menuBarLogs } from "../data-dirs";
  * The environment the tray runs with — the whole of it (nothing is
  * inherited). `gatewayLabel`: the label the gateway's service is bound to on
  * this machine (`refersTo`). `signer`: how the tray signs the installed apps'
- * shims (src/apps.rs) — with the machine's identity, the one `equin.app` is
+ * shims (src/apps.rs) — with the machine's identity, the one `muxos.app` is
  * signed with, so a folder grant to an app survives a new helper; null off
  * macOS, where nothing is signed.
  */
@@ -33,7 +33,7 @@ function trayEnv(
     // `open` / `xdg-open` (openUrl) and `launchctl` / `systemctl` (Start).
     PATH: "/usr/bin:/bin:/usr/sbin:/sbin",
     // Start kicks the gateway's service by the label it is bound to here —
-    // the old one until `./equin data-dir migrate` relabels it — so a
+    // the old one until `./muxos data-dir migrate` relabels it — so a
     // relabel rewrites (and reloads) this job too.
     ...envEntries({ GATEWAY_LABEL: gatewayLabel }),
     // Where this account's gateway port is recorded: the helper reads it at
@@ -64,23 +64,23 @@ function trayEnv(
 }
 
 export const menuBarService = defineLoginService({
-  id: "dev.equin.menu-bar",
+  id: "dev.muxos.menu-bar",
   owner: "companions/menu-bar",
   description:
-    "equin menu-bar helper (the equin icon in the menu bar / top bar)",
+    "muxos menu-bar helper (the muxos icon in the menu bar / top bar)",
   forUser: {
-    name: "the equin icon in your menu bar",
+    name: "the muxos icon in your menu bar",
     gives:
-      "It opens equin from anywhere, and opens equin's apps in their own windows.",
+      "It opens muxos from anywhere, and opens muxos's apps in their own windows.",
   },
   session: "graphical",
   dep: menuBarHelper,
-  // The equin app's main executable on macOS: what notifications (and
-  // `Bundle.main`) see, and what opening equin.app runs.
+  // The muxos app's main executable on macOS: what notifications (and
+  // `Bundle.main`) see, and what opening muxos.app runs.
   executable: {
-    name: "equin-desktop",
+    name: "muxos-desktop",
     main: true,
-    // A browser tab's "Open in app window" (`equin://open?url=…`): macOS
+    // A browser tab's "Open in app window" (`muxos://open?url=…`): macOS
     // hands the link to the running tray (`rust/src/open_link.rs`).
     urlSchemes: [OPEN_LINK_SCHEME],
     build: (ready) => {
@@ -95,7 +95,7 @@ export const menuBarService = defineLoginService({
   // Start kicks the gateway's service: its bound label is part of the job.
   refersTo: { gateway: GATEWAY_SERVICE },
   spec: (ready, executable, labels, signer) => ({
-    // Inside equin.app on macOS (so notifications carry the app's identity),
+    // Inside muxos.app on macOS (so notifications carry the app's identity),
     // the bare binary on Linux.
     argv: [executable, "tray"],
     cwd: ready.dir,

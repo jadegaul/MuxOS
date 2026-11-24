@@ -143,7 +143,7 @@ const check: Check = {
         '  import { Editor } from "@plugins/page/plugins/editor/server";\n' +
         '  import { <handle> } from "../core";\n' +
         '  export default { description: "…", contributions: [Editor.BlockData(<handle>)] } satisfies ServerPluginDefinition;\n' +
-        "then run `./equin build`. See plugins/page/plugins/text/server/index.ts for the precedent. " +
+        "then run `./muxos build`. See plugins/page/plugins/text/server/index.ts for the precedent. " +
         '(The "page" type is registered by the editor plugin itself, not by its web renderer sub-page.)',
     };
   },
@@ -713,7 +713,7 @@ const markdownRoundTripCoversEveryBlock: Check = {
         "Add a `{ type, data, children }` entry for each to `gens` in " +
         "plugins/page/plugins/editor/core/testing/round-trip-corpus.ts — data covering every " +
         'optional field, `children: false` for a `body: "none"` tag — then run ' +
-        "`./equin test plugins/page/plugins/editor/core/markdown.test.ts`.",
+        "`./muxos test plugins/page/plugins/editor/core/markdown.test.ts`.",
     };
   },
 };

@@ -3,7 +3,7 @@
 // plays it from the given bar, and its real piano sound — the same capture as
 // the film's (`internal/sonata-audio.ts`) — is saved as an mp3 to listen to.
 //
-//   ./equin run plugins/apps/plugins/website/plugins/promo-film/e2e/piano-candidates.ts \
+//   ./muxos run plugins/apps/plugins/website/plugins/promo-film/e2e/piano-candidates.ts \
 //     --composition promo-film --candidates /abs/a.mid:65,/abs/b.mid:38 \
 //     --out ~/Downloads/showcase/piano-candidates [--seconds 10]
 //

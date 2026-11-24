@@ -117,7 +117,7 @@ export const _conversationUsageFiles = pgTable(
 // ─── Scan state of the transcripts no conversation owns ───────────────────────
 //
 // One row per transcript file the scanner (machine/) reads for the token
-// ledger alone: every `<projects>/<dir>/<sessionId>.jsonl` no equin
+// ledger alone: every `<projects>/<dir>/<sessionId>.jsonl` no muxos
 // conversation has ever run under, and each of its sub-agents' transcripts —
 // all filed under the session's `session:<sessionId>` source (`source`, also
 // the ledger's). How far it has been read (`offset`, a line start) and its last
@@ -127,7 +127,7 @@ export const _conversationUsageFiles = pgTable(
 //
 // The design's `claude_transcript_scans` (research/2026-11-16-global-unified-
 // claude-cost.md § 2) holds the transcripts `conversation_usage_files` does
-// not (an equin conversation's files keep their rows there, buckets included —
+// not (an muxos conversation's files keep their rows there, buckets included —
 // see above). A transcript is in at most one of the two: when a conversation adopts a
 // session that was scanned here, its sync deletes the session's rows (and its
 // ledger rows) in the write that counts the files under `conv:` (see

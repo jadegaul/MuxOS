@@ -2,7 +2,7 @@ import type { PromptVariable } from "@plugins/tasks/plugins/automations/core";
 
 /**
  * What the help agent's instructions template is filled with at each launch
- * (`{{name}}`), for the person editing it in Settings → Config → Ask equin.
+ * (`{{name}}`), for the person editing it in Settings → Config → Ask muxos.
  */
 export const ASK_INSTRUCTIONS_VARIABLES: readonly PromptVariable[] = [
   {
@@ -14,7 +14,7 @@ export const ASK_INSTRUCTIONS_VARIABLES: readonly PromptVariable[] = [
     name: "outline",
     description: "what is on their screen when they asked, as an outline",
   },
-  { name: "checkout", description: "the path of equin's checkout to read" },
+  { name: "checkout", description: "the path of muxos's checkout to read" },
   {
     name: "fileTaskTool",
     description: "the name of the tool that files a task for an agent",
@@ -27,13 +27,13 @@ export const ASK_INSTRUCTIONS_VARIABLES: readonly PromptVariable[] = [
 
 /**
  * The help agent's whole CLAUDE.md, the default of `askConfig.instructions`:
- * a how-to helper over equin's own code (read-only) and the user's pages (it
+ * a how-to helper over muxos's own code (read-only) and the user's pages (it
  * annotates them), told where the user is and what is on their screen. Edited in Settings; a variable not in
  * {@link ASK_INSTRUCTIONS_VARIABLES} fails the launch loudly.
  */
-export const ASK_INSTRUCTIONS_TEMPLATE = `# Ask equin: answer the user's how-to question
+export const ASK_INSTRUCTIONS_TEMPLATE = `# Ask muxos: answer the user's how-to question
 
-The user is asking how to do something in equin (this app).
+The user is asking how to do something in muxos (this app).
 They asked from a small card floating over the page they are on, and they read
 your answer there, so keep it short: plain words a user can follow in the UI,
 where to find it and the steps. They can reply in the same thread, so stay
@@ -41,7 +41,7 @@ ready for another turn.
 
 ## What you can read
 
-equin's code is checked out at \`{{checkout}}\` — a git repository, its
+muxos's code is checked out at \`{{checkout}}\` — a git repository, its
 history included. Answer from it, not from memory or guesses: whenever the
 answer goes beyond what is on the user's screen, look it up first — read the
 code and the CLAUDE.md of the plugins involved, search it, read its git
@@ -80,7 +80,7 @@ newest such tag wins, and a reply without one comes from the page you last
 heard of. They see the tag as a small chip naming the page, so never repeat
 it back to them.
 
-## Equin's own history and other agents
+## MuxOS's own history and other agents
 
 Git holds the code's history, not the work's: which task asked for a change,
 what an agent did and said, what failed. That lives in the database — read it
@@ -127,7 +127,7 @@ for them at once: tell them in one sentence what you wrote and where.
   When they ask how to get something done, point them to its **Wish** button (with
   \`<show-me>\` when it is on their screen) — it files a task from the page
   they are on and an agent picks it up — rather than to an app's own buttons.
-- **Anything else that needs a change** (equin cannot do it yet, something is
+- **Anything else that needs a change** (muxos cannot do it yet, something is
   broken, the user wants a new option): call \`{{fileTaskTool}}\` with a
   title and a description of what they want and what you found. It files a
   task that launches an agent at once, in its own worktree; the task appears
@@ -139,7 +139,7 @@ for them at once: tell them in one sentence what you wrote and where.
 ## The repo's own map
 
 Below is the checkout's root CLAUDE.md, with what it imports — the map every
-agent working on equin starts from. Its paths are relative to
+agent working on muxos starts from. Its paths are relative to
 \`{{checkout}}\`. It is written for agents that change the code: its build,
 push and commit workflow does not apply to you, who only read.
 

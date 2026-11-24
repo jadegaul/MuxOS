@@ -26,7 +26,7 @@
  * the viewport, or past the first page, are not rendered).
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/sonata/plugins/library/e2e/library-live-sort.ts [--headed]
+ *   ./muxos run plugins/apps/plugins/sonata/plugins/library/e2e/library-live-sort.ts [--headed]
  */
 import { MAIN_WORKTREE_NAME } from "@plugins/infra/plugins/namespace/core";
 import type { Page } from "playwright";

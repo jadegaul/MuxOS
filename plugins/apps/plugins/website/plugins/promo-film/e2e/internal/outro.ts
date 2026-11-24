@@ -4,17 +4,17 @@
 // opens on "A personal OS", and "self-evolving" grows into its place in the
 // phrase — "A self-evolving personal OS" — painted in the website homepage's
 // accent gradient (azure → cyan through the glyphs, as the homepage paints
-// "evolves on request"); it closes on "equin." with ".ai" growing out of the
+// "evolves on request"); it closes on "muxos." with ".ai" growing out of the
 // dot.
 //
-// The end card: in the website's own theme, "equin." in the centre and ".ai"
-// growing out of the dot — the brand is equin.ai — and under it, small, "Free
+// The end card: in the website's own theme, "muxos." in the centre and ".ai"
+// growing out of the dot — the brand is MuxOS.app — and under it, small, "Free
 // and open source". No URL: nothing on screen is an address to type.
 //
 // A line is centred by LAYOUT, not by a measured offset: one flex row,
 // centred, whose growing part's box grows from zero to its own width
 // (`calc-size(max-content, size * p)`), so the browser recentres the whole
-// line every frame — "equin." centred alone at first, "equin.ai" centred at
+// line every frame — "muxos." centred alone at first, "MuxOS.app" centred at
 // the end, exactly, whatever the font's metrics.
 
 import {
@@ -28,7 +28,7 @@ import { H, SITE, W, type Scene } from "./kit";
 const WORD_SIZE = 132;
 
 const END_CARD = growingLine({
-  before: `equin<span style="color:${SITE.azure}">.</span>`,
+  before: `muxos<span style="color:${SITE.azure}">.</span>`,
   grown: "ai",
   size: WORD_SIZE,
 });
@@ -39,7 +39,7 @@ const TITLE_SIZE = 72;
  * A line a part grows into: `before` and `after` fade and rise in (`--a`),
  * then `grown`'s box grows from zero to its own width between them (`--p`),
  * the browser recentring the whole line every frame, while its text slides
- * in (`--q`). The end card grows ".ai" at the end of "equin."; the title
+ * in (`--q`). The end card grows ".ai" at the end of "muxos."; the title
  * grows "self-evolving" inside "A personal OS".
  */
 function growingLine({

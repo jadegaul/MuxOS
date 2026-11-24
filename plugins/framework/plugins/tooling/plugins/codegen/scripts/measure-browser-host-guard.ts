@@ -2,7 +2,7 @@
  * Times the browser-host derivation the way its four callers pay for it,
  * without writing any generated file:
  *
- *   ./equin run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-browser-host-guard.ts
+ *   ./muxos run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-browser-host-guard.ts
  *
  * Two passes, each over its own file set: one as build's codegen runs (one
  * ctx, `generateBrowserHosts`' inference then coverage guard), one as a check

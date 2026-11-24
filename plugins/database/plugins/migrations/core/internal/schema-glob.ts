@@ -12,7 +12,7 @@ import type { RepoFiles } from "@plugins/framework/plugins/tooling/core";
  * a non-literal element) — the checks would then inspect fewer files than drizzle-kit and
  * keep passing. There is no parse any more.
  *
- * Async on purpose: its callers are checks, and every check in a `./equin
+ * Async on purpose: its callers are checks, and every check in a `./muxos
  * check` pass shares one thread, so a blocking `Bun.Glob#scanSync` walk here
  * stalls the whole pass (checks/CLAUDE.md's stall watch). `Bun.Glob#scan()` has
  * the same filesystem-glob semantics (gitignored files included, matching what

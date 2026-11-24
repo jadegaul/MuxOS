@@ -1,6 +1,6 @@
 // What a journal catch-up costs as a function of how far back its cursor is.
 //
-//   ./equin run plugins/infra/plugins/file-watcher/scripts/bench-journal-replay.ts \
+//   ./muxos run plugins/infra/plugins/file-watcher/scripts/bench-journal-replay.ts \
 //     <root> [--back 100000,1000000,5000000]
 //
 // Takes a cursor now, then replays from cursors N event ids earlier (the

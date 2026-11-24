@@ -1,14 +1,14 @@
 [package]
-name = "equin-desktop"
+name = "muxos-desktop"
 version = "0.1.0"
-description = "equin desktop shell — packages a composed equin app as a self-contained desktop binary"
+description = "muxos desktop shell — packages a composed muxos app as a self-contained desktop binary"
 edition = "2021"
 rust-version = "1.77"
 
 # The app logic lives in the lib so the same code drives desktop + (future) mobile
 # entry points; main.rs is a thin shim.
 [lib]
-name = "equin_desktop_lib"
+name = "muxos_desktop_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

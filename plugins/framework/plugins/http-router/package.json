@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-framework-http-router",
+  "name": "@muxos/plugin-framework-http-router",
   "version": "0.0.1",
   "private": true,
-  "description": "The one HTTP request router every host mounts: createRequestHandler turns \"METHOD /path/:param\" route pairs into a (req) => Promise<Response> — literal fast path, then :param matching in registration order, a default cache-control: no-store, a Server-Timing stamp of the handler's own time with a per-response id on every response (readServerTiming parses it back), and a logged, reported 500 on a throw — generic, or the response the error carries (answerThrowWith, for a protocol with its own error shape such as MCP's JSON-RPC). A duplicate route key throws at construction."
+  "description": "The one HTTP request router every host mounts: createRequestHandler turns \"METHOD /path/:param\" route pairs into a (req) => Promise<Response> \u2014 literal fast path, then :param matching in registration order, a default cache-control: no-store, a Server-Timing stamp of the handler's own time with a per-response id on every response (readServerTiming parses it back), and a logged, reported 500 on a throw \u2014 generic, or the response the error carries (answerThrowWith, for a protocol with its own error shape such as MCP's JSON-RPC). A duplicate route key throws at construction."
 }

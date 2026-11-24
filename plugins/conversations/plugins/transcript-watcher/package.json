@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-conversations-transcript-watcher",
+  "name": "@muxos/plugin-conversations-transcript-watcher",
   "private": true,
   "version": "0.0.1"
 }

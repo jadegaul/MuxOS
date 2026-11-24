@@ -31,7 +31,7 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} is missing`,
-        hint: "Run `./equin build` to generate it.",
+        hint: "Run `./muxos build` to generate it.",
       };
     }
     // The renderer THROWS on a `defineDataView` id it cannot resolve from source.
@@ -48,14 +48,14 @@ const check: Check = {
       return {
         ok: false,
         message: `${rel} could not be regenerated: ${err instanceof Error ? err.message : String(err)}`,
-        hint: "Fix the marker call named above, then run `./equin build`.",
+        hint: "Fix the marker call named above, then run `./muxos build`.",
       };
     }
     if (readFileSync(file, "utf8") !== expected) {
       return {
         ok: false,
         message: `${rel} is out of sync with the defineDataView ids`,
-        hint: "Run `./equin build` and commit the regenerated file.",
+        hint: "Run `./muxos build` and commit the regenerated file.",
       };
     }
     return { ok: true };

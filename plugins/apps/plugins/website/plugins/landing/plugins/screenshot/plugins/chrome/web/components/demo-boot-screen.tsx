@@ -39,7 +39,7 @@ const isStarting = (progress: HostProgress | null): boolean =>
   progress.plugins.loaded === progress.plugins.total;
 
 /**
- * The demo before it runs — what `<DemoScope boot>` draws: the equin logo
+ * The demo before it runs — what `<DemoScope boot>` draws: the muxos logo
  * over the logo's own colours, then
  * - at the gate, the Enter button (nothing has downloaded yet: the first
  *   start downloads the whole server and its data);
@@ -74,7 +74,7 @@ export function DemoBootScreen({ state }: { state: DemoBoot }): ReactNode {
               {/* The one call to action on the screen: a size up. */}
               <ControlSizeProvider size="lg">
                 <Button className="demo-boot-enter" onClick={state.enter}>
-                  Enter equin <span aria-hidden>→</span>
+                  Enter muxos <span aria-hidden>→</span>
                 </Button>
               </ControlSizeProvider>
               <Text
@@ -104,8 +104,8 @@ export function DemoBootScreen({ state }: { state: DemoBoot }): ReactNode {
                 role="alert"
               >
                 {state.cause === "plugins"
-                  ? "equin could not start: part of it did not download."
-                  : "equin could not start in this browser."}
+                  ? "muxos could not start: part of it did not download."
+                  : "muxos could not start in this browser."}
               </Text>
               {state.startOver !== null && (
                 <StartOverButton startOver={state.startOver} />
@@ -148,10 +148,10 @@ function BootBar({ progress }: { progress: HostProgress | null }): ReactNode {
   const percent = Math.round(fraction * 100);
   const downloaded = progress?.downloadedBytes ?? 0;
   const label = isStarting(progress)
-    ? "Starting equin"
+    ? "Starting muxos"
     : downloaded > 0
-      ? "Downloading equin in your browser"
-      : "Starting equin";
+      ? "Downloading muxos in your browser"
+      : "Starting muxos";
   return (
     <div
       className="demo-boot-bar"

@@ -7,8 +7,8 @@
  * `runtime-window-membership` suite; THIS suite pins that the decoded
  * where / order / limit reach the SQL each subscription tuple runs.
  *
- * Run: `./equin test plugins/network/plugins/live`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/network/plugins/live`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

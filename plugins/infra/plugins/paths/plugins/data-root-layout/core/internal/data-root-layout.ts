@@ -16,20 +16,20 @@ import { envName } from "@plugins/infra/plugins/launcher/plugins/env-names/core"
 // Where the data root is when the environment does not say: decided by what is
 // INSTALLED, not by the code's version.
 //
-// The root moved from `~/<legacy dir>` to `~/.equin`. Choosing by code version
-// would point new code at an empty `~/.equin` on every machine that has not run
-// `./equin data-dir migrate` yet — a second, empty install beside the real one.
-// So the legacy dir is used while it is there, and only the migration (which
-// moves it, with everything stored inside it) switches an install over. A fresh
-// machine has no legacy dir and starts on `~/.equin`.
+// The root moved from the previous generation's dir to `~/.muxos`. Choosing by
+// code version would point new code at an empty `~/.muxos` on every machine that
+// has not run `./muxos data-dir migrate` yet — a second, empty install beside the
+// real one. So the legacy dir is used while it is there, and only the migration
+// (which moves it, with everything stored inside it) switches an install over. A
+// fresh machine has no legacy dir and starts on `~/.muxos`.
 //
-// Design: research/2026-10-26-global-equin-data-dir-migration-v2.md
+// Design: research/2026-10-26-global-muxos-data-dir-migration-v2.md
 //
 // Mirrored, with the same rule and the same cases, by `gateway/main.go`
 // (`dataRoot`), `install.sh` and the host scripts that list `dataDirName` as a
 // mirror in `framework/product-name`'s `LEGACY_IDS`.
 
-/** The data root's dir name under the home dir: `.equin`. */
+/** The data root's dir name under the home dir: `.muxos`. */
 export const DATA_DIR_NAME = `.${PRODUCT_NAME}`;
 
 /** Both home-relative roots, current first — the app's own dirs by claim. */
@@ -80,7 +80,7 @@ export class DataRootSplitError extends Error {
   ) {
     super(
       `Two data roots: ${legacy} and ${current} both exist and are not the same directory. ` +
-        `An install not yet migrated keeps its data in ${legacy}; ${current} is what \`./equin data-dir migrate\` moves it to. ` +
+        `An install not yet migrated keeps its data in ${legacy}; ${current} is what \`./muxos data-dir migrate\` moves it to. ` +
         `Look at what ${current} holds (\`ls -la ${current}\`): if it is empty or stray, remove it; otherwise move whichever one you want to keep aside, then retry.`,
     );
     this.name = "DataRootSplitError";
@@ -136,8 +136,8 @@ export function decideDataRootLayout(
 
 /**
  * A decided home layout as it travels in the environment
- * (`EQUIN_DATA_ROOT_LAYOUT`): the case only — both roots derive from the home
- * dir. Spelled by `./equin` (`paths/scripts/declare-data-root.sh`) and the
+ * (`MUXOS_DATA_ROOT_LAYOUT`): the case only — both roots derive from the home
+ * dir. Spelled by `./muxos` (`paths/scripts/declare-data-root.sh`) and the
  * gateway (`gateway/dataroot.go`) too, so the three values are a contract.
  */
 export const HOME_LAYOUT_TOKENS = [
@@ -179,7 +179,7 @@ export function homeDataRootLayoutOf(
     default:
       throw new Error(
         `${envName("DATA_ROOT_LAYOUT")} is ${JSON.stringify(token)}, which no process tree's root writes ` +
-          `(one of ${HOME_LAYOUT_TOKENS.join(", ")}). Unset it and restart from ./equin.`,
+          `(one of ${HOME_LAYOUT_TOKENS.join(", ")}). Unset it and restart from ./muxos.`,
       );
   }
 }

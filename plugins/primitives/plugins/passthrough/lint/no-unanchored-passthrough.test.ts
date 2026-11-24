@@ -1,6 +1,6 @@
 /**
  * Tests for the `no-unanchored-passthrough` lint rule. Run with
- * `./equin test plugins/primitives/plugins/passthrough`.
+ * `./muxos test plugins/primitives/plugins/passthrough`.
  *
  * The rule asks the TypeScript checker whether a component's props type has a
  * string index signature, so each case is type-checked: a virtual `case.tsx`

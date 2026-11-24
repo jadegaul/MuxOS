@@ -57,14 +57,14 @@
 export const REMOTE_SCRIPT_SHEBANG = "#!/usr/bin/env bash";
 
 /** Root of every install. One dir per composition, never shared. */
-export const INSTALL_ROOT = "/srv/equin";
+export const INSTALL_ROOT = "/srv/muxos";
 
 /**
  * The templated systemd unit — ONE file for every composition, so nothing
  * per-instance may appear in it (`%i` is the only thing systemd expands).
  * Per-deployment values go in {@link InstallLayout.envFile} instead.
  */
-export const UNIT_TEMPLATE_PATH = "/etc/systemd/system/equin@.service";
+export const UNIT_TEMPLATE_PATH = "/etc/systemd/system/muxos@.service";
 
 /** Where converge writes each composition's Caddy site block. */
 export const CADDY_SITES_DIR = "/etc/caddy/sites";
@@ -82,7 +82,7 @@ export const CADDY_LOG_DIR = "/var/log/caddy";
  * Converge renders the unit template's paths as
  * `deriveInstall(SYSTEMD_INSTANCE)`, i.e. the layout of a *symbolic*
  * composition. That is what makes the template and the real instance's paths
- * agree **by construction**: `svc-%i` / `/srv/equin/%i/env` are not a second,
+ * agree **by construction**: `svc-%i` / `/srv/muxos/%i/env` are not a second,
  * hand-spelled copy of the layout that could drift from the one `ship` writes
  * into — they are the same function of a different name.
  */
@@ -105,17 +105,17 @@ export interface InstallLayout {
   readonly compositionId: string;
   /** Unprivileged run user. Derived, so it can never be `root`. */
   readonly runUser: string;
-  /** systemd instance, e.g. `equin@website.service`. */
+  /** systemd instance, e.g. `muxos@website.service`. */
   readonly unit: string;
-  /** `/srv/equin/<c>` — the install root. */
+  /** `/srv/muxos/<c>` — the install root. */
   readonly installDir: string;
   /** Immutable per-run bundle dirs live under here. */
   readonly releasesDir: string;
   /** The activation pointer: flipping this symlink IS the deploy. */
   readonly currentLink: string;
-  /** `EQUIN_RELEASE_DIR` — the self-extractor's cache. */
+  /** `MUXOS_RELEASE_DIR` — the self-extractor's cache. */
   readonly runtimeDir: string;
-  /** `EQUIN_DIR` — postgres cluster, config, logs. The isolation boundary. */
+  /** `MUXOS_DIR` — postgres cluster, config, logs. The isolation boundary. */
   readonly dataDir: string;
   /** `EnvironmentFile` (0600, `root:svc-<c>`) carrying the per-install values. */
   readonly envFile: string;
@@ -143,7 +143,7 @@ export interface InstallLayout {
 /** Derive one composition's whole host layout from its name. */
 export function deriveInstall(compositionId: string): InstallLayout {
   const installDir = `${INSTALL_ROOT}/${compositionId}`;
-  const unit = `equin@${compositionId}.service`;
+  const unit = `muxos@${compositionId}.service`;
   return Object.freeze({
     compositionId,
     runUser: `svc-${compositionId}`,
@@ -201,7 +201,7 @@ export function currentAppPath(compositionId: string): string {
  * `https://` and nothing else: converge writes a Caddy site block per hostname
  * and Caddy terminates TLS in front of the loopback gateway, so a deployed
  * hostname is an HTTPS origin by construction — there is no plaintext port to
- * offer as an alternative. This mirrors what `./equin deploy ship` prints
+ * offer as an alternative. This mirrors what `./muxos deploy ship` prints
  * at the end of a successful run, and belongs here for the same reason every
  * other remote-host fact does: a URL spelled in two places eventually disagrees
  * with itself.
@@ -229,7 +229,7 @@ export function loopbackOnlySentence(loopbackPort: number): string {
 }
 
 /**
- * The `EQUIN_LISTEN` value for a deployment — the single runtime override
+ * The `MUXOS_LISTEN` value for a deployment — the single runtime override
  * of the gateway's bind address, rendered into the `env` file by converge. The
  * loopback host is baked in here rather than passed, so a converge run cannot
  * emit a wildcard bind by omission.

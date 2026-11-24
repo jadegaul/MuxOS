@@ -56,10 +56,10 @@ describe("pacedHeapEnv", () => {
     });
   });
 
-  test("the ./equin shim paces a direct check pass as its build child is", () => {
-    // JSC reads the pace at VM start, so a direct `./equin check` gets it from
+  test("the ./muxos shim paces a direct check pass as its build child is", () => {
+    // JSC reads the pace at VM start, so a direct `./muxos check` gets it from
     // the shell script that execs bun — which cannot import the constant.
-    const shim = readFileSync(join(REPO_ROOT, "equin"), "utf8");
+    const shim = readFileSync(join(REPO_ROOT, "muxos"), "utf8");
     expect(shim).toContain(
       `export ${JSC_RAM_SIZE_ENV}=${CHECK_PROCESS_RAM_BYTES} ${HEAP_PACED_ENV}=1`,
     );

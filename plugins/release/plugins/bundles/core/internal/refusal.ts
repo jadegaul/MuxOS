@@ -116,7 +116,7 @@ export function bundleRefusalMessage(refusal: BundleRefusal): string {
       return (
         `no release of "${refusal.composition}" found. Looked in:\n  ${refusal.compDir}\n` +
         `${namespaceHint(refusal.namespace)}\n` +
-        `Build one: ./equin release --composition ${refusal.composition} --target web --platform ${refusal.platform}`
+        `Build one: ./muxos release --composition ${refusal.composition} --target web --platform ${refusal.platform}`
       );
     case "no-such-run":
       return (
@@ -157,7 +157,7 @@ export function bundleRefusalMessage(refusal: BundleRefusal): string {
             : `speaks activate protocol ${refusal.found}`
         }, and this ship speaks ${refusal.expected}: activating it would run ` +
         `its whole host beside the serving one instead of extracting and swapping. ` +
-        `Cut a new release (\`./equin release\`) and ship that.`
+        `Cut a new release (\`./muxos release\`) and ship that.`
       );
   }
 }

@@ -3,7 +3,7 @@
  * number, memoized on the file's `(size, mtime)`, and paged by
  * `releaseRunLogs` within its key contract.
  *
- * Run: `./equin test plugins/release`.
+ * Run: `./muxos test plugins/release`.
  */
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";

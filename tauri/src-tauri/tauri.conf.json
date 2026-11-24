@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "equin",
+  "productName": "muxos",
   "version": "0.1.0",
-  "identifier": "ai.equin.app",
+  "identifier": "ai.muxos.app",
   "build": {
     "frontendDist": "./frontend"
   },
@@ -10,7 +10,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "equin",
+        "title": "muxos",
         "width": 1280,
         "height": 800,
         "minWidth": 640,

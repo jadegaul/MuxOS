@@ -321,14 +321,14 @@ async function launchHost(): Promise<void> {
   if (installed.kind === "failed") {
     throw new BrowserUnavailableError(
       `Chromium could not be installed: ${installed.message}. ` +
-        "Retry with `./equin deps install chromium`.",
+        "Retry with `./muxos deps install chromium`.",
     );
   }
   if (installed.kind !== "ready") {
     await requestDep(chromium);
     throw new BrowserUnavailableError(
       "Chromium is not installed yet — its install (~280 MB, once per machine) " +
-        "was requested. Retry in a minute, or run `./equin deps install chromium`.",
+        "was requested. Retry in a minute, or run `./muxos deps install chromium`.",
     );
   }
   if (instance !== null) {

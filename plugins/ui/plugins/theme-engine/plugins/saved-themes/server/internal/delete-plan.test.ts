@@ -5,7 +5,7 @@ import { planDelete, type ThemeSelection } from "./delete-plan";
 const theme = { id: "custom:mine", label: "Mine" };
 const selections: ThemeSelection[] = [
   { themeId: "custom:mine" }, // the desktop
-  { scopeId: "app:website", themeId: "equin" },
+  { scopeId: "app:website", themeId: "muxos" },
   { scopeId: "app:mail", themeId: "custom:mine" },
 ];
 

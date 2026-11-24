@@ -1,7 +1,7 @@
 // What a keystroke in the Places search bar costs ("Search or add places"),
 // on THIS checkout's deploy (default: the website demo's Places,
 // /about/demo/at/places — ~970 places; `--path /places` for the app's own data,
-// `--url https://equin.ai/demo/at/places` for the public site).
+// `--url https://MuxOS.app/demo/at/places` for the public site).
 //
 // Types a query a character at a time, then selects it all and cuts it (Mod+X —
 // the slow-interaction report's gesture), and prints each keystroke's Event
@@ -10,10 +10,10 @@
 // profile over the whole run.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/search-perf.ts \
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/search-perf.ts \
 //     [--path /about/demo/at/places] [--query paris] [--cpu 4] [--rounds 1] [--top 25] [--fiber-top 0]
 //     [--field "Search or add places"]
-//     [--no-profile] [--trace] [--hooks] [--out "$EQUIN_SCRATCH/search"]
+//     [--no-profile] [--trace] [--hooks] [--out "$MUXOS_SCRATCH/search"]
 //
 // `--field` is the search field's placeholder, so the same run measures any
 // DataView's search (`--path /agents/tasks --field "Search…"`: the Tasks list).

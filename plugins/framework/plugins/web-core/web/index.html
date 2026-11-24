@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Page-shown record. The first instant this document was not visible
-         (performance.now() ms), kept on window.__equinFirstHiddenAt
+         (performance.now() ms), kept on window.__muxosFirstHiddenAt
          (boot-trace's FIRST_HIDDEN_GLOBAL) by a listener installed while the
          head parses — before any module runs. A load timing read once the app
          has booted (the site's slow-load report, analytics' load) cannot see a
@@ -14,7 +14,7 @@
       (function () {
         function seen() {
           if (document.visibilityState === "visible") return;
-          window.__equinFirstHiddenAt = performance.now();
+          window.__muxosFirstHiddenAt = performance.now();
           document.removeEventListener("visibilitychange", seen);
         }
         document.addEventListener("visibilitychange", seen);
@@ -162,13 +162,13 @@
             "background:#1a0b0b;color:#f5e6e6;font:14px/1.5 system-ui,sans-serif;z-index:2147483647";
           var h = document.createElement("h1");
           h.style.cssText = "font-size:20px;margin:0 0 12px";
-          h.textContent = "equin could not start: files of this build are missing";
+          h.textContent = "muxos could not start: files of this build are missing";
           var p = document.createElement("p");
           p.style.cssText = "margin:0 0 12px;max-width:60em";
           p.textContent =
             urls.length + " file" + (urls.length === 1 ? "" : "s") +
             " could not be loaded (the server answered 404 or the request failed), so the app cannot run. " +
-            "The build's artifacts were most likely removed. Rebuild this worktree with ./equin build, then reload.";
+            "The build's artifacts were most likely removed. Rebuild this worktree with ./muxos build, then reload.";
           var ul = document.createElement("ul");
           ul.style.cssText = "margin:0;padding-left:20px;font:12px/1.6 ui-monospace,monospace;word-break:break-all";
           urls.slice(0, 20).forEach(function (u) {
@@ -268,14 +268,14 @@
         }
         // Before the app entry runs, nothing else can carry a report: a raw
         // POST. Once it has installed the page request guard
-        // (__equinRequestGuardInstalled, request-guard's
+        // (__muxosRequestGuardInstalled, request-guard's
         // REQUEST_GUARD_INSTALLED_GLOBAL) a raw POST is refused, and the app's
         // own reporter is (or soon will be) up: the report is queued for it on
-        // __equinShellReports (reports/crash's SHELL_REPORT_QUEUE_GLOBAL), which
+        // __muxosShellReports (reports/crash's SHELL_REPORT_QUEUE_GLOBAL), which
         // the crash collector drains through the page's report channel.
         function send(body) {
-          if (window.__equinRequestGuardInstalled !== undefined) {
-            (window.__equinShellReports = window.__equinShellReports || []).push(body);
+          if (window.__muxosRequestGuardInstalled !== undefined) {
+            (window.__muxosShellReports = window.__muxosShellReports || []).push(body);
             return;
           }
           fetch("/api/reports", {
@@ -293,7 +293,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/icon_32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/icon_16x16.png" />
     <link rel="apple-touch-icon" sizes="512x512" href="/icon_512x512.png" />
-    <title>equin</title>
+    <title>muxos</title>
   </head>
   <body>
     <div id="root"></div>

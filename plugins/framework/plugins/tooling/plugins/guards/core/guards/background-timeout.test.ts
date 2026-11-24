@@ -17,7 +17,7 @@ const patched = (input: BashInput) => {
 
 describe("background-timeout guard", () => {
   test("a backgrounded build with no timeout gets the ceiling", () => {
-    expect(patched({ command: "./equin build", run_in_background: true })).toBe(
+    expect(patched({ command: "./muxos build", run_in_background: true })).toBe(
       MAX_BACKGROUND_TIMEOUT_MS,
     );
   });
@@ -25,7 +25,7 @@ describe("background-timeout guard", () => {
   test("an explicit shorter timeout is raised", () => {
     expect(
       patched({
-        command: "./equin push -m 'x'",
+        command: "./muxos push -m 'x'",
         run_in_background: true,
         timeout: 1_800_000,
       }),
@@ -35,14 +35,14 @@ describe("background-timeout guard", () => {
   test("an e2e run is covered like any other subcommand", () => {
     expect(
       patched({
-        command: "./equin run plugins/upstream/e2e/clone-journey.ts --keep",
+        command: "./muxos run plugins/upstream/e2e/clone-journey.ts --keep",
         run_in_background: true,
       }),
     ).toBe(MAX_BACKGROUND_TIMEOUT_MS);
   });
 
-  test("the canonical ./equin spelling is covered too", () => {
-    expect(patched({ command: "./equin build", run_in_background: true })).toBe(
+  test("the canonical ./muxos spelling is covered too", () => {
+    expect(patched({ command: "./muxos build", run_in_background: true })).toBe(
       MAX_BACKGROUND_TIMEOUT_MS,
     );
   });
@@ -50,15 +50,15 @@ describe("background-timeout guard", () => {
   test("already at the ceiling: untouched", () => {
     expect(
       verdict({
-        command: "./equin build",
+        command: "./muxos build",
         run_in_background: true,
         timeout: MAX_BACKGROUND_TIMEOUT_MS,
       }).kind,
     ).toBe("allow");
   });
 
-  test("foreground and non-equin commands are untouched", () => {
-    expect(verdict({ command: "./equin check --list" }).kind).toBe("allow");
+  test("foreground and non-muxos commands are untouched", () => {
+    expect(verdict({ command: "./muxos check --list" }).kind).toBe("allow");
     expect(
       verdict({ command: "sleep 5000", run_in_background: true }).kind,
     ).toBe("allow");

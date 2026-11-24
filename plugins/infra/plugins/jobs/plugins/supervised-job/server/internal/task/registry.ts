@@ -106,7 +106,7 @@ const tasks = new Map<string, RegisteredSupervisedTask>();
  * Register a body that runs OUT OF PROCESS under an id.
  *
  * Internal: the only caller is `defineSupervisedJob`, which registers one task
- * per `run`-body job under the JOB NAME (`run-body.ts`). `./equin
+ * per `run`-body job under the JOB NAME (`run-body.ts`). `./muxos
  * supervised-exec <id> <payloadJson>` boots the plugin graph in `exec` mode —
  * load waves, `register`, `collectContributions`, `onReadyBlocking`, and nothing
  * else — resolves the id here, and calls `run`. So the body sees the same
@@ -165,7 +165,7 @@ export function defineSupervisedTask<P extends z.ZodType>(
         ...(spec.admission === undefined ? [] : ["--admit", spec.admission]),
         ...startArgs(),
       ],
-      // `./equin` is a path relative to the checkout root, and the
+      // `./muxos` is a path relative to the checkout root, and the
       // backend's own cwd is its `server-core` directory.
       cwd: REPO_ROOT,
     }),

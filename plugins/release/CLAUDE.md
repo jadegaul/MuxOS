@@ -26,7 +26,7 @@ preloaded, so neither needs eager registration.)
   `RELEASE_TARGETS` is the single source of truth (web picker + server validator
   build from it). Not a slot: adding `tauri` (F5) is one line here. The icon stays
   web-only (the server never imports a UI component).
-- **Run model** (`server/internal/release-job.ts`) wraps `./equin release
+- **Run model** (`server/internal/release-job.ts`) wraps `./muxos release
   --composition <c> --target <t> --dev --out <short-dir>` as a **supervised
   job**: one `defineSupervisedJob` that claims, spawns detached and suspends, so
   a twenty-minute release holds a worker slot for milliseconds. The primitive
@@ -41,7 +41,7 @@ preloaded, so neither needs eager registration.)
   pre-flight liveness probe and no per-plugin orphan sweep left — both were
   second copies of a question the primitive's one reconciler answers.
 - **The spawning backend is never restarted.** Phase 1 of the release CLI shells
-  into `./equin build --hermetic --composition <c>`, the *hermetic*
+  into `./muxos build --hermetic --composition <c>`, the *hermetic*
   posture of `build`: it
   produces the artifact set (filtered registries, migration SQL, web dist) and
   structurally cannot deploy — no gateway spec, no restart, no health probe, no
@@ -53,19 +53,19 @@ preloaded, so neither needs eager registration.)
   restart-durability — ownership is *more* stable than build's.
 - **Versioned out-dir.** `releaseOutDir` (in `plugins/bundles/server`, which is
   DB-free so the CLI shares it) roots
-  each release at `<EQUIN_DIR>/releases/<worktree>/<comp>-<target>/<run-id>/`
+  each release at `<MUXOS_DIR>/releases/<worktree>/<comp>-<target>/<run-id>/`
   — versioned per run, not overwrite-in-place, so builds are kept and a
   `latest-<platform>` symlink (written by the CLI once a run is PACKED) points at
   the current `<run-id>`. The 104-byte
   Unix-socket cap no longer constrains this path: `launcher/bin/launch.ts` reroots
   the embedded-PG, PgBouncer, and gateway per-worktree backend sockets onto short
   `/tmp` dirs — the PG/PgBouncer sockets to a `/tmp/sgs-XXXXXX` dir via
-  `EQUIN_PG_SOCKET_DIR`, the backend worktree sockets to a `/tmp/sgw-XXXXXX`
-  dir via `EQUIN_SOCKETS_DIR` — so a long `<run-id>` is safe even for a
+  `MUXOS_PG_SOCKET_DIR`, the backend worktree sockets to a `/tmp/sgw-XXXXXX`
+  dir via `MUXOS_SOCKETS_DIR` — so a long `<run-id>` is safe even for a
   direct `<out>/launch`. For **preview**, the data root is a `/tmp/sgp/XXXXXX`
   mkdtemp — short by construction.
 - **Preview** (`server/internal/preview-manager.ts`) spawns the staged `launch`
-  binary with `EQUIN_DIR=<tmp>` + `EQUIN_LISTEN=loopback:<free>`, tracked in an in-memory
+  binary with `MUXOS_DIR=<tmp>` + `MUXOS_LISTEN=loopback:<free>`, tracked in an in-memory
   Map projected into the `release.previews` value
   (`server/internal/preview-state-resource.ts`: `serveValue(releasePreviews, {
   source: "external" })`, pushed by `releasePreviewsServed.notify()` on every
@@ -74,7 +74,7 @@ preloaded, so neither needs eager registration.)
 
 ## How a release gets its source tree
 
-`./equin release` (`cli/plugins/release/cli/run.ts`) picks one of three
+`./muxos release` (`cli/plugins/release/cli/run.ts`) picks one of three
 modes after reading provenance:
 
 | Invoking checkout | Mode |
@@ -89,7 +89,7 @@ with the same flags plus `--out <out>`, then removes the checkout. Why: a
 release runs for minutes in a tree a `push` can fast-forward in seconds, and tsc
 reading two commits at once broke a deploy. Everything else stays unchanged —
 `release-job.ts`, `enqueueRelease` and the deploy workflow still spawn a plain
-`./equin release`; the CLI owns the checkout, so hand-run releases are
+`./muxos release`; the CLI owns the checkout, so hand-run releases are
 protected too.
 
 Rules that look wrong and are not:
@@ -127,7 +127,7 @@ does not come back from the call that started it — it arrives at the kind's
 back to the promise the starting process was holding. It worked only while that
 process lived, which is precisely what the Deploy app's `update` could not rely
 on: it `await`ed a release in-process for tens of minutes between its converge
-and ship legs, and an unrelated `./equin build` ended both. `ctx.waitFor`
+and ship legs, and an unrelated `./muxos build` ended both. `ctx.waitFor`
 is that mechanism now and it is durable, so the map is deleted rather than
 generalised.
 
@@ -227,7 +227,7 @@ D14) — both live, with no tick and no refetch:
 - **What would `ship` pick?** — `releaseCandidate` (`release.candidate`, params
   `{ composition, platform }`) → `{ resolution, staleness, observedAt }`.
   `resolution` is the EXACT `BundleResolution` `resolveBundle` returns — the
-  same value `./equin deploy ship` acts on — so a consumer renders
+  same value `./muxos deploy ship` acts on — so a consumer renders
   `bundleRefusalMessage(resolution.refusal)` verbatim and **never re-derives
   shippability**. `staleness` compares the **manifest's** provenance (a hand-run
   CLI release writes a manifest and no row). There is no `run`: a filesystem
@@ -266,7 +266,7 @@ compute already running when the run closed (a HEAD-advance recompute in its
 observation can never be the post-close push. The epoch carries the process's
 boot instant, so an ETag from a previous process never matches.
 
-**Known limit:** a hand-run `./equin release` writes no row, so it
+**Known limit:** a hand-run `./muxos release` writes no row, so it
 notifies nothing — it shows on the next HEAD advance, candidate close or
 remount.
 
@@ -307,7 +307,7 @@ the two endpoints that selected it).
 For agent-run / standalone CLI releases, the **canonical filesystem path is the
 registry** — there is no DB query. To find releases:
 
-1. List `~/.equin/state/releases/<worktree>/` — one `<comp>-<target>/` dir per
+1. List `~/.muxos/state/releases/<worktree>/` — one `<comp>-<target>/` dir per
    composition+target, each holding versioned `<run-id>/` dirs plus one
    `latest-<platform>` symlink per platform ever packed.
 2. Follow `<comp>-<target>/latest-<platform>` → the current packed `<run-id>/`.
@@ -338,7 +338,7 @@ mount-then-crash), **zero** console/page errors, and no gateway↔backend 502/40
 request storm on `/api` `/ws` `/zero`. Exit 0 = PASS.
 
 ```bash
-./equin run plugins/release/e2e/release-boot-verify.ts --url http://localhost:<port>/ --settle 15000
+./muxos run plugins/release/e2e/release-boot-verify.ts --url http://localhost:<port>/ --settle 15000
 ```
 
 Always point it at the **bare default-namespace URL** (`http://localhost:<port>/`,
@@ -351,18 +351,18 @@ fine, so pick one that genuinely marks the surface.
 **Web target** — stage with `--dev`, run the launcher, verify against it:
 
 ```bash
-./equin release --composition <c> --target web --dev   # stages <out>/
+./muxos release --composition <c> --target web --dev   # stages <out>/
 <out>/launch &                                                # self-roots data under <out>/data
-./equin run plugins/release/e2e/release-boot-verify.ts --url http://localhost:9100/ --settle 15000
+./muxos run plugins/release/e2e/release-boot-verify.ts --url http://localhost:9100/ --settle 15000
 ```
 
 **Tauri target** — build the `.app`, launch it, verify the served content **and**
 the real window:
 
 ```bash
-./equin release --composition <c> --target tauri        # builds <out>/bundle/<Name>.app
+./muxos release --composition <c> --target tauri        # builds <out>/bundle/<Name>.app
 open "<out>/bundle/<Name>.app"                                 # brings up the embedded stack on RELEASE.json port
-./equin run plugins/release/e2e/release-boot-verify.ts --url http://localhost:9100/ --settle 15000
+./muxos run plugins/release/e2e/release-boot-verify.ts --url http://localhost:9100/ --settle 15000
 ```
 
 The harness covers the *served bytes* (identical to what the WKWebView loads,
@@ -377,7 +377,7 @@ import CoreGraphics; import Foundation
 let opts = CGWindowListOption(arrayLiteral: .optionOnScreenOnly, .excludeDesktopElements)
 for w in (CGWindowListCopyWindowInfo(opts, kCGNullWindowID) as? [[String:Any]] ?? []) {
   let owner = (w[kCGWindowOwnerName as String] as? String) ?? ""
-  if (owner.contains("<Name>") || owner.lowercased().contains("equin")),
+  if (owner.contains("<Name>") || owner.lowercased().contains("muxos")),
      (w[kCGWindowLayer as String] as? Int) == 0,
      let n = w[kCGWindowNumber as String] as? Int { print(n); exit(0) }
 }
@@ -395,7 +395,7 @@ release and confirming the Cards/All/Longest/Composed tabs + toolbar render:
 
 1. **config_v2 defaults are vendored + reachable.** `release.ts` step 3.6 ships
    the git-layer `config/` tree and a `propagateConfigToUser`-resolved
-   `config-seed/`; `launch.ts` points `EQUIN_REPO_CONFIG_DIR` at the former
+   `config-seed/`; `launch.ts` points `MUXOS_REPO_CONFIG_DIR` at the former
    and seeds the latter into `<data>/config/<worktree>` (copy-if-absent) on first
    boot. So `config-v2.values` resolves the real defaults at runtime (verified: the
    full value, e.g. the 4 Library views, reaches the browser over the WS sub-ack).
@@ -418,7 +418,7 @@ a suspended workflow, not an in-process promise, which is what makes an `update`
 survive the backend restart it used to die of. The lifecycle stays here; nothing
 remote is built here.
 
-<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./equin build` -->
+<!-- AUTOGENERATED:BEGIN — do not edit; regenerated by `./muxos build` -->
 
 ## Plugin reference
 

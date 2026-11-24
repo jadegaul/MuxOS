@@ -71,7 +71,7 @@ describe("sdkLaunchOptions", () => {
       ...base,
       launch: {
         settingSources: ["project"],
-        mcpServers: { equin: { type: "http", url: "http://x/mcp" } },
+        mcpServers: { muxos: { type: "http", url: "http://x/mcp" } },
         strictMcpConfig: true,
         permissions: { allow: ["Read"], deny: ["Bash"] },
         guards: { from: "launch", root: "/repo" },
@@ -81,7 +81,7 @@ describe("sdkLaunchOptions", () => {
     const policy = agentPolicySettings();
     expect(o.settingSources).toEqual(["project"]);
     expect(o.mcpServers).toEqual({
-      equin: { type: "http", url: "http://x/mcp" },
+      muxos: { type: "http", url: "http://x/mcp" },
     });
     expect(o.strictMcpConfig).toBe(true);
     // The launch carries the agent policy: its hooks, and its deny rules

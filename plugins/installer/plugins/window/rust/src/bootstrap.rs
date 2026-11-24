@@ -1,4 +1,4 @@
-//! Self-bootstrap: `equin-installer` with no `--script`.
+//! Self-bootstrap: `muxos-installer` with no `--script`.
 //!
 //! The curl install hands the window a script it already downloaded and
 //! verified (install.sh's stage 0). Started on its own — the later notarized
@@ -18,9 +18,9 @@ use std::process::Command;
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 
-/// Where releases are downloaded from. `EQUIN_RELEASES_URL` points it at a
+/// Where releases are downloaded from. `MUXOS_RELEASES_URL` points it at a
 /// test server (the same override stage 0 honours).
-const RELEASES_URL: &str = "https://github.com/equinai/equin/releases";
+const RELEASES_URL: &str = "https://github.com/jadegaul/MuxOS/releases";
 
 /// The subset of `release.json` the bootstrap reads.
 #[derive(Deserialize)]
@@ -41,10 +41,10 @@ pub struct Fetched {
 
 /// Download and verify the release (`release_ref`: a tag; none = the newest).
 pub fn fetch(release_ref: Option<&str>) -> Result<Fetched, String> {
-    let base = std::env::var("EQUIN_RELEASES_URL").unwrap_or_else(|_| RELEASES_URL.to_string());
+    let base = std::env::var("MUXOS_RELEASES_URL").unwrap_or_else(|_| RELEASES_URL.to_string());
     let base = base.trim_end_matches('/');
-    let dir = std::env::temp_dir().join(format!("equin-installer-{}", std::process::id()));
-    std::fs::create_dir_all(&dir).map_err(|e| format!("equin-installer: cannot create {}: {e}", dir.display()))?;
+    let dir = std::env::temp_dir().join(format!("muxos-installer-{}", std::process::id()));
+    std::fs::create_dir_all(&dir).map_err(|e| format!("muxos-installer: cannot create {}: {e}", dir.display()))?;
 
     let manifest_url = match release_ref {
         Some(tag) => format!("{base}/download/{tag}/release.json"),
@@ -54,19 +54,19 @@ pub fn fetch(release_ref: Option<&str>) -> Result<Fetched, String> {
     download(&manifest_url, &manifest_path)?;
     let manifest_bytes = read(&manifest_path)?;
     let manifest: ReleaseManifest = serde_json::from_slice(&manifest_bytes).map_err(|e| {
-        format!("equin-installer: the release's description could not be read ({e}); from {manifest_url}")
+        format!("muxos-installer: the release's description could not be read ({e}); from {manifest_url}")
     })?;
     // v2 differs from v1 only in how the window's binaries are listed, which
     // the bootstrap never reads (it is the window already).
     if !matches!(manifest.v, 1 | 2) {
         return Err(format!(
-            "This installer is too old for the newest equin release. Download the installer again.\n  details: release.json v{} (this binary reads v1 and v2)",
+            "This installer is too old for the newest muxos release. Download the installer again.\n  details: release.json v{} (this binary reads v1 and v2)",
             manifest.v
         ));
     }
     if manifest.handoff != Some(1) {
         return Err(format!(
-            "equin {} can't be installed from this installer window. Install it from a terminal instead:\n\n    curl -fsSL https://raw.githubusercontent.com/equinai/equin/main/install.sh | bash\n\n  details: release.json has no handoff (the release predates the installer window)",
+            "muxos {} can't be installed from this installer window. Install it from a terminal instead:\n\n    curl -fsSL https://raw.githubusercontent.com/jadegaul/MuxOS/main/install.sh | bash\n\n  details: release.json has no handoff (the release predates the installer window)",
             manifest.tag
         ));
     }
@@ -77,7 +77,7 @@ pub fn fetch(release_ref: Option<&str>) -> Result<Fetched, String> {
     let sums_path = dir.join("SHA256SUMS");
     download(&format!("{base}/download/{tag}/SHA256SUMS"), &sums_path)?;
     let sums = String::from_utf8(read(&sums_path)?)
-        .map_err(|_| "equin-installer: SHA256SUMS is not text".to_string())?;
+        .map_err(|_| "muxos-installer: SHA256SUMS is not text".to_string())?;
     let script_path = dir.join("install.sh");
     download(&format!("{base}/download/{tag}/install.sh"), &script_path)?;
     verify(&sums, "release.json", &manifest_bytes)?;
@@ -95,17 +95,17 @@ fn download(url: &str, to: &Path) -> Result<(), String> {
         .arg(to)
         .arg(url)
         .status()
-        .map_err(|e| format!("equin-installer: could not run curl to download {url}: {e}"))?;
+        .map_err(|e| format!("muxos-installer: could not run curl to download {url}: {e}"))?;
     if !status.success() {
         return Err(format!(
-            "equin's installer could not download the release. Check your internet connection, then try again.\n  details: curl {url} exited {status}"
+            "muxos's installer could not download the release. Check your internet connection, then try again.\n  details: curl {url} exited {status}"
         ));
     }
     Ok(())
 }
 
 fn read(path: &PathBuf) -> Result<Vec<u8>, String> {
-    std::fs::read(path).map_err(|e| format!("equin-installer: cannot read {}: {e}", path.display()))
+    std::fs::read(path).map_err(|e| format!("muxos-installer: cannot read {}: {e}", path.display()))
 }
 
 /// The file's sha256 must be the one SHA256SUMS lists for its name.
@@ -123,5 +123,5 @@ fn verify(sums: &str, name: &str, bytes: &[u8]) -> Result<(), String> {
 }
 
 fn damaged(details: &str) -> String {
-    format!("The download was damaged or changed, so equin's installer stopped. Nothing was installed.\n  details: {details}")
+    format!("The download was damaged or changed, so muxos's installer stopped. Nothing was installed.\n  details: {details}")
 }

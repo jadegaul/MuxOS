@@ -3,7 +3,7 @@
  * are unchanged, and the columns it filters / sorts are the ones it declared
  * before its fields were derived.
  *
- * Run: `./equin test plugins/debug/plugins/boot-profile`.
+ * Run: `./muxos test plugins/debug/plugins/boot-profile`.
  */
 
 import { describe, expect, test } from "bun:test";

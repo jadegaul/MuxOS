@@ -16,7 +16,7 @@ import { readdirSync } from "@plugins/packages/plugins/timed-fs/core";
  * whose CLI died before its `finally` (SIGKILL, a crash) is reclaimed by the
  * next run's sweep: a root whose pid is gone has no one left to use it.
  */
-const PARENT = join(tmpdir(), "equin-test-tmp");
+const PARENT = join(tmpdir(), "muxos-test-tmp");
 
 export async function withRunTmpdir<T>(
   body: (dir: string) => Promise<T>,

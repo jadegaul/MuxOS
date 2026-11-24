@@ -29,7 +29,7 @@ const helper = defineDep({
 });
 
 const decl = defineLoginService({
-  id: "dev.equin.example",
+  id: "dev.muxos.example",
   owner: "example",
   description: "An example tray helper",
   forUser: { name: "an example icon", gives: "It shows an example." },
@@ -54,7 +54,7 @@ describe("defineLoginService", () => {
   test("its id is the service label, its session the declaration's", () => {
     expect(isLoginServiceDeclaration(decl)).toBe(true);
     expect(loginServiceId(decl)).toEqual({
-      label: "dev.equin.example",
+      label: "dev.muxos.example",
       session: "graphical",
     });
   });
@@ -84,14 +84,14 @@ describe("defineLoginService", () => {
       decl,
       ready,
       {
-        path: "/app/equin.app/Contents/MacOS/example",
+        path: "/app/muxos.app/Contents/MacOS/example",
         identity: "example-helper@x",
         bundled: true,
       },
       {},
       null,
     );
-    expect(job.argv).toEqual(["/app/equin.app/Contents/MacOS/example", "tray"]);
+    expect(job.argv).toEqual(["/app/muxos.app/Contents/MacOS/example", "tray"]);
     expect(job.env).toEqual({
       HOME: "/h/me",
       ...envEntries({ APP_COMPONENT: "example-helper@x" }),
@@ -100,7 +100,7 @@ describe("defineLoginService", () => {
 
   test("spec reads the bound label of every service it refers to, by its own key", async () => {
     const gateway = {
-      label: "dev.equin.gateway",
+      label: "dev.muxos.gateway",
       session: "background",
       installedAs: ["dev.legacy.gateway"],
     } as const;
@@ -141,7 +141,7 @@ describe("defineLoginService", () => {
   });
 
   test("the hold names the service in holdDep's holder grammar", () => {
-    expect(loginServiceHolder(decl)).toBe("login-service-dev-equin-example");
+    expect(loginServiceHolder(decl)).toBe("login-service-dev-muxos-example");
     expect(loginServiceHolder(decl)).toMatch(/^[a-z][a-z0-9-]*$/);
   });
 

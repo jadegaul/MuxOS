@@ -20,7 +20,7 @@ import { PROTOTYPE_OPTIONS_REASON, PrototypeOptionSchema } from "./prototypes";
  *   template for a freshly minted prototype, the state on adoption otherwise).
  * - `turn` — the end of an agent turn that changed the folder.
  * - `restore` — "Restored vN": an older version made live again.
- * - `manual` — `./equin prototype checkpoint`, or the "Before restore"
+ * - `manual` — `./muxos prototype checkpoint`, or the "Before restore"
  *   save a restore makes of unsaved changes.
  */
 export const PROTOTYPE_VERSION_KINDS = [

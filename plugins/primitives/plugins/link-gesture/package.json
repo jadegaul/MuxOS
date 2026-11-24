@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-primitives-link-gesture",
-  "description": "The browser's link gestures (click here / ⌘-click / middle-click open elsewhere), readable off any control.",
+  "name": "@muxos/plugin-primitives-link-gesture",
+  "description": "The browser's link gestures (click here / \u2318-click / middle-click open elsewhere), readable off any control.",
   "private": true,
   "version": "0.0.1"
 }

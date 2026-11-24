@@ -39,7 +39,7 @@ function migrationGuidance(paths: readonly string[]): string[] {
     `Resolve it through the schema, never by editing a data file. Both sides' migrations are`,
     `published and immutable: keep every migration either side added, take upstream's side of a`,
     `conflicted meta/ file (\`git checkout --theirs -- <path>\`, the build re-derives it), and`,
-    `decide the table's shape in its owning \`schema.ts\` — \`./equin build\` then generates the`,
+    `decide the table's shape in its owning \`schema.ts\` — \`./muxos build\` then generates the`,
     `migration that shape needs.`,
   ];
 }
@@ -69,7 +69,7 @@ const run: CliAction<[], { continue?: boolean }> = async (opts) => {
   // Same refusal as `toolchain upgrade`, for the same reason: main's backend is
   // serving from this checkout and rebuilds itself the moment `refs/heads/main`
   // moves. An update is proven in a worktree and reaches main through
-  // `./equin push`, which the user runs. It covers both verbs — there is
+  // `./muxos push`, which the user runs. It covers both verbs — there is
   // no upstream merge to conclude on main either.
   // Main's checkout — the repo root, where commits land — or one of main's
   // slots (infra/git/main-slots), which main is built and served from: both
@@ -77,7 +77,7 @@ const run: CliAction<[], { continue?: boolean }> = async (opts) => {
   if (await isMainCheckoutOrSlot(root))
     refuse(
       "Refusing to merge upstream into the main checkout. Main rebuilds itself the moment its ref moves, " +
-        "so an update is merged in a worktree, built and looked at there, and lands on main through `./equin push`.",
+        "so an update is merged in a worktree, built and looked at there, and lands on main through `./muxos push`.",
     );
 
   // Both verbs may write a merge commit, so its signer is settled first —
@@ -98,7 +98,7 @@ const run: CliAction<[], { continue?: boolean }> = async (opts) => {
  * Conclude the merge this command started.
  *
  * It exists so that resolving a conflict never requires a raw `git commit`.
- * The repo's rule is that an agent never commits — `./equin push -m` is
+ * The repo's rule is that an agent never commits — `./muxos push -m` is
  * the only way work is committed — and a merge left half-done is the one place
  * that rule had no answer, because `push` would also PUSH, which is exactly
  * what an upstream update must not do until the user says so. So the command
@@ -115,7 +115,7 @@ async function continueMerge(root: string): Promise<void> {
   if (mergeHead.exitCode !== 0)
     refuse(
       "No merge is in progress here, so there is nothing to conclude. " +
-        "`--continue` finishes a `./equin upstream merge` that stopped on conflicts; " +
+        "`--continue` finishes a `./muxos upstream merge` that stopped on conflicts; " +
         "a merge that did not conflict was already concluded by git itself.",
     );
 
@@ -135,7 +135,7 @@ async function continueMerge(root: string): Promise<void> {
         ...(migrations.length > 0
           ? [...migrationGuidance(migrations), ``]
           : []),
-        `Resolve each one, \`git add\` it, then re-run \`./equin upstream merge --continue\`.`,
+        `Resolve each one, \`git add\` it, then re-run \`./muxos upstream merge --continue\`.`,
         `To back out of the merge entirely: \`git merge --abort\`.`,
       ].join("\n"),
     );
@@ -170,7 +170,7 @@ async function continueMerge(root: string): Promise<void> {
         ``,
         ...marked.map((p) => `  ${p}`),
         ``,
-        `Finish resolving them, \`git add\` each one, and re-run \`./equin upstream merge --continue\`.`,
+        `Finish resolving them, \`git add\` each one, and re-run \`./muxos upstream merge --continue\`.`,
       ].join("\n"),
     );
 
@@ -185,7 +185,7 @@ async function continueMerge(root: string): Promise<void> {
       ``,
       `Merge concluded.`,
       ``,
-      `Next: \`./equin build\` (in the background), confirm the deploy receipt says ok,`,
+      `Next: \`./muxos build\` (in the background), confirm the deploy receipt says ok,`,
       `open the worktree's URL and check the app still works. Then report — the user lands it.`,
     ].join("\n"),
   );
@@ -262,7 +262,7 @@ async function startMerge(root: string): Promise<void> {
         ``,
         `Merged release ${target} into ${branch}.`,
         ``,
-        `Next: \`./equin build\` (in the background), confirm the deploy receipt says ok,`,
+        `Next: \`./muxos build\` (in the background), confirm the deploy receipt says ok,`,
         `open the worktree's URL and check the app still works. Then report — the user lands it.`,
       ].join("\n"),
     );
@@ -283,7 +283,7 @@ async function startMerge(root: string): Promise<void> {
       `side and the generators re-run over the merged tree — so do not hand-resolve one.`,
       ...(migrations.length > 0 ? [``, ...migrationGuidance(migrations)] : []),
       ``,
-      `When each one is resolved and \`git add\`ed, run \`./equin upstream merge --continue\` to`,
+      `When each one is resolved and \`git add\`ed, run \`./muxos upstream merge --continue\` to`,
       `conclude the merge. To back out entirely: \`git merge --abort\`.`,
     ].join("\n"),
   );

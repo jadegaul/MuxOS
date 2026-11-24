@@ -102,7 +102,7 @@ export function agentOriginHeaders(source: string): Record<string, string> {
  * run. Its reader is {@link pageOrigin}; both are stamped together by
  * {@link markAgentContext}, so a session cannot carry one without the other.
  */
-const PAGE_ORIGIN_GLOBAL = "__equinAgentOrigin";
+const PAGE_ORIGIN_GLOBAL = "__muxosAgentOrigin";
 
 /** Who drives this page — the browser-side reading of the agent-origin mark. */
 export type PageOrigin =

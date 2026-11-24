@@ -8,7 +8,7 @@ import {
 /**
  * Every declared login service: each plugin's `login-services/index.ts` default
  * export (an array of `defineLoginService` values), collected by codegen into
- * `core/login-services.generated.ts`. Known statically, so `./equin start` /
+ * `core/login-services.generated.ts`. Known statically, so `./muxos start` /
  * `stop` read it without booting a backend — and name no service. Only the
  * services declared for this OS (`platforms`).
  */

@@ -7,7 +7,7 @@
  * only when the sender may — refuse an unknown id, oneself, or a task no agent
  * ran on).
  *
- * Run: `./equin test plugins/tasks/plugins/orchestration/plugins/message`.
+ * Run: `./muxos test plugins/tasks/plugins/orchestration/plugins/message`.
  */
 import { describe, expect, test } from "bun:test";
 import { sql } from "drizzle-orm";

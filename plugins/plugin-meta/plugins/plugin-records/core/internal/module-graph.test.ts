@@ -330,7 +330,7 @@ describe("the lockfile in the file-facts key", () => {
   // A plugin added: its workspace stanza and its link line, nothing installed.
   const PLUGIN_ADDED = LOCK.replace(
     `  },\n  "packages": {`,
-    `    "plugins/c": {\n      "name": "@equin/plugin-c",\n      "version": "0.0.1",\n    },\n  },\n  "packages": {\n    "@equin/plugin-c": ["@equin/plugin-c@workspace:plugins/c"],\n`,
+    `    "plugins/c": {\n      "name": "@muxos/plugin-c",\n      "version": "0.0.1",\n    },\n  },\n  "packages": {\n    "@muxos/plugin-c": ["@muxos/plugin-c@workspace:plugins/c"],\n`,
   );
   const NPM_BUMPED = LOCK.replace("zod@4.0.0", "zod@4.0.1");
 

@@ -5,15 +5,15 @@ import {
   LEGACY_PRODUCT_NAMES,
   PRODUCT_NAME,
 } from "../core/internal/product-name";
-import legacyIdChecks from "./legacy-id";
+import legacyIdChecks, { MIRROR_VALUES, stripResearchRefs } from "./legacy-id";
 
 const RULE = "product-name:legacy";
 
 /**
- * The legacy name as a WORD, capitalised: the product name in prose and in
- * strings. Not a lowercase identifier, not part of a camelCase one, and not a
- * commit-trailer key (`<Name>-Conversation:`) — those are
- * `product-name:legacy-id`'s (`./legacy-id.ts`).
+ * The legacy name as a WORD: the product name in prose and in strings, every
+ * generation, capitalised or lowercase. Not a lowercase identifier, not part
+ * of a camelCase one, and not a commit-trailer key (`<Name>-Conversation:`) —
+ * those are `product-name:legacy-id`'s (`./legacy-id.ts`).
  */
 function legacyWord(name: string): RegExp {
   return new RegExp(String.raw`(?<![\w-])${name}(?![\w]|-[A-Z])`);
@@ -36,6 +36,7 @@ const legacyProductNameCheck: Check = {
   exemptable: {
     [RULE]: `writes the product's old name (${LEGACY_PRODUCT_NAMES.join(", ")}) on purpose — e.g. a migration that finds something stored under it`,
   },
+  outOfScope: ["research", "generated", "readme", "patch"],
   async run(ctx) {
     const exempt = await ctx.exempt(RULE);
     const offenders: string[] = [];
@@ -48,8 +49,16 @@ const legacyProductNameCheck: Check = {
       });
       for (const { rel, src } of candidates) {
         if (exempt.skips(rel)) continue;
+        // A declared mirror line may carry its kept value (the manifest the
+        // legacy-id check owns — `./legacy-id.ts`), and a reference to a
+        // research doc's filename is history, not a live mention.
+        const mirrored = MIRROR_VALUES.get(rel) ?? [];
         src.split("\n").forEach((text, i) => {
-          if (pattern.test(text)) {
+          const stripped = stripResearchRefs(text);
+          if (
+            pattern.test(stripped) &&
+            !mirrored.some((value) => stripped.includes(value))
+          ) {
             offenders.push(`${rel}:${i + 1}:${text.trim()}`);
           }
         });

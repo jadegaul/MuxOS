@@ -49,7 +49,7 @@ export function griegTurns(
     },
     {
       kind: "tool",
-      name: "mcp__equin__read_page",
+      name: "mcp__muxos__read_page",
       input: readPiano.input,
       result: readPiano.result,
     },
@@ -85,7 +85,7 @@ export function griegTurns(
     },
     {
       kind: "tool",
-      name: "mcp__equin__edit_page",
+      name: "mcp__muxos__edit_page",
       input: notePiano.input,
       result: notePiano.result,
     },
@@ -135,7 +135,7 @@ const PROTOTYPES_GUIDE = [
   "",
   "## Creating one",
   "",
-  '- `./equin prototype new "Title"` mints the folder from `_template/` and',
+  '- `./muxos prototype new "Title"` mints the folder from `_template/` and',
   "  prints its id. Never copy the template by hand, and never name the folder:",
   "  other places refer to the prototype by its id, so the id must never change.",
   "- **One prototype per request.** Asked for several directions? Build all of them",
@@ -188,7 +188,7 @@ export function prototypeTurns(
       kind: "tool",
       name: "Bash",
       input: {
-        command: './equin prototype new "Circle — P2P friends"',
+        command: './muxos prototype new "Circle — P2P friends"',
         description: "Create the prototype folder",
       },
       result: [
@@ -213,7 +213,7 @@ export function prototypeTurns(
     },
     {
       kind: "tool",
-      name: "mcp__equin__browser_navigate",
+      name: "mcp__muxos__browser_navigate",
       input: { url: page },
       result: JSON.stringify({
         tab: "t1",
@@ -223,13 +223,13 @@ export function prototypeTurns(
     },
     {
       kind: "tool",
-      name: "mcp__equin__browser_console",
+      name: "mcp__muxos__browser_console",
       input: { errorsOnly: true },
       result: "(none)",
     },
     {
       kind: "tool",
-      name: "mcp__equin__browser_act",
+      name: "mcp__muxos__browser_act",
       input: { action: "click", selector: "text=Keys & privacy" },
       result: JSON.stringify({
         tab: "t1",
@@ -243,7 +243,7 @@ export function prototypeTurns(
     },
     {
       kind: "tool",
-      name: "mcp__equin__browser_navigate",
+      name: "mcp__muxos__browser_navigate",
       input: { url: `${page}?network=nearby&theme=light` },
       result: JSON.stringify({
         tab: "t1",
@@ -253,7 +253,7 @@ export function prototypeTurns(
     },
     {
       kind: "tool",
-      name: "mcp__equin__browser_console",
+      name: "mcp__muxos__browser_console",
       input: { errorsOnly: true },
       result: "(none)",
     },

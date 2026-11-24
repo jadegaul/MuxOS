@@ -14,7 +14,7 @@ export { useCloseHelpMenu } from "./internal/close-menu";
 
 export default {
   description:
-    'The ? "Getting started" menu on the global action bar — the hints engine\'s help anchor, ringed while a tour end pulses it — rendering the open HelpMenu.Entry slot: Replay the tour (the primary tour), Show tips again (resets every declared tip), and Read the guide (equin.ai, new tab); other plugins add their own entries (Ask equin how to…, from hints/ask).',
+    'The ? "Getting started" menu on the global action bar — the hints engine\'s help anchor, ringed while a tour end pulses it — rendering the open HelpMenu.Entry slot: Replay the tour (the primary tour), Show tips again (resets every declared tip), and Read the guide (MuxOS.app, new tab); other plugins add their own entries (Ask muxos how to…, from hints/ask).',
   slots: HelpMenu,
   contributions: [
     ActionBar.Item({ id: "help", component: HelpButton }),

@@ -296,9 +296,9 @@ async function git(dir: string, ...args: string[]): Promise<void> {
     [
       GIT,
       "-c",
-      "user.name=equin",
+      "user.name=muxos",
       "-c",
-      "user.email=noreply@equin.ai",
+      "user.email=noreply@MuxOS.app",
       "-c",
       "commit.gpgsign=false",
       ...args,

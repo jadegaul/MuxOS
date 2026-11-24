@@ -16,7 +16,7 @@
 //   E. a span, Delete, Cmd+Z with NO pause: the three lines are back;
 //   F. a double-click selection, typed over: the word is replaced.
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/span-edge-cases-verify.ts [--url <deploy>]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/span-edge-cases-verify.ts [--url <deploy>]
 import {
   report,
   withBrowser,

@@ -298,9 +298,9 @@ describe("shellNotificationLabel", () => {
   test("reads the label of a shell's notification, whatever its verb", () => {
     expect(
       shellNotificationLabel(
-        'Background command "./equin build" completed (exit code 0)',
+        'Background command "./muxos build" completed (exit code 0)',
       ),
-    ).toBe("./equin build");
+    ).toBe("./muxos build");
     expect(
       shellNotificationLabel(
         'Background command "Push branch to main" failed with exit code 1',

@@ -19,7 +19,7 @@ export const SHARED_TEMP_ROOTS: readonly string[] = ["/tmp", "/var/tmp"];
  * three days), so a conversation that ends leaves nothing to collect. Short, so
  * a socket a tool opens inside it stays under the AF_UNIX path cap.
  */
-export const SCRATCH_ROOT = "/tmp/equin-scratch";
+export const SCRATCH_ROOT = "/tmp/muxos-scratch";
 
 const OWNER = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
 
@@ -27,7 +27,7 @@ const OWNER = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
  * The one scratch directory of a session: `<SCRATCH_ROOT>/<owner>`, where the
  * owner is the conversation id for an app-launched agent (stable across its
  * Claude sessions; the launcher creates the directory and hands it to the
- * shell as `EQUIN_SCRATCH`) and the Claude session id for a session no app
+ * shell as `MUXOS_SCRATCH`) and the Claude session id for a session no app
  * launched. Its subagents share it — they run in the same session, under the
  * one mind that names their files.
  *

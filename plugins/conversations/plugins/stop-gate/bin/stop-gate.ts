@@ -38,8 +38,8 @@ let stdin = "";
 for await (const chunk of process.stdin) stdin += String(chunk);
 
 const conversationId = readEnv("CONVERSATION_ID");
-// TEMPORARY: an agent launched before EQUIN_PARENT_URL existed carries only
-// EQUIN_PARENT_HOST (a namespace), while this script is read from main's live
+// TEMPORARY: an agent launched before MUXOS_PARENT_URL existed carries only
+// MUXOS_PARENT_HOST (a namespace), while this script is read from main's live
 // checkout. Delete with the PARENT_HOST key (env-names) once no running agent
 // has it. Such an agent predates the per-account port, so its backend is on
 // the port every gateway listened on then.

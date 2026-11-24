@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-database-admin",
-  "description": "Admin operations for the database plugin — fork, backup, drop, list.",
+  "name": "@muxos/plugin-database-admin",
+  "description": "Admin operations for the database plugin \u2014 fork, backup, drop, list.",
   "private": true,
   "version": "0.0.1"
 }

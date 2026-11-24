@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-apps-sonata-theory",
-  "description": "Music-theory primitives for Sonata: the chord vocabulary (quality↔intervals↔symbol) and a chord-symbol parser shared by chord analyzers and chord-authoring sources.",
+  "name": "@muxos/plugin-apps-sonata-theory",
+  "description": "Music-theory primitives for Sonata: the chord vocabulary (quality\u2194intervals\u2194symbol) and a chord-symbol parser shared by chord analyzers and chord-authoring sources.",
   "private": true,
   "version": "0.0.1"
 }

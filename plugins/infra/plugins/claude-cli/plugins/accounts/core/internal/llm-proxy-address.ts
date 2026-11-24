@@ -1,5 +1,5 @@
 /**
- * Where an `openai` endpoint account is reached from: equin's local LLM
+ * Where an `openai` endpoint account is reached from: muxos's local LLM
  * translator proxy (`claude-cli/llm-proxy`) — one process per machine, bound
  * to loopback, serving one path per endpoint account. The address is part of
  * the endpoint credential's contract (what its ANTHROPIC_BASE_URL is), so it

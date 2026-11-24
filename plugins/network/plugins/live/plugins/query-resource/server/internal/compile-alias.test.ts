@@ -12,7 +12,7 @@
  * refusal. The DB-backed oracles are `compile-alias-closure.test.ts` (A23)
  * and tasks-core's `all-parity.test.ts`.
  *
- * Run: `./equin test plugins/network/plugins/live/plugins/query-resource`.
+ * Run: `./muxos test plugins/network/plugins/live/plugins/query-resource`.
  */
 
 import { describe, expect, test } from "bun:test";

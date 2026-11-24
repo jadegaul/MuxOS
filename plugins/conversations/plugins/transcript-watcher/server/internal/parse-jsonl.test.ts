@@ -237,7 +237,7 @@ describe("readJsonlEvents — tool_reference results", () => {
               content: [
                 {
                   type: "tool_reference",
-                  tool_name: "mcp__equin__add_task",
+                  tool_name: "mcp__muxos__add_task",
                 },
                 { type: "tool_reference", tool_name: "WebFetch" },
               ],
@@ -253,7 +253,7 @@ describe("readJsonlEvents — tool_reference results", () => {
     expect(call?.kind === "tool-call" ? call.result : undefined).toEqual({
       at: TS,
       content: "",
-      toolReferences: ["mcp__equin__add_task", "WebFetch"],
+      toolReferences: ["mcp__muxos__add_task", "WebFetch"],
     });
   });
 

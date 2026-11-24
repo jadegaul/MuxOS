@@ -7,7 +7,7 @@
  * canary age whose median residency fell below 50 %); then the window's p50s.
  * Reads the rotated archives (`fs-latency-archive/*.jsonl.gz`) and the live log.
  *
- *   ./equin run plugins/infra/plugins/host/plugins/io-health/plugins/monitor/scripts/report.ts \
+ *   ./muxos run plugins/infra/plugins/host/plugins/io-health/plugins/monitor/scripts/report.ts \
  *     [--hours 24 | --since 2026-11-04T03:29 [--until 2026-11-04T16:23]] [--dir <monitors log dir>]
  *
  * `--since` / `--until` are UTC ISO prefixes (`--until` exclusive). The exit

@@ -5,15 +5,13 @@ import {
 } from "@plugins/primitives/plugins/action-presentation/web";
 import { SOURCE_REPO_URL } from "@plugins/framework/plugins/product-name/core";
 import { brand, type IconRef } from "@plugins/ui/plugins/icons/core";
-import { DISCORD_URL } from "../../core";
 import { WEBSITE_NAV_LADDER, WebsiteMenuRow } from "./website-nav-link";
 
 const githubIcon = brand("github");
-const discordIcon = brand("discord");
 
 /**
- * An off-site destination in the shared site header — the source on GitHub, the
- * community on Discord — between the pages and the actions.
+ * An off-site destination in the shared site header — the source on GitHub —
+ * between the pages and the actions.
  *
  * An icon rather than a word, so it reads as "leaves the site" rather than as
  * one more page competing with Vision and Apps. Quiet like the page links — the
@@ -63,26 +61,14 @@ function WebsiteNavIconLink({
   );
 }
 
-/** The source: equin is open source, and the code is on GitHub. */
+/** The source: muxos is open source, and the code is on GitHub. */
 export function WebsiteGithubLink() {
   return (
     <WebsiteNavIconLink
       href={SOURCE_REPO_URL}
       icon={githubIcon}
       name="GitHub"
-      label="equin on GitHub"
-    />
-  );
-}
-
-/** The community: equin's Discord server. */
-export function WebsiteDiscordLink() {
-  return (
-    <WebsiteNavIconLink
-      href={DISCORD_URL}
-      icon={discordIcon}
-      name="Discord"
-      label="equin on Discord"
+      label="muxos on GitHub"
     />
   );
 }

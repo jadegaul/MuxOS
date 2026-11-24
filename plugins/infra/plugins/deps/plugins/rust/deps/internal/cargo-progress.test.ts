@@ -10,7 +10,7 @@ test("cargo's forced progress bar becomes crate counts, the last frame of each c
       "    Building [=====>          ] 137/312: syn, serde\r",
   );
   read("warning: unused\n");
-  read("    Building [===============>] 311/312: equin-helper(bin)    \r");
+  read("    Building [===============>] 311/312: muxos-helper(bin)    \r");
   expect(seen).toEqual([
     { done: 137, total: 312, unit: "crates" },
     { done: 311, total: 312, unit: "crates" },

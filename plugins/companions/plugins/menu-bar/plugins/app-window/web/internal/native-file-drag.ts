@@ -3,7 +3,7 @@ import {
   AppWindowInfoSchema,
   FileDragOutcomeSchema,
   WINDOW_BRIDGE_METHODS,
-  type EquinWindowBridge,
+  type MuxOSWindowBridge,
   type FileDragOutcome,
 } from "../../core";
 
@@ -19,8 +19,8 @@ type ProbeState =
   | { kind: "failed"; error: Error };
 
 /** The bridge the helper injected, checked to carry every method — or none. */
-function readBridge(): EquinWindowBridge | null {
-  const raw: unknown = (window as { equinWindow?: unknown }).equinWindow;
+function readBridge(): MuxOSWindowBridge | null {
+  const raw: unknown = (window as { muxosWindow?: unknown }).muxosWindow;
   if (raw === undefined) return null;
   const missing = WINDOW_BRIDGE_METHODS.filter(
     (m) =>
@@ -30,10 +30,10 @@ function readBridge(): EquinWindowBridge | null {
   );
   if (missing.length > 0) {
     throw new Error(
-      `window.equinWindow is not the equin bridge: missing ${missing.join(", ")}.`,
+      `window.muxosWindow is not the muxos bridge: missing ${missing.join(", ")}.`,
     );
   }
-  return raw as EquinWindowBridge;
+  return raw as MuxOSWindowBridge;
 }
 
 // One probe per document: the window and its capabilities do not change while
@@ -53,7 +53,7 @@ function fail(err: unknown, what: string): Error {
 
 function probe(): ProbeState {
   if (state !== null) return state;
-  let bridge: EquinWindowBridge | null;
+  let bridge: MuxOSWindowBridge | null;
   try {
     bridge = readBridge();
   } catch (err) {
@@ -74,7 +74,7 @@ function probe(): ProbeState {
         settle({
           kind: "failed",
           error: new Error(
-            `equinWindow.hostInfo() answered an unknown shape: ${parsed.error.message}`,
+            `muxosWindow.hostInfo() answered an unknown shape: ${parsed.error.message}`,
           ),
         });
         return;
@@ -90,7 +90,7 @@ function probe(): ProbeState {
     (err: unknown) =>
       settle({
         kind: "failed",
-        error: fail(err, "equinWindow.hostInfo() failed"),
+        error: fail(err, "muxosWindow.hostInfo() failed"),
       }),
   );
   return state;

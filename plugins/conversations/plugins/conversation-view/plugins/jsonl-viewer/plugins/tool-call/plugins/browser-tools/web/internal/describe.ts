@@ -3,7 +3,7 @@ import { z } from "zod";
 /**
  * What a browser_* call shows: a one-line summary and, for the tools that carry
  * code or a list of actions, a body of its own. One table over the tool's short
- * name (`mcp__equin__browser_<x>` -> `<x>`), so a tool is a row, not a view.
+ * name (`mcp__muxos__browser_<x>` -> `<x>`), so a tool is a row, not a view.
  *
  * Reads each field of the input object for itself (`str`, `num`, …), so it
  * draws a still-streaming input too: any field may be missing, the wrong type,

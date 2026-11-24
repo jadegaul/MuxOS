@@ -6,8 +6,8 @@ import {
 } from "./paths";
 
 test("claudeProjectDirName", () => {
-  expect(claudeProjectDirName("/home/u/.equin/state/workspaces/att-1")).toBe(
-    "-home-u--equin-state-workspaces-att-1",
+  expect(claudeProjectDirName("/home/u/.muxos/state/workspaces/att-1")).toBe(
+    "-home-u--muxos-state-workspaces-att-1",
   );
   expect(claudeProjectDirName("/w/__A__/dev/repo/.claude/wt")).toBe(
     "-w---A---dev-repo--claude-wt",

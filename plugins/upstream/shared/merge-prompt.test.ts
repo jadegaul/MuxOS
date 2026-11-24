@@ -14,7 +14,7 @@ import {
 const base: UpstreamUpdates = {
   latest: "v2026.11.14",
   current: "v2026.10.30",
-  url: "https://github.com/equinai/equin",
+  url: "https://github.com/jadegaul/MuxOS",
 };
 
 function rendered(d: UpstreamUpdates): string {
@@ -31,7 +31,7 @@ describe("upstreamMergeVariables", () => {
     const text = rendered(base);
     expect(text).toContain("2026.11.14");
     expect(text).toContain("is on 2026.10.30");
-    expect(text).toContain("https://github.com/equinai/equin");
+    expect(text).toContain("https://github.com/jadegaul/MuxOS");
   });
 
   test("without the remote's URL, names the release alone", () => {
@@ -60,8 +60,8 @@ describe("UPSTREAM_MERGE_PROMPT", () => {
   test("carries the five steps", () => {
     const text = rendered(base);
     // The mechanical half is one command, not prose the agent re-derives.
-    expect(text).toContain("./equin upstream merge");
-    expect(text).toContain("./equin build");
+    expect(text).toContain("./muxos upstream merge");
+    expect(text).toContain("./muxos build");
     expect(text).toContain("build-status.json");
     for (const step of ["1.", "2.", "3.", "4.", "5."])
       expect(text).toContain(`\n${step} `);
@@ -71,7 +71,7 @@ describe("UPSTREAM_MERGE_PROMPT", () => {
     const text = rendered(base);
     // The repo's rule is that an agent never commits. `merge --continue` exists
     // so this prompt never has to carve an exception into it.
-    expect(text).toContain("./equin upstream merge --continue");
+    expect(text).toContain("./muxos upstream merge --continue");
     expect(text).not.toContain("git commit");
   });
 

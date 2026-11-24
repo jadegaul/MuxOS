@@ -20,11 +20,11 @@
  *     still painted one would let a click there write the shared selection it
  *     ignores.
  *
- * Manual only; nothing runs this automatically. Run it after `./equin
+ * Manual only; nothing runs this automatically. Run it after `./muxos
  * build` with:
  *
- *   ./equin run plugins/build/e2e/runs-surface.ts
- *   ./equin run plugins/build/e2e/runs-surface.ts --headed
+ *   ./muxos run plugins/build/e2e/runs-surface.ts
+ *   ./muxos run plugins/build/e2e/runs-surface.ts --headed
  *
  * Assertions are written against MARKERS that belong to exactly one run kind,
  * not against row counts off a hand-picked selector: the DataView list exposes

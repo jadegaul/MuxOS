@@ -6,7 +6,7 @@ export default [
     paths: ["web/index.ts"],
     kind: "sanctioned",
     reason:
-      "The equin shell's solo-mode chrome (the floating global action bar). The standalone website draws its own layout, and the live demo's embedded app carries its own header — the page does without it.",
+      "The muxos shell's solo-mode chrome (the floating global action bar). The standalone website draws its own layout, and the live demo's embedded app carries its own header — the page does without it.",
   },
   {
     rule: "react-compiler:no-silent-skips",

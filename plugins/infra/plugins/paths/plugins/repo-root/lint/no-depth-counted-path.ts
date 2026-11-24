@@ -160,7 +160,7 @@ function depthInPlugin(filename: string): number | null {
  * A path built from the file's own location (`import.meta.dir` / `.url`,
  * `__dirname`, …) that climbs out of the file's own plugin encodes how deep
  * the file sits: `join(import.meta.dir, "../../../../..")` is the repo root
- * only while nobody moves the plugin. `./equin plugin move` cannot rewrite
+ * only while nobody moves the plugin. `./muxos plugin move` cannot rewrite
  * it (the path is computed, not written), and nothing fails until it runs —
  * a test can even read the wrong directory and pass.
  *
@@ -180,7 +180,7 @@ export default createRule({
     schema: [],
     messages: {
       escapes:
-        "This path climbs {{levels}} level(s) out of its own plugin by counting `../` from the file's location — a count `./equin plugin move` cannot rewrite, which silently points elsewhere once the plugin's depth changes. Join a repo-relative path onto `REPO_ROOT` (`@plugins/infra/plugins/paths/plugins/repo-root/core`) instead.",
+        "This path climbs {{levels}} level(s) out of its own plugin by counting `../` from the file's location — a count `./muxos plugin move` cannot rewrite, which silently points elsewhere once the plugin's depth changes. Join a repo-relative path onto `REPO_ROOT` (`@plugins/infra/plugins/paths/plugins/repo-root/core`) instead.",
     },
   },
   defaultOptions: [],

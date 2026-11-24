@@ -1,6 +1,6 @@
 {
-  "name": "@equin/plugin-fields-int",
+  "name": "@muxos/plugin-fields-int",
   "version": "0.0.1",
   "private": true,
-  "description": "Integer field type: identity only, extends number — reuses number's cell and filter via the extends chain."
+  "description": "Integer field type: identity only, extends number \u2014 reuses number's cell and filter via the extends chain."
 }

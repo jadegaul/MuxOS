@@ -4,7 +4,7 @@
 // composition of your own (`--composition promo-film`), never main.
 //
 // Usage:
-//   ./equin run plugins/apps/plugins/places/plugins/places-map/e2e/opening-hours.ts \
+//   ./muxos run plugins/apps/plugins/places/plugins/places-map/e2e/opening-hours.ts \
 //     --composition promo-film [--out /tmp/hours]
 
 import {

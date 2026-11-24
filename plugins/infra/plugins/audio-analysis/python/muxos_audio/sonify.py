@@ -12,7 +12,7 @@ import wave
 
 import numpy as np
 
-from equin_audio.decode import decode_mono
+from muxos_audio.decode import decode_mono
 
 RATE = 44100
 

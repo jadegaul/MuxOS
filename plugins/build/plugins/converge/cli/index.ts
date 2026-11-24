@@ -1,5 +1,5 @@
 // Shared CLI machinery, not a command (no default export): the decision main's
-// convergence run (`./equin build --allow-main --converge`) makes, and the
+// convergence run (`./muxos build --allow-main --converge`) makes, and the
 // one build a pass of it runs.
 export { decideConvergence } from "./internal/decide";
 export type { ConvergenceDecision } from "./internal/decide";

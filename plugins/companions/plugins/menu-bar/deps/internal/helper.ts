@@ -13,11 +13,11 @@ import {
 } from "@plugins/infra/plugins/deps/plugins/rust/deps";
 
 const CRATE = "plugins/companions/plugins/menu-bar/rust";
-const BIN = "equin-desktop";
-/** macOS: the binary and the app icon, side by side — what the equin app bundle installs. */
+const BIN = "muxos-desktop";
+/** macOS: the binary and the app icon, side by side — what the muxos app bundle installs. */
 const MACOS = "macos";
-/** The app icon, built from the crate's spiral (`.icns`, for the equin app bundle). */
-const ICON = "equin.icns";
+/** The app icon, built from the crate's spiral (`.icns`, for the muxos app bundle). */
+const ICON = "muxos.icns";
 const MINUTE = 60_000;
 
 /** The `.iconset` sizes `iconutil` reads, from the 512 px icon build.rs renders. */
@@ -35,8 +35,8 @@ const ICONSET: ReadonlyArray<readonly [name: string, px: number]> = [
 
 /**
  * macOS: the binary (copied — `built` is the shared target dir's) and the
- * spiral as `equin.icns` (`sips` + `iconutil` over the crate's build-rendered
- * `icons/icon.png`). No bundle: the helper runs from the ONE equin app bundle
+ * spiral as `muxos.icns` (`sips` + `iconutil` over the crate's build-rendered
+ * `icons/icon.png`). No bundle: the helper runs from the ONE muxos app bundle
  * every login service shares (login-services' `macos-app`), which installs
  * both and signs the whole with the machine's identity.
  */
@@ -47,8 +47,8 @@ async function assembleMacos(ctx: BuildContext, built: string): Promise<void> {
   await chmod(join(ctx.output, BIN), 0o755);
 
   // The iconset is scratch, outside env/.
-  const scratch = await mkdtemp(join(tmpdir(), "equin-iconset-"));
-  const iconset = join(scratch, "equin.iconset");
+  const scratch = await mkdtemp(join(tmpdir(), "muxos-iconset-"));
+  const iconset = join(scratch, "muxos.iconset");
   await mkdir(iconset);
   const source = join(ctx.root, CRATE, "icons", "icon.png");
   for (const [name, px] of ICONSET) {
@@ -80,17 +80,17 @@ export function menuBarHelperIcon(ready: Ready<CargoSource>): AppPath | null {
 }
 
 /**
- * The native helper — `equin-desktop` (rust/): the menu-bar / top-bar icon and
+ * The native helper — `muxos-desktop` (rust/): the menu-bar / top-bar icon and
  * its panel (`tray`), and an installed app's window (`window`). Built from this
  * checkout's crate by the rust kind. macOS: the binary beside the app icon,
- * which the equin app bundle installs (its notifications are the app's);
+ * which the muxos app bundle installs (its notifications are the app's);
  * Linux: the bare binary.
  */
 export const menuBarHelper = defineDep({
   id: "menu-bar-helper",
   owner: "companions/menu-bar",
   description:
-    "The native menu-bar helper (equin-desktop): the equin icon in the macOS menu bar / Linux top bar and the panel it opens",
+    "The native menu-bar helper (muxos-desktop): the muxos icon in the macOS menu bar / Linux top bar and the panel it opens",
   sizeHint: "≈6 MB",
   source:
     process.platform === "darwin"
@@ -105,7 +105,7 @@ export const menuBarHelper = defineDep({
   updates: { none: "built from this checkout's own source" },
   // Linux: Tauri links the desktop's own toolkit (GTK, WebKitGTK and the
   // libraries under it), found through pkg-config. install.sh installs them
-  // from this list (`./equin start --system-packages`) on a machine with a
+  // from this list (`./muxos start --system-packages`) on a machine with a
   // desktop; a headless one never builds the helper at all.
   systemPackages: {
     linux: {

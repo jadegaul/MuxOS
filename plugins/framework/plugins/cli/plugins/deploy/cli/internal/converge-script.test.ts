@@ -72,12 +72,12 @@ describe("caddySite", () => {
   test("refuses the host-only routes publicly, ahead of the proxy", () => {
     expect(
       caddySite(
-        ["equin.dev", "www.equin.dev"],
+        ["muxos.dev", "www.muxos.dev"],
         9100,
         "/var/log/caddy/website.access.log",
       ),
     ).toBe(
-      `equin.dev, www.equin.dev {
+      `muxos.dev, www.muxos.dev {
 \tlog {
 \t\toutput file /var/log/caddy/website.access.log {
 \t\t\troll_size 100MiB
@@ -119,7 +119,7 @@ describe("caddySite", () => {
 
 describe("convergeScript (shell syntax)", () => {
   for (const [label, hostnames] of [
-    ["with hostnames", ["equin.ai", "www.equin.ai"]],
+    ["with hostnames", ["MuxOS.app", "www.MuxOS.app"]],
     ["without hostnames", []],
   ] as const) {
     test(`parses as bash — ${label}`, async () => {
@@ -134,7 +134,7 @@ describe("convergeScript (shell syntax)", () => {
 
 describe("convergeScript (idempotence contract)", () => {
   test("every generated file lands through put", () => {
-    const text = script(["equin.ai"]);
+    const text = script(["MuxOS.app"]);
     // `mv -f "…​.new"` outside the helper means a step that replaces its file
     // unconditionally — which would bump the mtime the restart gate reads.
     const rawMoves = [...text.matchAll(/^mv -f "\$[A-Z_]+\.new"/gm)];
@@ -154,7 +154,7 @@ describe("convergeScript (idempotence contract)", () => {
   test("the access log is caddy-owned before root's caddy validate can create it", () => {
     // validate (root) opening a missing log creates it root-owned 0600, and the
     // running caddy then fails to reload with "permission denied".
-    const text = script(["equin.ai"]);
+    const text = script(["MuxOS.app"]);
     const owned = text.indexOf('chown caddy:caddy "$ACCESS_LOG"');
     const validate = text.indexOf('caddy validate --config "$CADDYFILE"');
     expect(owned).toBeGreaterThan(-1);
@@ -169,8 +169,8 @@ describe("convergeScript (idempotence contract)", () => {
       /\(\n {2}umask 077[\s\S]*?"\$\(staged "\$ENV_FILE"\)"\n\)/.exec(
         script(hosts),
       )?.[0];
-    expect(envBlock(["equin.ai", "www.equin.ai"])).toContain(
-      `echo "${envName("PUBLIC_HOSTS")}=equin.ai,www.equin.ai"`,
+    expect(envBlock(["MuxOS.app", "www.MuxOS.app"])).toContain(
+      `echo "${envName("PUBLIC_HOSTS")}=MuxOS.app,www.MuxOS.app"`,
     );
     expect(envBlock([])).not.toContain("PUBLIC_HOSTS");
   });
@@ -178,7 +178,7 @@ describe("convergeScript (idempotence contract)", () => {
   test("no secret is written into the env file", () => {
     const envBlock =
       /\(\n {2}umask 077[\s\S]*?"\$\(staged "\$ENV_FILE"\)"\n\)/.exec(
-        script(["equin.ai"]),
+        script(["MuxOS.app"]),
       );
     expect(envBlock).not.toBeNull();
     expect(envBlock?.[0]).not.toContain("SECRET");
@@ -392,7 +392,7 @@ ENV_FILE=${JSON.stringify(join(dir, "env"))}
 UNIT_PATH=${JSON.stringify(join(dir, "unit"))}
 CRED_DIR=${JSON.stringify(join(dir, "credentials"))}
 DROPIN_DIR=${JSON.stringify(join(dir, "unit.d"))}
-UNIT=equin@website.service
+UNIT=muxos@website.service
 ${RESTART_GATE_SH}`,
       { cwd: dir },
     );

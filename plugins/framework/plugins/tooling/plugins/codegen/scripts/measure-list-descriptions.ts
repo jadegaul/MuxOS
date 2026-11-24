@@ -6,7 +6,7 @@
  * (wiki: Import time and lazy imports). Reads the build's evaluated records;
  * no barrel is imported when nothing changed.
  *
- *   ./equin run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-list-descriptions.ts [composition…]
+ *   ./muxos run plugins/framework/plugins/tooling/plugins/codegen/scripts/measure-list-descriptions.ts [composition…]
  *
  * Per composition (main's and `website` by default): the web lists and the
  * server lists, each with its entry count, contributing plugins, raw JSON

@@ -10,7 +10,7 @@
 // Asserts: the first line in view and the joined line keep their viewport y
 // (±2px) across the merge, and the merge really happened.
 //
-// Usage: ./equin run plugins/page/plugins/editor/e2e/merge-scroll-verify.ts [--out /tmp/merge-scroll]
+// Usage: ./muxos run plugins/page/plugins/editor/e2e/merge-scroll-verify.ts [--out /tmp/merge-scroll]
 import {
   arg,
   report,

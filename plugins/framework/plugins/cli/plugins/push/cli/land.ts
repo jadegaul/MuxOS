@@ -48,7 +48,7 @@ export async function landPush(payload: LandPayload): Promise<void> {
   if (grant === undefined) {
     throw new Error(
       "push: a land phase runs only under the push that spawned it (the hand-off " +
-        "came without its host grant). Run ./equin push.",
+        "came without its host grant). Run ./muxos push.",
     );
   }
   const root = await getWorktreeRoot();
@@ -153,7 +153,7 @@ async function landWorktree(
     failChecks(
       report,
       `Checks failed after rebasing ${branch} onto main. ` +
-        `Fix the issue and re-run ./equin push ` +
+        `Fix the issue and re-run ./muxos push ` +
         `(your commits are on ${branch}; use \`git reset --soft HEAD~1\` to unstage the last one if needed).`,
     );
   }
@@ -243,7 +243,7 @@ function printNotPublished(
       `Done locally: ${landed}; main rebuilds from it.`,
       `NOT pushed to ${remote}.`,
       describeWorkflowRefusal(refusal),
-      `Then run ./equin push again (from any worktree): it publishes local main's commits with its own.`,
+      `Then run ./muxos push again (from any worktree): it publishes local main's commits with its own.`,
     ].join("\n"),
   );
 }
@@ -261,7 +261,7 @@ async function landFromMain(
   if (!(await runRebasedChecks(root, grant, report))) {
     failChecks(
       report,
-      "Checks failed after rebase. Fix the issue and re-run ./equin push " +
+      "Checks failed after rebase. Fix the issue and re-run ./muxos push " +
         "(your commit is still on HEAD; use `git reset --soft HEAD~1` to unstage it if needed).",
     );
   }

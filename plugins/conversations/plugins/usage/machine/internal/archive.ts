@@ -24,7 +24,7 @@ const ArchiveEntrySchema = z.object({
   /** The title snapshotted at capture (the conversation may be gone since). */
   title: z.string().nullable().catch(null),
   conversationId: z.string().nullable().catch(null),
-  /** Whether it was equin's own spend when it was captured (Stats' repo scope). */
+  /** Whether it was muxos's own spend when it was captured (Stats' repo scope). */
   isRepo: z.boolean().catch(false),
 });
 

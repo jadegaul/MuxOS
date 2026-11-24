@@ -20,18 +20,18 @@ describe("primaryLanguage", () => {
 describe("parseReferrer", () => {
   test("host normalised, path kept, query dropped", () => {
     expect(
-      parseReferrer("https://www.GitHub.com/a/b?tab=readme#x", "equin.dev"),
+      parseReferrer("https://www.GitHub.com/a/b?tab=readme#x", "muxos.dev"),
     ).toEqual({ host: "github.com", path: "/a/b" });
   });
   test("self-referral is no referrer", () => {
-    expect(parseReferrer("https://equin.dev/story", "equin.dev")).toBeNull();
+    expect(parseReferrer("https://muxos.dev/story", "muxos.dev")).toBeNull();
     expect(
       parseReferrer("http://localhost:9000/x", "localhost:9000"),
     ).toBeNull();
   });
   test("empty or not a URL is no referrer", () => {
-    expect(parseReferrer("", "equin.dev")).toBeNull();
-    expect(parseReferrer("not a url", "equin.dev")).toBeNull();
+    expect(parseReferrer("", "muxos.dev")).toBeNull();
+    expect(parseReferrer("not a url", "muxos.dev")).toBeNull();
   });
 });
 
@@ -40,7 +40,7 @@ describe("visitorHash", () => {
     salt: "s",
     ip: "203.0.113.7",
     userAgent: "ua",
-    host: "equin.dev",
+    host: "muxos.dev",
   };
   test("stable for the same inputs, different for a new salt", () => {
     expect(visitorHash(parts)).toBe(visitorHash(parts));
@@ -75,7 +75,7 @@ describe("identityNetwork", () => {
 
 describe("visitorHash on IPv6", () => {
   const at = (ip: string) =>
-    visitorHash({ salt: "s", ip, userAgent: "ua", host: "equin.dev" });
+    visitorHash({ salt: "s", ip, userAgent: "ua", host: "muxos.dev" });
   test("a phone rotating its temporary address keeps one hash", () => {
     expect(at("2001:db8:a:b:1111:2222:3333:4444")).toBe(
       at("2001:db8:a:b:9999:8888:7777:6666"),

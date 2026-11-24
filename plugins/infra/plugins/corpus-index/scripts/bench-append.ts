@@ -1,7 +1,7 @@
 // What one append to a large file costs a corpus index's pass — read whole
 // (`parse`) against read from where it stopped (`lines`).
 //
-//   ./equin run plugins/infra/plugins/corpus-index/scripts/bench-append.ts \
+//   ./muxos run plugins/infra/plugins/corpus-index/scripts/bench-append.ts \
 //     <file.jsonl> [--appends 40] [--seed-index <index.json>]
 //
 // The file is copied into a temp corpus minus its last `--appends` lines, which

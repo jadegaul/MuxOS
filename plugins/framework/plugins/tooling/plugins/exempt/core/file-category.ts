@@ -19,6 +19,8 @@ export const FILE_CATEGORIES = [
   "provision",
   "research",
   "generated",
+  "readme",
+  "patch",
 ] as const;
 export type FileCategory = (typeof FILE_CATEGORIES)[number];
 
@@ -41,7 +43,7 @@ export const FILE_CATEGORY_GLOBS: Readonly<
   central: ["**/central/**"],
   provision: ["**/provision/**"],
   research: ["research/**"],
-  // Written by `./equin build` / `bun install` from sources that stay in
+  // Written by `./muxos build` / `bun install` from sources that stay in
   // scope, so a rule over content is enforced at the source, once.
   generated: [
     "**/*.generated.ts",
@@ -49,6 +51,12 @@ export const FILE_CATEGORY_GLOBS: Readonly<
     "config/**/*.origin.jsonc",
     "docs/plugins-*.md",
   ],
+  // The upstream readme the repo carries untouched (the user's exclusion for
+  // the muxos → MuxOS rename, 2026-11-23) and the SVG assets it renders.
+  readme: ["README.md", "docs/readme/**"],
+  // Third-party patch files: their context lines are the upstream's, and a
+  // rewrite breaks the application.
+  patch: ["patches/**"],
 };
 
 /**

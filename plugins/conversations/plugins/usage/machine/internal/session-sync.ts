@@ -48,7 +48,7 @@ import {
 
 // ─── What this is ──────────────────────────────────────────────────────────────
 //
-// The scanner's second path: the transcripts NO equin conversation owns — a
+// The scanner's second path: the transcripts NO muxos conversation owns — a
 // Claude Code session the user ran themselves, and its sub-agents — counted
 // for the token ledger alone, under the session's `session:<sessionId>`
 // source, with a `claude_usage_sources` row (its project dir, and whether that
@@ -56,20 +56,20 @@ import {
 // counts, priced by `claude_spend_hours_v`; the scan state
 // (`claude_transcript_scans`) is an offset and a tail per file.
 //
-// **Each transcript is in the ledger once.** A session is either equin's — the
+// **Each transcript is in the ledger once.** A session is either muxos's — the
 // conversation path (`sync.ts`) counts it, under `conv:` — or not, and then
-// this path does. "Equin's" is: its id was ever recorded in a conversation's
+// this path does. "MuxOS's" is: its id was ever recorded in a conversation's
 // session chain (those rows are never deleted, so a deleted conversation's
 // transcripts are not recounted here), or it is a live conversation's tail.
 //
-// **Adoption.** A session can start here and become equin's: the status
+// **Adoption.** A session can start here and become muxos's: the status
 // reconciler records a launched agent's session id only once its transcript
-// exists, so the first appends of every equin session may arrive here first
+// exists, so the first appends of every muxos session may arrive here first
 // (and a user's session can be resumed by a conversation). The rule: the
 // conversation wins, and takes the session over whole. Its sync, counting a
 // session file for the first time, first waits out any pass of this path on
 // that session (`releaseSessions`, the per-session mutex — after it, every
-// pass here sees the session as equin's and stops), then deletes the
+// pass here sees the session as muxos's and stops), then deletes the
 // session's ledger rows, source row and scan rows in the same statement that
 // files the conversation's own count of the files from their start.
 //
@@ -80,8 +80,8 @@ import {
 // the computer's Claude Code login now (`readSystemLogin`), else the login's
 // own account id (`claudeLoginAccountId`). No record (Claude Code before
 // ~2.1.319, or a session on a token or API key, which Claude Code writes none
-// for): `UNKNOWN_ACCOUNT`. A session equin did not launch runs on whatever its
-// terminal or Claude Desktop is signed into, so equin's active account says
+// for): `UNKNOWN_ACCOUNT`. A session muxos did not launch runs on whatever its
+// terminal or Claude Desktop is signed into, so muxos's active account says
 // nothing about it.
 //
 // **Re-attribution.** A source whose scan rows predate owners
@@ -93,7 +93,7 @@ import {
 // tracked from there on.
 //
 // Per-file dedup (each file's own counted entries), as Stats → Cost has
-// always read them; only an equin conversation's chain is deduped
+// always read them; only an muxos conversation's chain is deduped
 // across its files.
 
 /** What a pass is for: a live append (the account is the active one) or a job's (unknown). */
@@ -101,7 +101,7 @@ export type SessionSyncCause = "live" | "job";
 
 /**
  * One session's scan rows as this process last read or wrote them. Held only
- * while the session is known not to be equin's: a session the conversation
+ * while the session is known not to be muxos's: a session the conversation
  * path adopts is dropped (`releaseSessions`) and re-checked on its next pass.
  */
 interface SessionState {
@@ -131,11 +131,11 @@ const sourced = new Set<SpendSource>();
 const sessionMutex = createKeyedMutex();
 
 /**
- * The ids of `sessionIds` that are equin's: recorded in any conversation's
+ * The ids of `sessionIds` that are muxos's: recorded in any conversation's
  * session chain (deleted conversations included — the chain outlives them),
  * or a live conversation's current session.
  */
-export async function equinSessionIds(
+export async function muxosSessionIds(
   exec: DbExecutor,
   sessionIds: readonly string[],
 ): Promise<Set<string>> {
@@ -213,7 +213,7 @@ async function sourceFacts(
  * Bring one session's ledger count up to date: its session file
  * (`sessionPath`, `<projects>/<dir>/<sessionId>.jsonl`) and every sub-agent
  * transcript below it, each read from where it was last read. A session that
- * is equin's is skipped (the conversation path counts it).
+ * is muxos's is skipped (the conversation path counts it).
  *
  * A file rewritten shorter than it was read recounts the whole source: what
  * the ledger holds for it is taken back (`usageLedgerRowsOf`, negated) and
@@ -233,7 +233,7 @@ export async function syncSessionUsage(
 ): Promise<void> {
   const source = sessionSpendSource(sessionId);
   const kept = cause === "live" ? held.get(sessionId) : undefined;
-  if (kept === undefined && (await equinSessionIds(exec, [sessionId])).size) {
+  if (kept === undefined && (await muxosSessionIds(exec, [sessionId])).size) {
     held.delete(sessionId);
     return;
   }
@@ -344,7 +344,7 @@ export async function syncSessionUsage(
 /**
  * The account usage a `session-owner` login spent is filed under: the system
  * account when it is the computer's Claude Code login now, else the login's
- * own id — never one of equin's added accounts by guess (a setup-token
+ * own id — never one of muxos's added accounts by guess (a setup-token
  * credential cannot read its own account's uuid, and Claude Code writes no
  * record for a session on one). No owner: `UNKNOWN_ACCOUNT`.
  */
@@ -377,7 +377,7 @@ export function requestSessionSync(
  * The conversation path's adoption barrier: resolves once no pass of this
  * path over `sessionIds` is running, with their held state dropped. Called
  * by a conversation's sync that is about to count those sessions' files for
- * the first time — the session is equin's by then, so every later pass here
+ * the first time — the session is muxos's by then, so every later pass here
  * stops at its ownership check, and what the earlier ones filed is what the
  * sync then deletes (`writeUsage`'s `adopted`).
  */

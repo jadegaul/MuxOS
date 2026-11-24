@@ -15,9 +15,9 @@
  *   change-feed's boot check refuses it until the owner opts it out;
  * - **refusals**: an `all` set, a `scopedColumns` collection, a hook on a silent collection.
  *
- * Requires a running Postgres cluster (started by ./equin build);
+ * Requires a running Postgres cluster (started by ./muxos build);
  * createTestDb() throws loudly when it is unreachable.
- * Run: `./equin test plugins/network/plugins/live`.
+ * Run: `./muxos test plugins/network/plugins/live`.
  */
 
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";

@@ -35,7 +35,7 @@ function renderDescription(row: ReportRow, d: MainDeployFailedPayload): string {
   lines.push(`**${describeMainDeployFailed(d)}**`);
   lines.push("");
   lines.push(
-    "The gateway starts `./equin build --allow-main --converge` in main's checkout on every " +
+    "The gateway starts `./muxos build --allow-main --converge` in main's checkout on every " +
       "advance of `refs/heads/main`, on its own boot, and when a backend asks. That run decides " +
       "whether main (or a served composition) is behind a commit it has not attempted and builds " +
       "it. This one failed before it could say the deployment is converged — so a push to main " +
@@ -60,7 +60,7 @@ function renderDescription(row: ReportRow, d: MainDeployFailedPayload): string {
   lines.push("");
   lines.push(
     "**What to do:** reproduce it from main's checkout with " +
-      "`./equin build --allow-main --converge` (it builds only what auto-build would). " +
+      "`./muxos build --allow-main --converge` (it builds only what auto-build would). " +
       "The next push or gateway boot runs it again; nothing retries it in between.",
   );
   lines.push("");

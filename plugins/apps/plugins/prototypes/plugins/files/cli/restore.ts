@@ -7,7 +7,7 @@ import {
 import { cliHistory } from "./tree";
 
 /**
- * `./equin prototype restore <id> <vN|sha>` — the detail pane's Restore
+ * `./muxos prototype restore <id> <vN|sha>` — the detail pane's Restore
  * button, from a terminal: unsaved changes are saved as "Before restore", the
  * old files are written back, and "Restored vN" is recorded. Nothing is lost,
  * so a restore is itself undone by restoring the "Before restore" version.
@@ -24,7 +24,7 @@ export const restorePrototypeAction: CliAction<
       throw new Error(`no prototype ${id} in ${prototypesDir.path}`);
     case "unknown-version":
       throw new Error(
-        `${version} is not a version of ${id} — see ./equin prototype log ${id}`,
+        `${version} is not a version of ${id} — see ./muxos prototype log ${id}`,
       );
     case "restored":
       console.log(

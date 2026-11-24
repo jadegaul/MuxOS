@@ -5,7 +5,7 @@
 // populated without data in the worktree DB and without scrolling a gallery.
 //
 // Usage:
-//   ./equin run plugins/plugin-meta/plugins/exhibits/e2e/exhibit-shot.ts \
+//   ./muxos run plugins/plugin-meta/plugins/exhibits/e2e/exhibit-shot.ts \
 //     --id <group/name> [--id <group/name> …] [--width <px>] \
 //     [--theme <app-id>|chrome] [--out /tmp/exhibit] [--color-scheme light|dark]
 //

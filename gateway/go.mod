@@ -1,4 +1,4 @@
-module equin/gateway
+module muxos/gateway
 
 go 1.24
 

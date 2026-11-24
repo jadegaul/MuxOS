@@ -31,11 +31,11 @@ import type {
 } from "@plugins/installer/core";
 
 /**
- * How a `./equin` command reports itself to the install that runs it as one
+ * How a `./muxos` command reports itself to the install that runs it as one
  * of its steps (installer/core, protocol v1).
  *
  * install.sh hands its event hub's FIFO to the commands it runs as steps
- * (`EQUIN_INSTALL_EVENTS`, with the step id in `EQUIN_INSTALL_STEP`). A
+ * (`MUXOS_INSTALL_EVENTS`, with the step id in `MUXOS_INSTALL_STEP`). A
  * command opens it BY PATH, so the fd is its own (close-on-exec): nothing it
  * spawns — a daemon least of all — inherits the install's event stream and
  * keeps it open after the install ends. Outside an install neither variable
@@ -212,7 +212,7 @@ export function finishBuildSubSteps(ok: boolean): void {
 
 /** What an install's waiting build step publishes to be told of main's build. */
 interface InstallFollowRequest {
-  /** The install's event FIFO (its `EQUIN_INSTALL_EVENTS`). */
+  /** The install's event FIFO (its `MUXOS_INSTALL_EVENTS`). */
   events: string;
   /** The waiting process: a request whose process is gone is stale. */
   pid: number;
@@ -248,7 +248,7 @@ function workedMs(at: number, end: number): number {
  * Let an install follow this build: `file` is where a waiting install step
  * publishes its request (main's `worktreeArtifacts.installFollow`). Called by
  * main's build before its first span; a build that is itself an install's
- * step (its own `EQUIN_INSTALL_EVENTS`) is never followed.
+ * step (its own `MUXOS_INSTALL_EVENTS`) is never followed.
  */
 export function followableBy(file: string): void {
   if (openSink() !== null) return;
@@ -522,8 +522,8 @@ export function reportInstallNotice(notice: {
  * status. `title` / `text` follow the installer message rules (build them
  * from an `InstallerNotice`); `leaveOut` names the optional parts a Skip
  * leaves out: install.sh then records the Skip (a `notice`) and runs the step
- * again with them in `EQUIN_INSTALL_LEFT_OUT` (`installLeftOut`). Written to the file install.sh
- * names in `EQUIN_INSTALL_DIAGNOSIS`, one `key<TAB>value` per line; outside
+ * again with them in `MUXOS_INSTALL_LEFT_OUT` (`installLeftOut`). Written to the file install.sh
+ * names in `MUXOS_INSTALL_DIAGNOSIS`, one `key<TAB>value` per line; outside
  * an install, a no-op.
  */
 export function reportInstallDiagnosis(diagnosis: {
@@ -531,7 +531,7 @@ export function reportInstallDiagnosis(diagnosis: {
   text: string;
   /**
    * The optional parts a Skip leaves out, with what they are to the person
-   * (`without`, "the equin icon in your menu bar") and what leaving them out
+   * (`without`, "the muxos icon in your menu bar") and what leaving them out
    * means (`later`: what still works, how to add them later) — install.sh
    * sends both as the `notice` that records the Skip, so the done screen
    * names every part left out.
@@ -562,7 +562,7 @@ export function reportInstallDiagnosis(diagnosis: {
   writeFileSync(path, `${lines.join("\n")}\n`);
 }
 
-/** The optional parts the person skipped during this install (`EQUIN_INSTALL_LEFT_OUT`). */
+/** The optional parts the person skipped during this install (`MUXOS_INSTALL_LEFT_OUT`). */
 export function installLeftOut(): string[] {
   const raw = readEnv("INSTALL_LEFT_OUT") ?? "";
   return raw

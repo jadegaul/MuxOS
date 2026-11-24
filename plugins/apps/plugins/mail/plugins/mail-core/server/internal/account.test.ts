@@ -9,8 +9,8 @@
  * (the threads list's scope) and `resolveMailAccountId` (every server read
  * path) run, so pinning it pins that they agree.
  *
- * Run: `./equin test plugins/apps/plugins/mail/plugins/mail-core`
- * (requires the running embedded cluster — `./equin build` first).
+ * Run: `./muxos test plugins/apps/plugins/mail/plugins/mail-core`
+ * (requires the running embedded cluster — `./muxos build` first).
  */
 
 import {

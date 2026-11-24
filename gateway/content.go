@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// The content host: where equin serves CONTENT (pages that run script but are
+// The content host: where muxos serves CONTENT (pages that run script but are
 // not reviewed app code — an agent-written prototype) as opposed to the APP
 // (`<ns>.localhost`). Trust boundaries, Phase 3; design in
 // research/2026-10-29-global-content-isolation.md.

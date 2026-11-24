@@ -1,4 +1,4 @@
-//! `equin-installer --probe`: can this session show the window?
+//! `muxos-installer --probe`: can this session show the window?
 //!
 //! The curl install's stage 0 runs it before choosing the window over the
 //! terminal view (install.sh, `choose_view`). It does what the window does
@@ -32,7 +32,7 @@ const DEADLINE: Duration = Duration::from_secs(20);
 pub fn run() -> ! {
     std::thread::spawn(|| {
         std::thread::sleep(DEADLINE);
-        eprintln!("equin-installer: probe: the page did not load within {}s", DEADLINE.as_secs());
+        eprintln!("muxos-installer: probe: the page did not load within {}s", DEADLINE.as_secs());
         std::process::exit(1);
     });
 
@@ -45,7 +45,7 @@ pub fn run() -> ! {
         event_loop.set_activation_policy(ActivationPolicy::Accessory);
     }
     let proxy = event_loop.create_proxy();
-    let builder = WindowBuilder::new().with_title("equin installer (probe)");
+    let builder = WindowBuilder::new().with_title("muxos installer (probe)");
     // macOS loads the page in a hidden window. On Linux the window is mapped
     // where nobody sees it — 1×1, undecorated, off-screen, out of the
     // taskbar, for under a second — the setup proven in release CI (inside a
@@ -83,7 +83,7 @@ pub fn run() -> ! {
                 wry::PageLoadEvent::Started => "started loading",
                 wry::PageLoadEvent::Finished => "finished loading",
             };
-            eprintln!("equin-installer: probe: the page {what} ({url})");
+            eprintln!("muxos-installer: probe: the page {what} ({url})");
         })
         .with_url("installer://app/");
     #[cfg(target_os = "linux")]
@@ -100,13 +100,13 @@ pub fn run() -> ! {
         *control_flow = ControlFlow::Wait;
         if let Event::UserEvent(()) = event {
             let _ = (&window, &webview);
-            println!("equin-installer: probe: ok");
+            println!("muxos-installer: probe: ok");
             std::process::exit(0);
         }
     });
 }
 
 fn fail(why: &str) -> ! {
-    eprintln!("equin-installer: probe: {why}");
+    eprintln!("muxos-installer: probe: {why}");
     std::process::exit(1);
 }

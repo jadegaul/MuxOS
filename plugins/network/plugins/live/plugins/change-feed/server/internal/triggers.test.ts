@@ -22,7 +22,7 @@ import {
 // re-create mints a new oid, and a COMMENT (an adoption's restamp) touches
 // neither — observed directly rather than through a spy or a log line.
 //
-// Requires a running Postgres cluster (started by ./equin build). If the
+// Requires a running Postgres cluster (started by ./muxos build). If the
 // cluster is unreachable, createTestDb() throws loudly rather than skipping.
 
 let testDb: TestDb;

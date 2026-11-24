@@ -31,7 +31,7 @@ function quote(value: string): string {
  *   pre-7.2 sshd (2016) rejects `restrict` and so rejects the whole line.
  * - **`TUNNEL_KEY_OPTIONS`** (`port-forwarding,permitopen="127.0.0.1:*"`)
  *   turns local forwards back on, confined to the server's own loopback —
- *   the box link's tunnel (`box-link/link`) forwards to the deployed equin's
+ *   the box link's tunnel (`box-link/link`) forwards to the deployed muxos's
  *   loopback port and is refused (`forwarding-refused`) without it. Still no
  *   pivot: the key's shell reaches that loopback anyway.
  * - **`sed -i.bak '/ <comment>$/d'`** makes the command self-cleaning: we own

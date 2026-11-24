@@ -3,7 +3,7 @@
 //   bun install --verbose 2>&1 | bun plugins/installer/bin/bun-install-progress.ts <bun.lock>
 //
 // What the CLI's dependency install pipes through while an install runs it
-// (`./equin`'s bootstrap, `ensureDeps`, when `EQUIN_INSTALL_EVENTS` is set):
+// (`./muxos`'s bootstrap, `ensureDeps`, when `MUXOS_INSTALL_EVENTS` is set):
 // bun prints no progress without a terminal, but `--verbose` prints one
 // `[<package>] Extracted to …` line per package it unpacks. Each is counted
 // against the lockfile's package entries and reported as an install
@@ -48,7 +48,7 @@ const NOISE = [
   // bun's advice about the lifecycle scripts it did not run. The repo leaves
   // them untrusted on purpose (embedded-postgres' symlink hydration is done by
   // database/embedded's start script, @parcel/watcher ships prebuilt), so
-  // `bun pm untrusted` is nothing for a person installing equin to act on.
+  // `bun pm untrusted` is nothing for a person installing muxos to act on.
   /^Blocked \d+ (postinstall|lifecycle script)s?\. Run 'bun pm untrusted' for details\.$/,
 ];
 

@@ -1,6 +1,6 @@
 // Main's build refuses to run over what a plugin move left at the old address.
 //
-// `./equin plugin move` moves what git tracks. What git never tracked — a
+// `./muxos plugin move` moves what git tracks. What git never tracked — a
 // plugin's build output, ignored by the plugin's OWN `.gitignore` — stays where
 // it was in every checkout that pulls the move, and the `.gitignore` that hid it
 // has moved away with the plugin. Git now sees those files, so plugin discovery

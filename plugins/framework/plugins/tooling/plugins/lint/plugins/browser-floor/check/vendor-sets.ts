@@ -20,7 +20,7 @@ import { vendorFloorScansDir } from "../data-dirs";
 // page loads through the import map and a browser host's worker through its
 // tree's `_vendor/` (a link to the same set). Host-scoped, because the store is
 // the machine's, not the checkout's: main's hourly host audit runs it and
-// files a report naming the package; `./equin check --scope host` runs it on
+// files a report naming the package; `./muxos check --scope host` runs it on
 // demand. Not deploy-scoped: a build's check pass sees the dist that build
 // replaces, so a failing verdict there would block the very build fixing it.
 //

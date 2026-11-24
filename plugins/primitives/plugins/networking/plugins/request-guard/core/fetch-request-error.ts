@@ -8,7 +8,7 @@ import { canParseUrl } from "@plugins/packages/plugins/floor-compat/core";
  * "NetworkError when attempting to fetch resource.", Safari's "Load failed")
  * naming neither the URL nor, in Firefox, a single stack frame. One left
  * unhandled reached Reports as exactly that line and nobody could place it
- * (report-1794609421-fk1a49, 50 occurrences on equin.ai). The request guard sees
+ * (report-1794609421-fk1a49, 50 occurrences on MuxOS.app). The request guard sees
  * every page fetch — the guarded global `fetch` any library calls and
  * `nativeFetch`, the page transport's — so it raises this one instead: the
  * method and URL in the message, the browser's words kept as

@@ -1,7 +1,7 @@
 import { WebsiteHero } from "@plugins/apps/plugins/website/plugins/shell/web";
 
 /**
- * The guide's heading: what the reader will do here, once equin is installed.
+ * The guide's heading: what the reader will do here, once muxos is installed.
  */
 export function GuideOpening() {
   return (

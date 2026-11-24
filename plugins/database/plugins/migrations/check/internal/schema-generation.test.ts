@@ -6,7 +6,7 @@
  * they are: the throwaway-DB fixture would close an import cycle from
  * `connection`.
  *
- * Requires the running embedded cluster (`./equin build` first).
+ * Requires the running embedded cluster (`./muxos build` first).
  */
 
 import { afterEach, beforeEach, expect, test } from "bun:test";

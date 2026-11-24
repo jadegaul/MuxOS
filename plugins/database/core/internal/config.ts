@@ -42,16 +42,16 @@ const systemPgDefaults = (): DatabaseConfig => ({
 let cached: DatabaseConfig | null = null;
 
 /**
- * THE reader for `~/.equin/state/db-config/database.json`. Memoized for
+ * THE reader for `~/.muxos/state/db-config/database.json`. Memoized for
  * the process lifetime; `CONFIG_PATH` is resolved at module load from the
- * `state/db-config` declaration (and so from `EQUIN_DIR`), so a process
- * that wants a different location must set `EQUIN_DIR` in its own
+ * `state/db-config` declaration (and so from `MUXOS_DIR`), so a process
+ * that wants a different location must set `MUXOS_DIR` in its own
  * environment before this module is first imported (see the co-located
  * `config.test.ts`, which spawns a child for exactly that reason).
  *
  * ENOENT / malformed JSON are TOLERATED and fall back to `systemPgDefaults()`
  * ("no managed services, talk to a plain local Postgres"). That is deliberate:
- * the file is written by `./equin start`, so its absence means "this host
+ * the file is written by `./muxos start`, so its absence means "this host
  * has no embedded cluster", not "this call is broken". Callers that genuinely
  * need a live cluster must fail on the *connection*, where the error names the
  * real problem — not here, where it could only say "file missing".

@@ -2,7 +2,7 @@
 //
 // The built-in ledger closes a failed run WITH its error. A `run` body's child
 // records it on the run's row itself (`recordRunError`); an `argv` child — an
-// `./equin` command (`type-check-backstop`, `check --scope host`, a build) —
+// `./muxos` command (`type-check-backstop`, `check --scope host`, a build) —
 // has no row to write and no database, so its error used to be recovered from
 // the end of its transcript. For a crash that end is the STACK, not the
 // message: 2 KB of `at …` frames after the line that said what happened. The

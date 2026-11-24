@@ -69,7 +69,7 @@ async function commitOfStamp(sha: string | null): Promise<CommitStamp> {
 /**
  * The commit a release run was cut from, as its own ledger row records it —
  * null when the row names none (a run that never wrote a manifest) or when this
- * namespace has no row for it (a hand-run `./equin release` writes none).
+ * namespace has no row for it (a hand-run `./muxos release` writes none).
  */
 async function releaseCommitSha(releaseRunId: string): Promise<string | null> {
   const [row] = await db

@@ -500,14 +500,14 @@ async function openAll(paths: AppPath[]): Promise<OwnedFd[]> {
  *
  * `slots` is that directory, and the caller supplies it as a **declared**
  * `DataDir` — this primitive derives no path of its own. It used to, with
- * ``join(EQUIN_DIR, `${name}-slots`)``, and that one line is why the data
+ * ``join(MUXOS_DIR, `${name}-slots`)``, and that one line is why the data
  * root grew a top-level directory per pool that nothing in the repo could
  * enumerate. The pool's identity (the `name` in every error below) is the
  * directory's own declared name, so the two can no longer disagree.
  *
  * The path is read through `slots.path` on every use, never captured at
  * construction: `defineHostPool` runs at consumer module eval, and a frozen
- * value there would not follow a `EQUIN_DIR` the release launcher sets
+ * value there would not follow a `MUXOS_DIR` the release launcher sets
  * later.
  *
  * `backgroundLimit` (default `size`, i.e. no reserved floor) caps how many slots the

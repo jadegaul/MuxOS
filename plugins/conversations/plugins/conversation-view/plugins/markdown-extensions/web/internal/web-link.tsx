@@ -6,7 +6,7 @@ import { parseUrl } from "@plugins/packages/plugins/floor-compat/core";
 /**
  * Whether `href` is a site on the web, which the browser engine shows: an
  * absolute http(s) URL on another origin. A link to this app's own origin is
- * not — it is equin itself (a pane, an `/api` file), which a remote Chromium
+ * not — it is muxos itself (a pane, an `/api` file), which a remote Chromium
  * without this browser's session cannot show.
  */
 export function isWebUrl(href: string | undefined): boolean {

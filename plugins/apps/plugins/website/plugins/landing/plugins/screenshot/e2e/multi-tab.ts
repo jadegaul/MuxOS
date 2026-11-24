@@ -19,7 +19,7 @@
  * a screen shown for an instant is caught too), no page error.
  *
  * Manual only — nothing runs this automatically.
- *   ./equin run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/multi-tab.ts [--out /tmp/demo-multi-tab] [--headed]
+ *   ./muxos run plugins/apps/plugins/website/plugins/landing/plugins/screenshot/e2e/multi-tab.ts [--out /tmp/demo-multi-tab] [--headed]
  */
 import type { BrowserContext, Page } from "playwright";
 import {

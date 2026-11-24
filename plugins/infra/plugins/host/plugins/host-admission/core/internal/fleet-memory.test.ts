@@ -283,7 +283,7 @@ describe("laneCapacity", () => {
   });
 
   test("a 16 GB Mac: background shares the one-slot window it lives in", () => {
-    // 2026-11-16 audit: B = 2, and macOS + a browser + an editor + equin leave
+    // 2026-11-16 audit: B = 2, and macOS + a browser + an editor + muxos leave
     // under two quanta for the fleet, so the measured window sits at 1. Kept
     // off it, background (every agent build, check, test and job install)
     // waited for ever.

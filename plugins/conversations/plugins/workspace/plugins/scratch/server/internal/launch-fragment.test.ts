@@ -1,14 +1,14 @@
 import { describe, expect, test } from "bun:test";
 import { scratchLaunchFragment } from "./launch-fragment";
 
-const URL = "http://equin.localhost:9000/api/mcp/conv-1";
+const URL = "http://muxos.localhost:9000/api/mcp/conv-1";
 const ROOT = "/repo";
 
 describe("scratchLaunchFragment", () => {
   test("user + the dir's own sources, and only the app's MCP server", () => {
     const fragment = scratchLaunchFragment({ mcpUrl: URL, guardsRoot: ROOT });
     expect(fragment.settingSources).toEqual(["user", "project"]);
-    expect(fragment.mcpServers).toEqual({ equin: { type: "http", url: URL } });
+    expect(fragment.mcpServers).toEqual({ muxos: { type: "http", url: URL } });
     expect(fragment.strictMcpConfig).toBe(true);
   });
 

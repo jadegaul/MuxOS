@@ -9,7 +9,7 @@ import type { SiteMessagesDb } from "./db";
 import { siteMessages } from "./tables";
 
 /** The notification's sender, on the domain verified in Resend. */
-export const NOTIFY_FROM = "equin <noreply@equin.ai>";
+export const NOTIFY_FROM = "muxos <noreply@MuxOS.app>";
 
 /** At most this many notification emails in any 24 hours; the rest are held. */
 export const DAILY_EMAIL_CAP = 30;

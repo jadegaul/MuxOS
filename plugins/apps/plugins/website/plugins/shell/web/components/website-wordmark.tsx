@@ -57,7 +57,7 @@ export function WordmarkText({
       variant={variant}
       className={cn("font-bold tracking-tight", className)}
     >
-      equin
+      muxos
       {/* A plain run, not a nested `<Text>`: in the header's single-line
           context a `<Text>` becomes its own clipped, block-level box, so the
           full stop would drop onto a line of its own. (It used to be an

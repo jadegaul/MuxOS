@@ -67,7 +67,7 @@ function assertSafeName(name: string): void {
 //
 // `exclusions` is REQUIRED rather than read from the contribution registry here.
 // `getContributions()` answers `[]` in any process that never booted the server,
-// so a registry read inside this function would make `./equin db fork`
+// so a registry read inside this function would make `./muxos db fork`
 // silently produce a full ~2 GB fork that looks like it worked. A required
 // parameter forces every caller to name where its exclusion set came from; see
 // `forkExclusions()` in ./fork-exclusion, which fails loudly on the empty case.

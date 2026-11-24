@@ -10,7 +10,7 @@ const schemaFilesLoadableCheck: Check = {
   id: "schema-files-loadable",
   description:
     "every drizzle schema-glob file loads synchronously (drizzle-kit require())",
-  // Cheap structural invariant: guard even `./equin build --skip-checks`.
+  // Cheap structural invariant: guard even `./muxos build --skip-checks`.
   alwaysRun: true,
   async run(ctx) {
     // Every file loaded the way drizzle-kit loads them, by the schema question

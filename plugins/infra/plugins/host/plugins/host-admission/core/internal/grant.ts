@@ -62,7 +62,7 @@ export interface Grant {
    *
    * The request is CLAMPED to `min(units, grant.units)`, and the clamp lives here
    * because the grant is the ceiling: a 1-unit grant (an inherited
-   * `EQUIN_HOST_GRANT=1`) runs a 2-unit request at weight 1 rather than
+   * `MUXOS_HOST_GRANT=1`) runs a 2-unit request at weight 1 rather than
    * waiting for capacity it will never be given. That is the same rule as "a
    * reduced grant just runs the fleet at lower concurrency" — the holder's
    * fan-out narrows, nothing deadlocks, and a weight can never exceed the
@@ -105,7 +105,7 @@ export interface GrantHooks {
    * Unlike the pool's own `run`, an abort mid-`fn` does NOT drop the share here,
    * and that asymmetry is deliberate. A grant hands out `units` as TOKENS that
    * outlive the acquire — a subprocess child inherits the count through
-   * `EQUIN_HOST_GRANT` and spends it without re-acquiring — so releasing the
+   * `MUXOS_HOST_GRANT` and spends it without re-acquiring — so releasing the
    * host slots while those tokens are still being spent would put work outside the
    * bound rather than merely leaving it unattributed. A single-slot `run` has no
    * such tokens, which is why it can afford the early release and this cannot.

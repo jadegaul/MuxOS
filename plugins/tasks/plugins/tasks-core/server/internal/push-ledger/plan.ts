@@ -59,7 +59,7 @@ export function planLedger(
     const commit = commits[i]!;
     if (state.have.has(commit.sha)) continue;
     // The conversation's attempt is the authority; the attempt trailer is what
-    // a push from a session equin did not launch (no conversation) is credited
+    // a push from a session muxos did not launch (no conversation) is credited
     // by — and what still attributes a commit whose conversation row this
     // database never adopted.
     const attemptId =

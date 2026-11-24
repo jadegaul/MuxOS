@@ -25,9 +25,9 @@ STAMP='zsh -c '"'"'zmodload zsh/datetime; t0=$EPOCHREALTIME; while IFS= read -r 
 
 # The newest build's per-run artifacts under the namespace dirs matching $1 (a
 # glob: at step 3 the newest profile in `*` is the install's build, so it
-# needs no namespace name). A fresh install's data root is ~/.equin.
+# needs no namespace name). A fresh install's data root is ~/.muxos.
 DUMP_BUILD='
-prof=$(ls -t $HOME/.equin/worktrees/$1/build-profile-*.json 2>/dev/null | head -1)
+prof=$(ls -t $HOME/.muxos/worktrees/$1/build-profile-*.json 2>/dev/null | head -1)
 dir=$(dirname "${prof:-.}")
 echo "== build profile: $prof"
 [ -n "$prof" ] && cat "$prof"
@@ -71,15 +71,15 @@ step_04_agent_build() {
 set -o pipefail
 zsh -l -i -c 'set -e
 # What an agent pane sets; without it conversation-trailer fails the build.
-export EQUIN_CONVERSATION_ID=conv-bench-cold
-cd ~/equin
+export MUXOS_CONVERSATION_ID=conv-bench-cold
+cd ~/muxos
 git worktree add -q .claude/worktrees/att-bench-cold -b bench-cold
 cd .claude/worktrees/att-bench-cold
-./equin db fork
-/usr/bin/time -l ./equin build' 2>&1 < /dev/null | $STAMP
+./muxos db fork
+/usr/bin/time -l ./muxos build' 2>&1 < /dev/null | $STAMP
 CMD
 }
-step_04_agent_build_DOC="The first agent build after install: a fresh worktree, its DB fork, then a full ./equin build (every check)."
+step_04_agent_build_DOC="The first agent build after install: a fresh worktree, its DB fork, then a full ./muxos build (every check)."
 step_04_agent_build_TAG="harness-only"
 
 step_05_agent_build_dump() {
@@ -90,8 +90,8 @@ step_05_agent_build_dump_TAG="harness-only"
 
 step_06_store_sizes() {
   cat <<'CMD'
-du -sh "$HOME/.equin"/cache/* 2>/dev/null | sort -h | tail -25
-du -sh ~/.bun/install/cache ~/.local/share/mise ~/equin/node_modules 2>/dev/null
+du -sh "$HOME/.muxos"/cache/* 2>/dev/null | sort -h | tail -25
+du -sh ~/.bun/install/cache ~/.local/share/mise ~/muxos/node_modules 2>/dev/null
 CMD
 }
 step_06_store_sizes_DOC="What the stores hold after install + one agent build."

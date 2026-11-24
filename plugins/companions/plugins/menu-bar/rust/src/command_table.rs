@@ -3,7 +3,7 @@
 // (panel.rs) and the command gate (commands.rs) all read. `include!`d by
 // build.rs, so plain consts only.
 
-/// `window.equinNative` (src/bridge.js): the panel's own page, at the pinned
+/// `window.muxosNative` (src/bridge.js): the panel's own page, at the pinned
 /// panel URL only.
 pub const PANEL_COMMANDS: &[&str] = &[
     "host_info",
@@ -17,10 +17,10 @@ pub const PANEL_COMMANDS: &[&str] = &[
     "pin_app",
 ];
 
-/// `window.equinWindow` (src/window_bridge.js): an installed app's window, on
+/// `window.muxosWindow` (src/window_bridge.js): an installed app's window, on
 /// pages of its own origin (its namespace) only.
 pub const APP_WINDOW_COMMANDS: &[&str] = &["window_info", "start_file_drag"];
 
-/// The bundled "equin isn't running" page (local, in the panel window): its
+/// The bundled "muxos isn't running" page (local, in the panel window): its
 /// Start button.
 pub const OFFLINE_COMMANDS: &[&str] = &["start_gateway"];

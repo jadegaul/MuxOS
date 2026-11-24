@@ -1,5 +1,5 @@
 {
-  "name": "@equin/plugin-page-quote",
+  "name": "@muxos/plugin-page-quote",
   "description": "Quote / blockquote block type for the page editor.",
   "private": true,
   "version": "0.0.1"
